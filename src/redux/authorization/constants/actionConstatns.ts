@@ -3,7 +3,7 @@ import * as types from './types';
 
 export const actionLogin = (login: string): authActions => ({
     type: types.LOGIN,
-    params: login
+    login
 });
 
 export const actionSignUp = (params: SignUpBody): authActions => ({
@@ -11,7 +11,7 @@ export const actionSignUp = (params: SignUpBody): authActions => ({
     params
 });
 
-export const requestSuccess = (payload: number, name: string): authActions => ({
+export const requestSuccess = (payload: object, name: string): authActions => ({
     type: types.AUTH_SUCCESS,
     payload,
     name

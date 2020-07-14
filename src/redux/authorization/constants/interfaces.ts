@@ -6,9 +6,9 @@ export interface SignUpBody {
 	login: string	
 }
 
-interface LoginAction {
+export interface LoginAction {
 	type: typeof types.LOGIN
-	params: string
+	login: string
 }
 
 interface SignUpAction {
@@ -18,7 +18,7 @@ interface SignUpAction {
 
 interface AuthSuccess {
 	type: typeof types.AUTH_SUCCESS
-	payload: number
+	payload: object
 	name: string
 }
 

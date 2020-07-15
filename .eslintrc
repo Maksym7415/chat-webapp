@@ -1,0 +1,38 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint",  "prettier"],
+    "extends": [
+        "airbnb-typescript/base",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "prettier",
+        "prettier/@typescript-eslint"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "useJSXTextNode": true,
+      "project": "./tsconfig.json"
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true
+      },
+    "rules": {
+    "linebreak-style": "off",
+    "import/prefer-default-export": "off",
+    "no-class-assign": "off",
+    "no-shadow": "off",
+    "max-len": [
+        "error",
+        200
+    ],
+    "no-func-assign": "off",
+    "consistent-return": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-nested-ternary": "off",
+    "prefer-const": "off",
+    "camelcase": "off",
+    "import/no-unresolved": "off"
+}
+  }

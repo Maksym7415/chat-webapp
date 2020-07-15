@@ -1,4 +1,5 @@
 import * as types from './types';
+// import { Login } from '../../../../pages/auth/interfaces';
 
 export interface SignUpBody {
 	firstName: string
@@ -11,7 +12,7 @@ export interface LoginAction {
 	login: string
 }
 
-interface SignUpAction {
+export interface SignUpAction {
 	type: typeof types.AUTH_SIGNUP
 	params: SignUpBody
 }

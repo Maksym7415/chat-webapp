@@ -4,7 +4,12 @@ import { AuthActionsInterface } from '../constants/interfaces';
 import * as types from '../constants/types';
 
 const initialState: AuthReducerInterface = {
-    login: null,
+    login: {
+        success: {
+            status: 0
+        },
+        error: null
+    },
     signUp: null,
     token: null,
 };
@@ -14,7 +19,10 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
         case types.AUTH_SUCCESS:
             return {
                 ...state,
-                [action.name]: action.payload
+                [action.name]: {
+                    success: action.payload,
+                    error: null
+                }
             }
         case types.AUTH_FAIL:
             return {

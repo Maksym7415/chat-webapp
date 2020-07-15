@@ -1,4 +1,5 @@
 import { AuthActionsInterface, SignUpBody } from './interfaces';
+import { Login } from '../../../../pages/auth/interfaces';
 import * as types from './types';
 
 export const actionLogin = (login: string): AuthActionsInterface => ({

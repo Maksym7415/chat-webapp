@@ -2,12 +2,12 @@ import {
   takeEvery, call, put,
 } from 'redux-saga/effects';
 import axios from 'axios';
-import { LOGIN } from '../constants/types';
+import { AUTH_LOGIN } from '../constants/types';
 import { LoginAction } from '../constants/interfaces';
 import { requestSuccess, requestFail } from '../constants/actionConstatns';
 
 export function* loginWatcher() {
-  yield takeEvery(LOGIN, loginWorker)
+  yield takeEvery(AUTH_LOGIN, loginWorker)
 };
 
 function* loginWorker(action: LoginAction) {

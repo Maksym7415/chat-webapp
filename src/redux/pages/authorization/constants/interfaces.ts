@@ -7,12 +7,12 @@ export interface SignUpBody {
 }
 
 export interface LoginAction {
-	type: typeof types.LOGIN
+	type: typeof types.AUTH_LOGIN
 	login: string
 }
 
 interface SignUpAction {
-	type: typeof types.SIGNUP
+	type: typeof types.AUTH_SIGNUP
 	params: SignUpBody
 }
 
@@ -28,4 +28,13 @@ interface AuthFail {
 	name: string
 }
 
-export type authActions = LoginAction | SignUpAction | AuthSuccess | AuthFail
+interface Token {
+	type: typeof types.AUTH_TOKEN
+	token: string
+}
+
+interface Logout {
+	type: typeof types.AUTH_LOGOUT
+}
+
+export type AuthActionsInterface = LoginAction | SignUpAction | AuthSuccess | AuthFail | Token | Logout

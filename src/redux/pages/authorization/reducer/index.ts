@@ -1,13 +1,15 @@
 import { AuthReducerInterface } from './interfaces';
-import { authActions } from '../constants/interfaces';
+import jwtDecode from 'jwt-decode';
+import { AuthActionsInterface } from '../constants/interfaces';
 import * as types from '../constants/types';
 
 const initialState: AuthReducerInterface = {
     login: null,
-    signUp: null
+    signUp: null,
+    token: null,
 };
 
-const authReducer = (state = initialState, action: authActions): AuthReducerInterface => {
+const authReducer = (state = initialState, action: AuthActionsInterface): AuthReducerInterface => {
     switch(action.type) {
         case types.AUTH_SUCCESS:
             return {
@@ -18,6 +20,20 @@ const authReducer = (state = initialState, action: authActions): AuthReducerInte
             return {
                 ...state,
                 [action.name]: action.payload
+            }
+        case types.AUTH_TOKEN: 
+            let payload: object = {};
+                try {
+                    payload = jwtDecode(action.token);
+                } catch (e) {
+                    console.log(e);
+                }
+            return {
+                ...state,
+                token: {
+                    accessToken: action.token,
+                    payload
+                }
             }
         default:
             return initialState

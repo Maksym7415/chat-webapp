@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 import Auth from '../pages/auth';
+import SignInPage from '../pages/auth/signIn'
 
 function Router(props) {
 
@@ -11,7 +12,7 @@ function Router(props) {
       <Theme>
         <CssBaseline />
           <Switch>
-            <Route component = {Auth} exact path = '/'/>
+            <Route component = {SignInPage} exact path = '/signIn'/>
           </Switch>
       </Theme>
     </Fragment>

@@ -1,7 +1,7 @@
 import { AuthActionsInterface, SignUpBody } from './interfaces';
 import * as types from './types';
 
-export const actionLogin = (login: string): AuthActionsInterface => ({
+export const actionLogin = (login: object): AuthActionsInterface => ({
     type: types.AUTH_LOGIN,
     login
 });

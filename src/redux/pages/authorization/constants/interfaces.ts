@@ -8,7 +8,7 @@ export interface SignUpBody {
 
 export interface LoginAction {
 	type: typeof types.AUTH_LOGIN
-	login: string
+	login: object
 }
 
 interface SignUpAction {

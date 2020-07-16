@@ -4,7 +4,7 @@ import { reducer as formReducer } from 'redux-form';
 
 export const rootReducer = combineReducers({
   authReducer,
-  formReducer
+  form: formReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>

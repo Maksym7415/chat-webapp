@@ -1,8 +1,12 @@
 import React from 'react';
+import {
+    TextField,
+} from '@material-ui/core';
 
 interface Meta{
-    touched: string,
-    error: string
+    touched: boolean,
+    error: string,
+    invalid: boolean
 }
 
 interface RenderField{
@@ -11,14 +15,20 @@ interface RenderField{
     label: string,
     type: string,
     placeholder: string,
-    value: string
+    value: string,
+    variant: 'outlined'
 }
 
-export const authRenderField = ({input, meta: {touched, error}, label, type, placeholder, value } : RenderField) => (  
-    <div>
-        <label htmlFor="origin">
-            {label}
-            {<input type = {type} placeholder = {placeholder} {...input} value={value}  /> }
-        </label> 
-    </div>
-);
+export const AuthRenderField = ({input, meta: {touched, error, invalid  }, label, placeholder,variant} : RenderField) => 
+     ( 
+        <TextField
+            label={label}
+            placeholder={placeholder}
+            error={touched && invalid}
+            helperText={touched && error}
+            required
+            variant={variant}
+            {...input}
+            fullWidth
+        />
+    )

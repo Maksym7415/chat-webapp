@@ -1,58 +1,79 @@
 import React from 'react';
 import { reduxForm, Field, InjectedFormProps  } from 'redux-form';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {
+  Container,
+  Typography,
+  Avatar,
+  Button
+} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { RootState } from '../../redux/reducer';
-import { authRenderField } from './common/authRenderField';
-import {actionLogin} from '../../redux/pages/authorization/constants/actionConstatns'
+import { AuthRenderField } from './common/authRenderField';
+import { actionLogin } from '../../redux/pages/authorization/constants/actionConstatns'
+import { validate } from './common/validate'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { makeStyles } from '@material-ui/core/styles';
 
-interface StateProps {
-    values: any;
-  }
-  interface Props extends StateProps {
-    loading: boolean
-}
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.primary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
 
-const SignInPage: React.StatelessComponent<Props & InjectedFormProps<{}, Props>> =
-  ({handleSubmit, loading, values}) => {
-    console.log(values && values.login)
+const SignInPage = ({handleSubmit}: InjectedFormProps) => {
+ 
     const dispatch = useDispatch();
+    const classes = useStyles()
     const submit = (value: any) : any => {
-        console.log(value)
         dispatch(actionLogin(value))
       };
 
     return (
-        <div>
-            <div>
-                <form >
-                    <Field
-                        name="login"
-                        component={authRenderField}
-                        type="email"
-                        placeholder="email@example.com"
-                        value={values && values.login}
-                    />
-                    <div>
-                        <button onClick={handleSubmit(submit)}>
-                            Войти
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+      <Container component="main" maxWidth="xs">
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form className={classes.form} noValidate>
+          <Field
+            name="login"
+            component={AuthRenderField}
+            placeholder="email@example.com"
+            variant='outlined'
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Sign In
+          </Button>
+        </form>
+      </div>  
+    </Container>      
     )
 }
 
-const SignInF = reduxForm<{}, Props>({
+export default reduxForm({
     form: 'signInForm',
+    validate
   })(SignInPage);
   
-  export default connect(
-    (state: RootState) : StateProps => ({
-      values: state.formReducer.signInForm,
-    }),
-    { load: actionLogin } 
-  )(SignInF);
-

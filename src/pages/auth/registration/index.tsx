@@ -6,12 +6,13 @@ import {
   Avatar,
   Button
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AuthRenderField } from '../common/authRenderField';
-import { actionLogin } from '../../../redux/pages/authorization/constants/actionConstatns'
+import { actionSignUp } from '../../../redux/pages/authorization/constants/actionConstatns'
 import { validate } from '../common/validate'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import { RootState } from '../../../redux/reducer'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,11 +37,12 @@ const useStyles = makeStyles((theme) => ({
 const SignUpPage = ({handleSubmit}: InjectedFormProps) => {
  
     const dispatch = useDispatch();
+    const { email } = useSelector(({authReducer}: RootState) => authReducer.signUp.success)
     const classes = useStyles()
     const submit = (value: any) : any => {
-        dispatch(actionLogin(value))
+        dispatch(actionSignUp(value))
       };
-
+console.log(email)
     return (
       <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -64,7 +66,7 @@ const SignUpPage = ({handleSubmit}: InjectedFormProps) => {
             variant='outlined'
           />
           <Field
-            name="email"
+            name="login"
             component={AuthRenderField}
             placeholder="email@example.com"
             variant='outlined'
@@ -77,7 +79,7 @@ const SignUpPage = ({handleSubmit}: InjectedFormProps) => {
             className={classes.submit}
             onClick={handleSubmit(submit)}
           >
-            Sign In
+            Sign up
           </Button>
         </form>
       </div>  

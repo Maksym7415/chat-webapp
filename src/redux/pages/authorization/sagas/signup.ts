@@ -4,15 +4,14 @@ import { AUTH_SIGNUP } from '../constants/types';
 import { SignUpAction } from '../constants/interfaces';
 import { requestSuccess, requestFail } from '../constants/actionConstatns';
 
-function* signUpWatcher() {
+export function* signUpWatcher() {
     yield takeEvery(AUTH_SIGNUP, signUpWorker);
 }
 
-function* signUpWorker(action: SignUpAction) {
+function* signUpWorker({params}: SignUpAction) {
     try {
-        const response = yield call(axios.post, '/http://localhost:8081/api/signIn', action.params);
-        console.log(response);
-        yield put(requestSuccess({response}, 'signUp'));
+        const { data } = yield call(axios.post, 'http://localhost:8081/api/signUp', {...params});
+        yield put(requestSuccess(data, 'signUp'));
     } catch (error) {
         yield put(requestFail({response: error.response}, 'signUp'));
     }

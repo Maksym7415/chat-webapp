@@ -4,3 +4,4 @@ export const AUTH_SUCCESS = '[AUTH] AUTH SUCCESS';
 export const AUTH_FAIL = '[AUTH] AUTH FAIL';
 export const AUTH_TOKEN = '[AUTH] AUTH TOKEN';
 export const AUTH_LOGOUT = '[AUTH] LOGOUT';
+export const AUTH_VERIFICATION_CODE = '[AUTH] AUTH_VERIFICATION_CODE';

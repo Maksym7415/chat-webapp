@@ -7,6 +7,11 @@ export interface SignUpBody {
 	login: string	
 }
 
+export interface CheckVerificationCodeBody {
+	verificationCode: string
+	login: string	
+}
+
 export interface LoginAction {
 	type: typeof types.AUTH_LOGIN
 	login: object
@@ -15,6 +20,10 @@ export interface LoginAction {
 export interface SignUpAction {
 	type: typeof types.AUTH_SIGNUP
 	params: SignUpBody
+}
+export interface CheckVerificationCode {
+	type: typeof types.AUTH_VERIFICATION_CODE
+	params: CheckVerificationCodeBody
 }
 
 interface AuthSuccess {

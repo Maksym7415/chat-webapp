@@ -9,6 +9,21 @@ export interface SignUp {
     error: ErrorResponse
 }
 
+export interface Verification {
+    success: Token
+    error: ErrorResponse
+}
+
+
+interface Token {
+    accessToken: string
+    refreshToken: string,
+}
+
+interface SignUpSuccess {
+    email: string
+}
+
 interface LoginSuccess {
     status: boolean
 }

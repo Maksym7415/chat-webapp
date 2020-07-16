@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { AuthRenderField } from '../common/authRenderField';
-import { actionLogin } from '../../../redux/pages/authorization/constants/actionConstatns'
+import { actionCheckVerificationCode } from '../../../redux/pages/authorization/constants/actionConstatns'
 import { validate } from '../common/validate'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,7 +38,7 @@ const SignInPage = ({handleSubmit}: InjectedFormProps) => {
     const dispatch = useDispatch();
     const classes = useStyles()
     const submit = (value: any) : any => {
-        dispatch(actionLogin(value))
+        dispatch(actionCheckVerificationCode({...value, login: 'popovmaksim7415@gmail.com'}))
       };
 
     return (
@@ -52,7 +52,7 @@ const SignInPage = ({handleSubmit}: InjectedFormProps) => {
         </Typography>
         <form className={classes.form} noValidate>
           <Field
-            name="login"
+            name="verificationCode"
             component={AuthRenderField}
             placeholder="email@example.com"
             variant='outlined'

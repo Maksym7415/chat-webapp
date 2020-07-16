@@ -7,9 +7,9 @@ import {
   Button
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { AuthRenderField } from './common/authRenderField';
-import { actionLogin } from '../../redux/pages/authorization/constants/actionConstatns'
-import { validate } from './common/validate'
+import { AuthRenderField } from '../common/authRenderField';
+import { actionLogin } from '../../../redux/pages/authorization/constants/actionConstatns'
+import { validate } from '../common/validate'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 

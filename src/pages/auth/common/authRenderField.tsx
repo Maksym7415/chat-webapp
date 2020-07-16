@@ -19,7 +19,7 @@ interface RenderField{
     variant: 'outlined'
 }
 
-export const AuthRenderField = ({input, meta: {touched, error, invalid  }, label, placeholder,variant} : RenderField) => 
+export const AuthRenderField = ({input, meta: {touched, error, invalid  }, label, placeholder, variant} : RenderField) => 
      ( 
         <TextField
             label={label}

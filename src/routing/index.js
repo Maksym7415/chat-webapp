@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
-import Auth from '../pages/auth';
-import SignInPage from '../pages/auth/signIn'
+import SignInPage from '../pages/auth/authorization/signIn';
+import SignUpPage from '../pages/auth/registration';
 
 function Router(props) {
 
@@ -12,8 +12,8 @@ function Router(props) {
       <Theme>
         <CssBaseline />
           <Switch>
-          <Route component = {Auth} exact path = '/'/>
-            <Route component = {SignInPage} exact path = '/signIn'/>
+            <Route component = {SignInPage} exact path = '/signin'/>
+            <Route component = {SignUpPage} exact path = '/signup'/>
           </Switch>
       </Theme>
     </Fragment>

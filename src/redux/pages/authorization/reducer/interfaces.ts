@@ -1,4 +1,4 @@
-import { Login, SignUp } from '../../../../pages/auth/interfaces';
+import { Login, SignUp } from '../../../../pages/auth/authorization/interfaces';
 
 interface Token {
     accessToken: string

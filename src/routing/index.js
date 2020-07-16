@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 import SignInPage from '../pages/auth/authorization/signIn';
 import SignUpPage from '../pages/auth/registration';
-import VerificationPage from '../pages/auth/verification/verification' 
+import VerificationPage from '../pages/auth/verification' 
 
 function Router(props) {
 

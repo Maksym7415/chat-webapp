@@ -12,6 +12,7 @@ function Router(props) {
       <Theme>
         <CssBaseline />
           <Switch>
+          <Route component = {Auth} exact path = '/'/>
             <Route component = {SignInPage} exact path = '/signIn'/>
           </Switch>
       </Theme>

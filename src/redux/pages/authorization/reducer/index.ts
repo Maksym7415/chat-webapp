@@ -3,9 +3,23 @@ import jwtDecode from 'jwt-decode';
 import { AuthActionsInterface } from '../constants/interfaces';
 import * as types from '../constants/types';
 
+const getKeyValue = <T extends object, U extends keyof T>(key: U | never) => (obj: T | never) =>
+  obj[key];
+
+
 const initialState: AuthReducerInterface = {
-    login: null,
-    signUp: null,
+    login: {
+        success: {
+            status: false
+        },
+        error: null
+    },
+    signUp: {
+        success: {
+            email: ''
+        },
+        error: null
+    },
     token: null,
 };
 
@@ -14,12 +28,19 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
         case types.AUTH_SUCCESS:
             return {
                 ...state,
-                [action.name]: action.payload
+                [action.name]: {
+                    success: action.payload,
+                    error: null
+                }
             }
         case types.AUTH_FAIL:
             return {
                 ...state,
-                [action.name]: action.payload
+                [action.name]: {
+                    ...initialState[action.name],
+                    error: action.payload
+                }
+                
             }
         case types.AUTH_TOKEN: 
             let payload: object = {};

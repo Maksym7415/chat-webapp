@@ -1,4 +1,5 @@
 import { AuthActionsInterface, SignUpBody } from './interfaces';
+import { AuthReducerKeyType } from '../reducer/types';
 import * as types from './types';
 
 export const actionLogin = (login: object): AuthActionsInterface => ({
@@ -11,16 +12,16 @@ export const actionSignUp = (params: SignUpBody): AuthActionsInterface => ({
     params
 });
 
-export const requestSuccess = (payload: object, name: string): AuthActionsInterface => ({
+export const requestSuccess = (payload: object, name: AuthReducerKeyType): AuthActionsInterface => ({
     type: types.AUTH_SUCCESS,
     payload,
     name
 });
 
-export const requestFail = (payload: object, name: string): AuthActionsInterface => ({
+export const requestFail = (payload: object, name: AuthReducerKeyType): AuthActionsInterface => ({
     type: types.AUTH_FAIL,
     payload,
-    name
+    name,
 });
 
 export const actionToken = (token: string): AuthActionsInterface => ({

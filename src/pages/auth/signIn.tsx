@@ -63,6 +63,7 @@ const SignInPage = ({handleSubmit}: InjectedFormProps) => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSubmit(submit)}
           >
             Sign In
           </Button>

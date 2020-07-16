@@ -10,12 +10,13 @@ export function* loginWatcher() {
   yield takeEvery(AUTH_LOGIN, loginWorker)
 };
 
-function* loginWorker(action: LoginAction) {
+function* loginWorker({login}: LoginAction) {
   try {
-    const response = yield call(axios.post, 'http://localhost:8081/api/signIn', {login: action.login});
-    yield put(requestSuccess({status: response.status}, 'login'));
+    const response = yield call(axios.post, 'http://localhost:8081/api/signIn', {...login});
+    console.log(response);
+    yield put(requestSuccess({status: true}, 'login'));
   } catch(error) {
-    console.log(error.response)
-    yield put(requestFail(error, 'login'))
+    console.log(error);
+    yield put(requestFail({error}, 'login'));
   }
 }

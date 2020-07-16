@@ -11,9 +11,9 @@ function* signUpWatcher() {
 function* signUpWorker(action: SignUpAction) {
     try {
         const response = yield call(axios.post, '/http://localhost:8081/api/signIn', action.params);
+        console.log(response);
         yield put(requestSuccess({response}, 'signUp'));
     } catch (error) {
         yield put(requestFail({response: error.response}, 'signUp'));
     }
-    
 }

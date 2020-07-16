@@ -1,5 +1,5 @@
 import * as types from './types';
-// import { Login } from '../../../../pages/auth/interfaces';
+import { AuthReducerKeyType } from '../reducer/types';
 
 export interface SignUpBody {
 	firstName: string
@@ -20,13 +20,13 @@ export interface SignUpAction {
 interface AuthSuccess {
 	type: typeof types.AUTH_SUCCESS
 	payload: object
-	name: string
+	name: AuthReducerKeyType
 }
 
 interface AuthFail {
 	type: typeof types.AUTH_FAIL
 	payload: object
-	name: string
+	name: AuthReducerKeyType;
 }
 
 interface Token {

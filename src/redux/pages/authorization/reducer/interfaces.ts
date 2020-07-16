@@ -1,4 +1,4 @@
-import { Login } from '../../../../pages/auth/interfaces';
+import { Login, SignUp } from '../../../../pages/auth/interfaces';
 
 interface Token {
     accessToken: string
@@ -6,7 +6,7 @@ interface Token {
 }
 
 export interface AuthReducerInterface {
-    login: Login   
-    signUp: object | null
+    login: Login
+    signUp: SignUp
     token: Token | null
 }

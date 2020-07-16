@@ -1,26 +1,31 @@
 //temporary
 export interface Login {
-    success: object
-    error: object | null
+    success: LoginSuccess
+    error: ErrorResponse
 }
 
-// export interface Login {
-//     success: Login_Success
-//     error: Error
-// }
+export interface SignUp {
+    success: SignUpSuccess
+    error: ErrorResponse
+}
 
-// export interface SignUp {
-//     success: SignUp_Success
-//     error: Error
-// }
+interface LoginSuccess {
+    status: boolean
+}
 
-// interface SimpleError {
+interface SignUpSuccess {
+    email: string
+}
 
-// }
+interface SimpleErrorResponse {
+    code: number
+    message: string
+}
 
-// interface ComplexError {
-    
-// }
+interface ComplexErrorResponse {
+    code: number
+    message: string
+    details: SimpleErrorResponse[]
+}
 
-// export type Error = SimpleError | ComplexError;
-
+export type ErrorResponse = SimpleErrorResponse | ComplexErrorResponse | null;

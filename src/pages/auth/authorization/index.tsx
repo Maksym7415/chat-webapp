@@ -8,10 +8,9 @@ import { Button } from '@material-ui/core';
 const Auth = () => {
     const dispatch = useDispatch();
 
-    const loginData: Login = useSelector(({authReducer}: RootState) => authReducer.login);
-    console.log(loginData);
+    const loginData: Login = useSelector(({ authReducer }: RootState) => authReducer.login);
     useEffect(() => {
-        dispatch(actionLogin({login: 'popovmaksim7415@gmail.com'}));
+        dispatch(actionLogin({ login: 'popovmaksim7415@gmail.com' }));
     }, [dispatch]);
 
     return (

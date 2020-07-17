@@ -1,4 +1,4 @@
-import { AuthActionsInterface, SignUpBody, CheckVerificationCode } from './interfaces';
+import { AuthActionsInterface, SignUpBody, CheckVerificationCode, CheckVerificationCodeBody } from './interfaces';
 import { AuthReducerKeyType } from '../reducer/types';
 import * as types from './types';
 
@@ -12,7 +12,7 @@ export const actionSignUp = (params: SignUpBody): AuthActionsInterface => ({
     params
 });
 
-export const actionCheckVerificationCode = (params: CheckVerificationCode) => ({
+export const actionCheckVerificationCode = (params: CheckVerificationCodeBody) => ({
     type: types.AUTH_VERIFICATION_CODE,
     params
 })

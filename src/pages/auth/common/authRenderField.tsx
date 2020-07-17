@@ -2,24 +2,9 @@ import React from 'react';
 import {
     TextField,
 } from '@material-ui/core';
+import { IPropsRenderField } from './authInterfaces'
 
-interface Meta{
-    touched: boolean,
-    error: string,
-    invalid: boolean
-}
-
-interface RenderField{
-    input: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    meta: Meta,
-    label: string,
-    type: string,
-    placeholder: string,
-    value: string,
-    variant: 'outlined'
-}
-
-export const AuthRenderField = ({input, meta: {touched, error, invalid  }, label, placeholder, variant} : RenderField) => 
+export const AuthRenderField = ({input, meta: {touched, error, invalid  }, label, placeholder, variant} : IPropsRenderField) => 
      ( 
         <TextField
             label={label}

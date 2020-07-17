@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 
 let theme = createMuiTheme({
   overrides: {
@@ -14,7 +15,15 @@ let theme = createMuiTheme({
       root: {
         textTransform: 'none',
       },
+      label: {
+        color: '#fff'
+      }
     },
+    MuiTypography: {
+      root: {
+        color: '#64c8bc'
+      }
+    }
   },
   palette: {
     primary: {

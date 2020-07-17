@@ -13,7 +13,8 @@ export const validate = (values: DynamicValue) => {
   console.log(values)
   const requiredFields = [
     'login',
-    'verificationCode'
+    'verificationCode',
+    'firstName'
   ]
   requiredFields.forEach((field) => {
     if (!values[field]) {

@@ -6,19 +6,19 @@ interface IFields {
     required: boolean
 }
 
-interface Meta{
+interface Meta {
     touched: boolean,
     error: string,
     invalid: boolean
 }
 
-interface State{
+interface State {
     login: string
 }
 
-interface Location{
+interface Location {
     state: State
-} 
+}
 
 interface IPropsSignInPage {
     history: {
@@ -34,7 +34,7 @@ interface IPropsVerificationPage {
 
 export type IPropsPages = IPropsSignInPage & IPropsVerificationPage
 
-export interface IPropsRenderField{
+export interface IPropsRenderField {
     input: (e: React.ChangeEvent<HTMLInputElement>) => void,
     meta: Meta,
     label: string,
@@ -46,12 +46,13 @@ export interface IPropsRenderField{
 }
 
 export interface IPropsForm {
-    config: {
-        [key: string]: IFields[]
-    }
     pageName: string
     icon: {}
     formTitle: string
     submitBtnTitle: string
     callBack: (e: any) => void
+}
+
+export interface IFIeldRenderConfig {
+    [key: string]: IFields[]
 }

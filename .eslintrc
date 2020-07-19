@@ -1,38 +1,48 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint",  "prettier"],
-    "extends": [
-        "airbnb-typescript/base",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-        "prettier",
-        "prettier/@typescript-eslint"
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "airbnb-typescript/base"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "useJSXTextNode": true,
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "linebreak-style": "off",
+    "import/prefer-default-export": "off",
+    "no-class-assign": "off",
+    "no-shadow": "off",
+    "max-len": [
+      "error",
+      200
     ],
-    "parserOptions": {
-      "sourceType": "module",
-      "useJSXTextNode": true,
-      "project": "./tsconfig.json"
-    },
-    "env": {
-        "es6": true,
-        "browser": true,
-        "node": true
-      },
-    "rules": {
-      "linebreak-style": "off",
-      "import/prefer-default-export": "off",
-      "no-class-assign": "off",
-      "no-shadow": "off",
-      "max-len": [
-          "error",
-          200
-      ],
-      "no-func-assign": "off",
-      "consistent-return": "off",
-      "react-hooks/exhaustive-deps": "off",
-      "no-nested-ternary": "off",
-      "prefer-const": "off",
-      "camelcase": "off",
-      "import/no-unresolved": "off"
-    }
+    "no-func-assign": "off",
+    "consistent-return": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-nested-ternary": "off",
+    "prefer-const": "off",
+    "camelcase": "off",
+    "import/no-unresolved": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "import/extensions": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/indent": [
+      "error"
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off"
   }
+}

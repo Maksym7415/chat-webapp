@@ -8,7 +8,12 @@ let theme = createMuiTheme({
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: '#feffff',
-        color: '#758095',
+        color: '#64c8bc',
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: '#64c8bc',
       },
     },
     MuiButton: {
@@ -16,14 +21,20 @@ let theme = createMuiTheme({
         textTransform: 'none',
       },
       label: {
-        color: '#fff'
-      }
+        color: '#fff',
+      },
     },
     MuiTypography: {
       root: {
-        color: '#64c8bc'
-      }
-    }
+        color: '#0000007a',
+      },
+    },
+    MuiBadge: {
+      colorSecondary: {
+        backgroundColor: '#ef2f8bf5',
+        color: '#ffffff',
+      },
+    },
   },
   palette: {
     primary: {
@@ -32,6 +43,9 @@ let theme = createMuiTheme({
     secondary: {
       main: '#feffff',
     },
+  },
+  shape: {
+    borderRadius: 6,
   },
 });
 theme = responsiveFontSizes(theme);

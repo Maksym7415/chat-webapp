@@ -128,26 +128,3 @@ export default makeStyles((theme) => ({
     margin: theme.spacing(2),
   },
 }));
-
-{ /* <InputBase
-                tabIndex={2}
-                ref={ref}
-                name='search'
-                fullWidth
-                placeholder="Search…"
-                value={value}
-                onChange={handlerSearch}
-                onBlur={(e) => {
-                  if (ref.current && ref.current.className.slice(0, 8) === 'MuiPaper' && reactSearch.length) return setHide(false);
-                  setHide(true);
-                  return blur(e);
-                }}
-                onFocus={() => {
-                  if (ref.current && ref.current.className.slice(0, 8) === 'MuiPaper' && reactSearch.length) return setHide(false);
-                }}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              /> */ }

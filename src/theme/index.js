@@ -24,6 +24,18 @@ let theme = createMuiTheme({
         color: '#fff',
       },
     },
+    MuiIconButton: {
+      label: {
+        width: '30px',
+        height: '30px',
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        width: '30px',
+        height: '30px',
+      },
+    },
     MuiTypography: {
       root: {
         color: '#0000007a',

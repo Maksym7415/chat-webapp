@@ -1,65 +1,77 @@
-import { AuthReducerInterface } from './interfaces';
 import jwtDecode from 'jwt-decode';
+import { AuthReducerInterface } from './interfaces';
 import { AuthActionsInterface } from '../constants/interfaces';
 import * as types from '../constants/types';
 
 const initialState: AuthReducerInterface = {
-    login: {
-        success: {
-            status: false
-        },
-        error: null
+  login: {
+    success: {
+      status: false,
     },
-    signUp: {
-        success: {
-            email: ''
-        },
-        error: null
+    error: null,
+  },
+  signUp: {
+    success: {
+      email: '',
     },
-    verification: {
-        success: {
-           accessToken: '',
-           refreshToken: ''
-        },
-        error: null
+    error: null,
+  },
+  verification: {
+    success: {
+      accessToken: '',
+      refreshToken: '',
     },
-    tokenPayload: {}, 
-    
+    error: null,
+  },
+  tokenPayload: {},
+  logout: {
+    isLogout: false,
+  },
+
 };
 
 const authReducer = (state = initialState, action: AuthActionsInterface): AuthReducerInterface => {
-    switch(action.type) {
-        case types.AUTH_SUCCESS:
-            return {
-                ...state,
-                [action.name]: {
-                    success: action.payload,
-                    error: null
-                }
-            }
-        case types.AUTH_FAIL:
-            return {
-                ...state,
-                [action.name]: {
-                    ...initialState[action.name],
-                    error: action.payload
-                }
-                
-            }
-        case types.AUTH_TOKEN: 
-            let payload: object = {};
-                try {
-                    payload = jwtDecode(action.token);
-                } catch (e) {
-                    console.log(e);
-                }
-            return {
-                ...state,
-                tokenPayload: payload
-            }
-        default:
-            return initialState
-    }
+  switch (action.type) {
+    case types.AUTH_SUCCESS:
+      return {
+        ...state,
+        [action.name]: {
+          success: action.payload,
+          error: null,
+        },
+      };
+    case types.AUTH_FAIL:
+      return {
+        ...state,
+        [action.name]: {
+          ...initialState[action.name],
+          error: action.payload,
+        },
+
+      };
+    case types.AUTH_TOKEN:
+      let payload: object = {};
+      try {
+        payload = jwtDecode(action.token);
+      } catch (e) {
+        console.log(e);
+      }
+      return {
+        ...state,
+        tokenPayload: payload,
+      };
+    case types.AUTH_LOGOUT:
+      localStorage.removeItem('accessToken');
+      return {
+        ...state,
+        logout: {
+          isLogout: true,
+        },
+      };
+
+    default:
+      return initialState;
+  }
 };
 
 export default authReducer;

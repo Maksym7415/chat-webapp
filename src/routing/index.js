@@ -9,9 +9,26 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 import routerConfig from './config/routerConfig';
 
-const renderRoutesByUserRoles = (path, component, id, componentRoles, userRoles) => {
-  if (componentRoles.map((el) => userRoles.includes(el)).includes(true)) return <Route path = {path} exact component = {component} key={id}/>;
-  return <Redirect to='/'/>;
+const setConfiguration = () => {
+  const userRoles = ['admin'];
+  const config = routerConfig.filter((el) => el.security === true);
+  let newConfig = [...config];
+  const childs = config[0].childrens.map((el) => el);
+  const roles = [];
+  Object.keys(newConfig[0].roles).map((el) => newConfig[0].roles[el].map((item) => {
+    if (userRoles.includes(item)) return roles.push(el);
+  }));
+  console.log(roles);
+  roles.map((item, i) => {
+    if (newConfig[0].childrens.map((el) => el.path !== item.path)) {
+      console.log(item);
+      newConfig = [{ ...newConfig[0], childrens: newConfig[0].childrens.filter((f) => f.path === item) }];
+      return newConfig;
+    }
+    newConfig = [{ ...newConfig[0], childrens: config[0].childrens }];
+    return newConfig;
+  });
+  return newConfig;
 };
 
 function Router(props) {
@@ -22,7 +39,7 @@ function Router(props) {
 
   useEffect(() => {
     if (localStorage.getItem('accessToken')) {
-      return setConfig((item) => routerConfig.filter((el) => el.security === true));
+      return setConfig(setConfiguration(config));
     }
     setConfig((item) => routerConfig.filter((el) => el.security === false));
   }, [authToken, isLogout]);
@@ -35,27 +52,15 @@ function Router(props) {
           {config && <Switch>
             {
                config.map(({
-                 component,
-                 security,
                  childrens,
                  Component,
-                 path,
                  id,
                  roles,
-               }) => {
-                 if (!security) {
-                   return (
-                    <Route path = {path} exact component = {component} key={id} security={security}/>
-                   );
-                 }
-                 return (
-                   Object.keys(roles).includes(pathname) && <Component key={id}>
+               }) => Object.keys(roles).includes(pathname) && <Component key={id}>
                      {childrens.map(({
                        path, component, id,
-                     }) => renderRoutesByUserRoles(path, component, id, roles[pathname], ['admin']))}
-                   </Component>
-                 );
-               })
+                     }) => <Route path = {path} exact component = {component} key={id}/>)}
+                   </Component>)
             }
             <Route component = {() => <div>404</div>} />
           </Switch>}

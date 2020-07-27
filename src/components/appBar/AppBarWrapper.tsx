@@ -174,6 +174,7 @@ export default function MiniDrawer(props: IProps) {
 
   return (
     <div className={classes.root}>
+      {console.log(props.children)}
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {

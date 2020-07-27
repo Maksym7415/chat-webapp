@@ -2,6 +2,7 @@ import SignInPage from '../../pages/auth/authorization/login';
 import SignUpPage from '../../pages/auth/registration';
 import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
+import AppBarWrapper from '../../components/appBar/AppBarWrapper';
 
 export default [
   {
@@ -24,8 +25,31 @@ export default [
   },
   {
     id: 4,
-    component: MainScreen,
-    path: '/',
+    Component: AppBarWrapper,
+    roles: {
+      '/': [
+        'admin',
+        'user',
+      ],
+      '/profile': [
+        'admin',
+        'txl',
+      ],
+    },
+    childrens: [
+      {
+        id: 5,
+        component: MainScreen,
+        path: '/',
+
+      },
+      {
+        id: 6,
+        component: SignUpPage,
+        path: '/profile',
+
+      },
+    ],
     security: true,
   },
 

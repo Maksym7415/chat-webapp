@@ -25,9 +25,9 @@ export default function BasicTextFields({ history: { push } }: IProps) {
 
   return (
     <div className={classes.skeleton}>
-      <button onClick = { async () => {
+      <button onClick={async () => {
         dispatch(actionLogout());
-        return push('/signIn');
+        return push('/verification');
       }}>Выход</button>
       <OverviewPartSkeleton />
       <ChatWindowSkeleton />

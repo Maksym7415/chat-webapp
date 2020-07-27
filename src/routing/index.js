@@ -1,56 +1,64 @@
-import React, { Fragment, useCallback } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import React, { Fragment, useEffect, useState } from 'react';
+import {
+  Switch, Route, useLocation, Redirect,
+} from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
-import SignInPage from '../pages/auth/authorization/login';
-import SignUpPage from '../pages/auth/registration';
-import VerificationPage from '../pages/auth/verification';
-import AppBarWrapper from '../components/appBar/AppBarWrapper';
-import MainScreen from '../pages/mainScreen';
-
 import routerConfig from './config/routerConfig';
 
-function Router() {
+const renderRoutesByUserRoles = (path, component, id, componentRoles, userRoles) => {
+  if (componentRoles.map((el) => userRoles.includes(el)).includes(true)) return <Route path = {path} exact component = {component} key={id}/>;
+  return <Redirect to='/'/>;
+};
+
+function Router(props) {
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
   const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
-  const [config, setConfig] = React.useState([]);
+  const { pathname } = useLocation();
+  const [config, setConfig] = useState(null);
 
-  React.useEffect(() => {
-    console.log(localStorage.getItem('accessToken'));
+  useEffect(() => {
     if (localStorage.getItem('accessToken')) {
       return setConfig((item) => routerConfig.filter((el) => el.security === true));
     }
     setConfig((item) => routerConfig.filter((el) => el.security === false));
   }, [authToken, isLogout]);
-
+  const arr = [];
   return (
     <Fragment>
       <Theme>
         <CssBaseline />
-          <Switch>
-        {console.log({ config, isLogout })}
-
+        {console.log(config)}
+          {config && <Switch>
             {
-              config.map((route) => {
-                if (!route.security) {
-                  return (
-                    <Route path = {route.path} exact component = {route.component} key={route.id}/>
-                  );
-                }
-                return (
-                    <Route path = {route.path} exact component = {route.component} />
-                );
-              })
+               config.map(({
+                 component,
+                 security,
+                 childrens,
+                 Component,
+                 path,
+                 id,
+                 roles,
+               }) => {
+                 if (!security) {
+                   return (
+                    <Route path = {path} exact component = {component} key={id} security={security}/>
+                   );
+                 }
+                 return (
+                   Object.keys(roles).includes(pathname) && <Component key={id}>
+                     {childrens.map(({
+                       path, component, id,
+                     }) => renderRoutesByUserRoles(path, component, id, roles[pathname], ['admin']))}
+                   </Component>
+                 );
+               })
             }
             <Route component = {() => <div>404</div>} />
-            {/* <Route component = {SignInPage} exact path = '/signin'/>
-            <Route component = {SignUpPage} exact path = '/signup'/>
-            <Route component = {VerificationPage} exact path = '/verification'/>
-            <AppBarWrapper>
-              <Route component = {MainScreen} exact path = '/'/>
-            </AppBarWrapper> */}
-          </Switch>
+          </Switch>}
       </Theme>
     </Fragment>
   );

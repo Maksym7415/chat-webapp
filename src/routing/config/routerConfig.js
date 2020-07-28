@@ -9,8 +9,8 @@ export default [
   {
     id: 1,
     childrenPath: [
-      '/signin',
-      '/signup',
+      '/signIn',
+      '/signUp',
       '/verification',
     ],
     Component: PublicPage,
@@ -18,13 +18,13 @@ export default [
       {
         id: 2,
         component: SignInPage,
-        path: '/signin',
+        path: '/signIn',
 
       },
       {
         id: 3,
         component: SignUpPage,
-        path: '/signup',
+        path: '/signUp',
 
       },
       {

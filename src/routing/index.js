@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { Fragment, useEffect, useState } from 'react';
 import {
-  Switch, Route, useLocation, Redirect,
+  Switch, Route, useLocation,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -37,11 +37,12 @@ function Router(props) {
     }
     setConfig((item) => routerConfig.filter((el) => el.security === false));
   }, [authToken, isLogout]);
-  const arr = [];
+
   return (
     <Fragment>
       <Theme>
         <CssBaseline />
+        {console.log(config)}
           {config && <Switch>
             {
                config.map(({

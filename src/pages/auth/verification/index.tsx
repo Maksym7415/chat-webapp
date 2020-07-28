@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import AuthForm from '../common/authForm';
-import { actionCheckVerificationCode } from '../../../redux/pages/authorization/constants/actionConstatns';
+import { actionCheckVerificationCode, actionToken } from '../../../redux/pages/authorization/constants/actionConstatns';
+
 import { IPropsPages } from '../common/authInterfaces';
 import { RootState } from '../../../redux/reducer';
 
-interface Responce {
+interface Response {
   success: {
     accessToken: string
   },
@@ -15,15 +16,19 @@ interface Responce {
 
 export default function ({ history: { push, location: { state } } }: IPropsPages) {
   const dispatch = useDispatch();
-  const responce: Responce = useSelector(({ authReducer }: RootState) => authReducer.verification);
+  const response: Response = useSelector(({ authReducer }: RootState) => authReducer.verification);
 
   const submit = (value: any): void => {
-    dispatch(actionCheckVerificationCode({ ...value, login: state.login }));
+    dispatch(actionCheckVerificationCode({ ...value, login: 'popovmaksim7415@gmail.com' }));
   };
 
   useEffect(() => {
-    if (responce.success.accessToken && !responce.error) push('/', {});
-  }, [responce]);
+    if (response.success.accessToken && !response.error) {
+      localStorage.setItem('accessToken', response.success.accessToken);
+      dispatch(actionToken(response.success.accessToken));
+      push('/', {});
+    }
+  }, [response]);
 
   return (
         <>

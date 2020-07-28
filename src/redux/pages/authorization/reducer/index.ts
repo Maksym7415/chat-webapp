@@ -24,6 +24,9 @@ const initialState: AuthReducerInterface = {
     error: null,
   },
   tokenPayload: {},
+  logout: {
+    isLogout: false,
+  },
 
 };
 
@@ -57,6 +60,15 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
         ...state,
         tokenPayload: payload,
       };
+    case types.AUTH_LOGOUT:
+      localStorage.removeItem('accessToken');
+      return {
+        ...state,
+        logout: {
+          isLogout: true,
+        },
+      };
+
     default:
       return initialState;
   }

@@ -9,26 +9,20 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 import routerConfig from './config/routerConfig';
 
-const setConfiguration = () => {
+const setRouteConfiguration = () => {
   const userRoles = ['admin'];
   const config = routerConfig.filter((el) => el.security === true);
   let newConfig = [...config];
-  const childs = config[0].childrens.map((el) => el);
-  const roles = [];
-  Object.keys(newConfig[0].roles).map((el) => newConfig[0].roles[el].map((item) => {
-    if (userRoles.includes(item)) return roles.push(el);
-  }));
-  console.log(roles);
-  roles.map((item, i) => {
-    if (newConfig[0].childrens.map((el) => el.path !== item.path)) {
-      console.log(item);
-      newConfig = [{ ...newConfig[0], childrens: newConfig[0].childrens.filter((f) => f.path === item) }];
-      return newConfig;
+  let childrens = [];
+  let childrenPath = [];
+  newConfig[0].childrens.map((route) => route.roles.map((userRole) => {
+    if (userRoles.includes(userRole)) {
+      childrens = [...childrens, route];
+      childrenPath = [...childrenPath, route.path];
     }
-    newConfig = [{ ...newConfig[0], childrens: config[0].childrens }];
-    return newConfig;
-  });
-  return newConfig;
+  }));
+
+  return [{ ...newConfig[0], childrens, childrenPath }];
 };
 
 function Router(props) {
@@ -39,7 +33,7 @@ function Router(props) {
 
   useEffect(() => {
     if (localStorage.getItem('accessToken')) {
-      return setConfig(setConfiguration(config));
+      return setConfig(setRouteConfiguration());
     }
     setConfig((item) => routerConfig.filter((el) => el.security === false));
   }, [authToken, isLogout]);
@@ -48,15 +42,15 @@ function Router(props) {
     <Fragment>
       <Theme>
         <CssBaseline />
-        {console.log(config)}
           {config && <Switch>
             {
                config.map(({
+                 childrenPath,
                  childrens,
                  Component,
                  id,
-                 roles,
-               }) => Object.keys(roles).includes(pathname) && <Component key={id}>
+               }) => childrenPath.includes(pathname)
+                && <Component key={id}>
                      {childrens.map(({
                        path, component, id,
                      }) => <Route path = {path} exact component = {component} key={id}/>)}

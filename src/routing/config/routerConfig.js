@@ -8,11 +8,11 @@ import PublicPage from '../../pages/publicPage';
 export default [
   {
     id: 1,
-    roles: {
-      '/signin': null,
-      '/signup': null,
-      '/verification': null,
-    },
+    childrenPath: [
+      '/signin',
+      '/signup',
+      '/verification',
+    ],
     Component: PublicPage,
     childrens: [
       {
@@ -39,28 +39,28 @@ export default [
   {
     id: 5,
     Component: PrivatePage,
-    roles: {
-      '/': [
-        'admin',
-        'user',
-      ],
-      '/profile': [
-        'admin',
-        'txl',
-      ],
-    },
+    childrenPath: [
+      '/',
+      '/profile',
+    ],
     childrens: [
       {
         id: 6,
         component: MainScreen,
         path: '/',
-
+        roles: [
+          'admin',
+          'user',
+        ],
       },
       {
         id: 7,
         component: SignUpPage,
         path: '/profile',
-
+        roles: [
+          'admin',
+          'superadmin',
+        ],
       },
     ],
     security: true,

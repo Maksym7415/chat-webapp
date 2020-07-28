@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 
+import setAxios from '../axios.config';
 import routerConfig from './config/routerConfig';
 
 const setRouteConfiguration = () => {
@@ -38,6 +39,10 @@ function Router(props) {
     }
     setConfig((item) => routerConfig.filter((el) => el.security === false));
   }, [authToken, isLogout]);
+
+  useEffect(() => {
+    setAxios();
+  }, []);
 
   return (
     <Fragment>

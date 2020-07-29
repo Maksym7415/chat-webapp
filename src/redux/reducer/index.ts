@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import authReducer from '../pages/authorization/reducer';
 import { reducer as formReducer } from 'redux-form';
+import authReducer from '../pages/authorization/reducer';
+import userConversationHistoryReducer from '../pages/conversations/reducer';
 
 export const rootReducer = combineReducers({
   authReducer,
-  form: formReducer
+  userConversationHistoryReducer,
+  form: formReducer,
 });
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;

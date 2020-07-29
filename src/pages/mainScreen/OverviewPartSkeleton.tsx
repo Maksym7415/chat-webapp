@@ -1,11 +1,11 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Typography from '@material-ui/core/Typography';
+import { Typography, Grid } from '@material-ui/core';
 
 export default () => (
-    <div style={{ width: '30%' }}>
+    <Grid item xs={4} >
         {[1, 2, 3, 4, 5].map((element) => <Typography component="div" key={element} variant={'h1'} >
             <Skeleton />
         </Typography>)}
-    </div>
+    </Grid>
 );

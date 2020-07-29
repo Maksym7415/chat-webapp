@@ -22,8 +22,14 @@ export interface UserConversationHistoryActionRequest {
 
 export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail;
 
+interface Messages {
+  message: string
+  fkSenderId: number
+  sendDate: string
+}
+
 interface UserHistoryConversationSuccess {
-  data: Array<object>
+  data: Array<Messages>
   pagination: {
     allItems: number
     currentPage: number

@@ -12,11 +12,10 @@ export function* userConversationWatcher() {
 
 function* loginWorker({ payload }: UserConversationHistoryActionRequest) {
   try {
-    const response = yield call(axios.get, `http://localhost:8081/api/conversationHistory/${payload}`);
-    console.log(response);
-    yield put(conversationActionSuccess({}, 'login'));
+    const { data } = yield call(axios.get, `conversationHistory/${payload}`);
+    yield put(conversationActionSuccess(data, 'userHistoryConversation'));
   } catch (error) {
     console.log(error);
-    yield put(conversationActionFail({ error }, 'login'));
+    yield put(conversationActionFail({ error }, 'userHistoryConversation'));
   }
 }

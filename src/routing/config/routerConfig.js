@@ -1,4 +1,4 @@
-import SignInPage from '../../pages/auth/authorization/login';
+import SignInPage from '../../pages/auth/authorization';
 import SignUpPage from '../../pages/auth/registration';
 import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
@@ -38,11 +38,11 @@ export default [
   },
   {
     id: 5,
-    Component: PrivatePage,
     childrenPath: [
       '/',
       '/profile',
     ],
+    Component: PrivatePage,
     childrens: [
       {
         id: 6,

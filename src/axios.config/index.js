@@ -56,6 +56,7 @@ const LocalStorageService = (() => {
     clearToken: _clearToken,
   };
 })();
+
 const setAxios = () => {
   const setDeafults = (() => {
     axios.defaults.baseURL = 'http://localhost:8081/api';

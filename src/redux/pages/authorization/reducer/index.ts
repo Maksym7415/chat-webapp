@@ -62,6 +62,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
       };
     case types.AUTH_LOGOUT:
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       return {
         ...state,
         logout: {

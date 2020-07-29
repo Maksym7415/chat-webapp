@@ -4,8 +4,9 @@ import { TextField, Grid } from '@material-ui/core/';
 import { useDispatch } from 'react-redux';
 import OverviewPartSkeleton from './OverviewPartSkeleton';
 import ChatWindowSkeleton from './ChatWindowSkeleton';
-import UserConversationHistoryPage from './UserConversationHistoryPage';
+import UserConversationHistoryPage from './conversationsPages/UserConversationHistoryPage';
 import { actionLogout } from '../../redux/pages/authorization/constants/actionConstatns';
+import ConversationProfile from './conversationsPages/ConversationProfile';
 
 const useStyles = makeStyles((theme) => ({
   skeleton: {
@@ -33,6 +34,7 @@ export default function BasicTextFields({ history: { push } }: IProps) {
       <OverviewPartSkeleton />
       {/* <ChatWindowSkeleton /> */}
       <UserConversationHistoryPage/>
+      <ConversationProfile/>
     </Grid>
   );
 }

@@ -18,3 +18,8 @@ export const conversationUserHistoryActionRequest = (payload: number): UserConve
   type: types.CONVERSATION_USER_HISTORY_CONVERSATION,
   payload,
 });
+
+export const getUserConversationsActionRequest = (payload: number): UserConversationHistoryActionRequest => ({
+  type: types.CONVERSATIONS_USER_CONVERSATIONS,
+  payload,
+});

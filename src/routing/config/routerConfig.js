@@ -12,9 +12,10 @@ export default [
       '/signIn',
       '/signUp',
       '/verification',
+      '/',
     ],
-    Component: PublicPage,
-    childrens: [
+    Wrapper: PublicPage,
+    children: [
       {
         id: 2,
         component: SignInPage,
@@ -38,12 +39,12 @@ export default [
   },
   {
     id: 5,
-    Component: PrivatePage,
+    Wrapper: PrivatePage,
     childrenPath: [
       '/',
       '/profile',
     ],
-    childrens: [
+    children: [
       {
         id: 6,
         component: MainScreen,

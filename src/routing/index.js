@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { Fragment, useEffect, useState } from 'react';
 import {
-  Switch, Route, useLocation,
+  Switch, Route, useLocation, Redirect,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,22 +10,7 @@ import Theme from '../theme';
 
 import setAxios from '../axios.config';
 import routerConfig from './config/routerConfig';
-
-const setRouteConfiguration = () => {
-  const userRoles = ['admin'];
-  const config = routerConfig.filter((el) => el.security === true);
-  let newConfig = [...config];
-  let childrens = [];
-  let childrenPath = [];
-  newConfig[0].childrens.map((route) => route.roles.map((userRole) => {
-    if (userRoles.includes(userRole)) {
-      childrens = [...childrens, route];
-      childrenPath = [...childrenPath, route.path];
-    }
-  }));
-
-  return [{ ...newConfig[0], childrens, childrenPath }];
-};
+import setRouterConfig from './config/setConfig';
 
 function Router(props) {
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
@@ -34,10 +19,10 @@ function Router(props) {
   const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      return setConfig(setRouteConfiguration());
+    if (localStorage.accessToken) {
+      return setConfig(setRouterConfig(routerConfig)[0]);
     }
-    setConfig((item) => routerConfig.filter((el) => el.security === false));
+    setConfig((item) => routerConfig.filter((el) => el.security === false)[0]);
   }, [authToken, isLogout]);
 
   useEffect(() => {
@@ -49,18 +34,12 @@ function Router(props) {
       <Theme>
         <CssBaseline />
           {config && <Switch>
-            {
-               config.map(({
-                 childrenPath,
-                 childrens,
-                 Component,
-                 id,
-               }) => childrenPath.includes(pathname)
-                && <Component key={id}>
-                     {childrens.map(({
-                       path, component, id,
-                     }) => <Route path = {path} exact component = {component} key={id}/>)}
-                   </Component>)
+            {config.childrenPath.includes(pathname)
+              && <config.Wrapper>
+                  {config.children.map(({
+                    path, component, id,
+                  }) => (pathname === '/' && !localStorage.accessToken ? <Redirect to='/signIn'/> : <Route path = {path} exact component = {component} key={id}/>))}
+                </config.Wrapper>
             }
             <Route component = {() => <div>404</div>} />
           </Switch>}

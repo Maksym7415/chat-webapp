@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { ConversationReducernterface } from './intefaces';
-import { ConversationActionsType } from '../constants/interfaces';
 import * as types from '../constants/types';
+import { ConversationReducerStateInterface, ConversationActionsType } from '../constants/interfaces';
 
-const initialState: ConversationReducernterface = {
+const initialState: ConversationReducerStateInterface = {
   userHistoryConversation: {
     success: {
       data: [],
@@ -16,7 +15,7 @@ const initialState: ConversationReducernterface = {
   },
 };
 
-const authReducer = (state = initialState, action: ConversationActionsType): ConversationReducernterface => {
+const authReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
   switch (action.type) {
     case types.CONVERSATION_SUCCESS:
       return {
@@ -30,10 +29,8 @@ const authReducer = (state = initialState, action: ConversationActionsType): Con
       return {
         ...state,
         [action.name]: {
-          ...state[action.name],
           error: action.payload,
         },
-
       };
 
     default:

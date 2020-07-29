@@ -1,21 +1,20 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
-import { ConversationActionsType, UserHistoryConversationAction } from './interfaces';
-import { ConversationReducerKeyType } from '../reducer/types';
+import { ConversationActionsType, UserConversationHistoryActionRequest } from './interfaces';
 
-export const requestSuccess = (payload: object, name: ConversationReducerKeyType): ConversationActionsType => ({
+export const conversationActionSuccess = (payload: object, name: string): ConversationActionsType => ({
   type: types.CONVERSATION_SUCCESS,
   payload,
   name,
 });
 
-export const requestFail = (payload: object, name: ConversationReducerKeyType): ConversationActionsType => ({
-  type: types.CONVERSATION_FAIL,
+export const conversationActionFail = (payload: object, name: string): ConversationActionsType => ({
+  type: types.CONVERSATION_SUCCESS,
   payload,
   name,
 });
 
-export const userHistoryConversationAction = (id: number): UserHistoryConversationAction => ({
+export const conversationUserHistoryActionRequest = (payload: number): UserConversationHistoryActionRequest => ({
   type: types.CONVERSATION_USER_HISTORY_CONVERSATION,
-  id,
+  payload,
 });

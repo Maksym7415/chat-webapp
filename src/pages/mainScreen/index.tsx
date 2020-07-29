@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import { useDispatch } from 'react-redux';
 import OverviewPartSkeleton from './OverviewPartSkeleton';
 import ChatWindowSkeleton from './ChatWindowSkeleton';
+import UserConversationHistoryPage from './UserConversationHistoryPage';
 import { actionLogout } from '../../redux/pages/authorization/constants/actionConstatns';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,7 @@ export default function BasicTextFields({ history: { push } }: IProps) {
       }}>Выход</button>
       <OverviewPartSkeleton />
       <ChatWindowSkeleton />
+      <UserConversationHistoryPage/>
     </div>
   );
 }

@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import axios from 'axios';
 import store from '../redux';
-import { actionLogout } from '../redux/pages/authorization/constants/actionConstatns';
+import { actionLogout } from '../redux/authorization/constants/actionConstatns';
 
 let isRefreshing = false;
 let failedQueue = [];

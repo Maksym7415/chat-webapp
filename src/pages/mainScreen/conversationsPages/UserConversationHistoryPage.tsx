@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { conversationUserHistoryActionRequest } from '../../../redux/pages/conversations/constants/actionConstants';
+import { conversationUserHistoryActionRequest } from '../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../redux/reducer';
 import getCorrectDate from '../../../common/getCorrectDateFormat';
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const messageHistory = useSelector(({ userConversationHistoryReducer }: RootState) => userConversationHistoryReducer.userHistoryConversation.success.data);
+  const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
 
   useEffect(() => {
     dispatch(conversationUserHistoryActionRequest(1));

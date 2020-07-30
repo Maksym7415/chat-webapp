@@ -1,4 +1,4 @@
-import { Login, SignUp, Verification } from '../../../../pages/auth/authorization/interfaces';
+import { Login, SignUp, Verification } from '../../../pages/auth/authorization/interfaces';
 
 export interface AuthReducerInterface {
   login: Login

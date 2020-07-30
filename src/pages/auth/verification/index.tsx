@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import AuthForm from '../common/authForm';
-import { actionCheckVerificationCode, actionToken } from '../../../redux/pages/authorization/constants/actionConstatns';
+import { actionCheckVerificationCode, actionToken } from '../../../redux/authorization/constants/actionConstatns';
 
 import { IPropsPages } from '../common/authInterfaces';
 import { RootState } from '../../../redux/reducer';

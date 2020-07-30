@@ -1,9 +1,9 @@
 import { all } from 'redux-saga/effects';
-import { loginWatcher } from '../pages/authorization/sagas/login';
-import { signUpWatcher } from '../pages/authorization/sagas/signup';
-import { verificationCodeWatcher } from '../pages/authorization/sagas/checkVerificationCode';
-import { userConversationWatcher } from '../pages/conversations/sagas/userConversationHistory';
-import { userConversationsListWatcher } from '../pages/conversations/sagas/userConversations';
+import { loginWatcher } from '../authorization/sagas/login';
+import { signUpWatcher } from '../authorization/sagas/signup';
+import { verificationCodeWatcher } from '../authorization/sagas/checkVerificationCode';
+import { userConversationWatcher } from '../conversations/sagas/userConversationHistory';
+import { userConversationsListWatcher } from '../conversations/sagas/userConversationsList';
 
 export default function* rootSaga() {
   yield all([

@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { actionSignUp } from '../../../redux/pages/authorization/constants/actionConstatns'
-import AuthForm from '../common/authForm'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { actionSignUp } from '../../../redux/authorization/constants/actionConstatns';
+import AuthForm from '../common/authForm';
 import { RootState } from '../../../redux/reducer';
-import { IPropsPages } from '../common/authInterfaces'
+import { IPropsPages } from '../common/authInterfaces';
 
 export default function ({ history: { push } }: IPropsPages) {
   const dispatch = useDispatch();
-  const { success: { email: login }, error } = useSelector(({ authReducer }: RootState) => authReducer.signUp)
-  console.log(error)
+  const { success: { email: login }, error } = useSelector(({ authReducer }: RootState) => authReducer.signUp);
+  console.log(error);
   const submit = (value: any): void => {
-    dispatch(actionSignUp(value))
+    dispatch(actionSignUp(value));
   };
 
   useEffect(() => {
-    if (login && !error) push('/verification', { login })
-  }, [error, login])
+    if (login && !error) push('/verification', { login });
+  }, [error, login]);
 
   return (
     <>
@@ -29,5 +29,5 @@ export default function ({ history: { push } }: IPropsPages) {
         callBack={submit}
       />
     </>
-  )
+  );
 }

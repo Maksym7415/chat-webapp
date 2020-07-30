@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { RootState } from '../../../redux/reducer';
 import AuthForm from '../common/authForm';
-import { actionLogin } from '../../../redux/pages/authorization/constants/actionConstatns';
+import { actionLogin } from '../../../redux/authorization/constants/actionConstatns';
 import { IPropsPages } from '../common/authInterfaces';
 import { State, Response } from './interfaces';
 

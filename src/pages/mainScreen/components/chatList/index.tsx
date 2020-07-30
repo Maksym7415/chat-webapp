@@ -1,11 +1,10 @@
 import React from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
 import { Typography, Grid, Avatar } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { UserConversationsSuccess } from '../../redux/pages/conversations/constants/interfaces';
-import { conversationUserHistoryActionRequest } from '../../redux/pages/conversations/constants/actionConstants';
+import { UserConversationsListSuccess } from '../../../../redux/conversations/constants/interfaces';
+import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 
-export default ({ data }: UserConversationsSuccess) => {
+export default ({ data }: UserConversationsListSuccess) => {
   const dispatch = useDispatch();
 
   const handleChangeChat = (id: number) => dispatch(conversationUserHistoryActionRequest(id));
@@ -21,7 +20,6 @@ export default ({ data }: UserConversationsSuccess) => {
                           width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                         }} component="p">{element.message}</Typography>
                     </div>
-                    {/* <Skeleton /> */}
                 </div>
             ))}
         </Grid>

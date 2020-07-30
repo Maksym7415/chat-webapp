@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Grid } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
-import ChatsList from './chatsList';
-import ChatWindowSkeleton from './ChatWindowSkeleton';
+import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './conversationsPages/UserConversationHistoryPage';
 import ConversationProfile from './conversationsPages/ConversationProfile';
-import { getUserConversationsActionRequest } from '../../redux/pages/conversations/constants/actionConstants';
+import { getUserConversationsActionRequest } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 import './styles/index.scss';
 
@@ -26,13 +25,11 @@ interface IProps {
 export default function BasicTextFields({ history: { push } }: IProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const conversationsList = useSelector(({ userConversationHistoryReducer }: RootState) => userConversationHistoryReducer.conversationsList.success.data);
+  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
   }, []);
-
-  console.log(conversationsList);
 
   return (
     <Grid container item xs={12} justify="space-between">

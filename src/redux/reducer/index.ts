@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import authReducer from '../pages/authorization/reducer';
-import userConversationHistoryReducer from '../pages/conversations/reducer';
+import authReducer from '../authorization/reducer';
+import userConversationReducer from '../conversations/reducer';
 
 export const rootReducer = combineReducers({
   authReducer,
-  userConversationHistoryReducer,
+  userConversationReducer,
   form: formReducer,
 });
 

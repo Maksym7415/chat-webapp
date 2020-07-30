@@ -2,6 +2,8 @@ import SignInPage from '../../pages/auth/authorization/login';
 import SignUpPage from '../../pages/auth/registration';
 import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
+import UserConversationHistoryPage from '../../pages/mainScreen/conversationsPages/UserConversationHistoryPage.tsx';
+
 import PrivatePage from '../../components/appBar/AppBarWrapper';
 import PublicPage from '../../pages/publicPage';
 
@@ -43,6 +45,7 @@ export default [
     childrenPath: [
       '/',
       '/profile',
+      // '/chat',
     ],
     children: [
       {
@@ -63,8 +66,15 @@ export default [
           'superadmin',
         ],
       },
+      // {
+      //   id: 8,
+      //   component: UserConversationHistoryPage,
+      //   path: '/chat/:id',
+      //   roles: [
+      //     'admin',
+      //   ],
+      // },
     ],
     security: true,
   },
-
 ];

@@ -8,10 +8,11 @@ export default (routerConfig) => {
     userRoles.map((userRole) => {
       if (userRole === roles) {
         children = [...children, route];
-        childrenPath = [...childrenPath, route.path];
+        // childrenPath = [...childrenPath, route.path];
       }
     });
   }));
 
-  return [{ ...newConfig[0], children, childrenPath }];
+  // return [{ ...newConfig[0], children, childrenPath }];
+  return [{ ...newConfig[0], children }];
 };

@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     right: '0',
     bottom: '0',
-    color: '#0000007a',
+    color: '#e8e8e8',
   },
   messageText: {
-    maxWidth: '85%',
-    color: '#0000007a',
+    maxWidth: '80%',
+    color: '#e8e8e8',
   },
 }));
 

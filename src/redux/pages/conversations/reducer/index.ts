@@ -21,7 +21,8 @@ const initialState: ConversationReducerStateInterface = {
   },
 };
 
-const authReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
+const ConversationsReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
+  console.log(action.type);
   switch (action.type) {
     case types.CONVERSATION_SUCCESS:
       return {
@@ -41,8 +42,8 @@ const authReducer = (state = initialState, action: ConversationActionsType): Con
       };
 
     default:
-      return initialState;
+      return state;
   }
 };
 
-export default authReducer;
+export default ConversationsReducer;

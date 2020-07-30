@@ -3,7 +3,6 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import { CONVERSATIONS_USER_CONVERSATIONS } from '../constants/types';
-import { UserConversationHistoryActionRequest } from '../constants/interfaces';
 import { conversationActionSuccess, conversationActionFail } from '../constants/actionConstants';
 
 export function* userConversationsListWatcher() {

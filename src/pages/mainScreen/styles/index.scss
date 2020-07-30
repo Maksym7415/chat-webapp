@@ -1,0 +1,16 @@
+.chat {
+
+    &__chats-item {
+        border-bottom: 1px solid grey;
+        padding: 5px;
+        align-items: center;
+        cursor: pointer
+    }
+
+    &__chats-item-message-conteiner {
+        width: 250px;
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px
+    }
+}

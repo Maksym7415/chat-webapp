@@ -174,100 +174,101 @@ export default function MiniDrawer(props: IProps) {
 
   return (
     <div className={classes.root}>
-      {console.log(props.children)}
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: openDrawer,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: openDrawer,
-            })}
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => setOpenDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className={classes.searchWrapper}>
-            <div className={classes.search} onBlur={blur}>
-              <div className={classes.searchIcon} >
-                <SearchIcon />
+      <>
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: openDrawer,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: openDrawer,
+              })}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpenDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <div className={classes.searchWrapper}>
+              <div className={classes.search} onBlur={blur}>
+                <div className={classes.searchIcon} >
+                  <SearchIcon />
+                </div>
+                <FormControl fullWidth>
+                  <Input
+                    className={classes.inputRoot}
+                    disableUnderline={true}
+                    ref={ref}
+                    id="standard-adornment-weight"
+                    value={value}
+                    onChange={handlerSearch}
+                    onFocus={() => {
+                      if (reactSearch.length) return setHide(false);
+                    }}
+                    aria-describedby="standard-weight-helper-text"
+                    inputProps={{
+                      'aria-label': 'weight',
+                    }}
+                  />
+                </FormControl>
+                {!!reactSearch.length && <Paper tabIndex={1} elevation={3} className={clsx(classes.reactSearch, {
+                  [classes.hideReactSearch]: hide,
+                })}>
+                  {reactSearch.map((result) => <Paper elevation={2} key={result.title}> <Typography className={classes.searchContent} variant="body1" >{result.title}</Typography></Paper>)}
+                </Paper>}
               </div>
-              <FormControl fullWidth>
-                <Input
-                  className={classes.inputRoot}
-                  disableUnderline={true}
-                  ref={ref}
-                  id="standard-adornment-weight"
-                  value={value}
-                  onChange={handlerSearch}
-                  onFocus={() => {
-                    if (reactSearch.length) return setHide(false);
-                  }}
-                  aria-describedby="standard-weight-helper-text"
-                  inputProps={{
-                    'aria-label': 'weight',
-                  }}
-                />
-              </FormControl>
-              {!!reactSearch.length && <Paper tabIndex={1} elevation={3} className={clsx(classes.reactSearch, {
-                [classes.hideReactSearch]: hide,
-              })}>
-                {reactSearch.map((result) => <Paper elevation={2} key={result.title}> <Typography className={classes.searchContent} variant="body1" >{result.title}</Typography></Paper>)}
-              </Paper>}
             </div>
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={'primary-search-account-menu'}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={'primary-search-mobile-account-menu'}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        openDrawer={openDrawer}
-        setOpenDrawer={setOpenDrawer}
-      />
-      <AppBarMenu
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        mobileMoreAnchorEl={mobileMoreAnchorEl}
-        setMobileMoreAnchorEl={setMobileMoreAnchorEl}
-      />
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <IconButton aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <IconButton aria-label="show 17 new notifications" color="inherit">
+                <Badge badgeContent={17} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={'primary-search-account-menu'}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={'primary-search-mobile-account-menu'}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          openDrawer={openDrawer}
+          setOpenDrawer={setOpenDrawer}
+        />
+        <AppBarMenu
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          mobileMoreAnchorEl={mobileMoreAnchorEl}
+          setMobileMoreAnchorEl={setMobileMoreAnchorEl}
+        />
+      </>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {props.children}

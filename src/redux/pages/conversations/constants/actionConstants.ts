@@ -1,15 +1,17 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
-import { ConversationActionsType, UserConversationHistoryActionRequest } from './interfaces';
+import {
+  ConversationActionsType, UserConversationHistoryActionRequest, UserConversationsActionRequest, ConversationReducerStateType, ConversationReducerPayload,
+} from './interfaces';
+import { ErrorResponse } from '../../../common/interafaces';
 
-export const conversationActionSuccess = (payload: object, name: string): ConversationActionsType => ({
+export const conversationActionSuccess = (payload: ConversationReducerPayload, name: ConversationReducerStateType): ConversationActionsType => ({
   type: types.CONVERSATION_SUCCESS,
   payload,
   name,
 });
 
-export const conversationActionFail = (payload: object, name: string): ConversationActionsType => ({
-  type: types.CONVERSATION_SUCCESS,
+export const conversationActionFail = (payload: ErrorResponse, name: ConversationReducerStateType): ConversationActionsType => ({
+  type: types.CONVERSATION_FAIL,
   payload,
   name,
 });
@@ -19,7 +21,4 @@ export const conversationUserHistoryActionRequest = (payload: number): UserConve
   payload,
 });
 
-export const getUserConversationsActionRequest = (payload: number): UserConversationHistoryActionRequest => ({
-  type: types.CONVERSATIONS_USER_CONVERSATIONS,
-  payload,
-});
+export const getUserConversationsActionRequest = (): UserConversationsActionRequest => ({ type: types.CONVERSATIONS_USER_CONVERSATIONS });

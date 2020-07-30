@@ -7,15 +7,14 @@ import { UserConversationHistoryActionRequest } from '../constants/interfaces';
 import { conversationActionSuccess, conversationActionFail } from '../constants/actionConstants';
 
 export function* userConversationWatcher() {
-  yield takeEvery(CONVERSATION_USER_HISTORY_CONVERSATION, loginWorker);
+  yield takeEvery(CONVERSATION_USER_HISTORY_CONVERSATION, userConversationWorker);
 }
 
-function* loginWorker({ payload }: UserConversationHistoryActionRequest) {
+function* userConversationWorker({ payload }: UserConversationHistoryActionRequest) {
   try {
     const { data } = yield call(axios.get, `conversationHistory/${payload}`);
     yield put(conversationActionSuccess(data, 'userHistoryConversation'));
   } catch (error) {
-    console.log(error);
-    yield put(conversationActionFail({ error }, 'userHistoryConversation'));
+    yield put(conversationActionFail(error.response, 'userHistoryConversation'));
   }
 }

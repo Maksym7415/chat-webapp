@@ -13,6 +13,12 @@ const initialState: ConversationReducerStateInterface = {
     },
     error: null,
   },
+  conversationsList: {
+    success: {
+      data: [],
+    },
+    error: null,
+  },
 };
 
 const authReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
@@ -30,6 +36,7 @@ const authReducer = (state = initialState, action: ConversationActionsType): Con
         ...state,
         [action.name]: {
           error: action.payload,
+          ...initialState[action.name],
         },
       };
 

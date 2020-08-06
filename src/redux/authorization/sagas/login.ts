@@ -4,19 +4,17 @@ import {
 import axios from 'axios';
 import { AUTH_LOGIN } from '../constants/types';
 import { LoginAction } from '../constants/interfaces';
-import { requestSuccess, requestFail } from '../constants/actionConstatns';
+import { requestSuccess, requestFail } from '../constants/actionConstants';
 
 export function* loginWatcher() {
-  yield takeEvery(AUTH_LOGIN, loginWorker)
-};
+  yield takeEvery(AUTH_LOGIN, loginWorker);
+}
 
-function* loginWorker({login}: LoginAction) {
+function* loginWorker({ login }: LoginAction) {
   try {
-    const response = yield call(axios.post, 'http://localhost:8081/api/signIn', {...login});
-    console.log(response);
-    yield put(requestSuccess({status: true}, 'login'));
-  } catch(error) {
-    console.log(error);
-    yield put(requestFail({error}, 'login'));
+    const response = yield call(axios.post, 'http://localhost:8081/api/signIn', { ...login });
+    yield put(requestSuccess(response, 'login'));
+  } catch (error) {
+    yield put(requestFail(error, 'login'));
   }
 }

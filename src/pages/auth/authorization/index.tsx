@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { RootState } from '../../../redux/reducer';
 import AuthForm from '../common/authForm';
-import { actionLogin } from '../../../redux/authorization/constants/actionConstatns';
+import { actionLogin } from '../../../redux/authorization/constants/actionConstants';
 import { IPropsPages } from '../common/authInterfaces';
-import { State, Response } from './interfaces';
+import { State } from './interfaces';
 
 export default function ({ history: { push } }: IPropsPages) {
   const dispatch = useDispatch();
   const [state, setState] = useState<State>({ login: '' });
-  const response: Response = useSelector(({ authReducer }: RootState) => authReducer.login);
+  const response = useSelector(({ authReducer }: RootState) => authReducer.login);
 
   const submit = (value: any): void => {
     setState(value);

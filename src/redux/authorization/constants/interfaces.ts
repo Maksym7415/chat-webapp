@@ -1,5 +1,44 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
-import { AuthReducerKeyType } from '../reducer/types';
+import { ErrorResponse } from '../../common/interafaces';
+
+// COMMON INTERFACES
+
+interface AuthSuccess {
+  type: typeof types.AUTH_SUCCESS
+  payload: PayloadObject
+  name: AuthReducerKeyType
+}
+
+interface AuthFail {
+  type: typeof types.AUTH_FAIL
+  payload: ErrorResponse
+  name: AuthReducerKeyType;
+}
+
+export interface PayloadObject {
+  data: object
+}
+
+export interface AuthReducerInterface {
+  login: Login
+  signUp: SignUp
+  tokenPayload: object
+  logout: {
+    isLogout: boolean
+  }
+  verification: Verification
+}
+
+export type AuthReducerKeyType = keyof AuthReducerInterface;
+
+export type AuthActionsInterface = AuthSuccess | AuthFail | TokenAction | LogoutAction;
+
+// SIGN_UP INTERFACES
+
+interface SignUpSuccess {
+  email: string
+}
 
 export interface SignUpBody {
   firstName: string
@@ -7,9 +46,20 @@ export interface SignUpBody {
   login: string
 }
 
-export interface CheckVerificationCodeBody {
-  verificationCode: string
-  login: string
+export interface SignUp {
+  success: SignUpSuccess
+  error: ErrorResponse
+}
+
+export interface SignUpAction {
+  type: typeof types.AUTH_SIGNUP
+  params: SignUpBody
+}
+
+// SIGN_IN INTERFACES
+
+interface LoginSuccess {
+  status: boolean
 }
 
 export interface LoginAction {
@@ -17,34 +67,42 @@ export interface LoginAction {
   login: object
 }
 
-export interface SignUpAction {
-  type: typeof types.AUTH_SIGNUP
-  params: SignUpBody
+export interface Login {
+  success: LoginSuccess
+  error: ErrorResponse
 }
-export interface CheckVerificationCode {
+
+// VERIFICATION INTERFACES
+
+export interface CheckVerificationCodeBody {
+  verificationCode: string
+  login: string
+}
+
+export interface CheckVerificationCodeAction {
   type: typeof types.AUTH_VERIFICATION_CODE
   params: CheckVerificationCodeBody
 }
 
-interface AuthSuccess {
-  type: typeof types.AUTH_SUCCESS
-  payload: object
-  name: AuthReducerKeyType
+export interface Verification {
+  success: Tokens
+  error: ErrorResponse
 }
 
-interface AuthFail {
-  type: typeof types.AUTH_FAIL
-  payload: object
-  name: AuthReducerKeyType;
+// TOKENS INTERFACES
+
+interface Tokens {
+  accessToken: string
+  refreshToken: string,
 }
 
-interface Token {
+export interface TokenAction {
   type: typeof types.AUTH_TOKEN
   token: string
 }
 
-interface Logout {
+// LOGOUT INTERFACES
+
+export interface LogoutAction {
   type: typeof types.AUTH_LOGOUT
 }
-
-export type AuthActionsInterface = LoginAction | SignUpAction | AuthSuccess | AuthFail | Token | Logout;

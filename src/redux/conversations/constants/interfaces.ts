@@ -63,7 +63,7 @@ export interface UserHistoryConversationSuccess {
   pagination: Pagination
 }
 
-// USER_CONVERSATIONS
+// USER_CONVERSATIONS INTERFACES
 
 interface UserConversationsList {
   success: UserConversationsListSuccess

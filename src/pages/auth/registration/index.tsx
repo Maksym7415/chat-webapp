@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { actionSignUp } from '../../../redux/authorization/constants/actionConstatns';
+import { actionSignUp } from '../../../redux/authorization/constants/actionConstants';
 import AuthForm from '../common/authForm';
 import { RootState } from '../../../redux/reducer';
 import { IPropsPages } from '../common/authInterfaces';

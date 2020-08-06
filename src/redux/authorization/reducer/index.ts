@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
-import { AuthReducerInterface } from './interfaces';
-import { AuthActionsInterface } from '../constants/interfaces';
+import { AuthReducerInterface, AuthActionsInterface } from '../constants/interfaces';
+
 import * as types from '../constants/types';
 
 const initialState: AuthReducerInterface = {
@@ -50,7 +50,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
 
       };
     case types.AUTH_TOKEN:
-      let payload: object = {};
+      let payload = {};
       try {
         payload = jwtDecode(action.token);
       } catch (e) {

@@ -29,21 +29,28 @@ function Router(props) {
     <Fragment>
       <Theme>
         <CssBaseline />
-         {config && <Switch>
-            {config.map(({
-              id, Component, roles, isPrivate, path,
-            }) => <PrivatePage
-                    id={id}
-                    Component={Component}
-                    roles={roles}
-                    isPrivate={isPrivate}
-                    path={path}
-                    exact
-                    key={id}
-                    token={localStorage.accessToken}
-                  />)}
+        {
+          config
+            && (
+              <Switch>
+                {
+                  config.map(({
+                    id, Component, roles, isPrivate, path,
+                  }) => <PrivatePage
+                          id={id}
+                          Component={Component}
+                          roles={roles}
+                          isPrivate={isPrivate}
+                          path={path}
+                          exact
+                          key={id}
+                          token={localStorage.accessToken}
+                        />)
+                  }
                   <Route component = {() => <div>404</div>} />
-          </Switch>}
+              </Switch>
+            )
+          }
       </Theme>
     </Fragment>
   );

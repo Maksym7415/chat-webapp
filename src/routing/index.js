@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { Fragment, useEffect, useState } from 'react';
 import {
-  Switch, Route, useLocation, Redirect,
+  Switch, Route,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,19 +10,15 @@ import Theme from '../theme';
 
 import setAxios from '../axios.config';
 import routerConfig from './config/routerConfig';
-import setRouterConfig from './config/setConfig';
+import PrivatePage from '../components/PrivatePage';
 
 function Router(props) {
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
   const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
-  const { pathname } = useLocation();
   const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    if (localStorage.accessToken) {
-      return setConfig(setRouterConfig(routerConfig)[0]);
-    }
-    setConfig((item) => routerConfig.filter((el) => el.security === false)[0]);
+    setConfig((item) => routerConfig);
   }, [authToken, isLogout]);
 
   useEffect(() => {
@@ -33,15 +29,20 @@ function Router(props) {
     <Fragment>
       <Theme>
         <CssBaseline />
-          {config && <Switch>
-            {config.childrenPath.includes(pathname)
-              && <config.Wrapper>
-                  {config.children.map(({
-                    path, component, id,
-                  }) => (pathname === '/' && !localStorage.accessToken ? <Redirect to='/signIn'/> : <Route path = {path} exact component = {component} key={id}/>))}
-                </config.Wrapper>
-            }
-            <Route component = {() => <div>404</div>} />
+         {config && <Switch>
+            {config.map(({
+              id, Component, roles, isPrivate, path,
+            }) => <PrivatePage
+                    id={id}
+                    Component={Component}
+                    roles={roles}
+                    isPrivate={isPrivate}
+                    path={path}
+                    exact
+                    key={id}
+                    token={localStorage.accessToken}
+                  />)}
+                  <Route component = {() => <div>404</div>} />
           </Switch>}
       </Theme>
     </Fragment>

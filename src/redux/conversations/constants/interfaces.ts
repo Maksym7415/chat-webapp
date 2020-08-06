@@ -78,6 +78,7 @@ interface ConversationsList {
   sendDate: string
   conversationId: number,
   conversationType: string,
+  conversationName: string,
   conversationCreationDate: string
 }
 

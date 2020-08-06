@@ -19,6 +19,11 @@ const initialState: ConversationReducerStateInterface = {
     },
     error: null,
   },
+  conversations: {
+    message: '',
+    id: 0,
+    sendDate: '',
+  },
 };
 
 const ConversationsReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {

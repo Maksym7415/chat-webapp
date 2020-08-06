@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
 import { ErrorResponse } from '../../common/interafaces';
 
@@ -29,12 +30,17 @@ interface PayloadArray {
   data: []
 }
 
+interface PayloadObject {
+  data: {}
+}
+
 export interface ConversationReducerStateInterface {
   userHistoryConversation: UserHistoryConversation
   conversationsList: UserConversationsList
+  conversations: Conversations
 }
 
-export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray;
+export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
@@ -88,4 +94,17 @@ export interface UserConversationsListSuccess {
 
 export interface UserConversationsListActionRequest {
   type: typeof types.CONVERSATIONS_USER_CONVERSATIONS
+}
+
+// LAST CONVERSATION MESSAGE
+
+export interface LastConversationMessageAction {
+  type: typeof types.GET_LAST_CONVERSATION_MESSAGE
+  data: PayloadObject
+}
+
+export interface Conversations {
+  message: string
+  id: number
+  sendDate: string
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Grid } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +9,8 @@ import ConversationProfile from './conversationsPages/ConversationProfile';
 import { getUserConversationsActionRequest } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 import './styles/index.scss';
+
+const socket = io('http://localhost:8081');
 
 const useStyles = makeStyles((theme) => ({
   skeleton: {

@@ -27,6 +27,7 @@ const initialState: ConversationReducerStateInterface = {
   currentChat: {
     id: 0,
   },
+  lastMessages: {},
 };
 
 const ConversationsReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
@@ -58,15 +59,8 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
     case types.CONVERSATIONS_ADD_NEW_MESSAGE: {
       return {
         ...state,
-        userHistoryConversation: {
-          success: {
-            data: [...state.userHistoryConversation.success.data, action.message],
-            pagination: {
-              allItems: 0,
-              currentPage: 0,
-            },
-          },
-          error: null,
+        lastMessages: {
+          [action.id]: action.message,
         },
       };
     }

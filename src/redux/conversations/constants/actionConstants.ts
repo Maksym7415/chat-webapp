@@ -26,9 +26,10 @@ export const lastConversationMessageAction = (data: ConversationReducerPayload):
   data,
 });
 
-export const conversationAddNewMessage = (message: Messages): ConversationAddNewMessageAction => ({
+export const conversationAddNewMessage = (message: Messages, id: number): ConversationAddNewMessageAction => ({
   type: types.CONVERSATIONS_ADD_NEW_MESSAGE,
   message,
+  id,
 });
 
 export const getUserConversationsActionRequest = (): UserConversationsListActionRequest => ({ type: types.CONVERSATIONS_USER_CONVERSATIONS });

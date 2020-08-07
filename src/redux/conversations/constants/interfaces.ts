@@ -39,6 +39,7 @@ export interface ConversationReducerStateInterface {
   conversationsList: UserConversationsList
   conversations: Conversations
   currentChat: CurrentChat
+  lastMessages: object
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
@@ -113,6 +114,7 @@ export interface Conversations {
 export interface ConversationAddNewMessageAction {
   type: typeof types.CONVERSATIONS_ADD_NEW_MESSAGE
   message: Messages
+  id: number
 }
 
 // CURRENT CHAT

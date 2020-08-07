@@ -60,6 +60,7 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
       return {
         ...state,
         lastMessages: {
+          ...state.lastMessages,
           [action.id]: action.message,
         },
       };

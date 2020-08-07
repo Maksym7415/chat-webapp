@@ -39,7 +39,7 @@ export interface ConversationReducerStateInterface {
   conversationsList: UserConversationsList
   conversations: Conversations
   currentChat: CurrentChat
-  lastMessages: object
+  lastMessages: LastMessagesStateKey
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
@@ -99,6 +99,10 @@ export interface UserConversationsListActionRequest {
 }
 
 // LAST CONVERSATION MESSAGE
+
+interface LastMessagesStateKey {
+  [id: string]: Messages
+}
 
 export interface LastConversationMessageAction {
   type: typeof types.GET_LAST_CONVERSATION_MESSAGE

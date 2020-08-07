@@ -39,7 +39,7 @@ export default function BasicTextFields({ history: { push } }: IProps) {
         message,
         fkSenderId: 1,
         sendDate: '1',
-      }, 2)));
+      }, chat.conversationId)));
     });
   }, [conversationsList]);
 

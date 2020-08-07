@@ -2,7 +2,7 @@ import SignInPage from '../../pages/auth/authorization';
 import SignUpPage from '../../pages/auth/registration';
 import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
-import UserConversationHistoryPage from '../../pages/mainScreen/conversationsPages/UserConversationHistoryPage';
+import UserConversationHistoryPage from '../../pages/mainScreen/components/conversationsPages/UserConversationHistoryPage';
 
 export default [
   {

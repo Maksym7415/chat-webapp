@@ -24,10 +24,12 @@ const initialState: ConversationReducerStateInterface = {
     id: 0,
     sendDate: '',
   },
+  currentChat: {
+    id: 0,
+  },
 };
 
 const ConversationsReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
-  console.log(action.type);
   switch (action.type) {
     case types.CONVERSATION_SUCCESS:
       return {
@@ -45,6 +47,29 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
           ...initialState[action.name],
         },
       };
+    case types.CONVERSATION_USER_HISTORY_CONVERSATION: {
+      return {
+        ...state,
+        currentChat: {
+          id: action.id,
+        },
+      };
+    }
+    case types.CONVERSATIONS_ADD_NEW_MESSAGE: {
+      return {
+        ...state,
+        userHistoryConversation: {
+          success: {
+            data: [...state.userHistoryConversation.success.data, action.message],
+            pagination: {
+              allItems: 0,
+              currentPage: 0,
+            },
+          },
+          error: null,
+        },
+      };
+    }
 
     default:
       return state;

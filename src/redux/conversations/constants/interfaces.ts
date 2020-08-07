@@ -38,30 +38,31 @@ export interface ConversationReducerStateInterface {
   userHistoryConversation: UserHistoryConversation
   conversationsList: UserConversationsList
   conversations: Conversations
+  currentChat: CurrentChat
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction;
 
 // USER_CONVERSATION_HISTORY INTERFACES
-
-interface Messages {
-  message: string
-  fkSenderId: number
-  sendDate: string
-}
 
 interface UserHistoryConversation {
   success: UserHistoryConversationSuccess
   error: ErrorResponse
 }
 
+export interface Messages {
+  message: string
+  fkSenderId: number
+  sendDate: string
+}
+
 export interface UserConversationHistoryActionRequest {
   type: typeof types.CONVERSATION_USER_HISTORY_CONVERSATION
-  payload: number
+  id: number
 }
 
 export interface UserHistoryConversationSuccess {
@@ -107,4 +108,15 @@ export interface Conversations {
   message: string
   id: number
   sendDate: string
+}
+
+export interface ConversationAddNewMessageAction {
+  type: typeof types.CONVERSATIONS_ADD_NEW_MESSAGE
+  message: Messages
+}
+
+// CURRENT CHAT
+
+interface CurrentChat {
+  id: number
 }

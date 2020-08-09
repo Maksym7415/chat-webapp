@@ -26,7 +26,9 @@ export default function UserConversationHistoryPage() {
     setMessage(event.target.value);
   };
 
-  const handleSendMessage = () => socket.emit('chats', ({ conversationId, message }));
+  const handleSendMessage = () => socket.emit('chats', ({ conversationId, message }), (success: boolean) => {
+    if (success) setMessage('');
+  });
 
   useEffect(() => {
     dispatch(conversationUserHistoryActionRequest(1));

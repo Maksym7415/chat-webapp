@@ -24,7 +24,6 @@ export default () => {
   const userRoles = ['admin'];
   Fingerprint2.getV18({}, (result, components) => {
     // result is murmur hash fingerprint
-    console.log(result, components);
     // components is array of {key: 'foo', value: 'component value'}
   });
   let newDrawerList = [];

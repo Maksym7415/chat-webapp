@@ -50,64 +50,63 @@ export default function UserConversationHistoryPage() {
       }), (success: boolean) => {
         if (success) setMessage('');
       });
-    };
-  }
-};
+    }
+  };
 
-useEffect(() => {
-  dispatch(conversationUserHistoryActionRequest(1));
-}, [dispatch]);
+  useEffect(() => {
+    dispatch(conversationUserHistoryActionRequest(1));
+  }, [dispatch]);
 
-useEffect(() => {
-  setAllMessages(messageHistory);
-}, [messageHistory]);
+  useEffect(() => {
+    setAllMessages(messageHistory);
+  }, [messageHistory]);
 
-useEffect(() => {
-  if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((prev) => ([...prev, lastMessage[conversationId]]));
-}, [lastMessage]);
+  useEffect(() => {
+    if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((prev) => ([...prev, lastMessage[conversationId]]));
+  }, [lastMessage]);
 
-return (
-  <Grid container item xs={6}>
-    <Grid item xs={12}>
-      {
-        allMessages.map(({ fkSenderId, message, sendDate }, index) => (
-          <div className={classes.messagesDiv} key={index}>
-            <Paper elevation={1} className={clsx(classes.paperSenderMessage, {
-              [classes.paperFriendMessage]: fkSenderId !== userId,
-            })}>
-              <p className={classes.messageText}>{message}</p>
-              <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
-            </Paper>
-          </div>
-        ))
-      }
+  return (
+    <Grid container item xs={6}>
+      <Grid item xs={12}>
+        {
+          allMessages.map(({ fkSenderId, message, sendDate }, index) => (
+            <div className={classes.messagesDiv} key={index}>
+              <Paper elevation={1} className={clsx(classes.paperSenderMessage, {
+                [classes.paperFriendMessage]: fkSenderId !== userId,
+              })}>
+                <p className={classes.messageText}>{message}</p>
+                <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
+              </Paper>
+            </div>
+          ))
+        }
+      </Grid>
+      <Grid item xs={12}>
+        <div className='chat__send-message-input'>
+          <TextField
+            fullWidth
+            // variant='outlined'
+            // size='small'
+            onKeyDown={sendMessageByKey}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    // aria-label="toggle password visibility"
+                    onClick={handleSendMessage}
+                  >
+                    <SendIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            label='Type message'
+            value={message}
+            onChange={handleChangeMessage}
+          />
+        </div>
+      </Grid>
     </Grid>
-    <Grid item xs={12}>
-      <div className='chat__send-message-input'>
-        <TextField
-          fullWidth
-          // variant='outlined'
-          // size='small'
-          onKeyDown={sendMessageByKey}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  // aria-label="toggle password visibility"
-                  onClick={handleSendMessage}
-                >
-                  <SendIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          label='Type message'
-          value={message}
-          onChange={handleChangeMessage}
-        />
-      </div>
-    </Grid>
-  </Grid>
 
-);
+  );
 }

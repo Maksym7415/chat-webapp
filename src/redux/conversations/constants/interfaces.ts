@@ -78,7 +78,7 @@ interface UserConversationsList {
   error: ErrorResponse
 }
 
-interface ConversationsList {
+export interface ConversationsList {
   messageId: number
   fkSenderId: number
   message: string

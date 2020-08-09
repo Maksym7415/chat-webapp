@@ -12,27 +12,9 @@ interface Meta {
   invalid: boolean
 }
 
-interface State {
+export interface VeirficationLocationState {
   login: string
 }
-
-interface Location {
-  state: State
-}
-
-interface IPropsSignInPage {
-  history: {
-    push: (path: string, state: object) => void
-  }
-}
-
-interface IPropsVerificationPage {
-  history: {
-    location: Location
-  }
-}
-
-export type IPropsPages = IPropsSignInPage & IPropsVerificationPage;
 
 export interface IPropsRenderField {
   input: (e: React.ChangeEvent<HTMLInputElement>) => void,

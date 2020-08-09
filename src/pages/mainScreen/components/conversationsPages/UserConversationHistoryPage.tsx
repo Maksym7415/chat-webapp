@@ -42,7 +42,6 @@ export default function UserConversationHistoryPage() {
 
   return (
     <Grid container item xs={6}>
-      {console.log(conversationId, lastMessage)}
       <Grid item xs={12}>
         {
           allMessages.map(({ fkSenderId, message, sendDate }, index) => (

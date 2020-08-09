@@ -2,24 +2,23 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { RouteComponentProps } from 'react-router';
 import { RootState } from '../../../redux/reducer';
 import AuthForm from '../common/authForm';
 import { actionLogin } from '../../../redux/authorization/constants/actionConstants';
-import { IPropsPages } from '../common/authInterfaces';
-import { State } from './interfaces';
 
-export default function ({ history: { push } }: IPropsPages) {
+export default function ({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
-  const [state, setState] = useState<State>({ login: '' });
+  const [login, setLogin] = useState<string>('');
   const response = useSelector(({ authReducer }: RootState) => authReducer.login);
 
   const submit = (value: any): void => {
-    setState(value);
+    setLogin(value);
     dispatch(actionLogin(value));
   };
 
   useEffect(() => {
-    if (response.success.status && !response.error) push('/verification', state);
+    if (response.success.status && !response.error) history.push('/verification', { login });
   }, [response]);
 
   return (

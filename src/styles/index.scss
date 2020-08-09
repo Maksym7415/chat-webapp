@@ -24,3 +24,15 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.js-space-around {
+  justify-content: space-around;
+}
+
+.a-items {
+  align-items: center;
+}
+
+.relative{
+  position: relative;
+}

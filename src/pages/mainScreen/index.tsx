@@ -7,7 +7,7 @@ import UserConversationHistoryPage from './components/conversationsPages/UserCon
 import ConversationProfile from './components/conversationsPages/ConversationProfile';
 import { getUserConversationsActionRequest, conversationAddNewMessage } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
-import { Conversations } from '../../redux/conversations/constants/interfaces';
+import { Messages } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
 import './styles/index.scss';
 
@@ -35,19 +35,15 @@ export default function BasicTextFields({ history: { push } }: IProps) {
 
   useEffect(() => {
     conversationsList.forEach((chat) => {
-      socket.on(`userIdChat${chat.conversationId}`, (message: string) => dispatch(conversationAddNewMessage({
-        message,
-        fkSenderId: 1,
-        sendDate: '1',
-      }, chat.conversationId)));
+      socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => dispatch(conversationAddNewMessage(message, chat.conversationId)));
     });
   }, [conversationsList]);
 
   return (
     <Grid container item xs={12} justify="space-between">
       <ChatsList data={conversationsList} />
-      <UserConversationHistoryPage/>
-      <ConversationProfile/>
+      <UserConversationHistoryPage />
+      <ConversationProfile />
     </Grid>
   );
 }

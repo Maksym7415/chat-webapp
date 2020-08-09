@@ -23,7 +23,7 @@ export interface PayloadObject {
 export interface AuthReducerInterface {
   login: Login
   signUp: SignUp
-  tokenPayload: object
+  tokenPayload: TokenPayload
   logout: {
     isLogout: boolean
   }
@@ -94,6 +94,16 @@ export interface Verification {
 interface Tokens {
   accessToken: string
   refreshToken: string,
+}
+
+export interface TokenPayload {
+  role: string
+  login: string
+  userAgent: string
+  userId: number
+  type: string
+  iat: number
+  exp: number
 }
 
 export interface TokenAction {

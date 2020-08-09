@@ -31,14 +31,14 @@ export default function ({ history: { push, location: { state } } }: IPropsPages
   }, [response]);
 
   return (
-        <>
-            <AuthForm
-                formTitle={'Verificate your account'}
-                submitBtnTitle={'Verificate'}
-                pageName={'verificationPage'}
-                icon={<VerifiedUserIcon />}
-                callBack={submit}
-            />
-        </>
+    <>
+      <AuthForm
+        formTitle={'Verificate your account'}
+        submitBtnTitle={'Verificate'}
+        pageName={'verificationPage'}
+        icon={<VerifiedUserIcon />}
+        callBack={submit}
+      />
+    </>
   );
 }

@@ -8,7 +8,7 @@ import SendIcon from '@material-ui/icons/Send';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
-import getCorrectDate from '../../../../common/getCorrectDateFormat';
+import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import useStyles from '../../styles/styles';
 
@@ -18,6 +18,7 @@ export default function UserConversationHistoryPage() {
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
+  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<Array<Messages>>([]);
   const [message, setMessage] = useState<string>('');
 
@@ -25,8 +26,29 @@ export default function UserConversationHistoryPage() {
     event.persist();
     setMessage(event.target.value);
   };
+  const handleSendMessage = () => {
+    socket.emit('chats', ({
+      conversationId,
+      message: {
+        message, fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+      },
+      userId,
+    }));
+    setMessage('');
+  };
 
-  const handleSendMessage = () => socket.emit('chats', ({ conversationId, message }));
+  const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      socket.emit('chats', ({
+        conversationId,
+        message: {
+          message, fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+        },
+        userId,
+      }));
+      setMessage('');
+    }
+  };
 
   useEffect(() => {
     dispatch(conversationUserHistoryActionRequest(1));
@@ -42,16 +64,15 @@ export default function UserConversationHistoryPage() {
 
   return (
     <Grid container item xs={6}>
-      {console.log(conversationId, lastMessage)}
       <Grid item xs={12}>
         {
           allMessages.map(({ fkSenderId, message, sendDate }, index) => (
             <div className={classes.messagesDiv} key={index}>
               <Paper elevation={1} className={clsx(classes.paperSenderMessage, {
-                [classes.paperFriendMessage]: fkSenderId !== 1,
+                [classes.paperFriendMessage]: fkSenderId !== userId,
               })}>
                 <p className={classes.messageText}>{message}</p>
-                <p className={classes.dateSender}>{getCorrectDate(new Date(sendDate))}</p>
+                <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
               </Paper>
             </div>
           ))
@@ -63,6 +84,7 @@ export default function UserConversationHistoryPage() {
             fullWidth
             // variant='outlined'
             // size='small'
+            onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -70,7 +92,7 @@ export default function UserConversationHistoryPage() {
                     // aria-label="toggle password visibility"
                     onClick={handleSendMessage}
                   >
-                    <SendIcon/>
+                    <SendIcon />
                   </IconButton>
                 </InputAdornment>
               ),

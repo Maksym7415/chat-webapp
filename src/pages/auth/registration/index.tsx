@@ -10,7 +10,6 @@ import { IPropsPages } from '../common/authInterfaces';
 export default function ({ history: { push } }: IPropsPages) {
   const dispatch = useDispatch();
   const { success: { email: login }, error } = useSelector(({ authReducer }: RootState) => authReducer.signUp);
-  console.log(error);
   const submit = (value: any): void => {
     dispatch(actionSignUp(value));
   };

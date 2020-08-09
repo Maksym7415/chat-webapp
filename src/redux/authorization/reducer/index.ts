@@ -1,5 +1,6 @@
+/* eslint-disable no-case-declarations */
 import jwtDecode from 'jwt-decode';
-import { AuthReducerInterface, AuthActionsInterface } from '../constants/interfaces';
+import { AuthReducerInterface, AuthActionsInterface, TokenPayload } from '../constants/interfaces';
 
 import * as types from '../constants/types';
 
@@ -23,13 +24,20 @@ const initialState: AuthReducerInterface = {
     },
     error: null,
   },
-  tokenPayload: {},
+  tokenPayload: {
+    role: '',
+    login: '',
+    userAgent: '',
+    userId: 0,
+    type: '',
+    iat: 0,
+    exp: 0,
+  },
   logout: {
     isLogout: false,
   },
 
 };
-
 const authReducer = (state = initialState, action: AuthActionsInterface): AuthReducerInterface => {
   switch (action.type) {
     case types.AUTH_SUCCESS:
@@ -50,7 +58,15 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
 
       };
     case types.AUTH_TOKEN:
-      let payload = {};
+      let payload = {
+        role: '',
+        login: '',
+        userAgent: '',
+        userId: 0,
+        type: '',
+        iat: 0,
+        exp: 0,
+      };
       try {
         payload = jwtDecode(action.token);
       } catch (e) {
@@ -71,7 +87,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
       };
 
     default:
-      return initialState;
+      return state;
   }
 };
 

@@ -55,10 +55,21 @@ interface UserHistoryConversation {
   error: ErrorResponse
 }
 
+interface User {
+  firstName: string
+  fullName: string
+  id: number
+  lastName: string
+  status: string
+  tagName: string
+}
+
 export interface Messages {
+  User: User
   message: string
   fkSenderId: number
   sendDate: string
+  messageType: string
 }
 
 export interface UserConversationHistoryActionRequest {
@@ -81,6 +92,7 @@ interface UserConversationsList {
 interface ConversationsList {
   messageId: number
   fkSenderId: number
+  Messages: Array<Messages>
   message: string
   messageType: string
   sendDate: string

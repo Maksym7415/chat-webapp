@@ -30,4 +30,7 @@ export default makeStyles((theme) => ({
     maxWidth: '80%',
     color: '#e8e8e8',
   },
+  dateSenderChatlist: {
+    color: '#252222',
+  },
 }));

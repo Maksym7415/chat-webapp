@@ -11,6 +11,7 @@ import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import useStyles from '../../styles/styles';
+import AddFiles from './addFilesComponent';
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ export default function UserConversationHistoryPage() {
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
+                message === '' ? <AddFiles /> : <InputAdornment position="end">
                   <IconButton
                     // aria-label="toggle password visibility"
                     onClick={handleSendMessage}

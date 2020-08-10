@@ -4,6 +4,7 @@ import { signUpWatcher } from '../authorization/sagas/signup';
 import { verificationCodeWatcher } from '../authorization/sagas/checkVerificationCode';
 import { userConversationWatcher } from '../conversations/sagas/userConversationHistory';
 import { userConversationsListWatcher } from '../conversations/sagas/userConversationsList';
+import { userInfoWatcher } from '../user/sagas/userInfo';
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +13,6 @@ export default function* rootSaga() {
     verificationCodeWatcher(),
     userConversationWatcher(),
     userConversationsListWatcher(),
+    userInfoWatcher(),
   ]);
 }

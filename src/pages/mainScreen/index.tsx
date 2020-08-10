@@ -10,6 +10,7 @@ import { getUserConversationsActionRequest, conversationAddNewMessage } from '..
 import { RootState } from '../../redux/reducer';
 import { Messages } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
+import { userInfoActionRequest } from '../../redux/user/actions/actions';
 import './styles/index.scss';
 
 export default function BasicTextFields({ history }: RouteComponentProps) {
@@ -18,6 +19,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
+    dispatch(userInfoActionRequest(1));
   }, []);
 
   useEffect(() => {

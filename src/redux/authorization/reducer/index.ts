@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import jwtDecode from 'jwt-decode';
-import { AuthReducerInterface, AuthActionsInterface, TokenPayload } from '../constants/interfaces';
+import { AuthReducerInterface, AuthActionsInterface } from '../constants/interfaces';
 
 import * as types from '../constants/types';
 

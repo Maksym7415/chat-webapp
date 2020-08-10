@@ -28,6 +28,9 @@ const initialState: ConversationReducerStateInterface = {
     id: 0,
   },
   lastMessages: {},
+  currentConversationIdObject: {
+    currentConversationId: 0,
+  },
 };
 
 const ConversationsReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
@@ -62,6 +65,9 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         lastMessages: {
           ...state.lastMessages,
           [action.id]: action.message,
+        },
+        currentConversationIdObject: {
+          currentConversationId: action.id,
         },
       };
     }

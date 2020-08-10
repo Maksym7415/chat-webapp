@@ -40,6 +40,10 @@ export interface ConversationReducerStateInterface {
   conversations: Conversations
   currentChat: CurrentChat
   lastMessages: LastMessagesStateKey
+  currentConversationIdObject: {
+    currentConversationId: number
+  }
+
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;

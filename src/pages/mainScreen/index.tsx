@@ -22,7 +22,10 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     conversationsList.forEach((chat) => {
-      socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => dispatch(conversationAddNewMessage(message, chat.conversationId)));
+      socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
+        console.log(chat.conversationId);
+        dispatch(conversationAddNewMessage(message, chat.conversationId));
+      });
     });
   }, [conversationsList]);
 

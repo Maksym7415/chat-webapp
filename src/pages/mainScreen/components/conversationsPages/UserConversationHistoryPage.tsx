@@ -70,12 +70,15 @@ export default function UserConversationHistoryPage() {
     <Grid container item xs={6}>
       <Grid item xs={12}>
         {
-          allMessages.map(({ fkSenderId, message, sendDate }, index) => (
+          allMessages.map(({
+            fkSenderId, message, sendDate, User,
+          }, index) => (
             <div className={classes.messagesDiv} key={index}>
               <Paper elevation={1} className={clsx(classes.paperSenderMessage, {
                 [classes.paperFriendMessage]: fkSenderId !== userId,
               })}>
                 <p className={classes.messageText}>{message}</p>
+                <p className={classes.messageText}>{User.tagName}</p>
                 <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
               </Paper>
             </div>

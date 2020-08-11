@@ -1,70 +1,79 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
-import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { useSelector } from 'react-redux';
+import socket from '../../../../socket';
+import { fullDate } from '../../../../common/getCorrectDateFormat';
+import { RootState } from '../../../../redux/reducer';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  speedDial: {
-    position: 'absolute',
-    '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
     },
-    '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-      top: theme.spacing(2),
-      left: theme.spacing(2),
-    },
+  },
+  input: {
+    display: 'none',
   },
 }));
 
-const actions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
-  { icon: <ShareIcon />, name: 'Share' },
-  { icon: <FavoriteIcon />, name: 'Like' },
-];
+let count = 0;
+
+const func = async (fileReader: any, blob: any, userId: number, conversationId: number, fileSize: number) => new Promise((resolve) => {
+  fileReader.readAsArrayBuffer(blob);
+  fileReader.onloadend = () => {
+    let arrayBuffer = fileReader.result;
+    socket.emit('files', {
+      data: arrayBuffer,
+      sendDate: fullDate(new Date()),
+      messageType: 'file',
+      fkSenderId: userId,
+      conversationId,
+      fileSize,
+    });
+    resolve();
+  };
+});
 
 export default function AddFiles() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [hidden, setHidden] = React.useState(false);
+  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
+  const addFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
 
-  const handleClose = () => {
-    setOpen(false);
+    let fileReader = new FileReader();
+    if (files) {
+      let filesArray = Object.values(files).map((el: any) => el.slice(0, 10000));
+      console.log(filesArray);
+      const foo = async () => {
+        if (count === filesArray.length) {
+          count = 0;
+        } else {
+          await func(fileReader, filesArray[count], userId, conversationId, filesArray[count].size);
+          count++;
+          foo();
+        }
+      };
+      foo();
+    }
   };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <>
-      <SpeedDial
-        ariaLabel="SpeedDial example"
-        className={classes.speedDial}
-        hidden={hidden}
-        icon={<SpeedDialIcon />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-        direction='up'
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={handleClose}
-          />
-        ))}
-      </SpeedDial>
+      <input accept="image/*"
+        className={classes.input}
+        id="icon-button-file"
+        type="file"
+        multiple
+        onChange={addFiles}
+      />
+      <label htmlFor="icon-button-file">
+        <IconButton color="primary" aria-label="upload picture" component="span">
+          <CloudUploadIcon />
+        </IconButton>
+      </label>
     </>
   );
 }

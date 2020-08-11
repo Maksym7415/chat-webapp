@@ -5,6 +5,24 @@ import { green } from '@material-ui/core/colors';
 
 let theme = createMuiTheme({
   overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '*': {
+          'scrollbar-width': 'thin',
+          'scrollbar-color': 'rgba(0,0,0,.1) rgba(0,0,0,0.00)',
+        },
+        '*::-webkit-scrollbar': {
+          width: '0.4em',
+        },
+        '*::-webkit-scrollbar-track': {
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(0,0,0,.1)',
+          outline: '1px solid slategrey',
+        },
+      },
+    },
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: '#feffff',

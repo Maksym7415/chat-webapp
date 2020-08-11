@@ -33,4 +33,10 @@ export default makeStyles((theme) => ({
   dateSenderChatlist: {
     color: '#252222',
   },
+  bold: {
+    fontWeight: 700,
+  },
+  messageTextInList: {
+    width: '150px',
+  },
 }));

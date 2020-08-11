@@ -67,7 +67,7 @@ export default function UserConversationHistoryPage() {
   }, [lastMessage]);
 
   return (
-    <Grid container item xs={6}>
+    <Grid className='overflowY-auto' style={{ maxHeight: '87vh' }} container item xs={8}>
       <Grid item xs={12}>
         {
           allMessages.map(({ fkSenderId, message, sendDate }, index) => (
@@ -86,8 +86,6 @@ export default function UserConversationHistoryPage() {
         <div className='chat__send-message-input'>
           <TextField
             fullWidth
-            // variant='outlined'
-            // size='small'
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (

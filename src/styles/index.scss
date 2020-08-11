@@ -12,12 +12,13 @@ body {
       monospace;
   }
 
+// flex
 .flex {
     display: flex;
 }
 
-.full-w {
-  width: 100%
+.justify-start {
+  justify-content: flex-start;
 }
 
 .flex-col {
@@ -33,6 +34,27 @@ body {
   align-items: center;
 }
 
+// width&height
+.full-w {
+  width: 100%
+}
+
+.full-h {
+  height: 100%;
+}
+
+
+// position
 .relative{
   position: relative;
+}
+
+// fonts
+.font-500 {
+  font-weight: 500;
+}
+
+// overflow
+.overflowY-auto {
+  overflow-y: auto;
 }

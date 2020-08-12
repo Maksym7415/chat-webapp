@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable no-param-reassign */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -5,8 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector } from 'react-redux';
 import socket from '../../../../socket';
-import { fullDate } from '../../../../common/getCorrectDateFormat';
 import { RootState } from '../../../../redux/reducer';
+import { handleGetBufferFile, handleEmitFilePartly } from '../../helpers/addFiles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,23 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let count = 0;
-
-const func = async (fileReader: any, blob: any, userId: number, conversationId: number, fileSize: number) => new Promise((resolve) => {
-  fileReader.readAsArrayBuffer(blob);
-  fileReader.onloadend = () => {
-    let arrayBuffer = fileReader.result;
-    socket.emit('files', {
-      data: arrayBuffer,
-      sendDate: fullDate(new Date()),
-      messageType: 'file',
-      fkSenderId: userId,
-      conversationId,
-      fileSize,
-    });
-    resolve();
-  };
-});
+let filesCount = 0;
 
 export default function AddFiles() {
   const classes = useStyles();
@@ -46,18 +31,19 @@ export default function AddFiles() {
 
     let fileReader = new FileReader();
     if (files) {
-      let filesArray = Object.values(files).map((el: any) => el.slice(0, 10000));
-      console.log(filesArray);
-      const foo = async () => {
-        if (count === filesArray.length) {
-          count = 0;
+      let filesArray = Object.values(files);
+      const handleSendFile = async () => {
+        if (filesCount === filesArray.length) {
+          filesCount = 0;
         } else {
-          await func(fileReader, filesArray[count], userId, conversationId, filesArray[count].size);
-          count++;
-          foo();
+          const file = await handleGetBufferFile(fileReader, filesArray[filesCount]);
+          handleEmitFilePartly(file, filesArray[filesCount].size, filesArray[filesCount].name, userId, conversationId, socket);
+          // eslint-disable-next-line no-plusplus
+          filesCount++;
+          handleSendFile();
         }
       };
-      foo();
+      handleSendFile();
     }
   };
   return (

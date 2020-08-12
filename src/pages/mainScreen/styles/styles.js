@@ -11,14 +11,16 @@ export default makeStyles((theme) => ({
   paperSenderMessage: {
     position: 'relative',
     display: 'flex',
-    width: '100%',
+    width: '90%',
     backgroundColor: theme.palette.primary.main,
     '& > *': {
       margin: theme.spacing(2),
     },
+    margin: '0 0 0 auto',
   },
   paperFriendMessage: {
     background: 'linear-gradient(90deg, rgba(246,120,18,1) 35%, rgba(252,61,23,1) 69%)',
+    margin: '0 auto 0 0',
   },
   dateSender: {
     position: 'absolute',

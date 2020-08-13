@@ -13,7 +13,7 @@ import {
   function* userInfoWorker ({ id }: UserInfoActionInterface) {
     try {
       const { data } = yield call(axios.get, `getUserProfileData/${id}`);
-      yield put(userActionSuccess(data, 'userInfo'));
+      yield put(userActionSuccess({ data }, 'userInfo'));
     } catch (error) {
       yield put(userActionFail(error.response, 'userInfo'));
     }

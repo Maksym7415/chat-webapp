@@ -79,6 +79,7 @@ export interface Messages {
 export interface UserConversationHistoryActionRequest {
   type: typeof types.CONVERSATION_USER_HISTORY_CONVERSATION
   id: number
+  offset: number
 }
 
 export interface UserHistoryConversationSuccess {

@@ -16,9 +16,10 @@ export const conversationActionFail = (payload: ErrorResponse, name: Conversatio
   name,
 });
 
-export const conversationUserHistoryActionRequest = (id: number): UserConversationHistoryActionRequest => ({
+export const conversationUserHistoryActionRequest = (id: number, offset: number): UserConversationHistoryActionRequest => ({
   type: types.CONVERSATION_USER_HISTORY_CONVERSATION,
   id,
+  offset,
 });
 
 export const lastConversationMessageAction = (data: ConversationReducerPayload): LastConversationMessageAction => ({

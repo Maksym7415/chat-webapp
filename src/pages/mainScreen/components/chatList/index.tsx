@@ -16,7 +16,7 @@ export default ({ data }: UserConversationsListSuccess) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
-  const handleChangeChat = (id: number) => dispatch(conversationUserHistoryActionRequest(id));
+  const handleChangeChat = (id: number) => dispatch(conversationUserHistoryActionRequest(id, 0));
 
   useEffect(() => {
     setConversations(data);

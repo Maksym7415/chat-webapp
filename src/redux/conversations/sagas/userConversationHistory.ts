@@ -10,9 +10,9 @@ export function* userConversationWatcher() {
   yield takeEvery(CONVERSATION_USER_HISTORY_CONVERSATION, userConversationWorker);
 }
 
-function* userConversationWorker({ id }: UserConversationHistoryActionRequest) {
+function* userConversationWorker({ id, offset }: UserConversationHistoryActionRequest) {
   try {
-    const { data } = yield call(axios.get, `conversationHistory/${id}`);
+    const { data } = yield call(axios.get, `conversationHistory/${id}?offset=${offset}`);
     yield put(conversationActionSuccess(data, 'userHistoryConversation'));
   } catch (error) {
     yield put(conversationActionFail(error.response, 'userHistoryConversation'));

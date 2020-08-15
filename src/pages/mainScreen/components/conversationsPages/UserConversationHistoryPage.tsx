@@ -12,6 +12,7 @@ import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat
 import socket from '../../../../socket';
 import useStyles from '../../styles/styles';
 import AddFiles from './addFilesComponent';
+import DropZone from '../../../../components/dropZone';
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
@@ -108,6 +109,7 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>
+      <DropZone name='conversation' styles='style' quantity={1} type={'image'} multiple={false} />
     </Grid>
 
   );

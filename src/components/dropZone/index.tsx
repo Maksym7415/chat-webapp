@@ -2,19 +2,21 @@ import React, { useRef, useState, useEffect } from 'react';
 import RemoveIcon from '@material-ui/icons/RemoveCircleOutlineSharp';
 import { useDispatch } from 'react-redux';
 import { Chip } from '@material-ui/core';
-import { nanoid } from 'nanoid';
-import { showMessage } from '../../redux/theme/constants/actionConstants';
-import { dropZoneAction } from '../../redux/syncStore/constants/actionConstants';
+import { v4 as uuidv4 } from 'uuid';
+// import { showMessage } from '../../redux/theme/constants/actionConstants';
+// import { dropZoneAction } from '../../redux/syncStore/constants/actionConstants';
 import useStyles from './styles';
+import { DynamicFilesObjectKeys, Props } from './interfaces';
+
 import './styles.scss';
 
 const DropZone = ({
   name, styles, quantity, type, multiple,
-}) => {
+}: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const fileInputRef = useRef(null);
-  const [files, setFiles] = useState<object | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<DynamicFilesObjectKeys | null>(null);
   const [icons] = useState({
     pdf: '../../../../images/pdf.png',
     doc: '../../../../images/doc.png',
@@ -27,10 +29,11 @@ const DropZone = ({
     fileType: false,
   });
 
-  const handleDeleteFile = (key) => {
-    const result = { ...files };
+  const handleDeleteFile = (key: string) => {
+    const result: DynamicFilesObjectKeys | null = { ...files };
     delete result[key];
-    Object.keys(result).length > 0 ? setFiles(result) : setFiles();
+    if (Object.keys(result).length > 0) return setFiles(result);
+    setFiles(null);
   };
 
   const readImage = (file: File, index: number) => {
@@ -44,42 +47,43 @@ const DropZone = ({
         if (type[type.length - 1] === 'sheet') src = icons.xls;
       }
       if (src === '') src = icons.unknown;
-      return setFiles((prev) => ({ ...prev, [nanoid(5)]: { file, src } }));
+      const key: string = uuidv4();
+      return setFiles((prev) => ({ ...prev, [key]: { file, src } }));
     }
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
-      setFiles((prev) => ({ ...prev, [nanoid(5)]: { file, src: event.target.result } }));
+      // setFiles((prev) => ({ ...prev, [uuidv4()]: { file, src: event.target.result } }));
     });
     reader.readAsDataURL(file);
   };
 
-  const handleFilesObject = (files) => {
+  const handleFilesObject = (files: FileList | null) => {
     if (!files) return;
-    const result = {};
-    Object.values(files).forEach((file, i) => {
-      result[i] = { file };
+    const result: DynamicFilesObjectKeys = {};
+    Object.values(files).forEach((file: File, i: any) => {
+      // result[i] = { file };
       readImage(file, i);
     });
   };
 
-  const stopEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const stopEvent = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
   };
 
-  const onDragOver = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     stopEvent(event);
     setDragHower(true);
   };
 
-  const onDragLeave = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     stopEvent(event);
     setDragHower(false);
   };
 
-  const onDrop = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
     stopEvent(event);
-    const file: File = event.target.files;
+    const file: FileList | null = (event.target as HTMLInputElement).files;
     if (quantity && files && Object.keys(files).length >= quantity) {
       setValidation((prev) => ({ ...prev, quantity: true }));
       setDragHower(false);
@@ -97,11 +101,14 @@ const DropZone = ({
     setDragHower(false);
   };
 
-  const openFileDialog = () => fileInputRef.current.click();
+  const openFileDialog = () => {
+    const input = fileInputRef.current;
+    if (input) input.click();
+  };
 
   const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    const file: File = event.target.files;
+    const file: FileList | null = event.target.files;
     if (quantity && files && Object.keys(files).length >= quantity) {
       setValidation((prev) => ({ ...prev, quantity: true }));
       return;
@@ -115,26 +122,26 @@ const DropZone = ({
     handleFilesObject(file);
   };
 
-  useEffect(() => {
-    if (files) {
-      const result: [File] = [];
-      Object.keys(files).forEach((item) => {
-        result.push(files[item].file);
-      });
-      dispatch(dropZoneAction({ [name]: result }));
-    } else dispatch(dropZoneAction({ [name]: null }));
-  }, [files]);
+  // useEffect(() => {
+  //   if (files) {
+  //     const result: [] = [];
+  //     Object.keys(files).forEach((item: string) => {
+  //       result.push(files[item].file);
+  //     });
+  //     dispatch(dropZoneAction({ [name]: result }));
+  //   } else dispatch(dropZoneAction({ [name]: null }));
+  // }, [files]);
 
-  useEffect(() => {
-    validation.fileType && dispatch(showMessage({
-      message: 'Invalid file type',
-      variant: 'error',
-    }));
-    validation.quantity && dispatch(showMessage({
-      message: `Maximum files quantity is ${quantity}`,
-      variant: 'error',
-    }));
-  });
+  // useEffect(() => {
+  //   validation.fileType && dispatch(showMessage({
+  //     message: 'Invalid file type',
+  //     variant: 'error',
+  //   }));
+  //   validation.quantity && dispatch(showMessage({
+  //     message: `Maximum files quantity is ${quantity}`,
+  //     variant: 'error',
+  //   }));
+  // });
 
   return (
     <div className={styles}>
@@ -152,14 +159,14 @@ const DropZone = ({
               {
                 Object.keys(files).map((file) => (
                   <div key={file} className='drop-zone__image-container'>
-                    {console.log(files[file].src)}
+                    {/* {console.log(files[file].src)}
                     <img className='drop-zone__image' alt='preview' src={files[file].src} />
                     <Chip
                       className={classes.chipButton}
                       deleteicon={<RemoveIcon />}
                       size='medium'
                       onDelete={() => handleDeleteFile(file)}
-                    />
+                    /> */}
                   </div>
                 ))
               }

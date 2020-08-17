@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import RemoveIcon from '@material-ui/icons/RemoveCircleOutlineSharp';
 import { useDispatch } from 'react-redux';
-import { Chip } from '@material-ui/core';
+import { Chip, Paper } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
 // import { showMessage } from '../../redux/theme/constants/actionConstants';
 // import { dropZoneAction } from '../../redux/syncStore/constants/actionConstants';
@@ -144,8 +144,8 @@ const DropZone = ({
   // });
 
   return (
-    <div className={styles}>
-      <div
+      <Paper
+        elevation={4}
         onDragLeave={onDragLeave}
         onDragOver={onDragOver}
         onDrop={onDrop}
@@ -182,8 +182,7 @@ const DropZone = ({
           <p>Drag files or click</p>
           <p>here to upload</p>
         </div>
-      </div>
-    </div>
+      </Paper>
   );
 };
 

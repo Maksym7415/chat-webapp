@@ -5,7 +5,7 @@ import {
   Grid, Paper, TextField, InputAdornment, IconButton,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
+import { conversationUserHistoryActionRequest, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
@@ -36,6 +36,7 @@ export default function UserConversationHistoryPage() {
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
+  const id = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [message, setMessage] = useState<string>('');
@@ -87,6 +88,10 @@ export default function UserConversationHistoryPage() {
   // }, [dispatch, conversationId]);
 
   useEffect(() => {
+    if (!Object.keys(allMessages).includes(`${id}`)) dispatch(conversationUserHistoryActionRequest(id, 0));
+  }, [id]);
+
+  useEffect(() => {
     setAllMessages((prev) => ({ ...prev, [conversationId]: [...messageHistory, ...prev[conversationId]] }));
   }, [messageHistory]);
 
@@ -105,7 +110,7 @@ export default function UserConversationHistoryPage() {
     <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={8} onScroll={scrollHandler}>
       <Grid item xs={12}>
         {
-          allMessages[conversationId] && allMessages[conversationId].map(({
+          allMessages[id] && allMessages[id].map(({
             fkSenderId, message, sendDate, User,
           }, index) => (
               <div className={classes.messagesDiv} key={index} ref={ref}>

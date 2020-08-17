@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/reducer/index';
 import { UserConversationsListSuccess, ConversationsList } from '../../../../redux/conversations/constants/interfaces';
-import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
+import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
 import useStyles from '../../styles/styles';
 
@@ -16,7 +16,7 @@ export default ({ data }: UserConversationsListSuccess) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
-  const handleChangeChat = (id: number) => dispatch(conversationUserHistoryActionRequest(id, 0));
+  const handleChangeChat = (id: number) => dispatch(getConversationIdAction(id));
 
   useEffect(() => {
     setConversations(data);

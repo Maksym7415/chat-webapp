@@ -1,6 +1,14 @@
 import * as types from './types';
 import {
-  ConversationActionsType, UserConversationHistoryActionRequest, UserConversationsListActionRequest, ConversationReducerStateType, ConversationReducerPayload, LastConversationMessageAction, Messages, ConversationAddNewMessageAction,
+  ConversationActionsType,
+  UserConversationHistoryActionRequest,
+  UserConversationsListActionRequest,
+  ConversationReducerStateType,
+  ConversationReducerPayload,
+  LastConversationMessageAction,
+  Messages,
+  ConversationAddNewMessageAction,
+  ConversationIdAction,
 } from './interfaces';
 import { ErrorResponse } from '../../common/interafaces';
 
@@ -34,3 +42,8 @@ export const conversationAddNewMessage = (message: Messages, id: number): Conver
 });
 
 export const getUserConversationsActionRequest = (): UserConversationsListActionRequest => ({ type: types.CONVERSATIONS_USER_CONVERSATIONS });
+
+export const getConversationIdAction = (id: number): ConversationIdAction => ({
+  type: types.CONVERSATION_ID,
+  payload: id,
+});

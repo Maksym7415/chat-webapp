@@ -43,14 +43,16 @@ export interface ConversationReducerStateInterface {
   currentConversationIdObject: {
     currentConversationId: number
   }
-
+  conversationId: {
+    id: number
+  }
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
@@ -142,4 +144,9 @@ export interface ConversationAddNewMessageAction {
 
 interface CurrentChat {
   id: number
+}
+
+export interface ConversationIdAction {
+  type: typeof types.CONVERSATION_ID
+  payload: number
 }

@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import { Link } from 'react-router-dom';
 
 interface IAppBarMenuProps {
   anchorEl: null | Element
@@ -83,7 +84,11 @@ export default function ({
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to='/userProfile'>
+            My account
+          </Link>
+        </MenuItem>
       </Menu>
     </>
   );

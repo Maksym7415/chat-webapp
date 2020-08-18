@@ -3,6 +3,7 @@ import SignUpPage from '../../pages/auth/registration';
 import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
 import UserConversationHistoryPage from '../../pages/mainScreen/components/conversationsPages/UserConversationHistoryPage';
+import UserProfile from '../../pages/user/components/userProfile';
 
 export default [
   {
@@ -60,5 +61,15 @@ export default [
     ],
     isPrivate: true,
   },
-
+  {
+    id: 7,
+    Component: UserProfile,
+    path: '/userProfile',
+    roles: [
+      'admin',
+      'user',
+      'superadmin',
+    ],
+    isPrivate: true,
+  }
 ];

@@ -18,7 +18,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
-    dispatch(userInfoActionRequest(1));
+    // dispatch(userInfoActionRequest(1));
   }, []);
 
   useEffect(() => {

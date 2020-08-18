@@ -61,3 +61,9 @@ export interface UserInfoActionInterface {
     type: typeof types.USER_GET_USER_INFO
     id: number
 }
+
+export type UserInfoSuccessKeyType = keyof UserInfoSuccess;
+
+export interface UserInfoSuccess1KeyType {
+    [key: string]: string
+}

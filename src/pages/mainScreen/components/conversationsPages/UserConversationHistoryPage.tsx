@@ -109,8 +109,6 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>
-      <DropZone name='conversation' styles='style' quantity={1} type={'image'} multiple={false} />
     </Grid>
-
   );
 }

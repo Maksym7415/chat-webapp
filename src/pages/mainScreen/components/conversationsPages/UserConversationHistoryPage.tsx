@@ -17,17 +17,32 @@ interface CurrentConversationMessages {
   [key: number]: Array<Messages>
 }
 
-const scrollTop = (ref: any, mainGrid: any, offset: number) => {
-  if (ref.current) {
-    if (mainGrid.scrollTop === 0 && offset !== 0) {
-      return mainGrid.scrollTo({
-        top: 10,
-        behavior: 'smooth',
-      });
-    }
-    ref.current.scrollIntoView({ behavior: 'smooth' });
+interface ScrollValue {
+  [key:number]: number
+}
+
+interface Pagination {
+  [key: number]: number
+}
+
+const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
+  if (isScrollTo) {
+    return mainGrid.scrollTo({
+      top: position,
+      // behavior: 'smooth',
+    });
   }
+  if (mainGrid.scrollTop === 0 && offset !== 0) {
+    return mainGrid.scrollTo({
+      top: position,
+      // behavior: 'smooth',
+    });
+  }
+  if (ref.current) ref.current.scrollIntoView();
+  // ref.current.scrollIntoView({ behavior: 'smooth' });
 };
+
+const getCurrentScrollTop = (element: any) => element.scrollTop;
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
@@ -39,10 +54,16 @@ export default function UserConversationHistoryPage() {
   const id = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
+  const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
+  const [localPagination, setLocalPagination] = useState<Pagination>({});
+  const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [message, setMessage] = useState<string>('');
 
   const ref = React.useRef(null);
-  useMemo(() => setAllMessages((prev) => ({ ...prev, [conversationId]: [] })), [conversationId]);
+  useMemo(() => setAllMessages((prev) => {
+    if (prev[id] && prev[id].length) return { ...prev };
+    return ({ ...prev, [conversationId]: [] });
+  }), [conversationId]);
   // useMemo(() => scrollTop(ref), [conversationId]);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,21 +99,36 @@ export default function UserConversationHistoryPage() {
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    if (element.scrollTop === 0 && messageHistory.length === 15) {
-      dispatch(conversationUserHistoryActionRequest(conversationId, pagination.currentPage + 15));
+    setScrollValue((prevValue) => ({ ...prevValue, [id]: getCurrentScrollTop(element) }));
+    if (element.scrollTop === 0 && localMessageHistory[id] && localMessageHistory[id].length === 15 && allMessages[id]) {
+      dispatch(conversationUserHistoryActionRequest(id, localPagination[id] + 15));
     }
   };
+
   // useEffect(() => {
   //   // dispatch(conversationUserHistoryActionRequest(1));
   //   scrollTop(ref);
   // }, [dispatch, conversationId]);
 
   useEffect(() => {
+    let element = document.getElementById('messages');
+    if (element) {
+      scrollTop(ref, element, pagination.currentPage, scrollValue[id], true);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    // let element = document.getElementById('messages');
+    // if (element) {
+    //   setScrollValue((prevValue) => ({ ...prevValue, [id]: getCurrentScrollTop(element) }));
+    // }
     if (!Object.keys(allMessages).includes(`${id}`)) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
   useEffect(() => {
-    setAllMessages((prev) => ({ ...prev, [conversationId]: [...messageHistory, ...prev[conversationId]] }));
+    setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory, ...prev[id]] }));
+    setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
+    setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
   }, [messageHistory]);
 
   useEffect(() => {
@@ -102,7 +138,7 @@ export default function UserConversationHistoryPage() {
   useEffect(() => {
     let element = document.getElementById('messages');
     if (element) {
-      scrollTop(ref, element, pagination.currentPage);
+      scrollTop(ref, element, pagination.currentPage, 10, false);
     }
   }, [allMessages]);
 
@@ -122,7 +158,7 @@ export default function UserConversationHistoryPage() {
                   <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
                 </Paper>
               </div>
-            ))
+          ))
         }
       </Grid>
       <Grid item xs={12}>

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
-import ConversationProfile from './components/conversationsPages/ConversationProfile';
 import { getUserConversationsActionRequest, conversationAddNewMessage } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 import { Messages } from '../../redux/conversations/constants/interfaces';
@@ -25,17 +24,15 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   useEffect(() => {
     conversationsList.forEach((chat) => {
       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-        console.log(chat.conversationId);
         dispatch(conversationAddNewMessage(message, chat.conversationId));
       });
     });
   }, [conversationsList]);
 
   return (
-    <Grid container item xs={12} justify="space-between">
+    <Grid className='chat__container relative' container item xs={12} justify="space-between">
       <ChatsList data={conversationsList} />
       <UserConversationHistoryPage />
-      <ConversationProfile />
     </Grid>
   );
 }

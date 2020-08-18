@@ -1,70 +1,65 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable no-param-reassign */
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
-import SaveIcon from '@material-ui/icons/Save';
-import PrintIcon from '@material-ui/icons/Print';
-import ShareIcon from '@material-ui/icons/Share';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { useSelector } from 'react-redux';
+import socket from '../../../../socket';
+import { RootState } from '../../../../redux/reducer';
+import { handleGetBufferFile, handleEmitFilePartly } from '../../helpers/addFiles';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  speedDial: {
-    position: 'absolute',
-    '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
     },
-    '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-      top: theme.spacing(2),
-      left: theme.spacing(2),
-    },
+  },
+  input: {
+    display: 'none',
   },
 }));
 
-const actions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
-  { icon: <ShareIcon />, name: 'Share' },
-  { icon: <FavoriteIcon />, name: 'Like' },
-];
+let filesCount = 0;
 
 export default function AddFiles() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [hidden, setHidden] = React.useState(false);
+  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
+  const addFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
 
-  const handleClose = () => {
-    setOpen(false);
+    let fileReader = new FileReader();
+    if (files) {
+      let filesArray = Object.values(files);
+      const handleSendFile = async () => {
+        if (filesCount === filesArray.length) {
+          filesCount = 0;
+        } else {
+          const file = await handleGetBufferFile(fileReader, filesArray[filesCount]);
+          handleEmitFilePartly(file, filesArray[filesCount].size, filesArray[filesCount].name, userId, conversationId, socket);
+          // eslint-disable-next-line no-plusplus
+          filesCount++;
+          handleSendFile();
+        }
+      };
+      handleSendFile();
+    }
   };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <>
-      <SpeedDial
-        ariaLabel="SpeedDial example"
-        className={classes.speedDial}
-        hidden={hidden}
-        icon={<SpeedDialIcon />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-        direction='up'
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={handleClose}
-          />
-        ))}
-      </SpeedDial>
+      <input accept="image/*"
+        className={classes.input}
+        id="icon-button-file"
+        type="file"
+        multiple
+        onChange={addFiles}
+      />
+      <label htmlFor="icon-button-file">
+        <IconButton color="primary" aria-label="upload picture" component="span">
+          <CloudUploadIcon />
+        </IconButton>
+      </label>
     </>
   );
 }

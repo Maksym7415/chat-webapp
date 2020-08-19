@@ -15,6 +15,7 @@ export const handleEmitFilePartly = (file: any, fileSize: number, fileName: stri
   const iterations = Math.ceil(fileSize / 10000);
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < iterations; i++) {
+    console.log('emit');
     socket.emit('files', {
       data: file.slice(i * 10000, (i + 1) * 10000),
       uniqueName,

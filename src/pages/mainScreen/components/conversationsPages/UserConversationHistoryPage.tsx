@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Grid, Paper, TextField, InputAdornment, IconButton,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
@@ -12,7 +13,6 @@ import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat
 import socket from '../../../../socket';
 import useStyles from '../../styles/styles';
 import AddFiles from './addFilesComponent';
-import DropZone from '../../../../components/dropZone';
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
@@ -23,6 +23,9 @@ export default function UserConversationHistoryPage() {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<Array<Messages>>([]);
   const [message, setMessage] = useState<string>('');
+  const [files, setFiles] = useState<FileList | null>(null);
+  const input = useRef<HTMLInputElement>(null);
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -55,6 +58,43 @@ export default function UserConversationHistoryPage() {
     }
   };
 
+  const handleOpenDialog = (isOpen: boolean) => {
+    if (!isOpen) setFiles(null);
+    setIsOpenDialog(isOpen);
+  };
+
+  const openFileDialog = () => {
+    const element = input.current;
+    if (element) element.click();
+  };
+
+  const stopEvent = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    stopEvent(event);
+  };
+
+  const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    stopEvent(event);
+  };
+
+  const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    stopEvent(event);
+    handleOpenDialog(true);
+    const file: FileList | null = (event.target as HTMLInputElement).files;
+    setFiles(file);
+  };
+
+  const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.persist();
+    handleOpenDialog(true);
+    const file: FileList | null = event.target.files;
+    setFiles(file);
+  };
+
   useEffect(() => {
     dispatch(conversationUserHistoryActionRequest(1));
   }, [dispatch]);
@@ -68,7 +108,14 @@ export default function UserConversationHistoryPage() {
   }, [lastMessage]);
 
   return (
-    <Grid className='overflowY-auto' style={{ maxHeight: '87vh' }} container item xs={8}>
+    <Grid
+      className='overflowY-auto'
+      style={{ maxHeight: '87vh' }}
+      container item xs={8}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+    >
       <Grid item xs={12}>
         {
           allMessages.map(({
@@ -93,14 +140,24 @@ export default function UserConversationHistoryPage() {
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
-                message === '' ? <AddFiles /> : <InputAdornment position="end">
-                  <IconButton
-                    // aria-label="toggle password visibility"
-                    onClick={handleSendMessage}
-                  >
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
+                message === ''
+                  ? (
+                    <label htmlFor="icon-button-file">
+                      <IconButton onClick={openFileDialog} color="primary" aria-label="upload picture" component="span">
+                        <CloudUploadIcon />
+                      </IconButton>
+                    </label>
+                  )
+                  : (
+                    <InputAdornment position="end">
+                      <IconButton
+                        // aria-label="toggle password visibility"
+                        onClick={handleSendMessage}
+                      >
+                        <SendIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  )
               ),
             }}
             label='Type message'
@@ -109,6 +166,17 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>
+      <input
+        // ref={input}
+        style={{ display: 'none' }}
+        accept="image/*"
+        // className={classes.input}
+        id="icon-button-file"
+        type="file"
+        multiple
+        onChange={onFilesAdded}
+      />
+      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} />
     </Grid>
   );
 }

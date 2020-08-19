@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {
   Dialog, DialogContent, DialogTitle, DialogActions,
 } from '@material-ui/core';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import { DialogProps } from './interfaces';
+import useStyles from './styles';
 
-export default function UploadDialog({ handleClose, handleSend, isOpen }: DialogProps) {
+export default function UploadDialog({
+  handleClose, handleSend, isOpen, files,
+}: DialogProps) {
+  const classes = useStyles();
+
   return (
-    <div>
-      <Dialog aria-labelledby="customized-dialog-title" open={isOpen}>
+  // <div>
+      <Dialog
+        // classes={{ root: classes.container }}
+        fullWidth
+        aria-labelledby="customized-dialog-title"
+        open={isOpen}
+        maxWidth='xs'
+      >
         <DialogTitle>
           Add files
         </DialogTitle>
@@ -23,10 +27,10 @@ export default function UploadDialog({ handleClose, handleSend, isOpen }: Dialog
           Content
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleSend()}>Send</Button>
-          <Button onClick={() => handleClose(false)}>Close</Button>
+          <Button variant='outlined' color='primary' onClick={() => handleSend()}>Send</Button>
+          <Button variant='outlined' color='primary' onClick={() => handleClose(false)}>Close</Button>
         </DialogActions>
       </Dialog>
-    </div>
+  // </div>
   );
 }

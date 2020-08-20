@@ -6,9 +6,17 @@ import { RootState } from '../../../../redux/reducer/index';
 import { UserConversationsListSuccess, ConversationsList } from '../../../../redux/conversations/constants/interfaces';
 import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
+import { Conversation } from '../../index';
 import useStyles from '../../styles/styles';
 
-export default ({ data }: UserConversationsListSuccess) => {
+// type Props = UserConversationsListSuccess | Conversation;
+
+interface Props {
+  data: Array<ConversationsList>
+  usersTyping: Conversation
+}
+
+export default ({ data, usersTyping }: Props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -22,6 +30,13 @@ export default ({ data }: UserConversationsListSuccess) => {
   useEffect(() => {
     setConversations(data);
   }, [data]);
+
+  const getString = (element: any) => {
+    const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping);
+    let str = '';
+    arr.forEach((el: any) => str += el.firstName);
+    return str;
+  };
 
   useEffect(() => {
     setConversations((prevState): Array<ConversationsList> => {
@@ -42,7 +57,7 @@ export default ({ data }: UserConversationsListSuccess) => {
           <Avatar style={{ width: '50px', height: '50px' }} />
           <div className='chat__chats-item-message-container relative'>
             {/* {console.log(typing[element.conversationId] && typing[element.conversationId].users, userId)} */}
-            <Typography className={classes.bold} variant='subtitle1'>{typing[element.conversationId] && (typing[element.conversationId].users.map((el) => <p>{el.userId === userId ? null : el.firstName}</p>))}</Typography>
+      <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
             <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
             <div className='flex ustify-start a-items'>
               <Typography variant='caption'>{element.Messages[0] && element.Messages[0].User && element.Messages[0].User.id === userId ? 'Вы:' : element.conversationType === 'Dialog' ? null : `${element.Messages[0] && element.Messages[0].User && element.Messages[0].User.firstName}:`}</Typography>

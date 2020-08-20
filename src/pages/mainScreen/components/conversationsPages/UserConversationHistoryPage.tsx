@@ -70,14 +70,16 @@ export default function UserConversationHistoryPage() {
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
     setMessage(event.target.value);
+    const user = {
+      userId,
+      firstName,
+      conversationId: id,
+      isTyping: false,
+    };
     if (!typing[conversationId]) {
-      socket.emit('typingState', {
-        isTyping: true, conversationId: id, users: [...[], { userId, firstName }], userId,
-      });
+      socket.emit('typingState', user);
     } else {
-      socket.emit('typingState', {
-        isTyping: true, conversationId: id, users: [...typing[conversationId].users, { userId, firstName, isTyping: true }], userId,
-      });
+      socket.emit('typingState', user);
     }
   };
 

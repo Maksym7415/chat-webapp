@@ -77,7 +77,7 @@ export default function UserConversationHistoryPage() {
       isTyping: false,
     };
     if (!typing[conversationId]) {
-      socket.emit('typingState', user);
+      socket.emit('typingState', user, id);
     } else {
       socket.emit('typingState', user);
     }

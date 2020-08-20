@@ -32,7 +32,7 @@ export default ({ data, usersTyping }: Props) => {
   }, [data]);
 
   const getString = (element: any) => {
-    const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping);
+    const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
     let str = '';
     arr.forEach((el: any) => str += el.firstName);
     return str;

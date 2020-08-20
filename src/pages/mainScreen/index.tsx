@@ -35,7 +35,7 @@ interface BackUsers {
 }
 
 let isEmit = false;
-let newTimer: any = null;
+let newTimer: any = {};
 
 export default function BasicTextFields({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
@@ -55,20 +55,33 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   });
   // const [timer, setTimer] = useState<Timer>({ });
 
-  const timer = (user: BackUsers) => new Promise((resolve) => {
-    let timer: any;
-    setUsersTyping((prev: any) => {
-      const conversation = prev[user.conversationId];
-      return { ...prev, [user.conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
-    });
-    timer = setTimeout(() => resolve(timer), 3000);
-  }).then((timer: any) => {
-    // setUsersTyping((prev: any) => {
-    //   const conversation = prev[user.conversationId];
-    //   return { ...prev, [user.conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
-    // });
-    clearTimeout(timer);
-  });
+  const timer = (user: BackUsers, conversationId: number) => {
+    if (!isEmit) {
+      isEmit = true;
+      setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
+      });
+      newTimer[conversationId] = {};
+      newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        isEmit = false;
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+      }), 3000);
+    } else {
+      clearTimeout(newTimer[conversationId][user.userId]);
+      setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
+      });
+      newTimer[conversationId] = {};
+      newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        isEmit = false;
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+      }), 3000);
+    }
+  };
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
@@ -81,16 +94,13 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
         dispatch(conversationAddNewMessage(message, chat.conversationId));
       });
       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
-        timer(conversation);
-        // { ...value, [senderId]: setTimeout(() => dispatch(conversationTypeStateAction(chat.conversationId, false, newUsers, userId)), 3000) };
-        // dispatch(conversationTypeStateAction(chat.conversationId, isTyping, users, userId));
+        timer(conversation, chat.conversationId);
       });
     });
   }, [conversationsList, typing]);
 
   return (
     <Grid className='chat__container relative' container item xs={12} justify="space-between">
-      {console.log(usersTyping)}
       <ChatsList data={conversationsList} usersTyping={usersTyping}/>
       <UserConversationHistoryPage />
     </Grid>

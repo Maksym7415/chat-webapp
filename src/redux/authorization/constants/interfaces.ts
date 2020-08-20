@@ -101,6 +101,7 @@ export interface TokenPayload {
   login: string
   userAgent: string
   userId: number
+  firstName: string
   type: string
   iat: number
   exp: number

@@ -16,6 +16,7 @@ export default ({ data }: UserConversationsListSuccess) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
+  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const handleChangeChat = (id: number) => dispatch(getConversationIdAction(id));
 
   useEffect(() => {
@@ -40,6 +41,8 @@ export default ({ data }: UserConversationsListSuccess) => {
         <div className='flex chat__chats-item' key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
           <Avatar style={{ width: '50px', height: '50px' }} />
           <div className='chat__chats-item-message-container relative'>
+            {/* {console.log(typing[element.conversationId] && typing[element.conversationId].users, userId)} */}
+            <Typography className={classes.bold} variant='subtitle1'>{typing[element.conversationId] && (typing[element.conversationId].users.map((el) => <p>{el.userId === userId ? null : el.firstName}</p>))}</Typography>
             <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
             <div className='flex ustify-start a-items'>
               <Typography variant='caption'>{element.Messages[0] && element.Messages[0].User && element.Messages[0].User.id === userId ? 'Вы:' : element.conversationType === 'Dialog' ? null : `${element.Messages[0] && element.Messages[0].User && element.Messages[0].User.firstName}:`}</Typography>

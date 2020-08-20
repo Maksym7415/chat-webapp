@@ -52,7 +52,8 @@ export default function UserConversationHistoryPage() {
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
   const id = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
-  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
@@ -69,6 +70,15 @@ export default function UserConversationHistoryPage() {
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
     setMessage(event.target.value);
+    if (!typing[conversationId]) {
+      socket.emit('typingState', {
+        isTyping: true, conversationId: id, users: [...[], { userId, firstName }], userId,
+      });
+    } else {
+      socket.emit('typingState', {
+        isTyping: true, conversationId: id, users: [...typing[conversationId].users, { userId, firstName, isTyping: true }], userId,
+      });
+    }
   };
 
   const handleSendMessage = () => {
@@ -115,13 +125,6 @@ export default function UserConversationHistoryPage() {
     if (element) {
       scrollTop(ref, element, pagination.currentPage, scrollValue[id], true);
     }
-  }, [id]);
-
-  useEffect(() => {
-    // let element = document.getElementById('messages');
-    // if (element) {
-    //   setScrollValue((prevValue) => ({ ...prevValue, [id]: getCurrentScrollTop(element) }));
-    // }
     if (!Object.keys(allMessages).includes(`${id}`)) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
@@ -146,6 +149,7 @@ export default function UserConversationHistoryPage() {
     <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={8} onScroll={scrollHandler}>
       <Grid item xs={12}>
         {
+
           allMessages[id] && allMessages[id].map(({
             fkSenderId, message, sendDate, User,
           }, index) => (

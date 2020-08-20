@@ -46,13 +46,16 @@ export interface ConversationReducerStateInterface {
   conversationId: {
     id: number
   }
+  conversationTypeState: {
+    [key: number]: ConverstaionTypeStateForReducer
+  }
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
@@ -94,6 +97,32 @@ export interface UserHistoryConversationSuccess {
 interface UserConversationsList {
   success: UserConversationsListSuccess
   error: ErrorResponse
+}
+
+interface ConverstaionTypeStateForReducer {
+  isTyping: boolean
+  users: Array<Users>
+  userId: number
+}
+
+interface ConverstaionTypeState {
+  isTyping: boolean
+  conversationId: number
+  users: Array<Users>
+  userId: number
+}
+
+export interface Users {
+  isTyping: boolean
+  firstName: string
+  userId: number
+
+}
+
+export interface ConversationTypeStateInterfaceAction {
+  type: typeof types.CONVERSATION_TYPE_STATE
+  payload: ConverstaionTypeState
+
 }
 
 export interface ConversationsList {

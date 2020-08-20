@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
 import {
   ConversationActionsType,
@@ -9,6 +10,8 @@ import {
   Messages,
   ConversationAddNewMessageAction,
   ConversationIdAction,
+  ConversationTypeStateInterfaceAction,
+  Users,
 } from './interfaces';
 import { ErrorResponse } from '../../common/interafaces';
 
@@ -46,4 +49,14 @@ export const getUserConversationsActionRequest = (): UserConversationsListAction
 export const getConversationIdAction = (id: number): ConversationIdAction => ({
   type: types.CONVERSATION_ID,
   payload: id,
+});
+
+export const conversationTypeStateAction = (conversationId: number, isTyping: boolean, users: Array<Users>, userId: number): ConversationTypeStateInterfaceAction => ({
+  type: types.CONVERSATION_TYPE_STATE,
+  payload: {
+    conversationId,
+    isTyping,
+    users,
+    userId,
+  },
 });

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import * as types from '../constants/types';
 import { ConversationReducerStateInterface, ConversationActionsType } from '../constants/interfaces';
+import socket from '../../../socket';
 
 const initialState: ConversationReducerStateInterface = {
   userHistoryConversation: {
@@ -33,6 +34,17 @@ const initialState: ConversationReducerStateInterface = {
   },
   conversationId: {
     id: 0,
+  },
+  conversationTypeState: {
+    0: {
+      isTyping: false,
+      userId: 0,
+      users: [{
+        isTyping: false,
+        firstName: '',
+        userId: 0,
+      }],
+    },
   },
 };
 
@@ -80,6 +92,12 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         conversationId: {
           id: action.payload,
         },
+      };
+    }
+    case types.CONVERSATION_TYPE_STATE: {
+      return {
+        ...state,
+        conversationTypeState: { ...state.conversationTypeState, [action.payload.conversationId]: action.payload },
       };
     }
 

@@ -136,12 +136,7 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     setAllMessages((prev) => {
-<<<<<<< HEAD
       return { ...prev, [id]: [...messageHistory, ...prev[id]] }
-=======
-      console.log(allMessages, prev);
-      return { ...prev, [id]: [...messageHistory, ...prev[id]] };
->>>>>>> 52a5747d73e383ca9f64ebfb7e79b8455db5c214
     });
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
@@ -186,23 +181,12 @@ export default function UserConversationHistoryPage() {
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
-<<<<<<< HEAD
-                (message[id] || '') === '' 
-                  ? 
-                  <InputAdornment position="end"> 
-                    <AddFiles /> 
-                  </InputAdornment> 
-                  : 
-                  <InputAdornment position="end">
-                    <IconButton /*aria-label="toggle password visibility"*/ onClick={handleSendMessage}>
-=======
                 (message[id] || '') === ''
                   ? <InputAdornment position="end">
                     <AddFiles />
                   </InputAdornment>
                   : <InputAdornment position="end">
                     <IconButton /* aria-label="toggle password visibility" */ onClick={handleSendMessage}>
->>>>>>> 52a5747d73e383ca9f64ebfb7e79b8455db5c214
                       <SendIcon />
                     </IconButton>
                   </InputAdornment>

@@ -12,7 +12,7 @@ export function* loginWatcher() {
 
 function* loginWorker({ login }: LoginAction) {
   try {
-    const response = yield call(axios.post, 'http://localhost:8081/api/signIn', { ...login });
+    const response = yield call(axios.post, '/signIn', { ...login });
     yield put(requestSuccess(response, 'login'));
   } catch (error) {
     yield put(requestFail(error, 'login'));

@@ -63,6 +63,7 @@ export default function UserConversationHistoryPage() {
   const ref = React.useRef(null);
   useMemo(() => setAllMessages((prev) => {
     if (prev[id] && prev[id].length) return { ...prev };
+    console.log('memo', allMessages, id, conversationId);
     return ({ ...prev, [conversationId]: [] });
   }), [conversationId]);
   // useMemo(() => scrollTop(ref), [conversationId]);
@@ -131,7 +132,11 @@ export default function UserConversationHistoryPage() {
   }, [id]);
 
   useEffect(() => {
-    setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory, ...prev[id]] }));
+    // console.log(id);
+    setAllMessages((prev) => {
+      console.log(allMessages, prev);
+      return { ...prev, [id]: [...messageHistory, ...prev[id]] }
+    });
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
   }, [messageHistory]);
@@ -174,14 +179,17 @@ export default function UserConversationHistoryPage() {
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
-                message === '' ? <AddFiles /> : <InputAdornment position="end">
-                  <IconButton
-                    // aria-label="toggle password visibility"
-                    onClick={handleSendMessage}
-                  >
-                    <SendIcon />
-                  </IconButton>
-                </InputAdornment>
+                message === '' 
+                  ? 
+                  <InputAdornment position="end"> 
+                    <AddFiles /> 
+                  </InputAdornment> 
+                  : 
+                  <InputAdornment position="end">
+                    <IconButton /*aria-label="toggle password visibility"*/ onClick={handleSendMessage}>
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
               ),
             }}
             label='Type message'

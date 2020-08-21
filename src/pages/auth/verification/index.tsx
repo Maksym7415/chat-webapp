@@ -8,11 +8,12 @@ import { VeirficationLocationState } from '../common/authInterfaces'; // interfa
 import { RootState } from '../../../redux/reducer';
 
 export default function ({ history }: RouteComponentProps) {
+  console.log(history);
   const dispatch = useDispatch();
   const response = useSelector(({ authReducer }: RootState) => authReducer.verification);
 
   const submit = (value: any): void => {
-    dispatch(actionCheckVerificationCode({ ...value, login: 'kir221dol@gmail.com' }));
+    dispatch(actionCheckVerificationCode({ ...value, login: history.location.state.login }));
   };
 
   useEffect(() => {

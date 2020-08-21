@@ -18,7 +18,7 @@ export default function ({ history }: RouteComponentProps) {
   };
 
   useEffect(() => {
-    if (response.success.status && !response.error) history.push('/verification', { login });
+    if (response.success.status && !response.error) history.push('/verification', login );
   }, [response]);
 
   return (

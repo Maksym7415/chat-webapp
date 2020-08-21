@@ -62,7 +62,7 @@ export default function UserConversationHistoryPage() {
   const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
-  const [message, setMessage] = useState<MessageValue>({0: ''});
+  const [message, setMessage] = useState<MessageValue>({ 0: '' });
 
   const ref = React.useRef(null);
   useMemo(() => setAllMessages((prev) => {
@@ -74,7 +74,7 @@ export default function UserConversationHistoryPage() {
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    setMessage({...message, [id]: event.target.value});
+    setMessage({ ...message, [id]: event.target.value });
     const user = {
       userId,
       firstName,
@@ -96,7 +96,7 @@ export default function UserConversationHistoryPage() {
       },
       userId,
     }), (success: boolean) => {
-      if (success) setMessage({...message, [id]: ''});
+      if (success) setMessage({ ...message, [id]: '' });
     });
   };
 
@@ -109,7 +109,7 @@ export default function UserConversationHistoryPage() {
         },
         userId,
       }), (success: boolean) => {
-        if (success) setMessage({...message, [id]: ''});
+        if (success) setMessage({ ...message, [id]: '' });
       });
     }
   };
@@ -139,7 +139,7 @@ export default function UserConversationHistoryPage() {
     // console.log(id);
     setAllMessages((prev) => {
       console.log(allMessages, prev);
-      return { ...prev, [id]: [...messageHistory, ...prev[id]] }
+      return { ...prev, [id]: [...messageHistory, ...prev[id]] };
     });
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
@@ -185,14 +185,12 @@ export default function UserConversationHistoryPage() {
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
-                message[id] === '' 
-                  ? 
-                  <InputAdornment position="end"> 
-                    <AddFiles /> 
-                  </InputAdornment> 
-                  : 
-                  <InputAdornment position="end">
-                    <IconButton /*aria-label="toggle password visibility"*/ onClick={handleSendMessage}>
+                (message[id] || '') === ''
+                  ? <InputAdornment position="end">
+                    <AddFiles />
+                  </InputAdornment>
+                  : <InputAdornment position="end">
+                    <IconButton /* aria-label="toggle password visibility" */ onClick={handleSendMessage}>
                       <SendIcon />
                     </IconButton>
                   </InputAdornment>

@@ -61,7 +61,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
         const conversation = prev[conversationId];
         return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
       });
-      newTimer[conversationId] = {};
+      newTimer[conversationId] = { ...newTimer[conversationId] };
       newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
         const conversation = prev[conversationId];
         isEmit = false;
@@ -73,7 +73,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
         const conversation = prev[conversationId];
         return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
       });
-      newTimer[conversationId] = {};
+      newTimer[conversationId] = { ...newTimer[conversationId] };
       newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
         const conversation = prev[conversationId];
         isEmit = false;
@@ -84,6 +84,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   const timer = (user: BackUsers, conversationId: number) => {
     if (conversationId in newTimer) {
+      console.log(newTimer);
       currentUserTyping(user, conversationId);
     } else {
       isEmit = false;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,6 +39,9 @@ let newTimer: any = {};
 
 export default function BasicTextFields({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
+  const chatListEl = useRef(null);
+  const chatHistoryEl = useRef(null);
+  const dragEl = useRef(null);
   const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
@@ -108,10 +111,41 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     });
   }, [conversationsList, typing]);
 
+  var isResizing = false,
+    lastDownX = 0;
+
+  const resizeChatList = () => {
+    // var container = $('#container'),
+    //     left = $('#left_panel'),
+    //     right = $('#right_panel'),
+    //     handle = $('#drag');
+
+    handle.on('mousedown', function (e) {
+        isResizing = true;
+        lastDownX = e.clientX;
+    });
+
+    $(document).on('mousemove', function (e) {
+        // we don't want to do anything if we aren't resizing.
+        if (!isResizing) 
+            return;
+        
+        var offsetRight = container.width() - (e.clientX - container.offset().left);
+
+        left.css('right', offsetRight);
+        right.css('width', offsetRight);
+    }).on('mouseup', function (e) {
+        // stop resizing
+        isResizing = false;
+    });
+  };
+
+
   return (
     <Grid className='chat__container relative' container item xs={12} justify="space-between">
-      <ChatsList data={conversationsList} usersTyping={usersTyping}/>
-      <UserConversationHistoryPage />
+      <ChatsList data={conversationsList} usersTyping={usersTyping} ref={chatListEl}/>
+      <div style={{border: '1px solid black', width: '4px'}} ref={dragEl}/>
+      <UserConversationHistoryPage chatHistoryElRef={chatHistoryEl}/>
     </Grid>
   );
 }

@@ -14,12 +14,12 @@ import useStyles from '../../styles/styles';
 interface Props {
   data: Array<ConversationsList>
   usersTyping: Conversation
+  ref: MutableRefObject<null>
 }
 
-export default ({ data, usersTyping }: Props) => {
+export default ({ data, usersTyping, ref }: Props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);

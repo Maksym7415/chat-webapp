@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, MutableRefObject } from 'react';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -48,7 +48,7 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
-export default function UserConversationHistoryPage() {
+export default function UserConversationHistoryPage({chatHistoryElRef}:MutableRefObject<null>) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
@@ -152,7 +152,7 @@ export default function UserConversationHistoryPage() {
   }, [allMessages]);
 
   return (
-    <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={8} onScroll={scrollHandler}>
+    <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={7} onScroll={scrollHandler}>
       <Grid item xs={12}>
         {
 

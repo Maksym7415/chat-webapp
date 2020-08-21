@@ -62,7 +62,7 @@ export default function UserConversationHistoryPage() {
   const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
-  const [message, setMessage] = useState<MessageValue>({0: ''});
+  const [message, setMessage] = useState<MessageValue>({ 0: '' });
 
   const ref = React.useRef(null);
   useMemo(() => setAllMessages((prev) => {
@@ -73,7 +73,7 @@ export default function UserConversationHistoryPage() {
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    setMessage({...message, [id]: event.target.value});
+    setMessage({ ...message, [id]: event.target.value });
     const user = {
       userId,
       firstName,
@@ -95,7 +95,7 @@ export default function UserConversationHistoryPage() {
       },
       userId,
     }), (success: boolean) => {
-      if (success) setMessage({...message, [id]: ''});
+      if (success) setMessage({ ...message, [id]: '' });
     });
   };
 
@@ -108,7 +108,7 @@ export default function UserConversationHistoryPage() {
         },
         userId,
       }), (success: boolean) => {
-        if (success) setMessage({...message, [id]: ''});
+        if (success) setMessage({ ...message, [id]: '' });
       });
     }
   };
@@ -136,7 +136,12 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     setAllMessages((prev) => {
+<<<<<<< HEAD
       return { ...prev, [id]: [...messageHistory, ...prev[id]] }
+=======
+      console.log(allMessages, prev);
+      return { ...prev, [id]: [...messageHistory, ...prev[id]] };
+>>>>>>> 52a5747d73e383ca9f64ebfb7e79b8455db5c214
     });
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
@@ -181,6 +186,7 @@ export default function UserConversationHistoryPage() {
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
+<<<<<<< HEAD
                 (message[id] || '') === '' 
                   ? 
                   <InputAdornment position="end"> 
@@ -189,6 +195,14 @@ export default function UserConversationHistoryPage() {
                   : 
                   <InputAdornment position="end">
                     <IconButton /*aria-label="toggle password visibility"*/ onClick={handleSendMessage}>
+=======
+                (message[id] || '') === ''
+                  ? <InputAdornment position="end">
+                    <AddFiles />
+                  </InputAdornment>
+                  : <InputAdornment position="end">
+                    <IconButton /* aria-label="toggle password visibility" */ onClick={handleSendMessage}>
+>>>>>>> 52a5747d73e383ca9f64ebfb7e79b8455db5c214
                       <SendIcon />
                     </IconButton>
                   </InputAdornment>

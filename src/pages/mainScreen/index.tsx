@@ -86,12 +86,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     if (conversationId in newTimer) {
       currentUserTyping(user, conversationId);
     } else {
-      newTimer[conversationId] = {};
-      newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
-        const conversation = prev[conversationId];
-        isEmit = false;
-        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
-      }), 3000);
+      isEmit = false;
       currentUserTyping(user, conversationId);
     }
   };

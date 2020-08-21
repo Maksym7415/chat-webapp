@@ -21,6 +21,10 @@ interface ScrollValue {
   [key:number]: number
 }
 
+interface MessageValue {
+  [key: number]: string
+}
+
 interface Pagination {
   [key: number]: number
 }
@@ -58,7 +62,7 @@ export default function UserConversationHistoryPage() {
   const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<MessageValue>({0: ''});
 
   const ref = React.useRef(null);
   useMemo(() => setAllMessages((prev) => {
@@ -70,7 +74,7 @@ export default function UserConversationHistoryPage() {
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    setMessage(event.target.value);
+    setMessage({...message, [id]: event.target.value});
     const user = {
       userId,
       firstName,
@@ -92,7 +96,7 @@ export default function UserConversationHistoryPage() {
       },
       userId,
     }), (success: boolean) => {
-      if (success) setMessage('');
+      if (success) setMessage({...message, [id]: ''});
     });
   };
 
@@ -105,7 +109,7 @@ export default function UserConversationHistoryPage() {
         },
         userId,
       }), (success: boolean) => {
-        if (success) setMessage('');
+        if (success) setMessage({...message, [id]: ''});
       });
     }
   };
@@ -172,14 +176,16 @@ export default function UserConversationHistoryPage() {
           ))
         }
       </Grid>
-      <Grid item xs={12}>
+
+      {conversationId !== 0 && <Grid item xs={12}>
         <div className='chat__send-message-input'>
+          {console.log(message, id)}
           <TextField
             fullWidth
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
-                message === '' 
+                message[id] === '' 
                   ? 
                   <InputAdornment position="end"> 
                     <AddFiles /> 
@@ -193,11 +199,11 @@ export default function UserConversationHistoryPage() {
               ),
             }}
             label='Type message'
-            value={message}
+            value={message[id] || ''}
             onChange={handleChangeMessage}
           />
         </div>
-      </Grid>
+      </Grid>}
     </Grid>
 
   );

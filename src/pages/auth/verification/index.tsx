@@ -12,7 +12,7 @@ export default function ({ history }: RouteComponentProps) {
   const response = useSelector(({ authReducer }: RootState) => authReducer.verification);
 
   const submit = (value: any): void => {
-    dispatch(actionCheckVerificationCode({ ...value, login: 'kir221dol@gmail.com' }));
+    dispatch(actionCheckVerificationCode({ ...value, login: 'vit91112@gmail.com' }));
   };
 
   useEffect(() => {

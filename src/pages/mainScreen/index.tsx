@@ -54,8 +54,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     },
   });
   // const [timer, setTimer] = useState<Timer>({ });
-
-  const timer = (user: BackUsers, conversationId: number) => {
+  const currentUserTyping = (user: BackUsers, conversationId: number) => {
     if (!isEmit) {
       isEmit = true;
       setUsersTyping((prev: any) => {
@@ -80,6 +79,20 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
         isEmit = false;
         return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
       }), 3000);
+    }
+  };
+
+  const timer = (user: BackUsers, conversationId: number) => {
+    if (conversationId in newTimer) {
+      currentUserTyping(user, conversationId);
+    } else {
+      newTimer[conversationId] = {};
+      newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        isEmit = false;
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+      }), 3000);
+      currentUserTyping(user, conversationId);
     }
   };
 

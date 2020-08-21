@@ -13,11 +13,7 @@ export default function ({ history }: RouteComponentProps) {
   const response = useSelector(({ authReducer }: RootState) => authReducer.verification);
 
   const submit = (value: any): void => {
-<<<<<<< HEAD
     dispatch(actionCheckVerificationCode({ ...value, login: history.location.state.login }));
-=======
-    dispatch(actionCheckVerificationCode({ ...value, login: 'vit91112@gmail.com' }));
->>>>>>> 5509cdb4e5e9fba5d238511346c7ed176f1ffe5f
   };
 
   useEffect(() => {

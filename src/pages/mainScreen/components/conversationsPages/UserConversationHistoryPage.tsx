@@ -67,7 +67,6 @@ export default function UserConversationHistoryPage() {
   const ref = React.useRef(null);
   useMemo(() => setAllMessages((prev) => {
     if (prev[id] && prev[id].length) return { ...prev };
-    console.log('memo', allMessages, id, conversationId);
     return ({ ...prev, [conversationId]: [] });
   }), [conversationId]);
   // useMemo(() => scrollTop(ref), [conversationId]);
@@ -136,10 +135,13 @@ export default function UserConversationHistoryPage() {
   }, [id]);
 
   useEffect(() => {
-    // console.log(id);
     setAllMessages((prev) => {
+<<<<<<< HEAD
+      return { ...prev, [id]: [...messageHistory, ...prev[id]] }
+=======
       console.log(allMessages, prev);
       return { ...prev, [id]: [...messageHistory, ...prev[id]] };
+>>>>>>> 52a5747d73e383ca9f64ebfb7e79b8455db5c214
     });
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
@@ -179,18 +181,28 @@ export default function UserConversationHistoryPage() {
 
       {conversationId !== 0 && <Grid item xs={12}>
         <div className='chat__send-message-input'>
-          {console.log(message, id)}
           <TextField
             fullWidth
             onKeyDown={sendMessageByKey}
             InputProps={{
               endAdornment: (
+<<<<<<< HEAD
+                (message[id] || '') === '' 
+                  ? 
+                  <InputAdornment position="end"> 
+                    <AddFiles /> 
+                  </InputAdornment> 
+                  : 
+                  <InputAdornment position="end">
+                    <IconButton /*aria-label="toggle password visibility"*/ onClick={handleSendMessage}>
+=======
                 (message[id] || '') === ''
                   ? <InputAdornment position="end">
                     <AddFiles />
                   </InputAdornment>
                   : <InputAdornment position="end">
                     <IconButton /* aria-label="toggle password visibility" */ onClick={handleSendMessage}>
+>>>>>>> 52a5747d73e383ca9f64ebfb7e79b8455db5c214
                       <SendIcon />
                     </IconButton>
                   </InputAdornment>

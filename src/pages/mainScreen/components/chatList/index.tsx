@@ -24,6 +24,7 @@ export default ({ data, usersTyping }: Props) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
+  const activeConversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const handleChangeChat = (id: number) => dispatch(getConversationIdAction(id));
 
@@ -53,7 +54,7 @@ export default ({ data, usersTyping }: Props) => {
   return (
     <Grid item xs={4} >
       {conversations.map((element) => (
-        <div className='flex chat__chats-item' key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
+        <div className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`} key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
           <Avatar style={{ width: '50px', height: '50px' }} />
           <div className='chat__chats-item-message-container relative'>
             {/* {console.log(typing[element.conversationId] && typing[element.conversationId].users, userId)} */}

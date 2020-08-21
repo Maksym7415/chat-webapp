@@ -26,4 +26,31 @@
         width: 80%;
         margin: 30px auto 0 auto;
     }
+    &__active {
+        background-color: #b9e6e1;
+    
+    }
+    
+    &__active:hover {
+        background-color: #64c8bc;
+        
+    }
+    
+    &__active:hover * {
+        color: white;
+    }
 }
+
+// .active {
+//     background-color: #b9e6e1;
+
+// }
+
+// .active:hover {
+//     background-color: #64c8bc;
+    
+// }
+
+// .active:hover * {
+//     color: white;
+// }

@@ -10,20 +10,22 @@ export const handleGetBufferFile = (fileReader: any, blob: any) => new Promise((
   };
 });
 
-export const handleEmitFilePartly = (file: any, fileSize: number, fileName: string, userId: number, conversationId: number, socket: any) => {
+export const handleEmitFilePartly = (file: any, fileSize: number, fileName: string, userId: number, conversationId: number, socket: any, message: string) => {
   const uniqueName = uuidv4();
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < Math.ceil(fileSize / 10000); i++) {
+  const iterations = Math.ceil(fileSize / 10000);
+  for (let i = 0; i < iterations; i++) {
     socket.emit('files', {
       data: file.slice(i * 10000, (i + 1) * 10000),
       uniqueName,
       fileName,
       sendDate: fullDate(new Date()),
       messageType: 'file',
-      fkSenderId: userId,
+      userId,
       conversationId,
       fileSize,
       fileExtension: fileName.split('.')[fileName.split('.').length - 1],
+      iterations,
+      message,
     });
   }
 };

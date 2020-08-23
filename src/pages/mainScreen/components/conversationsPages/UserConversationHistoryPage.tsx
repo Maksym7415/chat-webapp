@@ -1,17 +1,21 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, {
+  useEffect, useState, useMemo, useRef,
+} from 'react';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Grid, Paper, TextField, InputAdornment, IconButton,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { conversationUserHistoryActionRequest, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import useStyles from '../../styles/styles';
 import AddFiles from './addFilesComponent';
+import './styles/styles.scss';
 
 interface CurrentConversationMessages {
   [key: number]: Array<Messages>
@@ -63,6 +67,9 @@ export default function UserConversationHistoryPage() {
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
+  const [files, setFiles] = useState<FileList | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const ref = React.useRef(null);
   useMemo(() => setAllMessages((prev) => {
@@ -125,6 +132,44 @@ export default function UserConversationHistoryPage() {
   //   // dispatch(conversationUserHistoryActionRequest(1));
   //   scrollTop(ref);
   // }, [dispatch, conversationId]);
+  const handleOpenDialog = (isOpen: boolean) => {
+    if (!isOpen) {
+      setFiles(null);
+    }
+    setIsOpenDialog(isOpen);
+  };
+
+  const openFileDialog = () => {
+    const element = inputRef.current;
+    if (element) element.click();
+  };
+
+  const stopEvent = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    stopEvent(event);
+  };
+
+  const onDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    stopEvent(event);
+  };
+
+  const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    stopEvent(event);
+    handleOpenDialog(true);
+    const file: FileList | null = (event.target as HTMLInputElement).files;
+    setFiles(file);
+  };
+
+  const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.persist();
+    handleOpenDialog(true);
+    const file: FileList | null = event.target.files;
+    setFiles(file);
+  };
 
   useEffect(() => {
     let element = document.getElementById('messages');
@@ -152,7 +197,15 @@ export default function UserConversationHistoryPage() {
   }, [allMessages]);
 
   return (
-    <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={8} onScroll={scrollHandler}>
+    <Grid
+      onScroll={scrollHandler}
+      className='overflowY-auto'
+      style={{ maxHeight: '87vh' }}
+      container item xs={8}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+    >
       <Grid item xs={12}>
         {
 
@@ -180,14 +233,22 @@ export default function UserConversationHistoryPage() {
             InputProps={{
               endAdornment: (
                 (message[id] || '') === ''
-                  ? <InputAdornment position="end">
-                    <AddFiles />
-                  </InputAdornment>
-                  : <InputAdornment position="end">
-                    <IconButton /* aria-label="toggle password visibility" */ onClick={handleSendMessage}>
-                      <SendIcon />
-                    </IconButton>
-                  </InputAdornment>
+                  ? (
+                    <label htmlFor="icon-button-file">
+                      <IconButton color="primary" aria-label="upload picture" component="span">
+                        <CloudUploadIcon />
+                      </IconButton>
+                    </label>
+                  )
+                  : (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleSendMessage}
+                      >
+                        <SendIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  )
               ),
             }}
             label='Type message'
@@ -196,7 +257,16 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>}
+      <input
+        ref={inputRef}
+        style={{ display: 'none' }}
+        accept="image/*"
+        id="icon-button-file"
+        type="file"
+        multiple
+        onChange={onFilesAdded}
+      />
+      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </Grid>
-
   );
 }

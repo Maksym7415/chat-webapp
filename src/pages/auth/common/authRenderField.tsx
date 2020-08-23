@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-    TextField,
+  TextField,
 } from '@material-ui/core';
-import { IPropsRenderField } from './authInterfaces'
-import useStyles from './style'
+import { IPropsRenderField } from './authInterfaces';
+import useStyles from './style';
 
-export const AuthRenderField = ({ input, meta: { touched, error, invalid }, label, placeholder, variant }: IPropsRenderField) => {
-    const classes = useStyles()
-    return (
+export const AuthRenderField = ({
+  input, meta: { touched, error, invalid }, label, placeholder, variant,
+}: IPropsRenderField) => {
+  const classes = useStyles();
+  return (
         <TextField
             className={classes.textField}
             label={label}
@@ -19,6 +21,5 @@ export const AuthRenderField = ({ input, meta: { touched, error, invalid }, labe
             {...input}
             fullWidth
         />
-    )
-}
-
+  );
+};

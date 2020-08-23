@@ -13,6 +13,7 @@ import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat
 import socket from '../../../../socket';
 import useStyles from '../../styles/styles';
 import AddFiles from './addFilesComponent';
+import './styles/styles.scss';
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function UserConversationHistoryPage() {
   const [allMessages, setAllMessages] = useState<Array<Messages>>([]);
   const [message, setMessage] = useState<string>('');
   const [files, setFiles] = useState<FileList | null>(null);
-  const input = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,12 +60,14 @@ export default function UserConversationHistoryPage() {
   };
 
   const handleOpenDialog = (isOpen: boolean) => {
-    if (!isOpen) setFiles(null);
+    if (!isOpen) {
+      setFiles(null);
+    }
     setIsOpenDialog(isOpen);
   };
 
   const openFileDialog = () => {
-    const element = input.current;
+    const element = inputRef.current;
     if (element) element.click();
   };
 
@@ -143,7 +146,7 @@ export default function UserConversationHistoryPage() {
                 message === ''
                   ? (
                     <label htmlFor="icon-button-file">
-                      <IconButton onClick={openFileDialog} color="primary" aria-label="upload picture" component="span">
+                      <IconButton color="primary" aria-label="upload picture" component="span">
                         <CloudUploadIcon />
                       </IconButton>
                     </label>
@@ -151,7 +154,6 @@ export default function UserConversationHistoryPage() {
                   : (
                     <InputAdornment position="end">
                       <IconButton
-                        // aria-label="toggle password visibility"
                         onClick={handleSendMessage}
                       >
                         <SendIcon />
@@ -167,16 +169,15 @@ export default function UserConversationHistoryPage() {
         </div>
       </Grid>
       <input
-        // ref={input}
+        ref={inputRef}
         style={{ display: 'none' }}
         accept="image/*"
-        // className={classes.input}
         id="icon-button-file"
         type="file"
         multiple
         onChange={onFilesAdded}
       />
-      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} />
+      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </Grid>
   );
 }

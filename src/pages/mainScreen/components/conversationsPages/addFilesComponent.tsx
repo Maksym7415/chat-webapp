@@ -29,7 +29,7 @@ export default function AddFiles({
           filesCount = 0;
         } else {
           const file = await handleGetBufferFile(fileReader, filesArray[filesCount]);
-          handleEmitFilePartly(file, filesArray[filesCount].size, filesArray[filesCount].name, userId, conversationId, socket, message);
+          handleEmitFilePartly(file, filesArray[filesCount].size, filesArray[filesCount].name, userId, conversationId, socket, message, filesArray[filesCount].type);
           filesCount++;
           handleEmitFile();
         }

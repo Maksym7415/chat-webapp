@@ -73,12 +73,19 @@ interface User {
   tagName: string
 }
 
+interface FileData {
+  file: any
+  isImage: boolean
+  fileName: string
+}
+
 export interface Messages {
   User: User
   message: string
   fkSenderId: number
   sendDate: string
   messageType: string
+  fileData: FileData
 }
 
 export interface UserConversationHistoryActionRequest {

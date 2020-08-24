@@ -10,7 +10,7 @@ export const handleGetBufferFile = (fileReader: any, blob: any) => new Promise((
   };
 });
 
-export const handleEmitFilePartly = (file: any, fileSize: number, fileName: string, userId: number, conversationId: number, socket: any, message: string) => {
+export const handleEmitFilePartly = (file: any, fileSize: number, fileName: string, userId: number, conversationId: number, socket: any, message: string, type: string) => {
   const uniqueName = uuidv4();
   const iterations = Math.ceil(fileSize / 10000);
   for (let i = 0; i < iterations; i++) {
@@ -20,12 +20,18 @@ export const handleEmitFilePartly = (file: any, fileSize: number, fileName: stri
       fileName,
       sendDate: fullDate(new Date()),
       messageType: 'file',
+      message: {
+        message,
+        fkSenderId: userId,
+        sendDate: fullDate(new Date()),
+        messageType: 'Text',
+      },
       userId,
       conversationId,
       fileSize,
       fileExtension: fileName.split('.')[fileName.split('.').length - 1],
+      isImage: !!type.includes('image'),
       iterations,
-      message,
     });
   }
 };

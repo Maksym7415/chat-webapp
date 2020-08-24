@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { off } from 'process';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
@@ -22,7 +23,7 @@ interface CurrentConversationMessages {
 }
 
 interface ScrollValue {
-  [key:number]: number
+  [key: number]: number
 }
 
 interface MessageValue {
@@ -34,22 +35,30 @@ interface Pagination {
 }
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
+  console.log(offset, mainGrid.scrollTop, position);
   if (isScrollTo) {
     return mainGrid.scrollTo({
       top: position,
-      // behavior: 'smooth',
+      behavior: 'smooth',
     });
   }
-  if (mainGrid.scrollTop === 0 && offset !== 0) {
+  if (position === 0 && offset !== 0) {
     return mainGrid.scrollTo({
-      top: position,
-      // behavior: 'smooth',
+      top: position || 10,
+      behavior: 'smooth',
     });
   }
-  if (ref.current) ref.current.scrollIntoView();
-  // ref.current.scrollIntoView({ behavior: 'smooth' });
-};
 
+  // if (mainGrid.scrollTop === 0 && offset !== 0) {
+  //   return mainGrid.scrollTo({
+  //     top: 10,
+  //     // behavior: 'smooth',
+  //   });
+  // }
+
+  // console.log(132);
+  if (ref.current) ref.current.scrollIntoView({ behavior: 'smooth' });
+};
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
 export default function UserConversationHistoryPage() {
@@ -58,7 +67,6 @@ export default function UserConversationHistoryPage() {
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
   const id = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
@@ -71,12 +79,14 @@ export default function UserConversationHistoryPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
-  const ref = React.useRef(null);
+  const ref = useRef(null);
+
   useMemo(() => setAllMessages((prev) => {
-    if (prev[id] && prev[id].length) return { ...prev };
-    return ({ ...prev, [conversationId]: [] });
-  }), [conversationId]);
-  // useMemo(() => scrollTop(ref), [conversationId]);
+    if (prev[id] && prev[id].length) {
+      return { ...prev };
+    }
+    return ({ ...prev, [id]: [] });
+  }), [id]);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -87,7 +97,7 @@ export default function UserConversationHistoryPage() {
       conversationId: id,
       isTyping: false,
     };
-    if (!typing[conversationId]) {
+    if (!typing[id]) {
       socket.emit('typingState', user, id);
     } else {
       socket.emit('typingState', user);
@@ -96,9 +106,9 @@ export default function UserConversationHistoryPage() {
 
   const handleSendMessage = () => {
     socket.emit('chats', ({
-      conversationId,
+      conversationId: id,
       message: {
-        message, fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+        message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
       },
       userId,
     }), (success: boolean) => {
@@ -109,9 +119,9 @@ export default function UserConversationHistoryPage() {
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       socket.emit('chats', ({
-        conversationId,
+        conversationId: id,
         message: {
-          message, fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+          message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
         },
         userId,
       }), (success: boolean) => {
@@ -128,10 +138,6 @@ export default function UserConversationHistoryPage() {
     }
   };
 
-  // useEffect(() => {
-  //   // dispatch(conversationUserHistoryActionRequest(1));
-  //   scrollTop(ref);
-  // }, [dispatch, conversationId]);
   const handleOpenDialog = (isOpen: boolean) => {
     if (!isOpen) {
       setFiles(null);
@@ -174,9 +180,9 @@ export default function UserConversationHistoryPage() {
   useEffect(() => {
     let element = document.getElementById('messages');
     if (element) {
-      scrollTop(ref, element, pagination.currentPage, scrollValue[id], true);
+      scrollTop(ref, element, localPagination[id], scrollValue[id], true);
     }
-    if (!Object.keys(allMessages).includes(`${id}`)) dispatch(conversationUserHistoryActionRequest(id, 0));
+    if (!allMessages[id].length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
   useEffect(() => {
@@ -186,13 +192,19 @@ export default function UserConversationHistoryPage() {
   }, [messageHistory]);
 
   useEffect(() => {
-    if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((prev) => ({ ...prev, [conversationId]: [...prev[conversationId], lastMessage[conversationId]] }));
+    if (Object.keys(lastMessage).length && id in lastMessage) setAllMessages((prev) => ({ ...prev, [id]: [...prev[id], lastMessage[id]] }));
   }, [lastMessage]);
 
   useEffect(() => {
     let element = document.getElementById('messages');
     if (element) {
-      scrollTop(ref, element, pagination.currentPage, 10, false);
+      let isScrolling = false;
+      let position = 10;
+      if (scrollValue[id]) {
+        isScrolling = true;
+        position = scrollValue[id];
+      }
+      scrollTop(ref, element, localPagination[id], scrollValue[id], isScrolling);
     }
   }, [allMessages]);
 
@@ -200,12 +212,14 @@ export default function UserConversationHistoryPage() {
     <Grid
       onScroll={scrollHandler}
       className='overflowY-auto'
+      id={'messages'}
       style={{ maxHeight: '87vh' }}
       container item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
     >
+      {console.log(scrollValue)}
       <Grid item xs={12}>
         {
 
@@ -221,11 +235,11 @@ export default function UserConversationHistoryPage() {
                   <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
                 </Paper>
               </div>
-          ))
+            ))
         }
       </Grid>
 
-      {conversationId !== 0 && <Grid item xs={12}>
+      {id !== 0 && <Grid item xs={12}>
         <div className='chat__send-message-input'>
           <TextField
             fullWidth

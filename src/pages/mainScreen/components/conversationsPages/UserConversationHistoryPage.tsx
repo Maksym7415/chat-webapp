@@ -98,7 +98,7 @@ export default function UserConversationHistoryPage() {
     socket.emit('chats', ({
       conversationId,
       message: {
-        message, fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+        message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
       },
       userId,
     }), (success: boolean) => {
@@ -111,7 +111,7 @@ export default function UserConversationHistoryPage() {
       socket.emit('chats', ({
         conversationId,
         message: {
-          message, fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+          message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
         },
         userId,
       }), (success: boolean) => {
@@ -128,10 +128,6 @@ export default function UserConversationHistoryPage() {
     }
   };
 
-  // useEffect(() => {
-  //   // dispatch(conversationUserHistoryActionRequest(1));
-  //   scrollTop(ref);
-  // }, [dispatch, conversationId]);
   const handleOpenDialog = (isOpen: boolean) => {
     if (!isOpen) {
       setFiles(null);
@@ -196,6 +192,15 @@ export default function UserConversationHistoryPage() {
     }
   }, [allMessages]);
 
+  const bufferToBase64 = (ArrayBuffer: [], fileName: string) => {
+    const typedArray: any = new Uint8Array(ArrayBuffer);
+    // const stringChar = String.fromCharCode.apply(null, typedArray);
+    const stringChar = typedArray.reduce((data: any, byte: any) => data + String.fromCharCode(byte), '');
+    const base64 = window.btoa(stringChar);
+    console.log(base64);
+    return <img src={base64} alt={fileName} />;
+  };
+
   return (
     <Grid
       onScroll={scrollHandler}
@@ -210,12 +215,19 @@ export default function UserConversationHistoryPage() {
         {
 
           allMessages[id] && allMessages[id].map(({
-            fkSenderId, message, sendDate, User,
+            fkSenderId, message, sendDate, User, fileData,
           }, index) => (
               <div className={classes.messagesDiv} key={index} ref={ref}>
-                <Paper elevation={1} className={clsx(classes.paperSenderMessage, {
-                  [classes.paperFriendMessage]: fkSenderId !== userId,
-                })} >
+                <Paper
+                  elevation={1}
+                  className={clsx(classes.paperSenderMessage, {
+                    [classes.paperFriendMessage]: fkSenderId !== userId,
+                  })}
+                >
+                  {fileData && fileData.file && bufferToBase64(fileData.file, fileData.fileName)
+                    // && <img src={bufferToBase64(fileData.file)} alt={fileData.fileName} />
+                  }
+                  {console.log(fileData && fileData.file)}
                   <p className={classes.messageText}>{message}</p>
                   <p className={classes.messageText}>{User.tagName}</p>
                   <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>

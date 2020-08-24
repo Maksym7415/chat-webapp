@@ -100,6 +100,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   useEffect(() => {
     conversationsList.forEach((chat) => {
       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
+        console.log(message);
         dispatch(conversationAddNewMessage(message, chat.conversationId));
       });
       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {

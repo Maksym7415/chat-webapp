@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import * as types from '../constants/types';
 import { ConversationReducerStateInterface, ConversationActionsType } from '../constants/interfaces';
-import socket from '../../../socket';
 
 const initialState: ConversationReducerStateInterface = {
   userHistoryConversation: {

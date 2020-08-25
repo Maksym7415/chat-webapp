@@ -35,7 +35,6 @@ interface Pagination {
 }
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
-  console.log(mainGrid, isScrollTo, position);
   if (isScrollTo) {
     return mainGrid.scrollTo({
       top: position,
@@ -55,8 +54,6 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
   //   });
   // }
 
-  // console.log(132);
-  console.log(ref.current);
   if (ref.current) ref.current.scrollIntoView({ behavior: 'smooth' });
 };
 const getCurrentScrollTop = (element: any) => element.scrollTop;

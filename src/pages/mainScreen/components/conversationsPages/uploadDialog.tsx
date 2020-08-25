@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField,
@@ -6,22 +7,25 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { DialogProps } from './interfaces';
 import useStyles from './styles/styles';
-
-import Preloader from '../../../../components/preloader/Preloader';
+import { preloaderAction } from '../../../../redux/common/commonActions';
 
 export default function UploadDialog({
-  handleClose, handleSend, isOpen, files, handleAddFile,
+  handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage,
 }: DialogProps) {
   const classes = useStyles();
-  const [message, setMessage] = useState<string>('');
-  const [src, setSrc] = useState<Array<string | ArrayBuffer | null>>([]);
+  const dispatch = useDispatch();
 
   const readImage = (file: File) => {
     const reader: FileReader = new FileReader();
     reader.onload = (event: Event) => {
-      setSrc((prev) => ([...prev, reader.result]));
+      setSrc((prev: any) => ([...prev, reader.result]));
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleSendFiles = () => {
+    dispatch(preloaderAction(true));
+    handleSend(message);
   };
 
   const handleCloseDialog = () => {
@@ -44,13 +48,9 @@ export default function UploadDialog({
         Add files
       </DialogTitle>
       <DialogContent dividers>
-        <div className='conversations__upload-image-container relative'>
-          <div className='conversations__loader-dialog'>
-            <Preloader/>
-          </div>
-
+        <div className='conversations__upload-image-container'>
           {
-            src.map((file: any) => <img key={file} className='conversations__upload-image' src={file} />)
+            src.map((file: any, i) => <img key={i} className='conversations__upload-image' src={file} />)
           }
         </div>
         <TextField
@@ -67,7 +67,7 @@ export default function UploadDialog({
         <Button variant='contained' color='primary' onClick={() => handleAddFile()}>Add</Button>
         <div className='full-w flex'>
           <div className='conversations__send-close-buttons-container'>
-            <Button variant='contained' color='primary' onClick={() => handleSend(message)}>Send</Button>
+            <Button variant='contained' color='primary' onClick={handleSendFiles}>Send</Button>
             <Button classes={{ root: classes.buttonMargin }} variant='contained' color='primary' onClick={handleCloseDialog}>Close</Button>
           </div>
         </div>

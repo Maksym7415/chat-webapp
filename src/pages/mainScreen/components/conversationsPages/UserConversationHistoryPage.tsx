@@ -8,13 +8,12 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { off } from 'process';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
-import useStyles from '../../styles/styles';
+import useStyles from './styles/styles';
 import AddFiles from './addFilesComponent';
 import './styles/styles.scss';
 
@@ -75,6 +74,7 @@ export default function UserConversationHistoryPage() {
   const [files, setFiles] = useState<FileList | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const [isInputState, setIsInputState] = useState<boolean>(false);
 
   const ref = useRef(null);
 
@@ -169,10 +169,17 @@ export default function UserConversationHistoryPage() {
 
   const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    handleOpenDialog(true);
     const file: FileList | null = event.target.files;
+    if (file && !file.length) return;
+    handleOpenDialog(true);
     setFiles(file);
+    setIsInputState(true);
+    // event.target.value = '';
   };
+
+  useEffect(() => {
+    setIsInputState(false);
+  }, [files]);
 
   useEffect(() => {
     let element = document.getElementById('messages');
@@ -208,8 +215,8 @@ export default function UserConversationHistoryPage() {
 
   return (
     <Grid
-
-      container item xs={8}
+      container
+      item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -220,17 +227,24 @@ export default function UserConversationHistoryPage() {
           allMessages[id] && allMessages[id].map(({
             fkSenderId, message, sendDate, User, fileData,
           }, index) => (
-              <div className={classes.messagesDiv} key={index} ref={ref}>
-                <Paper
+              <div className='conversations__message-container' key={index} ref={ref}>
+                {
+                  fileData && !!fileData.length && <div className='conversations__message-image-container'>
+                    {
+                      fileData.map((file) => file.isImage && <img className='conversations__message-image-item' key={file.name} src={`http://localhost:8081/${file.name}`} alt={file.name} />)
+                    }
+                  </div>
+                }
+                {message && <Paper
                   elevation={1}
                   className={clsx(classes.paperSenderMessage, {
                     [classes.paperFriendMessage]: fkSenderId !== userId,
                   })}
                 >
-                  <p className={classes.messageText}>{message}</p>
-                  <p className={classes.messageText}>{User.tagName}</p>
-                  <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
-                </Paper>
+                  <p className='conversations__message-text'>{message}</p>
+                  <p className='conversations__message-text'>{User.tagName}</p>
+                  <p className='conversations__message-data-sender'>{getCurrentDay(new Date(sendDate))}</p>
+                </Paper>}
               </div>
           ))
         }
@@ -245,8 +259,8 @@ export default function UserConversationHistoryPage() {
               endAdornment: (
                 (message[id] || '') === ''
                   ? (
-                    <label htmlFor="icon-button-file">
-                      <IconButton color="primary" aria-label="upload picture" component="span">
+                    <label>
+                      <IconButton onClick={openFileDialog} color="primary" aria-label="upload picture" component="span">
                         <CloudUploadIcon />
                       </IconButton>
                     </label>
@@ -268,15 +282,14 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>}
-      <input
+      {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}
         accept="image/*"
-        id="icon-button-file"
         type="file"
         multiple
         onChange={onFilesAdded}
-      />
+      />}
       <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </Grid>
   );

@@ -1,3 +1,5 @@
+import * as types from './types';
+
 interface SimpleErrorResponse {
   code: number
   message: string
@@ -10,3 +12,12 @@ interface ComplexErrorResponse {
 }
 
 export type ErrorResponse = SimpleErrorResponse | ComplexErrorResponse | null;
+
+export interface PreloaderActionInterface {
+  type: typeof types.APP_PRELOADER
+  payload: boolean
+}
+
+export interface CommonReducerInterface {
+  isShow: boolean
+}

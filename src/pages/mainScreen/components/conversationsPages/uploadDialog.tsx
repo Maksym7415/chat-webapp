@@ -3,8 +3,11 @@ import Button from '@material-ui/core/Button';
 import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { DialogProps } from './interfaces';
 import useStyles from './styles/styles';
+
+import Preloader from '../../../../components/preloader/Preloader';
 
 export default function UploadDialog({
   handleClose, handleSend, isOpen, files, handleAddFile,
@@ -41,7 +44,11 @@ export default function UploadDialog({
         Add files
       </DialogTitle>
       <DialogContent dividers>
-        <div className='conversations__upload-image-container'>
+        <div className='conversations__upload-image-container relative'>
+          <div className='conversations__loader-dialog'>
+            <Preloader/>
+          </div>
+
           {
             src.map((file: any) => <img key={file} className='conversations__upload-image' src={file} />)
           }

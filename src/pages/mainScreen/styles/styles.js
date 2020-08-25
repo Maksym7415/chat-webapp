@@ -41,4 +41,10 @@ export default makeStyles((theme) => ({
   messageTextInList: {
     width: '150px',
   },
+  circularProgress: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
 }));

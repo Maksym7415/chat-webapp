@@ -208,15 +208,6 @@ export default function UserConversationHistoryPage() {
     }
   }, [allMessages]);
 
-  const bufferToBase64 = (ArrayBuffer: [], fileName: string) => {
-    const typedArray: any = new Uint8Array(ArrayBuffer);
-    // const stringChar = String.fromCharCode.apply(null, typedArray);
-    const stringChar = typedArray.reduce((data: any, byte: any) => data + String.fromCharCode(byte), '');
-    const base64 = window.btoa(stringChar);
-    console.log(base64);
-    return <img src={base64} alt={fileName} />;
-  };
-
   return (
     <Grid
       onScroll={scrollHandler}
@@ -228,7 +219,6 @@ export default function UserConversationHistoryPage() {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
     >
-      {console.log(scrollValue)}
       <Grid item xs={12}>
         {
 
@@ -242,16 +232,12 @@ export default function UserConversationHistoryPage() {
                     [classes.paperFriendMessage]: fkSenderId !== userId,
                   })}
                 >
-                  {fileData && fileData.file && bufferToBase64(fileData.file, fileData.fileName)
-                    // && <img src={bufferToBase64(fileData.file)} alt={fileData.fileName} />
-                  }
-                  {console.log(fileData && fileData.file)}
                   <p className={classes.messageText}>{message}</p>
                   <p className={classes.messageText}>{User.tagName}</p>
                   <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
                 </Paper>
               </div>
-            ))
+          ))
         }
       </Grid>
 

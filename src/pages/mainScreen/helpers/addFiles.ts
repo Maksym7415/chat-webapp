@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Func } from 'mocha';
 import { fullDate } from '../../../common/getCorrectDateFormat';
-import { PreloaderAction } from '../../../redux/common/commonActions';
+import { preloaderAction } from '../../../redux/common/commonActions';
 
 export const handleGetBufferFile = (fileReader: any, blob: any) => new Promise((resolve) => {
   fileReader.readAsArrayBuffer(blob);
@@ -11,7 +12,7 @@ export const handleGetBufferFile = (fileReader: any, blob: any) => new Promise((
   };
 });
 
-export const handleEmitFilePartly = (file: any, fileSize: number, fileName: string, userId: number, conversationId: number, socket: any, message: string, type: string, filesCount: number, dispatch: any, handleOpenDialog: Function) => {
+export const handleEmitFilePartly = (file: any, fileSize: number, fileName: string, userId: number, conversationId: number, socket: any, message: string, type: string, filesCount: number, dispatch: any, handleOpenDialog: Function, setSrc: Function, setMessage: Function) => {
   const uniqueName = uuidv4();
   const iterations = Math.ceil(fileSize / 10000);
   for (let i = 0; i < iterations; i++) {
@@ -37,7 +38,9 @@ export const handleEmitFilePartly = (file: any, fileSize: number, fileName: stri
     }, (success: boolean) => {
       if (success) {
         handleOpenDialog(false);
-        dispatch(PreloaderAction(false));
+        setSrc([]);
+        setMessage('');
+        dispatch(preloaderAction(false));
       }
     });
   }

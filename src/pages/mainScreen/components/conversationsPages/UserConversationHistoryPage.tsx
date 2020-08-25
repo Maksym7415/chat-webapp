@@ -77,6 +77,7 @@ export default function UserConversationHistoryPage() {
   const [files, setFiles] = useState<FileList | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const [isInputState, setIsInputState] = useState<boolean>(false);
 
   const ref = useRef(null);
 
@@ -171,11 +172,17 @@ export default function UserConversationHistoryPage() {
 
   const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    handleOpenDialog(true);
     const file: FileList | null = event.target.files;
+    if (file && !file.length) return;
+    handleOpenDialog(true);
     setFiles(file);
+    setIsInputState(true);
     // event.target.value = '';
   };
+
+  useEffect(() => {
+    setIsInputState(false);
+  }, [files]);
 
   useEffect(() => {
     let element = document.getElementById('messages');
@@ -278,14 +285,14 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>}
-      <input
+      {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}
         accept="image/*"
         type="file"
         multiple
         onChange={onFilesAdded}
-      />
+      />}
       <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </Grid>
   );

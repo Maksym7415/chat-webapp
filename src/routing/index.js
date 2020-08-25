@@ -7,7 +7,7 @@ import {
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
-
+import Preloader from '../components/preloader/Preloader';
 import setAxios from '../axios.config';
 import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
@@ -28,6 +28,7 @@ function Router(props) {
   return (
     <Fragment>
       <Theme>
+        <Preloader />
         <CssBaseline />
         {
           config

@@ -35,6 +35,7 @@ interface Pagination {
 }
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
+  console.log(mainGrid, isScrollTo, position);
   if (isScrollTo) {
     return mainGrid.scrollTo({
       top: position,
@@ -47,7 +48,6 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
       behavior: 'smooth',
     });
   }
-  console.log(1234);
   // if (mainGrid.scrollTop === 0 && offset !== 0) {
   //   return mainGrid.scrollTo({
   //     top: 10,
@@ -197,8 +197,7 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     let element = document.getElementById('messages');
-    console.log(123456789);
-    scrollTop(ref, 'element', localPagination[id], scrollValue[id], false);
+    // scrollTop(ref, 'element', localPagination[id], scrollValue[id], false);
     if (element) {
       let isScrolling = false;
       let position = 10;

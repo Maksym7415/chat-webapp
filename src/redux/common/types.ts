@@ -1,0 +1,1 @@
+export const APP_PRELOADER = 'APP PRELOADER';

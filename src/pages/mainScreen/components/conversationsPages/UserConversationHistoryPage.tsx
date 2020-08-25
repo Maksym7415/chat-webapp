@@ -35,7 +35,6 @@ interface Pagination {
 }
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
-  console.log(offset, mainGrid.scrollTop, position);
   if (isScrollTo) {
     return mainGrid.scrollTo({
       top: position,
@@ -48,7 +47,7 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
       behavior: 'smooth',
     });
   }
-
+  console.log(1234);
   // if (mainGrid.scrollTop === 0 && offset !== 0) {
   //   return mainGrid.scrollTo({
   //     top: 10,
@@ -57,6 +56,7 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
   // }
 
   // console.log(132);
+  console.log(ref.current);
   if (ref.current) ref.current.scrollIntoView({ behavior: 'smooth' });
 };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
@@ -197,6 +197,8 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     let element = document.getElementById('messages');
+    console.log(123456789);
+    scrollTop(ref, 'element', localPagination[id], scrollValue[id], false);
     if (element) {
       let isScrolling = false;
       let position = 10;
@@ -210,16 +212,13 @@ export default function UserConversationHistoryPage() {
 
   return (
     <Grid
-      onScroll={scrollHandler}
-      className='overflowY-auto'
-      id={'messages'}
-      style={{ maxHeight: '87vh' }}
+
       container item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} id='messages' onScroll={scrollHandler} className='overflowY-auto' style={{ maxHeight: '87vh' }}>
         {
 
           allMessages[id] && allMessages[id].map(({

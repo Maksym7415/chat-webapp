@@ -1,4 +1,4 @@
-const bufferToBase64 = (ArrayBuffer: [], fileName: string) => {
+export const bufferToBase64 = (ArrayBuffer: [], fileName: string) => {
   const typedArray: any = new Uint8Array(ArrayBuffer);
   // const stringChar = String.fromCharCode.apply(null, typedArray);
   const stringChar = typedArray.reduce((data: any, byte: any) => data + String.fromCharCode(byte), '');

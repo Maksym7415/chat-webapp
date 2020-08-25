@@ -44,13 +44,9 @@ export default function UploadDialog({
         Add files
       </DialogTitle>
       <DialogContent dividers>
-        <div className='conversations__upload-image-container relative'>
-          <div className='conversations__loader-dialog'>
-            <Preloader/>
-          </div>
-
+        <div className='conversations__upload-image-container'>
           {
-            src.map((file: any) => <img key={file} className='conversations__upload-image' src={file} />)
+            src.map((file: any, i) => <img key={i} className='conversations__upload-image' src={file} />)
           }
         </div>
         <TextField

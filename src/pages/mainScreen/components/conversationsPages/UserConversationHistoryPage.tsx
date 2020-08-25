@@ -8,13 +8,12 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { off } from 'process';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
-import useStyles from '../../styles/styles';
+import useStyles from './styles/styles';
 import AddFiles from './addFilesComponent';
 import './styles/styles.scss';
 
@@ -35,7 +34,6 @@ interface Pagination {
 }
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
-  console.log(offset, mainGrid.scrollTop, position);
   if (isScrollTo) {
     return mainGrid.scrollTo({
       top: position,
@@ -175,6 +173,7 @@ export default function UserConversationHistoryPage() {
     handleOpenDialog(true);
     const file: FileList | null = event.target.files;
     setFiles(file);
+    // event.target.value = '';
   };
 
   useEffect(() => {
@@ -214,7 +213,8 @@ export default function UserConversationHistoryPage() {
       className='overflowY-auto'
       id={'messages'}
       style={{ maxHeight: '87vh' }}
-      container item xs={8}
+      container
+      item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -225,17 +225,24 @@ export default function UserConversationHistoryPage() {
           allMessages[id] && allMessages[id].map(({
             fkSenderId, message, sendDate, User, fileData,
           }, index) => (
-              <div className={classes.messagesDiv} key={index} ref={ref}>
-                <Paper
+              <div className='conversations__message-container' key={index} ref={ref}>
+                {
+                  fileData && !!fileData.length && <div className='conversations__message-image-container'>
+                    {
+                      fileData.map((file) => file.isImage && <img className='conversations__message-image-item' key={file.name} src={`http://localhost:8081/${file.name}`} alt={file.name} />)
+                    }
+                  </div>
+                }
+                {message && <Paper
                   elevation={1}
                   className={clsx(classes.paperSenderMessage, {
                     [classes.paperFriendMessage]: fkSenderId !== userId,
                   })}
                 >
-                  <p className={classes.messageText}>{message}</p>
-                  <p className={classes.messageText}>{User.tagName}</p>
-                  <p className={classes.dateSender}>{getCurrentDay(new Date(sendDate))}</p>
-                </Paper>
+                  <p className='conversations__message-text'>{message}</p>
+                  <p className='conversations__message-text'>{User.tagName}</p>
+                  <p className='conversations__message-data-sender'>{getCurrentDay(new Date(sendDate))}</p>
+                </Paper>}
               </div>
           ))
         }
@@ -250,8 +257,8 @@ export default function UserConversationHistoryPage() {
               endAdornment: (
                 (message[id] || '') === ''
                   ? (
-                    <label htmlFor="icon-button-file">
-                      <IconButton color="primary" aria-label="upload picture" component="span">
+                    <label>
+                      <IconButton onClick={openFileDialog} color="primary" aria-label="upload picture" component="span">
                         <CloudUploadIcon />
                       </IconButton>
                     </label>
@@ -277,7 +284,6 @@ export default function UserConversationHistoryPage() {
         ref={inputRef}
         style={{ display: 'none' }}
         accept="image/*"
-        id="icon-button-file"
         type="file"
         multiple
         onChange={onFilesAdded}

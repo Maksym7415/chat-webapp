@@ -7,6 +7,7 @@ import {
   Grid, Paper, TextField, InputAdornment, IconButton,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
@@ -65,7 +66,7 @@ export default function UserConversationHistoryPage() {
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [files, setFiles] = useState <FileList | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
@@ -166,6 +167,7 @@ export default function UserConversationHistoryPage() {
     const file: FileList | null = event.target.files;
     if (file && !file.length) return;
     handleOpenDialog(true);
+    console.log(file && file.length);
     setFiles(file);
     setIsInputState(true);
     // event.target.value = '';
@@ -215,11 +217,23 @@ export default function UserConversationHistoryPage() {
             fkSenderId, message, id, sendDate, User, Files,
           }) => (
               <div className='conversations__message-container' key={id} ref={ref}>
-                {console.log(Files)}
                 {
                   Files && !!Files.length && <div className='conversations__message-image-container'>
                     {
-                      Files.map((file) => <img className='conversations__message-image-item' key={file.fileStorageName} src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`} alt={file.fileStorageName} />)
+                      Files.map((file) => (['png', 'jpg', 'jpeg'].includes(file.extension)
+                        ? <img
+                              key={file.fileStorageName}
+                              className='conversations__message-image-item'
+                              src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
+                              alt={file.fileStorageName}
+                            />
+                        : <Paper
+                            className={classes.paperFileContainer}
+                            key={file.fileStorageName}
+                          >
+                            <InsertDriveFileIcon/>
+                            <p>{file.fileUserName}</p>
+                          </Paper>))
                     }
                   </div>
                 }
@@ -230,8 +244,10 @@ export default function UserConversationHistoryPage() {
                   })}
                 >
                   <p className='conversations__message-text'>{message}</p>
-                  <p className='conversations__message-text'>{User.tagName}</p>
-                  <p className='conversations__message-data-sender'>{getCurrentDay(new Date(sendDate))}</p>
+                  <div className='conversations__user-name-date-container relative'>
+                    {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
+                    <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
+                  </div>
                 </Paper>}
               </div>
           ))

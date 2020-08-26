@@ -29,14 +29,29 @@
   }
 
   &__message-image-item {
-    width: 100%;
+    max-width: 500px;
     max-height: 500px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    border-radius: 4px;
   }
 
   &__message-text {
     max-width: 80%;
     color: #e8e8e8;
+    margin: 0;
+  }
+
+  &__message-info-text {
+    width: 100%;
+    color: #e8e8e8;
+    margin: 0
+  }
+
+  &__message-info-time {
+    bottom: 0;
+    right: 0;
+    color: #e8e8e8;
+    margin: 0
   }
 
   &__message-data-sender {
@@ -51,5 +66,11 @@
     flex-direction: column;
     width: 90%;
     margin-left: auto;
+  }
+
+  &__user-name-date-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto
   }
 }

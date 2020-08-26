@@ -92,12 +92,7 @@ export default function ({
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <Link to='/userProfile'>
-            My account
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem component={Link} to='/userProfile' onClick={handleMenuClose}> My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

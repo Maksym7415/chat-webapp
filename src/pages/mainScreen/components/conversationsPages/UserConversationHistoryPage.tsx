@@ -225,13 +225,14 @@ export default function UserConversationHistoryPage() {
         {
 
           allMessages[id] && allMessages[id].map(({
-            fkSenderId, message, sendDate, User, fileData,
-          }, index) => (
-              <div className='conversations__message-container' key={index} ref={ref}>
+            fkSenderId, message, id, sendDate, User, Files,
+          }) => (
+              <div className='conversations__message-container' key={id} ref={ref}>
+                {console.log(Files)}
                 {
-                  fileData && !!fileData.length && <div className='conversations__message-image-container'>
+                  Files && !!Files.length && <div className='conversations__message-image-container'>
                     {
-                      fileData.map((file) => file.isImage && <img className='conversations__message-image-item' key={file.name} src={`http://localhost:8081/${file.name}`} alt={file.name} />)
+                      Files.map((file) => <img className='conversations__message-image-item' key={file.fileStorageName} src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`} alt={file.fileStorageName} />)
                     }
                   </div>
                 }

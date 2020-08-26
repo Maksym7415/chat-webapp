@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import { RootState } from '../../../../redux/reducer';
-import { handleGetBufferFile, handleEmitFilePartly } from '../../helpers/addFiles';
+import { handleGetBufferFile } from '../../helpers/addFiles';
 import UploadDialog from './uploadDialog';
 import { AddFilesProps } from './interfaces';
 
@@ -26,17 +28,26 @@ export default function AddFiles({
     let fileReader = new FileReader();
     if (files) {
       let filesArray = Object.values(files);
-      const handleEmitFile = async () => {
+      const handleEmitFile = async (messageId: number, sendDate: any) => {
         if (filesCount === filesArray.length) {
           filesCount = 0;
         } else {
-          const file = await handleGetBufferFile(fileReader, filesArray[filesCount]);
-          handleEmitFilePartly(file, filesArray[filesCount].size, filesArray[filesCount].name, userId, conversationId, socket, message, filesArray[filesCount].type, filesArray.length, dispatch, handleOpenDialog, setSrc, setMessage);
+          await handleGetBufferFile(fileReader, filesArray[filesCount], filesArray[filesCount].size, filesArray[filesCount].name, userId, conversationId, socket, message, filesArray[filesCount].type, filesArray.length, dispatch, handleOpenDialog, setSrc, setMessage, messageId, sendDate);
           filesCount++;
-          handleEmitFile();
+          handleEmitFile(messageId, sendDate);
         }
       };
-      handleEmitFile();
+      socket.emit('files', {
+        conversationId,
+        message: {
+          message,
+          fkSenderId: userId,
+          sendDate: fullDate(new Date()),
+          messageType: 'File',
+        },
+      }, (id: number) => {
+        if (id) handleEmitFile(id, fullDate(new Date()));
+      });
     }
   };
 

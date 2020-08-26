@@ -74,17 +74,22 @@ interface User {
 }
 
 interface FileData {
-  isImage: boolean
-  name: string
+  extension: string
+  fileStorageName: string
+  fileUserName: string
+  fkMessageId: number
+  id: number
+  size: number
 }
 
 export interface Messages {
   User: User
   message: string
   fkSenderId: number
+  id: number
   sendDate: string
   messageType: string
-  fileData: Array<FileData>
+  Files: Array<FileData>
 }
 
 export interface UserConversationHistoryActionRequest {

@@ -36,7 +36,7 @@ interface Pagination {
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
   if (isScrollTo) {
     return mainGrid.scrollTo({
-      top: position,
+      top: position + ref.current?.offsetHeight,
       behavior: 'smooth',
     });
   }
@@ -46,14 +46,8 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
       behavior: 'smooth',
     });
   }
-  // if (mainGrid.scrollTop === 0 && offset !== 0) {
-  //   return mainGrid.scrollTo({
-  //     top: 10,
-  //     // behavior: 'smooth',
-  //   });
-  // }
 
-  if (ref.current) ref.current.scrollIntoView({ behavior: 'smooth' });
+ref.current?.scrollIntoView({ behavior: 'smooth' });
 };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -182,10 +176,6 @@ export default function UserConversationHistoryPage() {
   }, [files]);
 
   useEffect(() => {
-    let element = document.getElementById('messages');
-    if (element) {
-      scrollTop(ref, element, localPagination[id], scrollValue[id], true);
-    }
     if (!allMessages[id].length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
@@ -201,13 +191,10 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     let element = document.getElementById('messages');
-    // scrollTop(ref, 'element', localPagination[id], scrollValue[id], false);
     if (element) {
       let isScrolling = false;
-      let position = 10;
       if (scrollValue[id]) {
         isScrolling = true;
-        position = scrollValue[id];
       }
       scrollTop(ref, element, localPagination[id], scrollValue[id], isScrolling);
     }

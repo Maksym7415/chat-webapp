@@ -47,7 +47,7 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
     });
   }
 
-ref.current?.scrollIntoView({ behavior: 'smooth' });
+  ref.current?.scrollIntoView({ behavior: 'smooth' });
 };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -102,13 +102,14 @@ export default function UserConversationHistoryPage() {
         message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
       },
       userId,
-      opponentId: 9,
+      opponentId: 1,
     }), (success: boolean) => {
       if (success) setMessage({ ...message, [id]: '' });
     });
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(id);
     if (event.key === 'Enter') {
       socket.emit('chats', ({
         conversationId: id,
@@ -234,7 +235,7 @@ export default function UserConversationHistoryPage() {
                   <p className='conversations__message-data-sender'>{getCurrentDay(new Date(sendDate))}</p>
                 </Paper>}
               </div>
-          ))
+            ))
         }
       </Grid>
 
@@ -270,14 +271,14 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>}
-      {!isInputState && <input
+      {/* {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}
         accept="image/*"
         type="file"
         multiple
         onChange={onFilesAdded}
-      />}
+      />} */}
       <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </Grid>
   );

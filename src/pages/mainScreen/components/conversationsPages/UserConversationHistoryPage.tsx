@@ -97,11 +97,12 @@ export default function UserConversationHistoryPage() {
 
   const handleSendMessage = () => {
     socket.emit('chats', ({
-      conversationId: id,
+      conversationId: undefined,
       message: {
         message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
       },
       userId,
+      opponentId: 9,
     }), (success: boolean) => {
       if (success) setMessage({ ...message, [id]: '' });
     });

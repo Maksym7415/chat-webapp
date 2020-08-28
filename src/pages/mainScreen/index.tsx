@@ -98,14 +98,9 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   }, []);
 
   useEffect(() => {
-    socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: any) => {
-      console.log(conversationId);
-      dispatch(getUserConversationsActionRequest());
-      // dispatch(conversationAddNewMessage(message, conversationId));
-    });
     conversationsList.forEach((chat) => {
       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-        console.log(message, chat);
+        console.log(conversationsList);
         dispatch(conversationAddNewMessage(message, chat.conversationId));
       });
       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
@@ -113,6 +108,14 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       });
     });
   }, [conversationsList, typing]);
+
+  useEffect(() => {
+    socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: any) => {
+      console.log(conversationId);
+      dispatch(getUserConversationsActionRequest());
+      // dispatch(conversationAddNewMessage(message, conversationId));
+    });
+  }, []);
 
   return (
     <Grid className='chat__container relative' container item xs={12} justify="space-between">

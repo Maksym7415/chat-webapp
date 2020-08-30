@@ -49,13 +49,17 @@ export interface ConversationReducerStateInterface {
   conversationTypeState: {
     [key: number]: ConverstaionTypeStateForReducer
   }
+  createConversation: UserCreateConversation
+  opponentId: {
+    id: number
+  }
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
@@ -184,4 +188,27 @@ interface CurrentChat {
 export interface ConversationIdAction {
   type: typeof types.CONVERSATION_ID
   payload: number
+}
+
+// CREATE NEW CONVERSATION
+
+interface ResponseCreateConversation {
+  id: number
+}
+interface UserCreateConversationSuccess {
+  data: Array<ResponseCreateConversation>
+}
+
+interface UserCreateConversation {
+  success: UserCreateConversationSuccess
+  error: ErrorResponse
+}
+
+export interface IdsInterface {
+  opponentId: number
+  userId: number
+}
+export interface CreateNewChatActionInterface {
+  type: typeof types.CONVERSATION_CREATE_NEW_CONVERSATION
+  payload: IdsInterface
 }

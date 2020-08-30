@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 
@@ -22,6 +22,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
+import { createNewChatAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 
 import Drawer from '../Drawer';
@@ -43,7 +44,7 @@ export default function MiniDrawer(props: IProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
-  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
+  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<Element | null>(null);
@@ -60,10 +61,6 @@ export default function MiniDrawer(props: IProps) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  React.useEffect(() => {
-    ref.current && ref.current.focus(); // Если элемент виден на экране даем ему фокус
-  }, [hide]);
-
   const blur = (event: any) => {
     if (event.currentTarget.contains(event.relatedTarget)) return; // чтобы событие onlur не сработало на родители, при взаимодействии с дочерними элементами
     setHide(true); // убираем элемент с поля видимости
@@ -79,8 +76,13 @@ export default function MiniDrawer(props: IProps) {
   };
 
   const createNewChat = (id: number) => {
-    console.log(id);
+    dispatch(createNewChatAction({ userId, opponentId: id }));
+    setHide(true);
   };
+
+  useEffect(() => {
+    ref.current && ref.current.focus(); // Если элемент виден на экране даем ему фокус
+  }, [hide]);
 
   return (
     <div className={classes.root}>
@@ -111,6 +113,7 @@ export default function MiniDrawer(props: IProps) {
                 <FormControl fullWidth>
                   <Input
                     className={classes.inputRoot}
+                    autoComplete='off'
                     disableUnderline={true}
                     ref={ref}
                     id="standard-adornment-weight"

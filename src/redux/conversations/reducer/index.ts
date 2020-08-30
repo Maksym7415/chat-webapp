@@ -45,6 +45,15 @@ const initialState: ConversationReducerStateInterface = {
       }],
     },
   },
+  createConversation: {
+    success: {
+      data: [],
+    },
+    error: null,
+  },
+  opponentId: {
+    id: 0,
+  },
 };
 
 const ConversationsReducer = (state = initialState, action: ConversationActionsType): ConversationReducerStateInterface => {
@@ -99,7 +108,14 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         conversationTypeState: { ...state.conversationTypeState, [action.payload.conversationId]: action.payload },
       };
     }
-
+    case types.CONVERSATION_CREATE_NEW_CONVERSATION: {
+      return {
+        ...state,
+        opponentId: {
+          id: action.payload.opponentId,
+        },
+      };
+    }
     default:
       return state;
   }

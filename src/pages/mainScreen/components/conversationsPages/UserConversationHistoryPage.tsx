@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
+import { conversationUserHistoryActionRequest, createNewChatAction, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
@@ -54,6 +54,8 @@ const getCurrentScrollTop = (element: any) => element.scrollTop;
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
+  const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
@@ -96,21 +98,43 @@ export default function UserConversationHistoryPage() {
   };
 
   const handleSendMessage = () => {
+    if (!id) {
+      return socket.emit('chats', ({
+        conversationId: undefined,
+        message: {
+          message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+        },
+        userId,
+        opponentId,
+      }), (success: boolean) => {
+        if (success) setMessage({ ...message, [id]: '' });
+      });
+    }
     socket.emit('chats', ({
-      conversationId: undefined,
+      conversationId: id,
       message: {
         message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
       },
       userId,
-      opponentId: 1,
     }), (success: boolean) => {
       if (success) setMessage({ ...message, [id]: '' });
     });
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(id);
     if (event.key === 'Enter') {
+      if (!id) {
+        return socket.emit('chats', ({
+          conversationId: undefined,
+          message: {
+            message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+          },
+          userId,
+          opponentId,
+        }), (success: boolean) => {
+          if (success) setMessage({ ...message, [id]: '' });
+        });
+      }
       socket.emit('chats', ({
         conversationId: id,
         message: {
@@ -178,11 +202,15 @@ export default function UserConversationHistoryPage() {
   }, [files]);
 
   useEffect(() => {
+    // opponentId && dispatch(createNewChatAction({ userId, opponentId }));
     if (!allMessages[id].length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
   useEffect(() => {
-    setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory, ...prev[id]] }));
+    if (!allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
+    setAllMessages((prev) => ({
+      ...prev, [id]: [...messageHistory, ...prev[id]],
+    }));
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
   }, [messageHistory]);
@@ -202,6 +230,15 @@ export default function UserConversationHistoryPage() {
     }
   }, [allMessages]);
 
+  useEffect(() => {
+    if (!isCreateChat.length) {
+      // id && dispatch(getConversationIdAction(0));
+      setAllMessages((prev) => ({}));
+    } else {
+      dispatch(getConversationIdAction(isCreateChat[0].id));
+    }
+  }, [isCreateChat]);
+
   return (
     <Grid
       container
@@ -210,6 +247,7 @@ export default function UserConversationHistoryPage() {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
     >
+      {console.log(id)}
       <Grid item xs={12} id='messages' onScroll={scrollHandler} className='overflowY-auto' style={{ maxHeight: '87vh' }}>
         {
 
@@ -238,8 +276,7 @@ export default function UserConversationHistoryPage() {
             ))
         }
       </Grid>
-
-      {id !== 0 && <Grid item xs={12}>
+      {(!!id || !!opponentId) && <Grid item xs={12}>
         <div className='chat__send-message-input'>
           <TextField
             fullWidth
@@ -271,14 +308,14 @@ export default function UserConversationHistoryPage() {
           />
         </div>
       </Grid>}
-      {/* {!isInputState && <input
+      {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}
         accept="image/*"
         type="file"
         multiple
         onChange={onFilesAdded}
-      />} */}
+      />}
       <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </Grid>
   );

@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { resolve } from 'dns';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
-import { getUserConversationsActionRequest, conversationAddNewMessage, conversationTypeStateAction } from '../../redux/conversations/constants/actionConstants';
+import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 import { Messages, Users } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
@@ -84,7 +84,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   const timer = (user: BackUsers, conversationId: number) => {
     if (conversationId in newTimer) {
-      console.log(newTimer);
       currentUserTyping(user, conversationId);
     } else {
       isEmit = false;
@@ -100,7 +99,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   useEffect(() => {
     conversationsList.forEach((chat) => {
       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-        console.log(conversationsList);
         dispatch(conversationAddNewMessage(message, chat.conversationId));
       });
       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
@@ -111,8 +109,8 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: any) => {
-      console.log(conversationId);
       dispatch(getUserConversationsActionRequest());
+      dispatch(getConversationIdAction(conversationId));
       // dispatch(conversationAddNewMessage(message, conversationId));
     });
   }, []);

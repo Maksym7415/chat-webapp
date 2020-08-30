@@ -18,6 +18,7 @@ export default function UploadDialog({
   const readImage = (file: File) => {
     const reader: FileReader = new FileReader();
     reader.onload = (event: Event) => {
+      console.log(reader.result);
       setSrc((prev: any) => ([...prev, reader.result]));
     };
     reader.readAsDataURL(file);
@@ -34,7 +35,10 @@ export default function UploadDialog({
   };
 
   useEffect(() => {
-    if (files) Object.values(files).forEach((file) => readImage(file));
+    if (files) {
+      setSrc([]);
+      files.forEach((file) => readImage(file));
+    }
   }, [files]);
 
   return (

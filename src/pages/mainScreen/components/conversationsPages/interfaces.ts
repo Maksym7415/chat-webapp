@@ -4,7 +4,7 @@ export interface DialogProps {
   handleClose: Function
   handleSend: Function
   isOpen: boolean
-  files: FileList | null
+  files: Array<File> | null
   handleAddFile: Function
   message: string
   src: Array<string | ArrayBuffer | null>
@@ -13,7 +13,7 @@ export interface DialogProps {
 }
 
 export interface AddFilesProps {
-  files: FileList | null
+  files: Array<File> | null
   isOpen: boolean
   handleOpenDialog: Function
   handleAddFile: Function

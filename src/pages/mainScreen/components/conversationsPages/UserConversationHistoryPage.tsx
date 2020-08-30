@@ -66,7 +66,7 @@ export default function UserConversationHistoryPage() {
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
-  const [files, setFiles] = useState <FileList | null>(null);
+  const [files, setFiles] = useState<Array<File> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
@@ -159,7 +159,12 @@ export default function UserConversationHistoryPage() {
     stopEvent(event);
     handleOpenDialog(true);
     const file: FileList | null = (event.target as HTMLInputElement).files;
-    setFiles(file);
+    if (file) {
+      setFiles((prev) => {
+        if (prev) return [...prev, ...Object.values(file)];
+        return Object.values(file);
+      });
+    }
   };
 
   const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,7 +173,13 @@ export default function UserConversationHistoryPage() {
     if (file && !file.length) return;
     handleOpenDialog(true);
     console.log(file && file.length);
-    setFiles(file);
+    if (file) {
+      setFiles((prev) => {
+        console.log(prev, file);
+        if (prev) return [...prev, ...Object.values(file)];
+        return Object.values(file);
+      });
+    }
     setIsInputState(true);
     // event.target.value = '';
   };

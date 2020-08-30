@@ -6,33 +6,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   Grid, Paper, TextField, InputAdornment, IconButton,
 } from '@material-ui/core';
+import { v4 as uuidv4 } from 'uuid';
 import SendIcon from '@material-ui/icons/Send';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
-import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import useStyles from './styles/styles';
 import AddFiles from './addFilesComponent';
 import './styles/styles.scss';
-
-interface CurrentConversationMessages {
-  [key: number]: Array<Messages>
-}
-
-interface ScrollValue {
-  [key: number]: number
-}
-
-interface MessageValue {
-  [key: number]: string
-}
-
-interface Pagination {
-  [key: number]: number
-}
+import {
+  Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
+} from './interfaces';
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
   if (isScrollTo) {
@@ -66,7 +53,7 @@ export default function UserConversationHistoryPage() {
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
-  const [files, setFiles] = useState<Array<File> | null>(null);
+  const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
@@ -132,7 +119,7 @@ export default function UserConversationHistoryPage() {
 
   const handleOpenDialog = (isOpen: boolean) => {
     if (!isOpen) {
-      setFiles(null);
+      setFiles({});
     }
     setIsOpenDialog(isOpen);
   };
@@ -160,10 +147,12 @@ export default function UserConversationHistoryPage() {
     handleOpenDialog(true);
     const file: FileList | null = (event.target as HTMLInputElement).files;
     if (file) {
-      setFiles((prev) => {
-        if (prev) return [...prev, ...Object.values(file)];
-        return Object.values(file);
+      const result: Files = {};
+      Object.values(file).forEach((element) => {
+        const key = uuidv4();
+        result[key] = element;
       });
+      setFiles((prev) => ({ ...prev, ...result }));
     }
   };
 
@@ -174,11 +163,12 @@ export default function UserConversationHistoryPage() {
     handleOpenDialog(true);
     console.log(file && file.length);
     if (file) {
-      setFiles((prev) => {
-        console.log(prev, file);
-        if (prev) return [...prev, ...Object.values(file)];
-        return Object.values(file);
+      const result: Files = {};
+      Object.values(file).forEach((element) => {
+        const key = uuidv4();
+        result[key] = element;
       });
+      setFiles((prev) => ({ ...prev, ...result }));
     }
     setIsInputState(true);
     // event.target.value = '';

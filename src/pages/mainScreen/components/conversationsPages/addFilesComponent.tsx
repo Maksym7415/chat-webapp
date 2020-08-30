@@ -3,13 +3,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import { fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import { RootState } from '../../../../redux/reducer';
 import { handleGetBufferFile } from '../../helpers/addFiles';
 import UploadDialog from './uploadDialog';
-import { AddFilesProps } from './interfaces';
+import { AddFilesProps, Files } from './interfaces';
 
 let filesCount = 0;
 
@@ -20,7 +19,7 @@ export default function AddFiles({
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
   const [message, setMessage] = useState<string>('');
-  const [src, setSrc] = useState<Array<string | ArrayBuffer | null>>([]);
+  const [src, setSrc] = useState<Files>({});
 
   const handleSendFiles = (message: string) => {
     if (!files) return;

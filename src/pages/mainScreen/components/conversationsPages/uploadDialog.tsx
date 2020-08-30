@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { DialogProps } from './interfaces';
 import useStyles from './styles/styles';
 import { preloaderAction } from '../../../../redux/common/commonActions';
@@ -15,11 +14,10 @@ export default function UploadDialog({
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const readImage = (file: File) => {
+  const readImage = (file: File, name: string) => {
     const reader: FileReader = new FileReader();
     reader.onload = (event: Event) => {
-      console.log(reader.result);
-      setSrc((prev: any) => ([...prev, reader.result]));
+      setSrc((prev: any) => ({ ...prev, [name]: reader.result }));
     };
     reader.readAsDataURL(file);
   };
@@ -31,13 +29,12 @@ export default function UploadDialog({
 
   const handleCloseDialog = () => {
     handleClose(false);
-    setSrc([]);
+    setSrc({});
   };
 
   useEffect(() => {
     if (files) {
-      setSrc([]);
-      files.forEach((file) => readImage(file));
+      Object.keys(files).forEach((key: string) => readImage(files[key], key));
     }
   }, [files]);
 
@@ -54,7 +51,7 @@ export default function UploadDialog({
       <DialogContent dividers>
         <div className='conversations__upload-image-container'>
           {
-            src.map((file: any, i) => <img key={i} className='conversations__upload-image' src={file} />)
+            Object.values(src).map((file: any, i) => <img key={i} className='conversations__upload-image' src={file} />)
           }
         </div>
         <TextField

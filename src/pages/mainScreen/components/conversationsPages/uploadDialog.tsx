@@ -33,6 +33,10 @@ export default function UploadDialog({
     setSrc({});
   };
 
+  const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') handleSendFiles();
+  };
+
   useEffect(() => {
     if (files) {
       Object.keys(files).forEach((key: string) => {
@@ -73,6 +77,7 @@ export default function UploadDialog({
           label='Caption'
           fullWidth
           value={message}
+          onKeyDown={sendMessageByKey}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             event.persist();
             setMessage(event.target.value);

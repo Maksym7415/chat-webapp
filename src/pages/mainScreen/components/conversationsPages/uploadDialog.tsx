@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
-  Dialog, DialogContent, DialogTitle, DialogActions, TextField,
+  Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
 } from '@material-ui/core';
-import { DialogProps } from './interfaces';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import { DialogProps, FilesSrc } from './interfaces';
 import useStyles from './styles/styles';
 import { preloaderAction } from '../../../../redux/common/commonActions';
 
@@ -17,7 +18,7 @@ export default function UploadDialog({
   const readImage = (file: File, name: string) => {
     const reader: FileReader = new FileReader();
     reader.onload = (event: Event) => {
-      setSrc((prev: any) => ({ ...prev, [name]: reader.result }));
+      setSrc((prev: FilesSrc) => ({ ...prev, [name]: { file: reader.result, type: 'image' } }));
     };
     reader.readAsDataURL(file);
   };
@@ -34,7 +35,11 @@ export default function UploadDialog({
 
   useEffect(() => {
     if (files) {
-      Object.keys(files).forEach((key: string) => readImage(files[key], key));
+      Object.keys(files).forEach((key: string) => {
+        console.log(files[key]);
+        if (files[key].type.includes('image')) return readImage(files[key], key);
+        setSrc((prev: FilesSrc) => ({ ...prev, [key]: { file: files[key].name, type: 'file' } }));
+      });
     }
   }, [files]);
 
@@ -51,7 +56,17 @@ export default function UploadDialog({
       <DialogContent dividers>
         <div className='conversations__upload-image-container'>
           {
-            Object.values(src).map((file: any, i) => <img key={i} className='conversations__upload-image' src={file} />)
+            Object.values(src).map((file: any, i) => (
+              file.type === 'image'
+                ? <img key={i} className='conversations__upload-image' src={file.file} />
+                : <Paper
+                className={classes.paperFileContainer}
+                key={i}
+              >
+                <InsertDriveFileIcon/>
+                <p>{file.fileUserName}</p>
+              </Paper>
+            ))
           }
         </div>
         <TextField

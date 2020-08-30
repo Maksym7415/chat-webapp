@@ -7,13 +7,20 @@ export interface DialogProps {
   files: Files | null
   handleAddFile: Function
   message: string
-  src: Files
+  src: FilesSrc | object
   setSrc: Function
   setMessage: Function
 }
 
 export interface Files {
   [key: string]: File
+}
+
+export interface FilesSrc {
+  [key: string]: {
+    file: string
+    type: string
+  }
 }
 
 export interface AddFilesProps {

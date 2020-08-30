@@ -8,7 +8,7 @@ import socket from '../../../../socket';
 import { RootState } from '../../../../redux/reducer';
 import { handleGetBufferFile } from '../../helpers/addFiles';
 import UploadDialog from './uploadDialog';
-import { AddFilesProps, Files } from './interfaces';
+import { AddFilesProps, FilesSrc } from './interfaces';
 
 let filesCount = 0;
 
@@ -19,7 +19,7 @@ export default function AddFiles({
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
   const [message, setMessage] = useState<string>('');
-  const [src, setSrc] = useState<Files>({});
+  const [src, setSrc] = useState<FilesSrc | object>({});
 
   const handleSendFiles = (message: string) => {
     if (!files) return;

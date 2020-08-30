@@ -290,7 +290,7 @@ export default function UserConversationHistoryPage() {
       {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}
-        accept="image/*"
+        // accept="image/*"
         type="file"
         multiple
         onChange={onFilesAdded}

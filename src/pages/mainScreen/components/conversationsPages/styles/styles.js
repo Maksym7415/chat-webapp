@@ -31,4 +31,12 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     marginBottom: '5px',
   },
+  paperFileContainerDialog: {
+    width: '80%',
+    backgroundColor: '#b5f5ca',
+    display: 'flex',
+    alignItems: 'center',
+    height: '40px',
+    marginBottom: '5px',
+  },
 }));

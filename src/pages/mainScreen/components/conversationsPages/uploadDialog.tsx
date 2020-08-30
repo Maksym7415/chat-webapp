@@ -60,12 +60,12 @@ export default function UploadDialog({
               file.type === 'image'
                 ? <img key={i} className='conversations__upload-image' src={file.file} />
                 : <Paper
-                className={classes.paperFileContainer}
-                key={i}
-              >
-                <InsertDriveFileIcon/>
-                <p>{file.fileUserName}</p>
-              </Paper>
+                    className={classes.paperFileContainerDialog}
+                    key={i}
+                  >
+                    <InsertDriveFileIcon/>
+                    <p>{file.file}</p>
+                  </Paper>
             ))
           }
         </div>

@@ -7,6 +7,7 @@ const drawerWidth = 240;
 export default makeStyles((theme) => ({
   root: {
     display: 'flex',
+    flexDirection: 'column',
   },
   grow: {
     flexGrow: 1,
@@ -109,7 +110,7 @@ export default makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    height: '100%',
   },
   reactSearch: {
     width: '100%',

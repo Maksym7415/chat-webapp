@@ -176,7 +176,7 @@ export default function MiniDrawer(props: IProps) {
     <div className={classes.root}>
       <>
         <AppBar
-          position="fixed"
+          position="static"
           className={clsx(classes.appBar, {
             [classes.appBarShift]: openDrawer,
           })}
@@ -270,7 +270,7 @@ export default function MiniDrawer(props: IProps) {
         />
       </>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
+        {/* <div className={classes.toolbar} /> */}
         {props.children}
       </main>
     </div>

@@ -52,7 +52,7 @@ export default ({ data, usersTyping }: Props) => {
   }, [lastMessage]);
 
   return (
-    <Grid item xs={4} >
+    <div className='chat__chat-list-container'>
       {conversations.map((element) => (
         <div className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`} key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
           <Avatar style={{ width: '50px', height: '50px' }} />
@@ -70,6 +70,6 @@ export default ({ data, usersTyping }: Props) => {
           </div>
         </div>
       ))}
-    </Grid>
+    </div>
   );
 };

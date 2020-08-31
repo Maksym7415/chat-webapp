@@ -204,14 +204,16 @@ export default function UserConversationHistoryPage() {
   }, [allMessages]);
 
   return (
-    <Grid
-      container
-      item xs={8}
+    <div
+      // container
+      // item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
+      className='conversations__container'
+      // onScroll={scrollHandler}
     >
-      <Grid item xs={12} id='messages' onScroll={scrollHandler} className='overflowY-auto' style={{ maxHeight: '87vh' }}>
+      <Grid item xs={12} id='messages' onScroll={scrollHandler} className='overflowY-auto' >
         {
 
           allMessages[id] && allMessages[id].map(({
@@ -256,7 +258,7 @@ export default function UserConversationHistoryPage() {
       </Grid>
 
       {id !== 0 && <Grid item xs={12}>
-        <div className='chat__send-message-input'>
+        <div className='conversations__send-message-input'>
           <TextField
             fullWidth
             onKeyDown={sendMessageByKey}
@@ -295,6 +297,6 @@ export default function UserConversationHistoryPage() {
         onChange={onFilesAdded}
       />}
       <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
-    </Grid>
+    </div>
   );
 }

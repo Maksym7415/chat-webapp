@@ -110,9 +110,9 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   }, [conversationsList, typing]);
 
   return (
-    <Grid className='chat__container relative' container item xs={12} justify="space-between">
+    <div className='chat__container relative flex'>
       <ChatsList data={conversationsList} usersTyping={usersTyping}/>
       <UserConversationHistoryPage />
-    </Grid>
+    </div>
   );
 }

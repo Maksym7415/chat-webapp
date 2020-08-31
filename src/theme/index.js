@@ -28,6 +28,9 @@ let theme = createMuiTheme({
         backgroundColor: '#feffff',
         color: '#64c8bc',
       },
+      root: {
+        height: '64px',
+      },
     },
     MuiListItemIcon: {
       root: {

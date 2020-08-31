@@ -105,6 +105,9 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
         timer(conversation, chat.conversationId);
       });
     });
+    return () => {
+      socket.removeAllListeners();
+    };
   }, [conversationsList, typing]);
 
   useEffect(() => {

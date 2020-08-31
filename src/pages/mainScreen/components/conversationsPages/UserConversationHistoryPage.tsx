@@ -74,12 +74,12 @@ export default function UserConversationHistoryPage() {
 
   const ref = useRef(null);
 
-  useMemo(() => setAllMessages((prev) => {
-    if (prev[id] && prev[id].length) {
-      return { ...prev };
-    }
-    return ({ ...prev, [id]: [] });
-  }), [id]);
+  // useMemo(() => setAllMessages((prev) => {
+  //   if (prev[id] && prev[id].length) {
+  //     return { ...prev };
+  //   }
+  //   return ({ ...prev, [id]: [] });
+  // }), [id]);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -97,53 +97,30 @@ export default function UserConversationHistoryPage() {
     }
   };
 
+  const socketSendMessageCommonFun = (conversationId: undefined | number) => socket.emit('chats', ({
+    conversationId,
+    message: {
+      message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+    },
+    userId,
+    opponentId,
+  }), (success: boolean) => {
+    if (success) setMessage({ ...message, [id]: '' });
+  });
+
   const handleSendMessage = () => {
     if (!id) {
-      return socket.emit('chats', ({
-        conversationId: undefined,
-        message: {
-          message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-        },
-        userId,
-        opponentId,
-      }), (success: boolean) => {
-        if (success) setMessage({ ...message, [id]: '' });
-      });
+      return socketSendMessageCommonFun(undefined);
     }
-    socket.emit('chats', ({
-      conversationId: id,
-      message: {
-        message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-      },
-      userId,
-    }), (success: boolean) => {
-      if (success) setMessage({ ...message, [id]: '' });
-    });
+    socketSendMessageCommonFun(id);
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       if (!id) {
-        return socket.emit('chats', ({
-          conversationId: undefined,
-          message: {
-            message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-          },
-          userId,
-          opponentId,
-        }), (success: boolean) => {
-          if (success) setMessage({ ...message, [id]: '' });
-        });
+        return socketSendMessageCommonFun(undefined);
       }
-      socket.emit('chats', ({
-        conversationId: id,
-        message: {
-          message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-        },
-        userId,
-      }), (success: boolean) => {
-        if (success) setMessage({ ...message, [id]: '' });
-      });
+      socketSendMessageCommonFun(id);
     }
   };
 
@@ -203,7 +180,13 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     // opponentId && dispatch(createNewChatAction({ userId, opponentId }));
-    if (!allMessages[id].length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
+    setAllMessages((prev) => {
+      if (prev[id] && prev[id].length) {
+        return { ...prev };
+      }
+      return ({ ...prev, [id]: [] });
+    });
+    if (!allMessages[id]?.length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
   useEffect(() => {
@@ -232,8 +215,8 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     if (!isCreateChat.length) {
-      // id && dispatch(getConversationIdAction(0));
-      setAllMessages((prev) => ({}));
+      id && dispatch(getConversationIdAction(0));
+      setAllMessages((prev) => ({ ...prev, 0: [] }));
     } else {
       dispatch(getConversationIdAction(isCreateChat[0].id));
     }
@@ -247,7 +230,6 @@ export default function UserConversationHistoryPage() {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
     >
-      {console.log(id)}
       <Grid item xs={12} id='messages' onScroll={scrollHandler} className='overflowY-auto' style={{ maxHeight: '87vh' }}>
         {
 
@@ -273,7 +255,7 @@ export default function UserConversationHistoryPage() {
                   <p className='conversations__message-data-sender'>{getCurrentDay(new Date(sendDate))}</p>
                 </Paper>}
               </div>
-            ))
+          ))
         }
       </Grid>
       {(!!id || !!opponentId) && <Grid item xs={12}>

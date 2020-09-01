@@ -131,7 +131,7 @@ export default function MiniDrawer(props: IProps) {
                 {!!searchResult.length && <Paper tabIndex={1} elevation={3} className={clsx(classes.reactSearch, {
                   [classes.hideReactSearch]: hide,
                 })}>
-                  {searchResult.map((result) => <Paper elevation={2} key={result.id} onClick={() => createNewChat(result.fkUserId)}> <Typography className={classes.searchContent} variant="body1" >{result.pseudonyme}</Typography></Paper>)}
+                  {searchResult.map((result) => <Paper elevation={2} key={result.id} onClick={() => createNewChat(result.id)}> <Typography className={classes.searchContent} variant="body1" >{result.firstName}</Typography></Paper>)}
                 </Paper>}
               </div>
             </div>

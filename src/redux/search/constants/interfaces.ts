@@ -2,10 +2,7 @@ import * as types from './types';
 
 export interface SearchObjectInteface {
   id: number
-  fkUserId: number
-  fkContactId: number
-  pseudonyme: string
-  type: string
+  firstName: number
 }
 
 export interface InitializedGlobalSearchActionInterface {

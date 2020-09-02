@@ -264,11 +264,11 @@ export default function UserConversationHistoryPage() {
               endAdornment: (
                 (message[id] || '') === ''
                   ? (
-                    <label>
+                    <InputAdornment position="end">
                       <IconButton onClick={openFileDialog} color="primary" aria-label="upload picture" component="span">
                         <CloudUploadIcon />
                       </IconButton>
-                    </label>
+                    </InputAdornment>
                   )
                   : (
                     <InputAdornment position="end">

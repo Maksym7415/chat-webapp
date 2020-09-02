@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MutableRefObject } from 'react';
 import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,10 +14,10 @@ import useStyles from '../../styles/styles';
 interface Props {
   data: Array<ConversationsList>
   usersTyping: Conversation
-  ref: MutableRefObject<null>
+  dragRef: MutableRefObject<null>
 }
 
-export default ({ data, usersTyping, ref }: Props) => {
+export default ({ data, usersTyping, dragRef }: Props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
@@ -52,13 +52,12 @@ export default ({ data, usersTyping, ref }: Props) => {
   }, [lastMessage]);
 
   return (
-    <Grid item xs={4} >
+    <Grid item xs={4} ref={dragRef}>
       {conversations.map((element) => (
         <div className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`} key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
           <Avatar style={{ width: '50px', height: '50px' }} />
           <div className='chat__chats-item-message-container relative'>
-            {/* {console.log(typing[element.conversationId] && typing[element.conversationId].users, userId)} */}
-      <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
+            <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
             <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
             <div className='flex ustify-start a-items'>
               <Typography variant='caption'>{element.Messages[0] && element.Messages[0].User && element.Messages[0].User.id === userId ? 'Вы:' : element.conversationType === 'Dialog' ? null : `${element.Messages[0] && element.Messages[0].User && element.Messages[0].User.firstName}:`}</Typography>

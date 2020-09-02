@@ -56,6 +56,16 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       },
     },
   });
+
+  //DRAG STATES
+  // var _isResizing = false,
+  // _lastDownX = 0;
+
+  const [isResizing, setIsResizing] = useState<Boolean>(false);
+  const [lastDownX, setLastDownX] = useState<Number>(0);
+
+  //
+
   // const [timer, setTimer] = useState<Timer>({ });
   const currentUserTyping = (user: BackUsers, conversationId: number) => {
     if (!isEmit) {
@@ -111,41 +121,40 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     });
   }, [conversationsList, typing]);
 
-  var isResizing = false,
-    lastDownX = 0;
+  
 
-  const resizeChatList = () => {
-    // var container = $('#container'),
-    //     left = $('#left_panel'),
-    //     right = $('#right_panel'),
-    //     handle = $('#drag');
+  // const resizeChatList = () => {
+  //   // var container = $('#container'),
+  //   //     left = $('#left_panel'),
+  //   //     right = $('#right_panel'),
+  //   //     handle = $('#drag');
 
-    handle.on('mousedown', function (e) {
-        isResizing = true;
-        lastDownX = e.clientX;
-    });
+  //   handle.on('mousedown', function (e) {
+  //       isResizing = true;
+  //       lastDownX = e.clientX;
+  //   });
 
-    $(document).on('mousemove', function (e) {
-        // we don't want to do anything if we aren't resizing.
-        if (!isResizing) 
-            return;
+  //   $(document).on('mousemove', function (e) {
+  //       // we don't want to do anything if we aren't resizing.
+  //       if (!isResizing) 
+  //           return;
         
-        var offsetRight = container.width() - (e.clientX - container.offset().left);
+  //       var offsetRight = container.width() - (e.clientX - container.offset().left);
 
-        left.css('right', offsetRight);
-        right.css('width', offsetRight);
-    }).on('mouseup', function (e) {
-        // stop resizing
-        isResizing = false;
-    });
-  };
+  //       left.css('right', offsetRight);
+  //       right.css('width', offsetRight);
+  //   }).on('mouseup', function (e) {
+  //       // stop resizing
+  //       isResizing = false;
+  //   });
+  // };
 
 
   return (
     <Grid className='chat__container relative' container item xs={12} justify="space-between">
-      <ChatsList data={conversationsList} usersTyping={usersTyping} ref={chatListEl}/>
+      <ChatsList data={conversationsList} usersTyping={usersTyping} dragRef={chatListEl}/>
       <div style={{border: '1px solid black', width: '4px'}} ref={dragEl}/>
-      <UserConversationHistoryPage chatHistoryElRef={chatHistoryEl}/>
+      <UserConversationHistoryPage dragRef={chatHistoryEl}/>
     </Grid>
   );
 }

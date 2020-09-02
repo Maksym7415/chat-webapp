@@ -29,6 +29,10 @@ interface Pagination {
   [key: number]: number
 }
 
+interface Props {
+  dragRef: MutableRefObject<null>
+}
+
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
   if (isScrollTo) {
     return mainGrid.scrollTo({
@@ -48,7 +52,7 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
-export default function UserConversationHistoryPage({chatHistoryElRef}:MutableRefObject<null>) {
+export default function UserConversationHistoryPage({dragRef}: Props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
@@ -152,7 +156,7 @@ export default function UserConversationHistoryPage({chatHistoryElRef}:MutableRe
   }, [allMessages]);
 
   return (
-    <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={7} onScroll={scrollHandler}>
+    <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={7} onScroll={scrollHandler} ref={dragRef}>
       <Grid item xs={12}>
         {
 

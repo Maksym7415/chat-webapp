@@ -114,7 +114,7 @@ export default makeStyles((theme) => ({
   },
   reactSearch: {
     width: '100%',
-    height: '50vh',
+    maxHeight: '50vh',
     position: 'absolute',
     top: ' 40px',
     padding: theme.spacing(4),

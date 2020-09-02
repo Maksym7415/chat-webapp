@@ -26,6 +26,7 @@ export default ({ data, usersTyping }: Props) => {
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
   const activeConversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
   const handleChangeChat = (id: number) => dispatch(getConversationIdAction(id));
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default ({ data, usersTyping }: Props) => {
           <Avatar style={{ width: '50px', height: '50px' }} />
           <div className='chat__chats-item-message-container relative'>
             {/* {console.log(typing[element.conversationId] && typing[element.conversationId].users, userId)} */}
-      <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
+            <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
             <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
             <div className='flex ustify-start a-items'>
               <Typography variant='caption'>{element.Messages[0] && element.Messages[0].User && element.Messages[0].User.id === userId ? 'Вы:' : element.conversationType === 'Dialog' ? null : `${element.Messages[0] && element.Messages[0].User && element.Messages[0].User.firstName}:`}</Typography>

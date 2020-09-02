@@ -5,6 +5,8 @@ import { verificationCodeWatcher } from '../authorization/sagas/checkVerificatio
 import { userConversationWatcher } from '../conversations/sagas/userConversationHistory';
 import { userConversationsListWatcher } from '../conversations/sagas/userConversationsList';
 import { userInfoWatcher } from '../user/sagas/userInfo';
+import { globalSearchWatcher } from '../search/sagas/globalSearch';
+import { createConversWatcher } from '../conversations/sagas/createNewConversation';
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +16,7 @@ export default function* rootSaga() {
     userConversationWatcher(),
     userConversationsListWatcher(),
     userInfoWatcher(),
+    globalSearchWatcher(),
+    createConversWatcher(),
   ]);
 }

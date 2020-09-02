@@ -110,7 +110,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   }, [conversationsList, typing]);
 
   return (
-    <div className='chat__container relative flex'>
+    <div className='chat__container flex'>
       <ChatsList data={conversationsList} usersTyping={usersTyping}/>
       <UserConversationHistoryPage />
     </div>

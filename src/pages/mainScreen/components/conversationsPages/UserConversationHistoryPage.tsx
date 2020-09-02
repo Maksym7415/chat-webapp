@@ -4,7 +4,7 @@ import React, {
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Grid, Paper, TextField, InputAdornment, IconButton,
+  Grid, Paper, TextField, InputAdornment, IconButton, Input,
 } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
 import SendIcon from '@material-ui/icons/Send';
@@ -213,15 +213,17 @@ export default function UserConversationHistoryPage() {
       className='conversations__container'
       // onScroll={scrollHandler}
     >
-      <Grid item xs={12} id='messages' onScroll={scrollHandler} className='overflowY-auto' >
+      <Grid item xs={12} id='messages' onScroll={scrollHandler} >
+        <>
         {
 
           allMessages[id] && allMessages[id].map(({
             fkSenderId, message, id, sendDate, User, Files,
           }) => (
-              <div className='conversations__message-container' key={id} ref={ref}>
+              <div className='conversations__message-container' key={id}>
                 {
                   Files && !!Files.length && <div className='conversations__message-image-container'>
+                    {console.log(Files)}
                     {
                       Files.map((file) => (['png', 'jpg', 'jpeg'].includes(file.extension)
                         ? <img
@@ -255,40 +257,46 @@ export default function UserConversationHistoryPage() {
               </div>
           ))
         }
+        <div style={{ height: '50px' }} ref={ref}></div>
+        </>
       </Grid>
 
-      {id !== 0 && <Grid item xs={12}>
-        <div className='conversations__send-message-input'>
-          <TextField
-            fullWidth
+      {id !== 0
+        && <div className='conversations__send-message-input'>
+          <Input
             onKeyDown={sendMessageByKey}
-            InputProps={{
-              endAdornment: (
-                (message[id] || '') === ''
-                  ? (
-                    <label>
-                      <IconButton onClick={openFileDialog} color="primary" aria-label="upload picture" component="span">
-                        <CloudUploadIcon />
-                      </IconButton>
-                    </label>
-                  )
-                  : (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleSendMessage}
-                      >
-                        <SendIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-              ),
-            }}
-            label='Type message'
             value={message[id] || ''}
             onChange={handleChangeMessage}
+            disableUnderline
+            fullWidth
+            placeholder='Type message...'
+            endAdornment={(
+              (message[id] || '') === ''
+                ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      classes={{ root: classes.iconButton }}
+                      onClick={openFileDialog} color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <CloudUploadIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )
+                : (
+                  <InputAdornment position="end">
+                    <IconButton
+                      classes={{ root: classes.iconButton }}
+                      onClick={handleSendMessage}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )
+            )}
           />
-        </div>
-      </Grid>}
+        </div>}
       {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}

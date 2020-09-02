@@ -39,4 +39,7 @@ export default makeStyles((theme) => ({
     height: '40px',
     marginBottom: '5px',
   },
+  iconButton: {
+    padding: '0 25px',
+  },
 }));

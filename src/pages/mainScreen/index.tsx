@@ -106,6 +106,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       });
     });
     return () => {
+      if (history.location.pathname === '/') return;
       socket.removeAllListeners();
     };
   }, [conversationsList, typing]);

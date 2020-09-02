@@ -51,9 +51,9 @@ export default function UserConversationHistoryPage() {
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
-  const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
-  const [localPagination, setLocalPagination] = useState<Pagination>({});
-  const [scrollValue, setScrollValue] = useState<ScrollValue>({});
+  // const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
+  // const [localPagination, setLocalPagination] = useState<Pagination>({});
+  // const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
   const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
@@ -114,9 +114,8 @@ export default function UserConversationHistoryPage() {
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    setScrollValue((prevValue) => ({ ...prevValue, [id]: getCurrentScrollTop(element) }));
-    if (element.scrollTop === 0 && localMessageHistory[id] && localMessageHistory[id].length === 15 && allMessages[id]) {
-      dispatch(conversationUserHistoryActionRequest(id, localPagination[id] + 15));
+    if (messageHistory.length === 15 && element.scrollTop === 0) {
+      dispatch(conversationUserHistoryActionRequest(id, pagination.currentPage + 15));
     }
   };
 
@@ -182,46 +181,36 @@ export default function UserConversationHistoryPage() {
   }, [files]);
 
   useEffect(() => {
-    // opponentId && dispatch(createNewChatAction({ userId, opponentId }));
-    setAllMessages((prev) => {
-      if (prev[id] && prev[id].length) {
-        return { ...prev };
+    if (!allMessages[id]) {
+      dispatch(conversationUserHistoryActionRequest(id, 0));
+    }
+    return () => {
+      if (!id) {
+        dispatch(createNewChatAction({ userId: 0, opponentId: 0 }));
       }
-      return ({ ...prev, [id]: [] });
-    });
-    if (!allMessages[id]?.length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
+    };
   }, [id]);
 
   useEffect(() => {
-    if (!allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
-    setAllMessages((prev) => ({
-      ...prev, [id]: [...messageHistory, ...prev[id]],
-    }));
-    setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
-    setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
+    if (allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
+    console.log(123);
+    setAllMessages((messages) => ({ ...messages, [id]: [...messageHistory, ...(messages[id] === undefined ? [] : messages[id])] }));
   }, [messageHistory]);
 
   useEffect(() => {
-    if (Object.keys(lastMessage).length && id in lastMessage) setAllMessages((prev) => ({ ...prev, [id]: [...prev[id], lastMessage[id]] }));
+    if (Object.keys(lastMessage).length && id in lastMessage) setAllMessages((messages) => ({ ...messages, [id]: [...messages[id], lastMessage[id]] }));
   }, [lastMessage]);
 
   useEffect(() => {
-    let element = document.getElementById('messages');
-    if (element) {
-      let isScrolling = false;
-      if (scrollValue[id]) {
-        isScrolling = true;
-      }
-      scrollTop(ref, element, localPagination[id], scrollValue[id], isScrolling);
-    }
+
   }, [allMessages]);
 
   useEffect(() => {
-    if (!isCreateChat.length) {
-      id && dispatch(getConversationIdAction(0));
-      setAllMessages((prev) => ({ ...prev, 0: [] }));
-    } else {
-      dispatch(getConversationIdAction(isCreateChat[0].id));
+    if (opponentId) {
+      dispatch(getConversationIdAction(0));
+      if (isCreateChat.length) {
+        dispatch(getConversationIdAction(isCreateChat[0].id));
+      }
     }
   }, [isCreateChat]);
 
@@ -235,6 +224,7 @@ export default function UserConversationHistoryPage() {
       className='conversations__container'
       // onScroll={scrollHandler}
     >
+      {console.log(id, allMessages)}
       <Grid item xs={12} id='messages' onScroll={scrollHandler} >
         <>
         {
@@ -245,7 +235,6 @@ export default function UserConversationHistoryPage() {
               <div className='conversations__message-container' key={id}>
                 {
                   Files && !!Files.length && <div className='conversations__message-image-container'>
-                    {console.log(Files)}
                     {
                       Files.map((file) => (['png', 'jpg', 'jpeg'].includes(file.extension)
                         ? <img

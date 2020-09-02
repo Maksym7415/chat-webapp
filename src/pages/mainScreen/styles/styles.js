@@ -27,6 +27,7 @@ export default makeStyles((theme) => ({
     right: '0',
     bottom: '0',
     color: '#e8e8e8',
+    userSelect: 'none',
   },
   messageText: {
     maxWidth: '80%',

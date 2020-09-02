@@ -30,7 +30,8 @@ interface Pagination {
 }
 
 interface Props {
-  dragRef: MutableRefObject<null>
+  // dragRef: MutableRefObject<null>
+  width: number
 }
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
@@ -52,7 +53,7 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
-export default function UserConversationHistoryPage({dragRef}: Props) {
+export default function UserConversationHistoryPage({width}: Props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
@@ -156,7 +157,7 @@ export default function UserConversationHistoryPage({dragRef}: Props) {
   }, [allMessages]);
 
   return (
-    <Grid className='overflowY-auto' id='messages' style={{ maxHeight: '87vh' }} container item xs={7} onScroll={scrollHandler} ref={dragRef}>
+    <div className='overflowY-auto' id='messages' style={{ maxHeight: '87vh', width: width || '70%' }} onScroll={scrollHandler}>
       <Grid item xs={12}>
         {
 
@@ -200,7 +201,7 @@ export default function UserConversationHistoryPage({dragRef}: Props) {
           />
         </div>
       </Grid>}
-    </Grid>
+    </div>
 
   );
 }

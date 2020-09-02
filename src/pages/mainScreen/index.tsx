@@ -39,9 +39,10 @@ let newTimer: any = {};
 
 export default function BasicTextFields({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
-  const chatListEl = useRef(null);
-  const chatHistoryEl = useRef(null);
-  const dragEl = useRef(null);
+  // const dragChatList = useRef<HTMLDivElement|null>(null);
+  // const dragChatHistory = useRef(null);
+  const dragContainer = useRef<HTMLDivElement>(null);
+  const dragLine = useRef(null);
   const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
@@ -58,11 +59,10 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   });
 
   //DRAG STATES
-  // var _isResizing = false,
-  // _lastDownX = 0;
 
   const [isResizing, setIsResizing] = useState<Boolean>(false);
-  const [lastDownX, setLastDownX] = useState<Number>(0);
+  const [chatListWidth, setChatListWidth] = useState<number>(0);
+  const [chatHistoryWidth, setChatHistoryWidth] = useState<number>(0);
 
   //
 
@@ -97,7 +97,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   const timer = (user: BackUsers, conversationId: number) => {
     if (conversationId in newTimer) {
-      console.log(newTimer);
       currentUserTyping(user, conversationId);
     } else {
       isEmit = false;
@@ -121,40 +120,51 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     });
   }, [conversationsList, typing]);
 
-  
+  const onDragUp = () => {
+    setIsResizing(false);
+  }
 
-  // const resizeChatList = () => {
-  //   // var container = $('#container'),
-  //   //     left = $('#left_panel'),
-  //   //     right = $('#right_panel'),
-  //   //     handle = $('#drag');
+  const onDragDown = (event: React.MouseEvent) => {
+    setIsResizing(true);
+  }
 
-  //   handle.on('mousedown', function (e) {
-  //       isResizing = true;
-  //       lastDownX = e.clientX;
-  //   });
-
-  //   $(document).on('mousemove', function (e) {
-  //       // we don't want to do anything if we aren't resizing.
-  //       if (!isResizing) 
-  //           return;
-        
-  //       var offsetRight = container.width() - (e.clientX - container.offset().left);
-
-  //       left.css('right', offsetRight);
-  //       right.css('width', offsetRight);
-  //   }).on('mouseup', function (e) {
-  //       // stop resizing
-  //       isResizing = false;
-  //   });
-  // };
-
+  const onDragMove = (event: React.MouseEvent) => {
+    if(!isResizing) {
+      return;
+    }
+    else {
+      if(dragContainer.current) {
+        let rightWidth = dragContainer.current.clientWidth - (event.clientX - dragContainer.current.offsetLeft + 8);
+        let leftWidth = event.clientX - dragContainer.current.offsetLeft + 8;
+        setChatHistoryWidth(rightWidth);
+        setChatListWidth(leftWidth);
+      }
+    }
+  }
 
   return (
-    <Grid className='chat__container relative' container item xs={12} justify="space-between">
-      <ChatsList data={conversationsList} usersTyping={usersTyping} dragRef={chatListEl}/>
-      <div style={{border: '1px solid black', width: '4px'}} ref={dragEl}/>
-      <UserConversationHistoryPage dragRef={chatHistoryEl}/>
+    <Grid 
+      className='chat__container relative' 
+      container 
+      item 
+      xs={12} 
+      justify="space-between" 
+      onMouseMove={(event) => onDragMove(event)} 
+      onMouseUp={onDragUp} 
+      ref={dragContainer}
+    >
+      <ChatsList 
+        data={conversationsList} 
+        usersTyping={usersTyping} 
+        // dragChatListRef={dragChatList}
+        dragLineRef={dragLine}
+        onDragDown={onDragDown}
+        width={chatListWidth}
+      />
+      <UserConversationHistoryPage 
+        // dragRef={dragChatHistory}
+        width={chatHistoryWidth}
+      />
     </Grid>
   );
 }

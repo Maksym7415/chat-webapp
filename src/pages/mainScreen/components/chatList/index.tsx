@@ -14,10 +14,13 @@ import useStyles from '../../styles/styles';
 interface Props {
   data: Array<ConversationsList>
   usersTyping: Conversation
-  dragRef: MutableRefObject<null>
+  // dragChatListRef: MutableRefObject<HTMLDivElement|null>
+  dragLineRef: MutableRefObject<null>
+  onDragDown: Function
+  width: number
 }
 
-export default ({ data, usersTyping, dragRef }: Props) => {
+export default ({ data, usersTyping, dragLineRef, onDragDown, width }: Props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
@@ -52,23 +55,30 @@ export default ({ data, usersTyping, dragRef }: Props) => {
   }, [lastMessage]);
 
   return (
-    <Grid item xs={4} ref={dragRef}>
-      {conversations.map((element) => (
-        <div className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`} key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
-          <Avatar style={{ width: '50px', height: '50px' }} />
-          <div className='chat__chats-item-message-container relative'>
-            <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
-            <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
-            <div className='flex ustify-start a-items'>
-              <Typography variant='caption'>{element.Messages[0] && element.Messages[0].User && element.Messages[0].User.id === userId ? 'Вы:' : element.conversationType === 'Dialog' ? null : `${element.Messages[0] && element.Messages[0].User && element.Messages[0].User.firstName}:`}</Typography>
-              <Typography className={classes.messageTextInList} variant='caption' style={{
-                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-              }} >{element.Messages[0] && element.Messages[0].message}</Typography>
+    <div style={{width: width || '30%', display: 'flex'}} >
+      <div style={{width: '100%'}}>
+        {conversations.map((element) => (
+          <div className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`} key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
+            <Avatar style={{ width: '50px', height: '50px' }} />
+            <div className='chat__chats-item-message-container relative'>
+              <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
+              <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
+              <div className='flex ustify-start a-items'>
+                <Typography variant='caption'>{element.Messages[0] && element.Messages[0].User && element.Messages[0].User.id === userId ? 'Вы:' : element.conversationType === 'Dialog' ? null : `${element.Messages[0] && element.Messages[0].User && element.Messages[0].User.firstName}:`}</Typography>
+                <Typography className={classes.messageTextInList} variant='caption' style={{
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                }} >{element.Messages[0] && element.Messages[0].message}</Typography>
+              </div>
+              <p className={clsx(classes.dateSender, classes.dateSenderChatlist)}>{getCurrentDay(new Date(element.Messages[0] && element.Messages[0].sendDate))}</p>
             </div>
-            <p className={clsx(classes.dateSender, classes.dateSenderChatlist)}>{getCurrentDay(new Date(element.Messages[0] && element.Messages[0].sendDate))}</p>
           </div>
-        </div>
-      ))}
-    </Grid>
+        ))}
+      </div>
+      <div 
+        style={{cursor: 'w-resize', width: '8px'}} 
+        ref={dragLineRef}
+        onMouseDown={(event) => onDragDown(event)}
+      />
+    </div>
   );
 };

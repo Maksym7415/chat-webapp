@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { resolve } from 'dns';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
-import { getUserConversationsActionRequest, conversationAddNewMessage, conversationTypeStateAction } from '../../redux/conversations/constants/actionConstants';
+import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 import { Messages, Users } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
@@ -84,7 +84,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   const timer = (user: BackUsers, conversationId: number) => {
     if (conversationId in newTimer) {
-      console.log(newTimer);
       currentUserTyping(user, conversationId);
     } else {
       isEmit = false;
@@ -100,18 +99,29 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   useEffect(() => {
     conversationsList.forEach((chat) => {
       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-        console.log(message);
         dispatch(conversationAddNewMessage(message, chat.conversationId));
       });
       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
         timer(conversation, chat.conversationId);
       });
     });
+    return () => {
+      if (history.location.pathname === '/') return;
+      socket.removeAllListeners();
+    };
   }, [conversationsList, typing]);
+
+  useEffect(() => {
+    socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: any) => {
+      dispatch(getUserConversationsActionRequest());
+      dispatch(getConversationIdAction(conversationId));
+      // dispatch(conversationAddNewMessage(message, conversationId));
+    });
+  }, []);
 
   return (
     <Grid className='chat__container relative' container item xs={12} justify="space-between">
-      <ChatsList data={conversationsList} usersTyping={usersTyping}/>
+      <ChatsList data={conversationsList} usersTyping={usersTyping} />
       <UserConversationHistoryPage />
     </Grid>
   );

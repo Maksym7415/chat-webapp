@@ -12,6 +12,8 @@ import {
   ConversationIdAction,
   ConversationTypeStateInterfaceAction,
   Users,
+  CreateNewChatActionInterface,
+  IdsInterface,
 } from './interfaces';
 import { ErrorResponse } from '../../common/interafaces';
 
@@ -59,4 +61,9 @@ export const conversationTypeStateAction = (conversationId: number, isTyping: bo
     users,
     userId,
   },
+});
+
+export const createNewChatAction = (ids: IdsInterface): CreateNewChatActionInterface => ({
+  type: types.CONVERSATION_CREATE_NEW_CONVERSATION,
+  payload: ids,
 });

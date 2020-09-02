@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import SendIcon from '@material-ui/icons/Send';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
+import { conversationUserHistoryActionRequest, createNewChatAction, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
@@ -35,13 +35,15 @@ const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, is
     });
   }
 
-ref.current?.scrollIntoView({ behavior: 'smooth' });
+  ref.current?.scrollIntoView({ behavior: 'smooth' });
 };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
+  const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
@@ -60,12 +62,12 @@ export default function UserConversationHistoryPage() {
 
   const ref = useRef(null);
 
-  useMemo(() => setAllMessages((prev) => {
-    if (prev[id] && prev[id].length) {
-      return { ...prev };
-    }
-    return ({ ...prev, [id]: [] });
-  }), [id]);
+  // useMemo(() => setAllMessages((prev) => {
+  //   if (prev[id] && prev[id].length) {
+  //     return { ...prev };
+  //   }
+  //   return ({ ...prev, [id]: [] });
+  // }), [id]);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -83,29 +85,30 @@ export default function UserConversationHistoryPage() {
     }
   };
 
+  const socketSendMessageCommonFun = (conversationId: undefined | number) => socket.emit('chats', ({
+    conversationId,
+    message: {
+      message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+    },
+    userId,
+    opponentId,
+  }), (success: boolean) => {
+    if (success) setMessage({ ...message, [id]: '' });
+  });
+
   const handleSendMessage = () => {
-    socket.emit('chats', ({
-      conversationId: id,
-      message: {
-        message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-      },
-      userId,
-    }), (success: boolean) => {
-      if (success) setMessage({ ...message, [id]: '' });
-    });
+    if (!id) {
+      return socketSendMessageCommonFun(undefined);
+    }
+    socketSendMessageCommonFun(id);
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      socket.emit('chats', ({
-        conversationId: id,
-        message: {
-          message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-        },
-        userId,
-      }), (success: boolean) => {
-        if (success) setMessage({ ...message, [id]: '' });
-      });
+      if (!id) {
+        return socketSendMessageCommonFun(undefined);
+      }
+      socketSendMessageCommonFun(id);
     }
   };
 
@@ -179,11 +182,21 @@ export default function UserConversationHistoryPage() {
   }, [files]);
 
   useEffect(() => {
-    if (!allMessages[id].length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
+    // opponentId && dispatch(createNewChatAction({ userId, opponentId }));
+    setAllMessages((prev) => {
+      if (prev[id] && prev[id].length) {
+        return { ...prev };
+      }
+      return ({ ...prev, [id]: [] });
+    });
+    if (!allMessages[id]?.length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
   }, [id]);
 
   useEffect(() => {
-    setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory, ...prev[id]] }));
+    if (!allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
+    setAllMessages((prev) => ({
+      ...prev, [id]: [...messageHistory, ...prev[id]],
+    }));
     setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
   }, [messageHistory]);
@@ -202,6 +215,15 @@ export default function UserConversationHistoryPage() {
       scrollTop(ref, element, localPagination[id], scrollValue[id], isScrolling);
     }
   }, [allMessages]);
+
+  useEffect(() => {
+    if (!isCreateChat.length) {
+      id && dispatch(getConversationIdAction(0));
+      setAllMessages((prev) => ({ ...prev, 0: [] }));
+    } else {
+      dispatch(getConversationIdAction(isCreateChat[0].id));
+    }
+  }, [isCreateChat]);
 
   return (
     <Grid
@@ -254,8 +276,7 @@ export default function UserConversationHistoryPage() {
           ))
         }
       </Grid>
-
-      {id !== 0 && <Grid item xs={12}>
+      {(!!id || !!opponentId) && <Grid item xs={12}>
         <div className='chat__send-message-input'>
           <TextField
             fullWidth

@@ -2,14 +2,15 @@ import React from 'react';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Fingerprint2 from 'fingerprintjs2';
+import GroupIcon from '@material-ui/icons/Group';
 
 const drawerList = [
   {
     id: 1,
-    title: 'Inbox',
-    route: '/profile',
-    roles: ['admin'],
-    icon: <InboxIcon />,
+    title: 'New Chat',
+    route: '/',
+    roles: ['admin', 'user'],
+    icon: <GroupIcon />,
   },
   {
     id: 2,
@@ -20,7 +21,7 @@ const drawerList = [
   },
 ];
 
-export default () => {
+export default (handleClickOpen) => {
   const userRoles = ['admin'];
   Fingerprint2.getV18({}, (result, components) => {
     // result is murmur hash fingerprint

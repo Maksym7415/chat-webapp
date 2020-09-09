@@ -41,9 +41,6 @@ let theme = createMuiTheme({
       root: {
         textTransform: 'none',
       },
-      label: {
-        color: '#fff',
-      },
     },
     MuiIconButton: {
       label: {

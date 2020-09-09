@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import React, {
   useEffect, useState, useMemo, useRef,
 } from 'react';
@@ -199,17 +200,12 @@ export default function UserConversationHistoryPage() {
   useEffect(() => {
     scrollTop(ref);
     setLocalPagination((value) => ({ ...value, [id]: pagination.currentPage }));
-    // if (allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
-    setAllMessages((messages) => ({ ...messages, [id]: [...messageHistory, ...(messages[id] === undefined ? [] : messages[id])] }));
+    setAllMessages((messages) => ({ ...messages, [id]: [...messageHistory, ...(messages[id] === undefined ? [] : messages[id])], 0: [] }));
   }, [messageHistory]);
 
   useEffect(() => {
     if (Object.keys(lastMessage).length && id in lastMessage) setAllMessages((messages) => ({ ...messages, [id]: [...messages[id], lastMessage[id]] }));
   }, [lastMessage]);
-
-  useEffect(() => {
-
-  }, [allMessages]);
 
   useEffect(() => {
     if (opponentId) {
@@ -231,51 +227,50 @@ export default function UserConversationHistoryPage() {
       onScroll={scrollHandler}
       id='messages'
     >
-      {console.log(allMessages, id)}
       <Grid item xs={12} >
         <>
-        { id === 0 && Object.keys(allMessages).length === 1 ? <p> Отправте новое соообщение, чтобы создать чат</p>
-
-          : allMessages[id] && allMessages[id].map(({
-            fkSenderId, message, id, sendDate, User, Files,
-          }) => (
-              <div className='conversations__message-container' key={id}>
-                {
-                  Files && !!Files.length && <div className='conversations__message-image-container'>
-                    {
-                      Files.map((file) => (['png', 'jpg', 'jpeg'].includes(file.extension)
-                        ? <img
-                              key={file.fileStorageName}
-                              className='conversations__message-image-item'
-                              src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
-                              alt={file.fileStorageName}
-                            />
-                        : <Paper
+          {console.log(opponentId, allMessages)}
+          {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : id === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+            : allMessages[id] && allMessages[id].map(({
+              fkSenderId, message, id, sendDate, User, Files,
+            }) => (
+                <div className='conversations__message-container' key={id}>
+                  {
+                    Files && !!Files.length && <div className='conversations__message-image-container'>
+                      {
+                        Files.map((file) => (['png', 'jpg', 'jpeg'].includes(file.extension)
+                          ? <img
+                            key={file.fileStorageName}
+                            className='conversations__message-image-item'
+                            src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
+                            alt={file.fileStorageName}
+                          />
+                          : <Paper
                             className={classes.paperFileContainer}
                             key={file.fileStorageName}
                           >
-                            <InsertDriveFileIcon/>
+                            <InsertDriveFileIcon />
                             <p>{file.fileUserName}</p>
                           </Paper>))
-                    }
-                  </div>
-                }
-                {message && <Paper
-                  elevation={1}
-                  className={clsx(classes.paperSenderMessage, {
-                    [classes.paperFriendMessage]: fkSenderId !== userId,
-                  })}
-                >
-                  <p className='conversations__message-text'>{message}</p>
-                  <div className='conversations__user-name-date-container relative'>
-                    {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
-                    <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
-                  </div>
-                </Paper>}
-              </div>
-          ))
-        }
-        <div style={{ height: '50px' }} ref={ref}></div>
+                      }
+                    </div>
+                  }
+                  {message && <Paper
+                    elevation={1}
+                    className={clsx(classes.paperSenderMessage, {
+                      [classes.paperFriendMessage]: fkSenderId !== userId,
+                    })}
+                  >
+                    <p className='conversations__message-text'>{message}</p>
+                    <div className='conversations__user-name-date-container relative'>
+                      {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
+                      <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
+                    </div>
+                  </Paper>}
+                </div>
+              ))
+          }
+          <div style={{ height: '50px' }} ref={ref}></div>
         </>
       </Grid>
       {(!!id || !!opponentId)

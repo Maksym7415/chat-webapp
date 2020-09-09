@@ -10,7 +10,12 @@ import { v4 as uuidv4 } from 'uuid';
 import SendIcon from '@material-ui/icons/Send';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { conversationUserHistoryActionRequest, createNewChatAction, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
+import {
+  conversationUserHistoryActionRequest,
+  createNewChatAction,
+  getConversationIdAction,
+  clearConversationData,
+} from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
@@ -21,21 +26,26 @@ import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
 } from './interfaces';
 
-const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
-  if (isScrollTo) {
-    return mainGrid.scrollTo({
-      top: position + ref.current?.offsetHeight,
-      behavior: 'smooth',
-    });
-  }
-  if (position === 0 && offset !== 0) {
-    return mainGrid.scrollTo({
-      top: position || 10,
-      behavior: 'smooth',
-    });
-  }
+const scrollTop = (ref: any) => {
+  // if (isScrollTo) {
+  //   return mainGrid.scrollTo({
+  //     top: position + ref.current?.offsetHeight,
+  //     behavior: 'smooth',
+  //   });
+  // }
+  // if (position === 0 && offset !== 0) {
+  //   return mainGrid.scrollTo({
+  //     top: position || 10,
+  //     behavior: 'smooth',
+  //   });
+  // }
 
-  ref.current?.scrollIntoView({ behavior: 'smooth' });
+  // ref.current?.scrollIntoView({ behavior: 'smooth' });
+  let element = document.getElementById('messages');
+  element?.scrollTo({
+    top: 10,
+    behavior: 'smooth',
+  });
 };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -51,9 +61,7 @@ export default function UserConversationHistoryPage() {
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
-  // const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
-  // const [localPagination, setLocalPagination] = useState<Pagination>({});
-  // const [scrollValue, setScrollValue] = useState<ScrollValue>({});
+  const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
   const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,13 +69,6 @@ export default function UserConversationHistoryPage() {
   const [isInputState, setIsInputState] = useState<boolean>(false);
 
   const ref = useRef(null);
-
-  // useMemo(() => setAllMessages((prev) => {
-  //   if (prev[id] && prev[id].length) {
-  //     return { ...prev };
-  //   }
-  //   return ({ ...prev, [id]: [] });
-  // }), [id]);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -114,8 +115,8 @@ export default function UserConversationHistoryPage() {
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    if (messageHistory.length === 15 && element.scrollTop === 0) {
-      dispatch(conversationUserHistoryActionRequest(id, pagination.currentPage + 15));
+    if (allMessages[id]?.length % 15 === 0 && element.scrollTop === 0) {
+      dispatch(conversationUserHistoryActionRequest(id, localPagination[id] + 15));
     }
   };
 
@@ -176,6 +177,10 @@ export default function UserConversationHistoryPage() {
     // event.target.value = '';
   };
 
+  useEffect(() => () => {
+    dispatch(clearConversationData());
+  }, []);
+
   useEffect(() => {
     setIsInputState(false);
   }, [files]);
@@ -192,8 +197,9 @@ export default function UserConversationHistoryPage() {
   }, [id]);
 
   useEffect(() => {
-    if (allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
-    console.log(123);
+    scrollTop(ref);
+    setLocalPagination((value) => ({ ...value, [id]: pagination.currentPage }));
+    // if (allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
     setAllMessages((messages) => ({ ...messages, [id]: [...messageHistory, ...(messages[id] === undefined ? [] : messages[id])] }));
   }, [messageHistory]);
 
@@ -222,14 +228,15 @@ export default function UserConversationHistoryPage() {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       className='conversations__container'
-      // onScroll={scrollHandler}
+      onScroll={scrollHandler}
+      id='messages'
     >
-      {console.log(id, allMessages)}
-      <Grid item xs={12} id='messages' onScroll={scrollHandler} >
+      {console.log(allMessages, id)}
+      <Grid item xs={12} >
         <>
-        {
+        { id === 0 && Object.keys(allMessages).length === 1 ? <p> Отправте новое соообщение, чтобы создать чат</p>
 
-          allMessages[id] && allMessages[id].map(({
+          : allMessages[id] && allMessages[id].map(({
             fkSenderId, message, id, sendDate, User, Files,
           }) => (
               <div className='conversations__message-container' key={id}>

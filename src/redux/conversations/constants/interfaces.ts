@@ -59,7 +59,7 @@ export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray |
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
@@ -216,4 +216,10 @@ export interface IdsInterface {
 export interface CreateNewChatActionInterface {
   type: typeof types.CONVERSATION_CREATE_NEW_CONVERSATION
   payload: IdsInterface
+}
+
+// CLEAR INTERFACES
+
+export interface ClearConversationInterface {
+  type: typeof types.CONVERSATION_CLEAR_DATA
 }

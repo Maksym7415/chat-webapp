@@ -117,7 +117,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       dispatch(getConversationIdAction(conversationId));
       // dispatch(conversationAddNewMessage(message, conversationId));
     });
-  }, []);
+  }, [conversationsList]);
 
   return (
     <div className='chat__container flex'>

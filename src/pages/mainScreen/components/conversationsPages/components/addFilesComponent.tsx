@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { fullDate } from '../../../../common/getCorrectDateFormat';
-import socket from '../../../../socket';
-import { RootState } from '../../../../redux/reducer';
-import { handleGetBufferFile } from '../../helpers/addFiles';
+import { fullDate } from '../../../../../common/getCorrectDateFormat';
+import socket from '../../../../../socket';
+import { RootState } from '../../../../../redux/reducer';
+import { handleGetBufferFile } from '../../../helpers/addFiles';
 import UploadDialog from './uploadDialog';
-import { AddFilesProps, FilesSrc } from './interfaces';
+import { AddFilesProps, FilesSrc } from '../interfaces';
 
 let filesCount = 0;
 

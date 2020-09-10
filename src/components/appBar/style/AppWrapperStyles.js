@@ -131,7 +131,8 @@ export default makeStyles((theme) => ({
   newChatAddContactWraper: {
     display: 'flex',
     maxHeight: '40px',
-    marginTop: theme.spacing(3),
+    // width: '50%',
+    // marginTop: theme.spacing(3),
   },
   newChatAppBar: {
     position: 'relative',
@@ -161,5 +162,11 @@ export default makeStyles((theme) => ({
   },
   chip: {
     margin: theme.spacing(0.5),
+  },
+  groupName: {
+    width: '50%',
+  },
+  popover: {
+    padding: theme.spacing(2),
   },
 }));

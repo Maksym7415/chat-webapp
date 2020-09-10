@@ -3,6 +3,7 @@ import * as types from './types';
 export interface SearchObjectInteface {
   id: number
   firstName: number
+  isAdmin: boolean
 }
 
 export interface InitializedGlobalSearchActionInterface {

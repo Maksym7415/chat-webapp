@@ -73,7 +73,7 @@ interface User {
   tagName: string
 }
 
-interface FileData {
+export interface FileData {
   extension: string
   fileStorageName: string
   fileUserName: string
@@ -88,7 +88,7 @@ export interface Messages {
   fkSenderId: number
   id: number
   sendDate: string
-  messageType: string
+  messageType?: string
   Files: Array<FileData>
 }
 

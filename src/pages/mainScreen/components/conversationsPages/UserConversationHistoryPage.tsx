@@ -1,21 +1,20 @@
 import React, {
   useEffect, useState, useMemo, useRef,
 } from 'react';
-import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Grid, Paper, TextField, InputAdornment, IconButton, Input,
+  Grid, InputAdornment, IconButton, Input,
 } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
 import SendIcon from '@material-ui/icons/Send';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { conversationUserHistoryActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
-import { getCurrentDay, fullDate } from '../../../../common/getCorrectDateFormat';
+import Message from './components/Message';
+import { fullDate } from '../../../../common/getCorrectDateFormat';
 import socket from '../../../../socket';
 import useStyles from './styles/styles';
-import AddFiles from './addFilesComponent';
+import AddFiles from './components/addFilesComponent';
 import './styles/styles.scss';
 import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
@@ -205,13 +204,10 @@ export default function UserConversationHistoryPage() {
 
   return (
     <div
-      // container
-      // item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       className='conversations__container'
-      // onScroll={scrollHandler}
     >
       <Grid item xs={12} id='messages' onScroll={scrollHandler} >
         <>
@@ -219,43 +215,7 @@ export default function UserConversationHistoryPage() {
 
           allMessages[id] && allMessages[id].map(({
             fkSenderId, message, id, sendDate, User, Files,
-          }) => (
-              <div className='conversations__message-container' key={id}>
-                {
-                  Files && !!Files.length && <div className='conversations__message-image-container'>
-                    {console.log(Files)}
-                    {
-                      Files.map((file) => (['png', 'jpg', 'jpeg'].includes(file.extension)
-                        ? <img
-                              key={file.fileStorageName}
-                              className='conversations__message-image-item'
-                              src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
-                              alt={file.fileStorageName}
-                            />
-                        : <Paper
-                            className={classes.paperFileContainer}
-                            key={file.fileStorageName}
-                          >
-                            <InsertDriveFileIcon/>
-                            <p>{file.fileUserName}</p>
-                          </Paper>))
-                    }
-                  </div>
-                }
-                {message && <Paper
-                  elevation={1}
-                  className={clsx(classes.paperSenderMessage, {
-                    [classes.paperFriendMessage]: fkSenderId !== userId,
-                  })}
-                >
-                  <p className='conversations__message-text'>{message}</p>
-                  <div className='conversations__user-name-date-container relative'>
-                    {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
-                    <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
-                  </div>
-                </Paper>}
-              </div>
-          ))
+          }) => <Message key={id} fkSenderId={fkSenderId} message={message} id={id} sendDate={sendDate} User={User} Files={Files} userId={userId} />)
         }
         <div style={{ height: '50px' }} ref={ref}></div>
         </>

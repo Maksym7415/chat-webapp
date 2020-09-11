@@ -64,8 +64,11 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.persist();
     const chipMember = groupMembers.find((el) => el.id === memberId);
     setChecked((prevChecked) => ({ ...prevChecked, [memberId]: { ...chipMember, isAdmin: event.target.checked } }));
+    console.log(event.target.checked);
+    setGroupMembers((prevMembers) => prevMembers.map((el) => (el.id === chipMember?.id ? { ...el, isAdmin: event.target.checked } : el)));
   };
 
   const handlePopoverClose = () => {

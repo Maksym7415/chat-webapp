@@ -31,6 +31,7 @@
       "error",
       200
     ],
+    "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true }],
     "no-func-assign": "off",
     "consistent-return": "off",
     "react-hooks/exhaustive-deps": "off",

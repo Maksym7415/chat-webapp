@@ -3,53 +3,32 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
-import { v4 as uuidv4 } from 'uuid';
 import { conversationUserHistoryActionRequest, createNewChatAction, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
-import useStyles from './styles/styles';
 import AddFiles from './components/addFilesComponent';
 import './styles/styles.scss';
 import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
 } from './interfaces';
-import { checkIsShowAvatar, scrollTop } from '../../helpers/usereHistoryConversations';
+import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/usereHistoryConversations';
 
-// const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
-//   if (isScrollTo) {
-//     return mainGrid.scrollTo({
-//       top: position + ref.current?.offsetHeight,
-//       behavior: 'smooth',
-//     });
-//   }
-//   if (position === 0 && offset !== 0) {
-//     return mainGrid.scrollTo({
-//       top: position || 10,
-//       behavior: 'smooth',
-//     });
-//   }
-
-//   ref.current?.scrollIntoView({ behavior: 'smooth' });
-// };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
-  const classes = useStyles();
   const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
   const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
-  // const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
-  // const [message, setMessage] = useState<MessageValue>({ 0: '' });
   const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -101,14 +80,7 @@ export default function UserConversationHistoryPage() {
     stopEvent(event);
     handleOpenDialog(true);
     const file: FileList | null = (event.target as HTMLInputElement).files;
-    if (file) {
-      const result: Files = {};
-      Object.values(file).forEach((element) => {
-        const key = uuidv4();
-        result[key] = element;
-      });
-      setFiles((prev) => ({ ...prev, ...result }));
-    }
+    settingFilesObject(file, setFiles);
   };
 
   const onFilesAdded = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,14 +88,7 @@ export default function UserConversationHistoryPage() {
     const file: FileList | null = event.target.files;
     if (file && !file.length) return;
     handleOpenDialog(true);
-    if (file) {
-      const result: Files = {};
-      Object.values(file).forEach((element) => {
-        const key = uuidv4();
-        result[key] = element;
-      });
-      setFiles((prev) => ({ ...prev, ...result }));
-    }
+    settingFilesObject(file, setFiles);
     setIsInputState(true);
     // event.target.value = '';
   };

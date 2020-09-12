@@ -30,11 +30,19 @@ export interface AddFilesProps {
   handleAddFile: Function
 }
 
-// export type MessageProps = Messages & TokenPayload;
-
 export interface MessageProps extends Messages {
   userId: number
   isShowAvatar?: boolean
+}
+
+export interface MessageInputProps {
+  // message: MessageValue
+  // sendMessageByKey: Function
+  conversationId: number
+  userId: number
+  firstName: string
+  opponentId: number
+  openFileDialog: any
 }
 
 export interface CurrentConversationMessages {

@@ -19,6 +19,12 @@ $appbarHeight: 64px;
     margin: 0 0 25px 50px;
   }
 
+  &__message-file-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   &__upload-image-container {
     display: flex;
     flex-direction: column;
@@ -43,8 +49,8 @@ $appbarHeight: 64px;
     display: flex;
     align-items: center;
     -webkit-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
--moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    -moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
     width: 70%;
     height: 50px;
     position: fixed;
@@ -97,5 +103,11 @@ box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
     display: flex;
     flex-direction: column;
     margin-left: auto
+  }
+
+  @media (max-width: 1000px) {
+    &__message-image-container {
+      margin-left: 40px;
+    }
   }
 }

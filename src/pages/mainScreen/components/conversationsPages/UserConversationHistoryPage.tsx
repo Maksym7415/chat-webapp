@@ -2,41 +2,36 @@ import React, {
   useEffect, useState, useMemo, useRef,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Grid, InputAdornment, IconButton, Input,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { v4 as uuidv4 } from 'uuid';
-import SendIcon from '@material-ui/icons/Send';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { conversationUserHistoryActionRequest, createNewChatAction, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import Message from './components/Message';
-import { fullDate } from '../../../../common/getCorrectDateFormat';
-import socket from '../../../../socket';
+import MessageInput from './components/MessageInput';
 import useStyles from './styles/styles';
 import AddFiles from './components/addFilesComponent';
 import './styles/styles.scss';
 import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
 } from './interfaces';
-import { checkIsShowAvatar } from '../../helpers/usereHistoryConversations';
+import { checkIsShowAvatar, scrollTop } from '../../helpers/usereHistoryConversations';
 
-const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
-  if (isScrollTo) {
-    return mainGrid.scrollTo({
-      top: position + ref.current?.offsetHeight,
-      behavior: 'smooth',
-    });
-  }
-  if (position === 0 && offset !== 0) {
-    return mainGrid.scrollTo({
-      top: position || 10,
-      behavior: 'smooth',
-    });
-  }
+// const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
+//   if (isScrollTo) {
+//     return mainGrid.scrollTo({
+//       top: position + ref.current?.offsetHeight,
+//       behavior: 'smooth',
+//     });
+//   }
+//   if (position === 0 && offset !== 0) {
+//     return mainGrid.scrollTo({
+//       top: position || 10,
+//       behavior: 'smooth',
+//     });
+//   }
 
-  ref.current?.scrollIntoView({ behavior: 'smooth' });
-};
+//   ref.current?.scrollIntoView({ behavior: 'smooth' });
+// };
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
 export default function UserConversationHistoryPage() {
@@ -48,13 +43,13 @@ export default function UserConversationHistoryPage() {
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
-  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  // const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
-  const [message, setMessage] = useState<MessageValue>({ 0: '' });
+  // const [message, setMessage] = useState<MessageValue>({ 0: '' });
   const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -68,49 +63,6 @@ export default function UserConversationHistoryPage() {
   //   }
   //   return ({ ...prev, [id]: [] });
   // }), [id]);
-
-  const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.persist();
-    setMessage({ ...message, [conversationId]: event.target.value });
-    const user = {
-      userId,
-      firstName,
-      conversationId,
-      isTyping: false,
-    };
-    if (!typing[conversationId]) {
-      socket.emit('typingState', user, conversationId);
-    } else {
-      socket.emit('typingState', user);
-    }
-  };
-
-  const socketSendMessageCommonFun = (id: undefined | number) => socket.emit('chats', ({
-    conversationId: id,
-    message: {
-      message: message[conversationId], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-    },
-    userId,
-    opponentId,
-  }), (success: boolean) => {
-    if (success) setMessage({ ...message, [conversationId]: '' });
-  });
-
-  const handleSendMessage = () => {
-    if (!conversationId) {
-      return socketSendMessageCommonFun(undefined);
-    }
-    socketSendMessageCommonFun(conversationId);
-  };
-
-  const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      if (!conversationId) {
-        return socketSendMessageCommonFun(undefined);
-      }
-      socketSendMessageCommonFun(conversationId);
-    }
-  };
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
@@ -164,7 +116,6 @@ export default function UserConversationHistoryPage() {
     const file: FileList | null = event.target.files;
     if (file && !file.length) return;
     handleOpenDialog(true);
-    console.log(file && file.length);
     if (file) {
       const result: Files = {};
       Object.values(file).forEach((element) => {
@@ -234,52 +185,37 @@ export default function UserConversationHistoryPage() {
     >
       <Grid item xs={12} id='messages' onScroll={scrollHandler} >
         <>
-        {allMessages[conversationId] && allMessages[conversationId].map(({
-          fkSenderId, message, id, sendDate, User, Files,
-        }, index: number) => {
-          let isShowAvatar = false;
-          if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
-          return <Message key={id} isShowAvatar={isShowAvatar} fkSenderId={fkSenderId} message={message} id={id} sendDate={sendDate} User={User} Files={Files} userId={userId} />;
-        })}
-        <div style={{ height: '50px' }} ref={ref}></div>
+          {allMessages[conversationId] && allMessages[conversationId].map(({
+            fkSenderId, message, id, sendDate, User, Files,
+          }, index: number) => {
+            let isShowAvatar = false;
+            if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
+            return (
+              <Message
+                key={id}
+                isShowAvatar={isShowAvatar}
+                fkSenderId={fkSenderId}
+                message={message}
+                id={id}
+                sendDate={sendDate}
+                User={User}
+                Files={Files}
+                userId={userId}
+              />
+            );
+          })}
+          <div style={{ height: '50px' }} ref={ref}></div>
         </>
       </Grid>
-      {(!!conversationId || !!opponentId)
-        && <div className='conversations__send-message-input'>
-          <Input
-            onKeyDown={sendMessageByKey}
-            value={message[conversationId] || ''}
-            onChange={handleChangeMessage}
-            disableUnderline
-            fullWidth
-            placeholder='Type message...'
-            endAdornment={(
-              (message[conversationId] || '') === ''
-                ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      classes={{ root: classes.iconButton }}
-                      onClick={openFileDialog} color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                    >
-                      <CloudUploadIcon />
-                    </IconButton>
-                  </InputAdornment>
-                )
-                : (
-                  <InputAdornment position="end">
-                    <IconButton
-                      classes={{ root: classes.iconButton }}
-                      onClick={handleSendMessage}
-                    >
-                      <SendIcon />
-                    </IconButton>
-                  </InputAdornment>
-                )
-            )}
-          />
-        </div>}
+      {(!!conversationId || !!opponentId) && (
+        <MessageInput
+          conversationId={conversationId}
+          userId={userId}
+          firstName={firstName}
+          opponentId={opponentId}
+          openFileDialog={openFileDialog}
+        />
+      )}
       {!isInputState && <input
         ref={inputRef}
         style={{ display: 'none' }}

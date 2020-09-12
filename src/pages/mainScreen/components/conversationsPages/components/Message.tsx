@@ -15,37 +15,40 @@ export default function Message({
   return (
     <div className='conversations__message-container flex'>
       {isShowAvatar && <Avatar className={classes.messageAvatar} />}
-      {Files && !!Files.length && (
-          <div className='conversations__message-image-container'>
-            {
-              Files.map((file: FileData) => (['png', 'jpg', 'jpeg'].includes(file.extension)
-                ? <img
-                      key={file.fileStorageName}
-                      className='conversations__message-image-item'
-                      src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
-                      alt={file.fileStorageName}
-                    />
-                : <Paper
-                    className={classes.paperFileContainer}
-                    key={file.fileStorageName}
-                  >
-                    <InsertDriveFileIcon/>
-                    <p>{file.fileUserName}</p>
-                  </Paper>))
-            }
-          </div>
-      )}
-      {message && <Paper
-        elevation={1}
-        className={clsx(fkSenderId === userId ? classes.paperSenderMessage
-          : classes.paperFriendMessage)}
-      >
-        <p className='conversations__message-text'>{message}</p>
-        <div className='conversations__user-name-date-container relative'>
-          {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
-          <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
-        </div>
-      </Paper>}
+      <div className='conversations__message-file-container'>
+        {Files && !!Files.length && (
+                  <div className='conversations__message-image-container'>
+                    {
+                      Files.map((file: FileData) => (['png', 'jpg', 'jpeg'].includes(file.extension)
+                        ? <img
+                              key={file.fileStorageName}
+                              className='conversations__message-image-item'
+                              src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
+                              alt={file.fileStorageName}
+                            />
+                        : <Paper
+                            className={classes.paperFileContainer}
+                            key={file.fileStorageName}
+                          >
+                            <InsertDriveFileIcon/>
+                            <p>{file.fileUserName}</p>
+                          </Paper>))
+                    }
+                  </div>
+        )}
+              {message && <Paper
+                elevation={1}
+                className={clsx(fkSenderId === userId ? classes.paperSenderMessage
+                  : classes.paperFriendMessage)}
+              >
+                <p className='conversations__message-text'>{message}</p>
+                <div className='conversations__user-name-date-container relative'>
+                  {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
+                  <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
+                </div>
+              </Paper>}
+      </div>
+
     </div>
   );
 }

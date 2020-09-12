@@ -1,5 +1,4 @@
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
-import { TokenPayload } from '../../../../redux/authorization/constants/interfaces';
 
 export interface DialogProps {
   handleClose: Function
@@ -35,6 +34,7 @@ export interface AddFilesProps {
 
 export interface MessageProps extends Messages {
   userId: number
+  isShowAvatar?: boolean
 }
 
 export interface CurrentConversationMessages {

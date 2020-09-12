@@ -19,6 +19,7 @@ import './styles/styles.scss';
 import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
 } from './interfaces';
+import { checkIsShowAvatar } from '../../helpers/usereHistoryConversations';
 
 const scrollTop = (ref: any, mainGrid: any, offset: number, position: number, isScrollTo: boolean) => {
   if (isScrollTo) {
@@ -46,7 +47,7 @@ export default function UserConversationHistoryPage() {
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const id = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
+  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
@@ -70,52 +71,52 @@ export default function UserConversationHistoryPage() {
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    setMessage({ ...message, [id]: event.target.value });
+    setMessage({ ...message, [conversationId]: event.target.value });
     const user = {
       userId,
       firstName,
-      conversationId: id,
+      conversationId,
       isTyping: false,
     };
-    if (!typing[id]) {
-      socket.emit('typingState', user, id);
+    if (!typing[conversationId]) {
+      socket.emit('typingState', user, conversationId);
     } else {
       socket.emit('typingState', user);
     }
   };
 
-  const socketSendMessageCommonFun = (conversationId: undefined | number) => socket.emit('chats', ({
-    conversationId,
+  const socketSendMessageCommonFun = (id: undefined | number) => socket.emit('chats', ({
+    conversationId: id,
     message: {
-      message: message[id], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+      message: message[conversationId], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
     },
     userId,
     opponentId,
   }), (success: boolean) => {
-    if (success) setMessage({ ...message, [id]: '' });
+    if (success) setMessage({ ...message, [conversationId]: '' });
   });
 
   const handleSendMessage = () => {
-    if (!id) {
+    if (!conversationId) {
       return socketSendMessageCommonFun(undefined);
     }
-    socketSendMessageCommonFun(id);
+    socketSendMessageCommonFun(conversationId);
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      if (!id) {
+      if (!conversationId) {
         return socketSendMessageCommonFun(undefined);
       }
-      socketSendMessageCommonFun(id);
+      socketSendMessageCommonFun(conversationId);
     }
   };
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    setScrollValue((prevValue) => ({ ...prevValue, [id]: getCurrentScrollTop(element) }));
-    if (element.scrollTop === 0 && localMessageHistory[id] && localMessageHistory[id].length === 15 && allMessages[id]) {
-      dispatch(conversationUserHistoryActionRequest(id, localPagination[id] + 15));
+    setScrollValue((prevValue) => ({ ...prevValue, [conversationId]: getCurrentScrollTop(element) }));
+    if (element.scrollTop === 0 && localMessageHistory[conversationId] && localMessageHistory[conversationId].length === 15 && allMessages[conversationId]) {
+      dispatch(conversationUserHistoryActionRequest(conversationId, localPagination[conversationId] + 15));
     }
   };
 
@@ -183,41 +184,41 @@ export default function UserConversationHistoryPage() {
   useEffect(() => {
     // opponentId && dispatch(createNewChatAction({ userId, opponentId }));
     setAllMessages((prev) => {
-      if (prev[id] && prev[id].length) {
+      if (prev[conversationId] && prev[conversationId].length) {
         return { ...prev };
       }
-      return ({ ...prev, [id]: [] });
+      return ({ ...prev, [conversationId]: [] });
     });
-    if (!allMessages[id]?.length && id !== 0) dispatch(conversationUserHistoryActionRequest(id, 0));
-  }, [id]);
+    if (!allMessages[conversationId]?.length && conversationId !== 0) dispatch(conversationUserHistoryActionRequest(conversationId, 0));
+  }, [conversationId]);
 
   useEffect(() => {
-    if (!allMessages[id]) return setAllMessages((prev) => ({ ...prev, [id]: [...messageHistory] }));
+    if (!allMessages[conversationId]) return setAllMessages((prev) => ({ ...prev, [conversationId]: [...messageHistory] }));
     setAllMessages((prev) => ({
-      ...prev, [id]: [...messageHistory, ...prev[id]],
+      ...prev, [conversationId]: [...messageHistory, ...prev[conversationId]],
     }));
-    setLocalmessageHistory((prev) => ({ ...prev, [id]: [...messageHistory] }));
-    setLocalPagination((prev) => ({ ...prev, [id]: pagination.currentPage }));
+    setLocalmessageHistory((prev) => ({ ...prev, [conversationId]: [...messageHistory] }));
+    setLocalPagination((prev) => ({ ...prev, [conversationId]: pagination.currentPage }));
   }, [messageHistory]);
 
   useEffect(() => {
-    if (Object.keys(lastMessage).length && id in lastMessage) setAllMessages((prev) => ({ ...prev, [id]: [...prev[id], lastMessage[id]] }));
+    if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((prev) => ({ ...prev, [conversationId]: [...prev[conversationId], lastMessage[conversationId]] }));
   }, [lastMessage]);
 
   useEffect(() => {
     let element = document.getElementById('messages');
     if (element) {
       let isScrolling = false;
-      if (scrollValue[id]) {
+      if (scrollValue[conversationId]) {
         isScrolling = true;
       }
-      scrollTop(ref, element, localPagination[id], scrollValue[id], isScrolling);
+      scrollTop(ref, element, localPagination[conversationId], scrollValue[conversationId], isScrolling);
     }
   }, [allMessages]);
 
   useEffect(() => {
     if (!isCreateChat.length) {
-      id && dispatch(getConversationIdAction(0));
+      conversationId && dispatch(getConversationIdAction(0));
       setAllMessages((prev) => ({ ...prev, 0: [] }));
     } else {
       dispatch(getConversationIdAction(isCreateChat[0].id));
@@ -233,26 +234,27 @@ export default function UserConversationHistoryPage() {
     >
       <Grid item xs={12} id='messages' onScroll={scrollHandler} >
         <>
-        {
-
-          allMessages[id] && allMessages[id].map(({
-            fkSenderId, message, id, sendDate, User, Files,
-          }) => <Message key={id} fkSenderId={fkSenderId} message={message} id={id} sendDate={sendDate} User={User} Files={Files} userId={userId} />)
-        }
+        {allMessages[conversationId] && allMessages[conversationId].map(({
+          fkSenderId, message, id, sendDate, User, Files,
+        }, index: number) => {
+          let isShowAvatar = false;
+          if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
+          return <Message key={id} isShowAvatar={isShowAvatar} fkSenderId={fkSenderId} message={message} id={id} sendDate={sendDate} User={User} Files={Files} userId={userId} />;
+        })}
         <div style={{ height: '50px' }} ref={ref}></div>
         </>
       </Grid>
-      {(!!id || !!opponentId)
+      {(!!conversationId || !!opponentId)
         && <div className='conversations__send-message-input'>
           <Input
             onKeyDown={sendMessageByKey}
-            value={message[id] || ''}
+            value={message[conversationId] || ''}
             onChange={handleChangeMessage}
             disableUnderline
             fullWidth
             placeholder='Type message...'
             endAdornment={(
-              (message[id] || '') === ''
+              (message[conversationId] || '') === ''
                 ? (
                   <InputAdornment position="end">
                     <IconButton

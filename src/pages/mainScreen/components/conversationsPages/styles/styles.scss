@@ -12,9 +12,10 @@ $appbarHeight: 64px;
 
   &__message-container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    max-width: 500px;
+    position: relative;
+    padding-right: 10px;
+    // justify-content: space-evenly;
+    max-width: 600px;
     margin: 0 0 25px 50px;
   }
 

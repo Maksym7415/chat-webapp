@@ -16,13 +16,22 @@ export default makeStyles((theme) => ({
     position: 'relative',
     display: 'flex',
     width: '90%',
+    maxWidth: '500px',
     backgroundColor: theme.palette.primary.main,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     margin: '0 0 0 auto',
+    '@media (max-width:1000px)': {
+      margin: '0 0 0 40px',
+    },
   },
   paperFriendMessage: {
+    position: 'relative',
+    padding: theme.spacing(1),
+    display: 'flex',
+    width: '90%',
+    maxWidth: '500px',
     background: 'linear-gradient(90deg, rgba(246,120,18,1) 35%, rgba(252,61,23,1) 69%)',
-    margin: '0 auto 0 0',
+    margin: '0 0 0 40px',
   },
   paperFileContainer: {
     width: '400px',
@@ -41,5 +50,12 @@ export default makeStyles((theme) => ({
   },
   iconButton: {
     padding: '0 25px',
+  },
+  messageAvatar: {
+    width: '30px',
+    height: '30px',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
   },
 }));

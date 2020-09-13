@@ -22,7 +22,7 @@ import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import Avatar from '@material-ui/core/Avatar';
 import { TransitionProps } from '@material-ui/core/transitions';
 
 import useStyles from './appBar/style/AppWrapperStyles';
@@ -98,9 +98,11 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
     setLocalSearchResult((prevSearchResult) => prevSearchResult.filter((item) => item.id !== newMember.id));
     setGroupMembers((prevMembers) => {
       const {
-        id, isAdmin, firstName, ...otherInfo
+        id, isAdmin, firstName, userAvatar, ...otherInfo
       } = newMember;
-      return [...prevMembers, { isAdmin: false, id, firstName }];
+      return [...prevMembers, {
+        isAdmin: false, id, firstName, userAvatar,
+      }];
     });
   };
 
@@ -209,7 +211,7 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
                     <li key={data.id} >
                       <Chip
                         style={{ cursor: 'pointer' }}
-                        icon={<FaceIcon />}
+                        avatar={<Avatar alt="" src={`http://localhost:8081/${data.userAvatar}`} />}
                         label={data.firstName}
                         onDelete={handleDelete(data)}
                         onClick={(event) => chipHandler(event, data.id)}

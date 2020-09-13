@@ -4,6 +4,7 @@ export interface SearchObjectInteface {
   id: number
   firstName: string
   isAdmin: boolean
+  userAvatar: string
 }
 
 export interface InitializedGlobalSearchActionInterface {

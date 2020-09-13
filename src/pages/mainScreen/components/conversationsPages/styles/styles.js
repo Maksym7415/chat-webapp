@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
   paperSenderMessage: {
     position: 'relative',
     display: 'flex',
-    width: '90%',
+    // width: '90%',
     maxWidth: '500px',
     backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(1),
@@ -28,7 +28,7 @@ export default makeStyles((theme) => ({
     position: 'relative',
     padding: theme.spacing(1),
     display: 'flex',
-    width: '90%',
+    // width: '90%',
     maxWidth: '500px',
     background: 'linear-gradient(90deg, rgba(246,120,18,1) 35%, rgba(252,61,23,1) 69%)',
     margin: '0 0 0 40px',

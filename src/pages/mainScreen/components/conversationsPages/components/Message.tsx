@@ -43,8 +43,8 @@ export default function Message({
               >
                 <p className='conversations__message-text'>{message}</p>
                 <div className='conversations__user-name-date-container relative'>
-                  {userId !== User.id && <p className='conversations__message-info-text'>{User.tagName}</p>}
-                  <p className='conversations__message-info-time absolute'>{getCurrentDay(new Date(sendDate))}</p>
+                  {userId !== User.id ? <p className='conversations__message-info-text'>{User.tagName}</p> : <div className='conversations__message-info-text' style={{ height: '2px' }}></div>}
+                  <p className='conversations__message-info-time'>{getCurrentDay(new Date(sendDate))}</p>
                 </div>
               </Paper>}
       </div>

@@ -13,7 +13,7 @@ export default function Message({
   const classes = useStyles();
 
   return (
-    <div className='conversations__message-container flex'>
+    <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
       {isShowAvatar && <Avatar className={classes.messageAvatar} />}
       <div className='conversations__message-file-container'>
         {Files && !!Files.length && (
@@ -39,7 +39,7 @@ export default function Message({
               {message && <Paper
                 elevation={1}
                 className={clsx(fkSenderId === userId ? classes.paperSenderMessage
-                  : classes.paperFriendMessage)}
+                  : classes.paperFriendMessage, Files && Files.length ? classes.fullWidth : null)}
               >
                 <p className='conversations__message-text'>{message}</p>
                 <div className='conversations__user-name-date-container relative'>

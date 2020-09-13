@@ -4,9 +4,8 @@ $appbarHeight: 64px;
   &__container {
     overflow-y: scroll;
     width: 70%;
-    padding: 10px 0 0 10px;
+    padding: 20px 0 0 20px;
     height: calc(100vh - #{$appbarHeight});
-    // max-height: 87vh;
     position: relative;
   }
 
@@ -14,13 +13,18 @@ $appbarHeight: 64px;
     display: flex;
     position: relative;
     padding-right: 10px;
-    // justify-content: space-evenly;
     max-width: 600px;
+  }
+
+  &__message-container-margin-sender {
     margin: 0 0 25px 50px;
   }
 
+  &__message-container-margin-friend {
+    margin: 0 auto 25px 0;
+  }
+
   &__message-file-container {
-    width: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -59,10 +63,16 @@ $appbarHeight: 64px;
     background-color: #ffffff;
   }
 
+  &__message-image-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+  }
+
   &__message-image-item {
     max-width: 500px;
     max-height: 500px;
-    margin: 0 0 5px auto;
+    margin: 0 0 5px 0;
     border-radius: 4px;
   }
 
@@ -89,13 +99,6 @@ $appbarHeight: 64px;
     right: 0;
     bottom: 0;
     color: #e8e8e8;
-  }
-
-  &__message-image-container {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    margin-left: auto;
   }
 
   &__user-name-date-container {

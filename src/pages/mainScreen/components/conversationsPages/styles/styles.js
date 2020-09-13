@@ -15,20 +15,21 @@ export default makeStyles((theme) => ({
   paperSenderMessage: {
     position: 'relative',
     display: 'flex',
-    // width: '90%',
     maxWidth: '500px',
     backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(1),
-    margin: '0 0 0 auto',
+    margin: '0 0 0 40px',
     '@media (max-width:1000px)': {
       margin: '0 0 0 40px',
     },
+  },
+  fullWidth: {
+    width: '100%',
   },
   paperFriendMessage: {
     position: 'relative',
     padding: theme.spacing(1),
     display: 'flex',
-    // width: '90%',
     maxWidth: '500px',
     background: 'linear-gradient(90deg, rgba(246,120,18,1) 35%, rgba(252,61,23,1) 69%)',
     margin: '0 0 0 40px',

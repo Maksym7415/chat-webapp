@@ -187,7 +187,7 @@ export default function UserConversationHistoryPage() {
   }, [files]);
 
   useEffect(() => {
-    if (!allMessages[id]) {
+    if (!allMessages[id] && id) {
       dispatch(conversationUserHistoryActionRequest(id, 0));
     }
     return () => {
@@ -229,7 +229,6 @@ export default function UserConversationHistoryPage() {
     >
       <Grid item xs={12} >
         <>
-          {console.log(opponentId, allMessages)}
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : id === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[id] && allMessages[id].map(({
               fkSenderId, message, id, sendDate, User, Files,

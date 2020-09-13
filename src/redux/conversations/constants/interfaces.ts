@@ -75,6 +75,7 @@ interface User {
   lastName: string
   status: string
   tagName: string
+  userAvatar: string
 }
 
 interface FileData {
@@ -147,9 +148,10 @@ export interface ConversationsList {
   message: string
   messageType: string
   sendDate: string
-  conversationId: number,
-  conversationType: string,
-  conversationName: string,
+  conversationId: number
+  conversationAvatar: string
+  conversationType: string
+  conversationName: string
   conversationCreationDate: string
 }
 

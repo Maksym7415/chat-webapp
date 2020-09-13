@@ -120,6 +120,7 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
       return {
         ...state,
         userHistoryConversation: initialState.userHistoryConversation,
+        lastMessages: initialState.lastMessages,
       };
     }
     default:

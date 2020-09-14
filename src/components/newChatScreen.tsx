@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -20,7 +22,7 @@ import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import Avatar from '@material-ui/core/Avatar';
 import { TransitionProps } from '@material-ui/core/transitions';
 
 import useStyles from './appBar/style/AppWrapperStyles';
@@ -29,9 +31,13 @@ import { createNewChatAction } from '../redux/conversations/constants/actionCons
 import { RootState } from '../redux/reducer';
 import { SearchObjectInteface } from '../redux/search/constants/interfaces';
 
+import socket from '../socket';
+import { fullDate } from '../common/getCorrectDateFormat';
+
 interface ChatProps {
   open: boolean
   handleClose: () => void
+  setOpenNewChatScreen: (value: boolean) => void
 }
 
 interface Ref {
@@ -43,20 +49,22 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>,
 ) => <Slide direction="up" ref={ref} {...props} />);
 
-export default function NewChatScreen({ open, handleClose }: ChatProps) {
+export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen }: ChatProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
+  const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
 
   const [value, setValue] = useState<string>('');
   const [hide, setHide] = useState<boolean>(true);
   const [localSearchResult, setLocalSearchResult] = useState<Array<SearchObjectInteface>>([]);
   const [groupMembers, setGroupMembers] = useState<Array<SearchObjectInteface>>([]);
-  const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
-  const [checked, setChecked] = React.useState<Ref>({});
-  const [memberId, setMemberId] = React.useState(0);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const [checked, setChecked] = useState<Ref>({});
+  const [memberId, setMemberId] = useState(0);
+  const [chatName, setChatName] = useState('');
 
   const chipHandler = (event: any, id: number) => {
     setMemberId(id);
@@ -67,8 +75,7 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
     event.persist();
     const chipMember = groupMembers.find((el) => el.id === memberId);
     setChecked((prevChecked) => ({ ...prevChecked, [memberId]: { ...chipMember, isAdmin: event.target.checked } }));
-    console.log(event.target.checked);
-    setGroupMembers((prevMembers) => prevMembers.map((el) => (el.id === chipMember?.id ? { ...el, isAdmin: event.target.checked } : el)));
+    setGroupMembers((prevMember) => prevMember.map((el) => (el.id === memberId ? { ...el, isAdmin: event.target.checked } : el)));
   };
 
   const handlePopoverClose = () => {
@@ -89,7 +96,14 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
 
   const handleAdd = (newMember: SearchObjectInteface) => {
     setLocalSearchResult((prevSearchResult) => prevSearchResult.filter((item) => item.id !== newMember.id));
-    setGroupMembers((prevMembers) => [...prevMembers, { ...newMember, isAdmin: false }]);
+    setGroupMembers((prevMembers) => {
+      const {
+        id, isAdmin, firstName, userAvatar, ...otherInfo
+      } = newMember;
+      return [...prevMembers, {
+        isAdmin: false, id, firstName, userAvatar,
+      }];
+    });
   };
 
   const handleDelete = (chipToDelete: SearchObjectInteface) => () => {
@@ -98,6 +112,17 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
     setChecked((prevChecked) => {
       delete prevChecked[chipToDelete.id];
       return prevChecked;
+    });
+  };
+
+  const handleChatNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChatName(event.target.value);
+  };
+
+  const createChat = () => {
+    if (!groupMembers.length) return;
+    socket.emit('chatCreation', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, (success: boolean) => {
+      if (success) setOpenNewChatScreen(false);
     });
   };
 
@@ -124,7 +149,7 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
             <Typography variant="h6" className={classes.newChatTitle}>
               Новый чат
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={createChat}>
               Создать чат
             </Button>
           </Toolbar>
@@ -138,6 +163,7 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
               fullWidth
               required={true}
               size="small"
+              onChange={handleChatNameHandler}
             />
           </Grid>
           <Grid item xs={9} className={classes.newChatAddContactWraper}>
@@ -168,7 +194,13 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
                 {!!localSearchResult.length && <Paper tabIndex={1} elevation={3} className={clsx(classes.reactSearch, {
                   [classes.hideReactSearch]: hide,
                 })}>
-                  {localSearchResult.map((result: SearchObjectInteface) => <Paper elevation={2} key={result.id} onClick={() => handleAdd(result)}> <Typography className={classes.searchContent} variant="body1" >{result.firstName}</Typography></Paper>)}
+                  {localSearchResult.map((result: SearchObjectInteface) => (
+                    <Paper
+                      elevation={2}
+                      key={result.id}
+                      onClick={() => handleAdd({ ...result, isAdmin: false })}>
+                      <Typography className={classes.searchContent} variant="body1" >{result.firstName}</Typography>
+                    </Paper>))}
                 </Paper>}
               </div>
             </div>
@@ -179,7 +211,7 @@ export default function NewChatScreen({ open, handleClose }: ChatProps) {
                     <li key={data.id} >
                       <Chip
                         style={{ cursor: 'pointer' }}
-                        icon={<FaceIcon />}
+                        avatar={<Avatar alt="" src={`http://localhost:8081/${data.userAvatar}`} />}
                         label={data.firstName}
                         onDelete={handleDelete(data)}
                         onClick={(event) => chipHandler(event, data.id)}

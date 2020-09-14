@@ -98,10 +98,10 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   }, []);
 
   const notify = (message: Messages, conversationId: number) => {
-    let notification = new Notification('Новое сообщение', { body: `${message.User.firstName}: ${message.message}` });
-    notification.onclick = function (event) {
-      dispatch(getConversationIdAction(conversationId));
-    };
+    // let notification = new Notification('Новое сообщение', { body: `${message.User.firstName}: ${message.message}` });
+    // notification.onclick = function (event) {
+    //   dispatch(getConversationIdAction(conversationId));
+    // };
   };
 
   useEffect(() => {
@@ -121,7 +121,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     });
     return () => {
       // if (history.location.pathname === '/') return;
-      // socket.removeAllListeners();
+      socket.removeAllListeners();
     };
   }, [conversationsList, typing]);
 

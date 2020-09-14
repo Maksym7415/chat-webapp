@@ -2,8 +2,9 @@ import * as types from './types';
 
 export interface SearchObjectInteface {
   id: number
-  firstName: number
+  firstName: string
   isAdmin: boolean
+  userAvatar: string
 }
 
 export interface InitializedGlobalSearchActionInterface {

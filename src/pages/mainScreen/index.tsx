@@ -40,6 +40,7 @@ let newTimer: any = {};
 export default function BasicTextFields({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
   const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
+
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
@@ -110,19 +111,17 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   }, []);
 
   useEffect(() => {
-    conversationsList.forEach((chat) => {
-      socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-        notify(message, chat.conversationId);
-        dispatch(conversationAddNewMessage(message, chat.conversationId));
+    if (conversationsList.length) {
+      conversationsList.forEach((chat) => {
+        socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
+          notify(message, chat.conversationId);
+          dispatch(conversationAddNewMessage(message, chat.conversationId));
+        });
+        socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
+          timer(conversation, chat.conversationId);
+        });
       });
-      socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
-        timer(conversation, chat.conversationId);
-      });
-    });
-    return () => {
-      // if (history.location.pathname === '/') return;
-      socket.removeAllListeners();
-    };
+    }
   }, [conversationsList, typing]);
 
   useEffect(() => {
@@ -131,6 +130,11 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       dispatch(getConversationIdAction(conversationId));
       // dispatch(conversationAddNewMessage(message, conversationId));
     });
+  }, [conversationsList]);
+
+  useEffect(() => () => {
+    // if (history.location.pathname === '/') return;
+    socket.removeAllListeners();
   }, [conversationsList]);
 
   return (

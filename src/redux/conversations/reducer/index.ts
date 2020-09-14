@@ -121,6 +121,7 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         ...state,
         userHistoryConversation: initialState.userHistoryConversation,
         lastMessages: initialState.lastMessages,
+        conversationsList: initialState.conversationsList,
       };
     }
     default:

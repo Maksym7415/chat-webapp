@@ -24,6 +24,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Avatar from '@material-ui/core/Avatar';
 import { TransitionProps } from '@material-ui/core/transitions';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import useStyles from './appBar/style/AppWrapperStyles';
 import { initializedGlobalSearchAction } from '../redux/search/constants/actionConstants';
@@ -65,6 +69,17 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
   const [checked, setChecked] = useState<Ref>({});
   const [memberId, setMemberId] = useState(0);
   const [chatName, setChatName] = useState('');
+  const [image, setImage] = useState('');
+  const [imageData, setImageData] = useState({ name: '' });
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleCloseDialog = (isAddavatar: boolean) => {
+    if (!isAddavatar) {
+      setImageData({ name: '' });
+      setImage('');
+    }
+    setOpenDialog(false);
+  };
 
   const chipHandler = (event: any, id: number) => {
     setMemberId(id);
@@ -121,9 +136,20 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
 
   const createChat = () => {
     if (!groupMembers.length) return;
-    socket.emit('chatCreation', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, (success: boolean) => {
+    const fileExtension = imageData.name.split('.');
+    socket.emit('chatCreation', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, imageData, fileExtension[fileExtension.length - 1], (success: boolean) => {
       if (success) setOpenNewChatScreen(false);
     });
+  };
+
+  const handleChangeAvatarHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file: FileList | null = event.target.files;
+    if (file) {
+      setImageData(file[0]);
+      setImage(URL.createObjectURL(file[0]));
+    }
+
+    setOpenDialog(true);
   };
 
   useEffect(() => {
@@ -154,7 +180,7 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
             </Button>
           </Toolbar>
         </AppBar>
-        <Grid container style={{ margin: '12px' }}>
+        <Grid container style={{ margin: '12px', height: '100%' }}>
           <Grid item xs={3}>
             <TextField
               id="name"
@@ -165,6 +191,41 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
               size="small"
               onChange={handleChatNameHandler}
             />
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="contained-button-file"
+              type="file"
+              onChange={handleChangeAvatarHandler}
+            />
+            <label htmlFor="contained-button-file">
+              <Button variant="contained" color="primary" component="span" fullWidth style={{ marginTop: '25px' }}>
+                Добавить аватар группы
+              </Button>
+            </label>
+            <Dialog
+              open={openDialog}
+              onClose={handleCloseDialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">Фото</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+
+                    <img src={image}/>
+
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => handleCloseDialog(true)} color="primary" variant="contained">
+                  Добавить
+                </Button>
+                <Button onClick={() => handleCloseDialog(false)} color="primary" variant="contained">
+                  Отменить
+                </Button>
+            </DialogActions>
+            </Dialog>
           </Grid>
           <Grid item xs={9} className={classes.newChatAddContactWraper}>
             <div className={classes.newChatSearchWrapper}>

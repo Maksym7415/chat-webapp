@@ -144,7 +144,7 @@ export default function UserConversationHistoryPage() {
       <Grid item xs={12} >
         <>
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
-            : allMessages[conversationId] && allMessages[conversationId].map(({
+            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
             fkSenderId, message, id, sendDate, User, Files,
           }, index: number) => {
             let isShowAvatar = false;

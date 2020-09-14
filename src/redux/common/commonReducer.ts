@@ -1,16 +1,27 @@
 import * as types from './types';
-import { PreloaderActionInterface, CommonReducerInterface } from './interafaces';
+import * as interafaces from './interafaces';
 
-const initialState = {
-  isShow: false,
+const initialState: interafaces.CommonReducerInterface = {
+  preloader: false,
+  contextMenu: {
+    xPos: '',
+    yPos: '',
+    isShowMenu: false,
+  },
 };
 
-export default (state = initialState, action: PreloaderActionInterface): CommonReducerInterface => {
+export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
   switch (action.type) {
     case types.APP_PRELOADER: {
       return {
         ...state,
-        isShow: action.payload,
+        preloader: action.payload,
+      };
+    }
+    case types.SHOW_CONTEXT_MENU: {
+      return {
+        ...state,
+        contextMenu: action.payload,
       };
     }
     default: return state;

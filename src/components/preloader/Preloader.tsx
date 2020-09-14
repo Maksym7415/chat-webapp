@@ -5,7 +5,7 @@ import { RootState } from '../../redux/reducer';
 import './styles.scss';
 
 export default function Preloader() {
-  const isShow = useSelector(({ CommonReducer: { isShow } }: RootState) => isShow);
+  const isShow = useSelector(({ commonReducer }: RootState) => commonReducer.preloader);
   return (
     <>
         {isShow && <div className='preloader absolute'>

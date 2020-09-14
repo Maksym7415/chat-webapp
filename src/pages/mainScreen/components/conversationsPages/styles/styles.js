@@ -19,9 +19,6 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     padding: theme.spacing(1),
     margin: '0 0 0 40px',
-    '@media (max-width:1000px)': {
-      margin: '0 0 0 40px',
-    },
   },
   fullWidth: {
     width: '100%',

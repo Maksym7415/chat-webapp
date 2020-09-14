@@ -11,13 +11,28 @@ interface ComplexErrorResponse {
   details: SimpleErrorResponse[]
 }
 
-export type ErrorResponse = SimpleErrorResponse | ComplexErrorResponse | null;
-
-export interface PreloaderActionInterface {
+interface PreloaderActionInterface {
   type: typeof types.APP_PRELOADER
   payload: boolean
 }
 
+export type ErrorResponse = SimpleErrorResponse | ComplexErrorResponse | null;
+
 export interface CommonReducerInterface {
-  isShow: boolean
+  preloader: boolean
+  contextMenu: ContextMenuState
+}
+
+export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction;
+
+// CONTEXT MENU
+export interface ContextMenuState {
+  yPos: string
+  xPos: string
+  isShowMenu: boolean
+}
+
+interface ShowContextMenuAction {
+  type: typeof types.SHOW_CONTEXT_MENU
+  payload: ContextMenuState
 }

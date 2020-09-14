@@ -34,7 +34,19 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
     case types.IS_EDIT_MESSAGE: {
       return {
         ...state,
-        messageEdit: action.payload,
+        messageEdit: {
+          ...state.messageEdit,
+          ...action.payload,
+        },
+      };
+    }
+    case types.IS_DELETE_MESSAGE: {
+      return {
+        ...state,
+        messageEdit: {
+          ...state.messageEdit,
+          ...action.payload,
+        },
       };
     }
     default: return state;

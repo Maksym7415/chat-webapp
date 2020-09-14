@@ -10,10 +10,10 @@ import { fullDate } from '../../../../../common/getCorrectDateFormat';
 import { RootState } from '../../../../../redux/reducer';
 import useStyles from '../styles/styles';
 import { MessageInputProps, MessageValue } from '../interfaces';
-import { editMessageAction } from '../../../../../redux/common/commonActions';
+import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
 
 export default function MessageInput({
-  conversationId, allMessages, userId, firstName, opponentId, openFileDialog,
+  conversationId, setAllMessages, userId, firstName, opponentId, openFileDialog,
 }: MessageInputProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export default function MessageInput({
       return socketSendMessageCommonFun(undefined);
     }
     socketSendMessageCommonFun(conversationId);
-    if (messageEdit.isEdit) dispatch(editMessageAction(true, null));
+    if (messageEdit.isEdit) dispatch(editMessageAction(false, null));
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -63,12 +63,23 @@ export default function MessageInput({
         return socketSendMessageCommonFun(undefined);
       }
       socketSendMessageCommonFun(conversationId);
-      dispatch(editMessageAction(true, null));
+      dispatch(editMessageAction(false, null));
     }
   };
 
   useEffect(() => {
     if (messageEdit.isEdit) setMessage({ ...message, [conversationId]: 'hello' });
+    if (messageEdit.isDelete) {
+      socket.emit('chats', ({
+        conversationId,
+        isDeleteMessage: true,
+        messageId: messageEdit.messageId,
+      }), (success: boolean) => {
+        if (success) console.log('deleted');
+        // setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
+      });
+      dispatch(deleteMessageAction(false, null));
+    }
   }, [messageEdit]);
 
   return (

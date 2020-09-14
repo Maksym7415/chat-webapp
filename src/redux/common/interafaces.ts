@@ -24,7 +24,7 @@ export interface CommonReducerInterface {
   messageEdit: MessageEditState
 }
 
-export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction;
+export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction;
 
 // CONTEXT MENU
 export interface ContextMenuConfig {
@@ -48,12 +48,17 @@ interface ShowContextMenuAction {
 
 // MESSAGE EDIT
 export interface MessageEditState {
-  isEdit: boolean
-  isDelete: boolean
+  isEdit?: boolean
+  isDelete?: boolean
   messageId: number | null
 }
 
 interface MessageEditAction {
   type: typeof types.IS_EDIT_MESSAGE
+  payload: MessageEditState
+}
+
+interface MessageDeleteAction {
+  type: typeof types.IS_DELETE_MESSAGE
   payload: MessageEditState
 }

@@ -138,8 +138,7 @@ export default function UserConversationHistoryPage() {
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
       console.log(lastMessage);
       if (lastMessage[conversationId].isEdit) {
-        console.log(allMessages);
-        return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
+        return  ;
       }
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
     }
@@ -195,7 +194,7 @@ export default function UserConversationHistoryPage() {
       </Grid>
       {(!!conversationId || !!opponentId) && (
         <MessageInput
-          allMessages={allMessages}
+          setAllMessages={setAllMessages}
           conversationId={conversationId}
           userId={userId}
           firstName={firstName}

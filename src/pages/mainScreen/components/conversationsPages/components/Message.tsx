@@ -8,7 +8,7 @@ import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
 import { MessageProps } from '../interfaces';
 import useStyles from '../styles/styles';
 import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
-import { editMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
+import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
@@ -28,7 +28,7 @@ export default function Message({
   };
 
   const handleDeleteMessage = () => {
-    dispatch(editMessageAction(true, id));
+    dispatch(deleteMessageAction(true, id));
     dispatch(contextMenuAction({
       yPos: '',
       xPos: '',
@@ -39,7 +39,7 @@ export default function Message({
   };
 
   const config = [
-    { id: 1, title: 'Delete Message', callback: () => console.log('delete message') },
+    { id: 1, title: 'Delete Message', callback: handleDeleteMessage },
     { id: 2, title: 'Edit Message', callback: handleEditMessage },
     { id: 3, title: 'Share Message', callback: () => console.log('share message') },
   ];

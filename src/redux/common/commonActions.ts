@@ -13,5 +13,10 @@ export const contextMenuAction = (payload: interfaces.ContextMenuState): interfa
 
 export const editMessageAction = (isEdit: boolean, messageId: number | null): interfaces.CommonReducerActions => ({
   type: types.IS_EDIT_MESSAGE,
-  payload: { isEdit, isDelete: false, messageId },
+  payload: { isEdit, messageId },
+});
+
+export const deleteMessageAction = (isDelete: boolean, messageId: number | null): interfaces.CommonReducerActions => ({
+  type: types.IS_EDIT_MESSAGE,
+  payload: { isDelete, messageId },
 });

@@ -21,20 +21,44 @@ export type ErrorResponse = SimpleErrorResponse | ComplexErrorResponse | null;
 export interface CommonReducerInterface {
   preloader: boolean
   contextMenu: ContextMenuState
+  messageEdit: MessageEditState
 }
 
-export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction;
+export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction;
 
 // CONTEXT MENU
+export interface ContextMenuConfig {
+  id: number
+  title: string
+  callback: Function
+}
+
 export interface ContextMenuState {
   yPos: string
   xPos: string
   isShowMenu: boolean
   messageId: number
-  component: Function | null
+  config: Array<ContextMenuConfig>
 }
 
 interface ShowContextMenuAction {
   type: typeof types.SHOW_CONTEXT_MENU
   payload: ContextMenuState
+}
+
+// MESSAGE EDIT
+export interface MessageEditState {
+  isEdit?: boolean
+  isDelete?: boolean
+  messageId: number | null
+}
+
+interface MessageEditAction {
+  type: typeof types.IS_EDIT_MESSAGE
+  payload: MessageEditState
+}
+
+interface MessageDeleteAction {
+  type: typeof types.IS_DELETE_MESSAGE
+  payload: MessageEditState
 }

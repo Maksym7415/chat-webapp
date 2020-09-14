@@ -36,8 +36,7 @@ export interface MessageProps extends Messages {
 }
 
 export interface MessageInputProps {
-  // message: MessageValue
-  // sendMessageByKey: Function
+  setAllMessages: Function
   conversationId: number
   userId: number
   firstName: string

@@ -16,11 +16,12 @@ import { RootState } from '../../../../redux/reducer';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
 import AddFiles from './components/addFilesComponent';
-import './styles/styles.scss';
+import { contextMenuAction } from '../../../../redux/common/commonActions';
 import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
 } from './interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
+import './styles/styles.scss';
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -35,9 +36,7 @@ export default function UserConversationHistoryPage() {
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
-
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
-
   const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -49,6 +48,22 @@ export default function UserConversationHistoryPage() {
     let element = event.currentTarget;
     if (allMessages[conversationId]?.length % 15 === 0 && element.scrollTop === 0) {
       dispatch(conversationUserHistoryActionRequest(conversationId, localPagination[conversationId] + 15));
+    }
+  };
+
+  const handleCloseContextMenu = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.type === 'contextmenu') {
+      event.preventDefault();
+      console.log('prevent');
+    }
+    if (event.type === 'click') {
+      dispatch(contextMenuAction({
+        yPos: '',
+        xPos: '',
+        isShowMenu: false,
+        messageId: 0,
+        config: [],
+      }));
     }
   };
 
@@ -120,7 +135,12 @@ export default function UserConversationHistoryPage() {
   }, [messageHistory]);
 
   useEffect(() => {
-    if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
+    if (Object.keys(lastMessage).length && conversationId in lastMessage) {
+      if (lastMessage[conversationId].isEdit) {
+        return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
+      }
+      setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
+    }
   }, [lastMessage]);
 
   useEffect(() => {
@@ -139,35 +159,41 @@ export default function UserConversationHistoryPage() {
       onDragLeave={onDragLeave}
       className='conversations__container'
       onScroll={scrollHandler}
-      id = 'messages'
+      id='messages'
+      onClick={handleCloseContextMenu}
+      onContextMenu={handleCloseContextMenu}
     >
       <Grid item xs={12} >
         <>
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-            fkSenderId, message, id, sendDate, User, Files,
-          }, index: number) => {
-            let isShowAvatar = false;
-            if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
-            return (
-              <Message
-                key={id}
-                isShowAvatar={isShowAvatar}
-                fkSenderId={fkSenderId}
-                message={message}
-                id={id}
-                sendDate={sendDate}
-                User={User}
-                Files={Files}
-                userId={userId}
-              />
-            );
-          })}
+              fkSenderId, message, id, sendDate, User, Files, isEdit,
+            }, index: number) => {
+              if (isEdit) {
+                // setAllMessages((messages) => messages[conversationId].map((message) => (message.id === id ? { ...messages[conversationId], message: lastMessage[conversationId].message } : message)));
+              }
+              let isShowAvatar = false;
+              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
+              return (
+                <Message
+                  key={id}
+                  isShowAvatar={isShowAvatar}
+                  fkSenderId={fkSenderId}
+                  message={message}
+                  id={id}
+                  sendDate={sendDate}
+                  User={User}
+                  Files={Files}
+                  userId={userId}
+                />
+              );
+            })}
           <div style={{ height: '50px' }} ref={ref}></div>
         </>
       </Grid>
       {(!!conversationId || !!opponentId) && (
         <MessageInput
+          setAllMessages={setAllMessages}
           conversationId={conversationId}
           userId={userId}
           firstName={firstName}

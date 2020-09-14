@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Input, InputAdornment, IconButton,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import socket from '../../../../../socket';
 import { fullDate } from '../../../../../common/getCorrectDateFormat';
 import { RootState } from '../../../../../redux/reducer';
 import useStyles from '../styles/styles';
 import { MessageInputProps, MessageValue } from '../interfaces';
+import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
 
 export default function MessageInput({
-  conversationId, userId, firstName, opponentId, openFileDialog,
+  conversationId, setAllMessages, userId, firstName, opponentId, openFileDialog,
 }: MessageInputProps) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -39,6 +42,7 @@ export default function MessageInput({
     message: {
       message: message[conversationId], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
     },
+    messageId: messageEdit.messageId,
     userId,
     opponentId,
   }), (success: boolean) => {
@@ -50,6 +54,7 @@ export default function MessageInput({
       return socketSendMessageCommonFun(undefined);
     }
     socketSendMessageCommonFun(conversationId);
+    if (messageEdit.isEdit) dispatch(editMessageAction(false, null));
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -58,8 +63,24 @@ export default function MessageInput({
         return socketSendMessageCommonFun(undefined);
       }
       socketSendMessageCommonFun(conversationId);
+      dispatch(editMessageAction(false, null));
     }
   };
+
+  useEffect(() => {
+    if (messageEdit.isEdit) setMessage({ ...message, [conversationId]: 'hello' });
+    if (messageEdit.isDelete) {
+      socket.emit('chats', ({
+        conversationId,
+        isDeleteMessage: true,
+        messageId: messageEdit.messageId,
+      }), (success: boolean) => {
+        if (success) console.log('deleted');
+        // setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
+      });
+      dispatch(deleteMessageAction(false, null));
+    }
+  }, [messageEdit]);
 
   return (
     <div className='conversations__send-message-input'>

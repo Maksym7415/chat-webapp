@@ -20,7 +20,7 @@ import './styles/styles.scss';
 import {
   Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
 } from './interfaces';
-import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/usereHistoryConversations';
+import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -47,7 +47,6 @@ export default function UserConversationHistoryPage() {
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    console.log(allMessages[conversationId], element.scrollTop);
     if (allMessages[conversationId]?.length % 15 === 0 && element.scrollTop === 0) {
       dispatch(conversationUserHistoryActionRequest(conversationId, localPagination[conversationId] + 15));
     }
@@ -115,20 +114,10 @@ export default function UserConversationHistoryPage() {
   }, [conversationId]);
 
   useEffect(() => {
+    scrollTop(ref);
     setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
     setAllMessages((messages) => ({ ...messages, [conversationId]: [...messageHistory, ...(messages[conversationId] === undefined ? [] : messages[conversationId])], 0: [] }));
   }, [messageHistory]);
-
-  // useEffect(() => {
-  //   let element = document.getElementById('messages');
-  //   if (element) {
-  //     let isScrolling = false;
-  //     if (scrollValue[conversationId]) {
-  //       isScrolling = true;
-  //     }
-  //     scrollTop(ref, element, localPagination[conversationId], scrollValue[conversationId], isScrolling);
-  //   }
-  // }, [allMessages]);
 
   useEffect(() => {
     if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
@@ -150,8 +139,9 @@ export default function UserConversationHistoryPage() {
       onDragLeave={onDragLeave}
       className='conversations__container'
       onScroll={scrollHandler}
+      id = 'messages'
     >
-      <Grid item xs={12} id = 'messages' >
+      <Grid item xs={12} >
         <>
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].map(({

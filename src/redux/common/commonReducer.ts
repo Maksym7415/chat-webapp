@@ -4,9 +4,11 @@ import * as interafaces from './interafaces';
 const initialState: interafaces.CommonReducerInterface = {
   preloader: false,
   contextMenu: {
-    xPos: '',
-    yPos: '',
+    xPos: '100',
+    yPos: '100',
     isShowMenu: false,
+    messageId: 0,
+    component: null,
   },
 };
 

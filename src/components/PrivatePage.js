@@ -17,7 +17,7 @@ export default function PrivatePage({
                       if (setConfig(roles, ['superadmin'], false).includes(true)) {
                         return (
                                 <AppBarWrapper>
-                                    <Component {...props}/>
+                                  <Component {...props}/>
                                 </AppBarWrapper>
                         );
                       }

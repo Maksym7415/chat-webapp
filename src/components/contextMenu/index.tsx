@@ -1,60 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { Paper, MenuList } from '@material-ui/core';
 import { ContextMenuProps } from './interfaces';
 import { RootState } from '../../redux/reducer';
 
-class ContextMenu extends React.Component<ContextMenuProps> {
-  // constructor(props: ContextMenuProps) {
-  //   super(props);
-  //   // this.state = {
-  //   //   xPos: '0px',
-  //   //   yPos: '0px',
-  //   //   isShowMenu: false,
-  //   // };
-  // }
+export default function ContextMenu() {
+  const menuConfig = useSelector(({ commonReducer }: RootState) => commonReducer.contextMenu);
 
-  componentDidMount() {
-    // document.addEventListener('click', this.handleClick);
-    // document.addEventListener('contextmenu', this.handleContextMenu);
+  console.log(menuConfig.yPos, menuConfig.xPos);
+
+  if (menuConfig.isShowMenu) {
+    return (
+      <Paper
+        style={{
+          zIndex: 1000,
+          top: menuConfig.yPos,
+          left: menuConfig.xPos,
+          position: 'absolute',
+        }}
+      >
+        <MenuList>
+          {menuConfig.component && menuConfig.component()}
+        </MenuList>
+      </Paper>
+    );
   }
 
-  componentWillUnmount() {
-    // document.removeEventListener('click', this.handleClick);
-    // document.removeEventListener('contextmenu', this.handleContextMenu);
-  }
-
-  // handleClick = (e) => {
-  //   // ...
-  // };
-
-  // handleContextMenu = (e) => {
-  //   e.preventDefault();
-
-  //   // ...
-  // };
-
-  render() {
-    if (this.props.isShowMenu) {
-      return (
-        <ul
-          className="menu"
-          style={{
-            top: this.props.yPos,
-            left: this.props.xPos,
-          }}
-        >
-          <li>Login</li>
-          <li>Register</li>
-          <li>Open Profile</li>
-        </ul>
-      );
-    }
-    return null;
-  }
+  return null;
 }
-
-const mapStateToProps = (state: RootState) => ({
-  data: state.commonReducer.contextMenu,
-});
-
-export default connect(mapStateToProps, null)(ContextMenu);

@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Paper, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { FileData } from '../../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
 import { MessageProps } from '../interfaces';
 import useStyles from '../styles/styles';
+import MessageContextMenu from './messageItemContextMenu';
+import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
 }: MessageProps) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
       {isShowAvatar && <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} />}
-      <div className='conversations__message-file-container'>
+      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, () => <MessageContextMenu/>, dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, () => <MessageContextMenu/>, dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
                   <div className='conversations__message-image-container'>
                     {
@@ -48,7 +52,6 @@ export default function Message({
                 </div>
               </Paper>}
       </div>
-
     </div>
   );
 }

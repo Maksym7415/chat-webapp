@@ -11,6 +11,7 @@ import Preloader from '../components/preloader/Preloader';
 import setAxios from '../axios.config';
 import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
+import ContextMenu from '../components/contextMenu';
 
 function Router(props) {
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
@@ -29,6 +30,7 @@ function Router(props) {
     <Fragment>
       <Theme>
         <Preloader />
+        <ContextMenu />
         <CssBaseline />
         {
           config

@@ -30,6 +30,8 @@ export interface ContextMenuState {
   yPos: string
   xPos: string
   isShowMenu: boolean
+  messageId: number
+  component: Function | null
 }
 
 interface ShowContextMenuAction {

@@ -1,8 +1,5 @@
-// export interface ContextMenuState {
-// }
+import { ReactNode } from 'react';
 
 export interface ContextMenuProps {
-  xPos: string
-  yPos: string
-  isShowMenu: boolean
+  component: string
 }

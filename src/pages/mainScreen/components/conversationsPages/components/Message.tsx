@@ -14,7 +14,7 @@ export default function Message({
 
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
-      {isShowAvatar && <Avatar className={classes.messageAvatar} />}
+      {isShowAvatar && <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} />}
       <div className='conversations__message-file-container'>
         {Files && !!Files.length && (
                   <div className='conversations__message-image-container'>

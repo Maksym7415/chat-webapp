@@ -5,19 +5,20 @@ import * as interfaces from '../actions/interfaces';
 const initialState: interfaces.UserReducerInterface = {
   userInfo: {
     success: {
-        data: {
-            id: 0,
-            login: '',
-            firstName: '',
-            lastName: '',
-            tagName: '',
-            fullName: '',
-            status: '',
-            userCreationTime: '',
-            userUpdateTime: '',
-            userLastTimeOnline: '',
-            roles: []
-        }
+      data: {
+        id: 0,
+        login: '',
+        firstName: '',
+        lastName: '',
+        tagName: '',
+        fullName: '',
+        status: '',
+        userAvatar: '',
+        userCreationTime: '',
+        userUpdateTime: '',
+        userLastTimeOnline: '',
+        Roles: [],
+      },
     },
     error: null,
   },
@@ -32,7 +33,7 @@ const UserReducer = (state = initialState, action: interfaces.UserActionsInterfa
           success: action.payload,
           error: null,
         },
-    };
+      };
     case types.USER_FAIL:
       return {
         ...state,
@@ -40,7 +41,7 @@ const UserReducer = (state = initialState, action: interfaces.UserActionsInterfa
           error: action.payload,
           ...initialState[action.name],
         },
-    };
+      };
     default:
       return state;
   }

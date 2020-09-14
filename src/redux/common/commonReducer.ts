@@ -8,7 +8,12 @@ const initialState: interafaces.CommonReducerInterface = {
     yPos: '100',
     isShowMenu: false,
     messageId: 0,
-    component: null,
+    config: [],
+  },
+  messageEdit: {
+    isEdit: false,
+    isDelete: false,
+    messageId: null,
   },
 };
 
@@ -24,6 +29,12 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
       return {
         ...state,
         contextMenu: action.payload,
+      };
+    }
+    case types.IS_EDIT_MESSAGE: {
+      return {
+        ...state,
+        messageEdit: action.payload,
       };
     }
     default: return state;

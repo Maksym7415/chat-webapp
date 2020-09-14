@@ -1,2 +1,3 @@
 export const APP_PRELOADER = 'APP PRELOADER';
 export const SHOW_CONTEXT_MENU = 'SHOW CONTEXT MENU';
+export const IS_EDIT_MESSAGE = 'IS EDIT MESSAGE';

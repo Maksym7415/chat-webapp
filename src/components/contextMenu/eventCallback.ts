@@ -1,6 +1,7 @@
 import { contextMenuAction } from '../../redux/common/commonActions';
+import { ContextMenuConfig } from '../../redux/common/interafaces';
 
-export default (event: React.MouseEvent<HTMLElement>, id: number, component: Function, dispatch: any) => {
+export default (event: React.MouseEvent<HTMLElement>, id: number, config: Array<ContextMenuConfig>, dispatch: any) => {
   event.preventDefault();
   if (event.type === 'click') {
     dispatch(contextMenuAction({
@@ -8,7 +9,7 @@ export default (event: React.MouseEvent<HTMLElement>, id: number, component: Fun
       xPos: '',
       isShowMenu: false,
       messageId: 0,
-      component,
+      config,
     }));
   }
   if (event.type === 'contextmenu') {
@@ -17,7 +18,7 @@ export default (event: React.MouseEvent<HTMLElement>, id: number, component: Fun
       xPos: `${event.pageX}px`,
       isShowMenu: true,
       messageId: id,
-      component,
+      config,
     }));
   }
 };

@@ -7,8 +7,8 @@ import { FileData } from '../../../../../redux/conversations/constants/interface
 import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
 import { MessageProps } from '../interfaces';
 import useStyles from '../styles/styles';
-import MessageContextMenu from './messageItemContextMenu';
 import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
+import { editMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
@@ -16,10 +16,38 @@ export default function Message({
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const handleEditMessage = () => {
+    dispatch(editMessageAction(true, id));
+    dispatch(contextMenuAction({
+      yPos: '',
+      xPos: '',
+      isShowMenu: false,
+      messageId: 0,
+      config: [],
+    }));
+  };
+
+  const handleDeleteMessage = () => {
+    dispatch(editMessageAction(true, id));
+    dispatch(contextMenuAction({
+      yPos: '',
+      xPos: '',
+      isShowMenu: false,
+      messageId: 0,
+      config: [],
+    }));
+  };
+
+  const config = [
+    { id: 1, title: 'Delete Message', callback: () => console.log('delete message') },
+    { id: 2, title: 'Edit Message', callback: handleEditMessage },
+    { id: 3, title: 'Share Message', callback: () => console.log('share message') },
+  ];
+
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
       {isShowAvatar && <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} />}
-      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, () => <MessageContextMenu/>, dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, () => <MessageContextMenu/>, dispatch)} className='conversations__message-file-container'>
+      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, config, dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
                   <div className='conversations__message-image-container'>
                     {

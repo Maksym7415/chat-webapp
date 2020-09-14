@@ -116,6 +116,13 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         },
       };
     }
+    case types.CONVERSATION_CLEAR_DATA: {
+      return {
+        ...state,
+        userHistoryConversation: initialState.userHistoryConversation,
+        lastMessages: initialState.lastMessages,
+      };
+    }
     default:
       return state;
   }

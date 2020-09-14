@@ -1,9 +1,17 @@
+/* eslint-disable @typescript-eslint/indent */
 import React, {
-  useEffect, useState, useMemo, useRef,
+  useEffect, useState, useRef,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid } from '@material-ui/core';
-import { conversationUserHistoryActionRequest, createNewChatAction, getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
+import {
+  Grid, Paper,
+} from '@material-ui/core';
+import {
+  conversationUserHistoryActionRequest,
+  createNewChatAction,
+  getConversationIdAction,
+  clearConversationData,
+} from '../../../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../../../redux/reducer';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
@@ -26,9 +34,10 @@ export default function UserConversationHistoryPage() {
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
-  const [localMessageHistory, setLocalmessageHistory] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
+
   const [scrollValue, setScrollValue] = useState<ScrollValue>({});
+
   const [files, setFiles] = useState<Files>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -36,17 +45,10 @@ export default function UserConversationHistoryPage() {
 
   const ref = useRef(null);
 
-  // useMemo(() => setAllMessages((prev) => {
-  //   if (prev[id] && prev[id].length) {
-  //     return { ...prev };
-  //   }
-  //   return ({ ...prev, [id]: [] });
-  // }), [id]);
-
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    setScrollValue((prevValue) => ({ ...prevValue, [conversationId]: getCurrentScrollTop(element) }));
-    if (element.scrollTop === 0 && localMessageHistory[conversationId] && localMessageHistory[conversationId].length === 15 && allMessages[conversationId]) {
+    console.log(allMessages[conversationId], element.scrollTop);
+    if (allMessages[conversationId]?.length % 15 === 0 && element.scrollTop === 0) {
       dispatch(conversationUserHistoryActionRequest(conversationId, localPagination[conversationId] + 15));
     }
   };
@@ -93,51 +95,51 @@ export default function UserConversationHistoryPage() {
     // event.target.value = '';
   };
 
+  useEffect(() => () => {
+    dispatch(clearConversationData());
+  }, []);
+
   useEffect(() => {
     setIsInputState(false);
   }, [files]);
 
   useEffect(() => {
-    // opponentId && dispatch(createNewChatAction({ userId, opponentId }));
-    setAllMessages((prev) => {
-      if (prev[conversationId] && prev[conversationId].length) {
-        return { ...prev };
+    if (!allMessages[conversationId] && conversationId) {
+      dispatch(conversationUserHistoryActionRequest(conversationId, 0));
+    }
+    return () => {
+      if (!conversationId) {
+        dispatch(createNewChatAction({ userId: 0, opponentId: 0 }));
       }
-      return ({ ...prev, [conversationId]: [] });
-    });
-    if (!allMessages[conversationId]?.length && conversationId !== 0) dispatch(conversationUserHistoryActionRequest(conversationId, 0));
+    };
   }, [conversationId]);
 
   useEffect(() => {
-    if (!allMessages[conversationId]) return setAllMessages((prev) => ({ ...prev, [conversationId]: [...messageHistory] }));
-    setAllMessages((prev) => ({
-      ...prev, [conversationId]: [...messageHistory, ...prev[conversationId]],
-    }));
-    setLocalmessageHistory((prev) => ({ ...prev, [conversationId]: [...messageHistory] }));
-    setLocalPagination((prev) => ({ ...prev, [conversationId]: pagination.currentPage }));
+    setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
+    setAllMessages((messages) => ({ ...messages, [conversationId]: [...messageHistory, ...(messages[conversationId] === undefined ? [] : messages[conversationId])], 0: [] }));
   }, [messageHistory]);
 
+  // useEffect(() => {
+  //   let element = document.getElementById('messages');
+  //   if (element) {
+  //     let isScrolling = false;
+  //     if (scrollValue[conversationId]) {
+  //       isScrolling = true;
+  //     }
+  //     scrollTop(ref, element, localPagination[conversationId], scrollValue[conversationId], isScrolling);
+  //   }
+  // }, [allMessages]);
+
   useEffect(() => {
-    if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((prev) => ({ ...prev, [conversationId]: [...prev[conversationId], lastMessage[conversationId]] }));
+    if (Object.keys(lastMessage).length && conversationId in lastMessage) setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
   }, [lastMessage]);
 
   useEffect(() => {
-    let element = document.getElementById('messages');
-    if (element) {
-      let isScrolling = false;
-      if (scrollValue[conversationId]) {
-        isScrolling = true;
+    if (opponentId) {
+      dispatch(getConversationIdAction(0));
+      if (isCreateChat.length) {
+        dispatch(getConversationIdAction(isCreateChat[0].id));
       }
-      scrollTop(ref, element, localPagination[conversationId], scrollValue[conversationId], isScrolling);
-    }
-  }, [allMessages]);
-
-  useEffect(() => {
-    if (!isCreateChat.length) {
-      conversationId && dispatch(getConversationIdAction(0));
-      setAllMessages((prev) => ({ ...prev, 0: [] }));
-    } else {
-      dispatch(getConversationIdAction(isCreateChat[0].id));
     }
   }, [isCreateChat]);
 
@@ -147,10 +149,12 @@ export default function UserConversationHistoryPage() {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       className='conversations__container'
+      onScroll={scrollHandler}
     >
-      <Grid item xs={12} id='messages' onScroll={scrollHandler} >
+      <Grid item xs={12} id = 'messages' >
         <>
-          {allMessages[conversationId] && allMessages[conversationId].map(({
+          {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+            : allMessages[conversationId] && allMessages[conversationId].map(({
             fkSenderId, message, id, sendDate, User, Files,
           }, index: number) => {
             let isShowAvatar = false;

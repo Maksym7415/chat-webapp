@@ -13,6 +13,8 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import listRenderByRole from './drawerList';
 
+import NewChatScreen from './newChatScreen';
+
 const useStyles = makeStyles((theme) => ({
   list: {
     width: 150,
@@ -29,9 +31,17 @@ interface IDrawerProps {
 
 export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) {
   const classes = useStyles();
+  const [open, setOpenNewChatScreen] = React.useState(false);
 
-  const handleDrawerClose = () => {
+  const handleClose = () => {
+    setOpenNewChatScreen(false);
+  };
+
+  const handleDrawerClose = (id: number) => {
     setOpenDrawer(false);
+    if (id === 1) {
+      setOpenNewChatScreen(true);
+    }
   };
 
   return (
@@ -42,20 +52,21 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
           className={classes.list}
           role="presentation"
         >
-      <List>
-        {listRenderByRole().map(({
-          icon, id, title, route,
-        }) => (
-          <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={handleDrawerClose}>
-            <ListItem button>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={title} />
-            </ListItem>
-          </Link>
-        ))}
-      </List>
-    </div>
-    </Drawer>
+          <List>
+            {listRenderByRole().map(({
+              icon, id, title, route,
+            }) => (
+                <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(id)}>
+                  <ListItem button>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={title} />
+                  </ListItem>
+                </Link>
+              ))}
+          </List>
+        </div>
+      </Drawer>
+      <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} />
     </>
   );
 }

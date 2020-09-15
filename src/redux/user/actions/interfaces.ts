@@ -18,6 +18,7 @@ interface UserFail {
 
 export interface UserReducerInterface {
   userInfo: UserInfo
+  setMainPhoto: MainPhotoInteface
 }
 
 export interface PayloadObject {
@@ -67,4 +68,20 @@ export type UserInfoSuccessKeyType = keyof UserInfoSuccess;
 
 export interface UserInfoSuccess1KeyType {
   [key: string]: string
+}
+
+// SET MAIN PHOTO
+
+interface MainPhotoInteface {
+  success: {
+    message: string
+  }
+  error: ErrorResponse
+}
+
+export interface SetMainPhotoAction {
+  type: typeof types.USER_SET_MAIN_PHOTO,
+  userId: number
+  photoUrl: string
+  photoId: number
 }

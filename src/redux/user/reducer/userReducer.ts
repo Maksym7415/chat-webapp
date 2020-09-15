@@ -22,6 +22,12 @@ const initialState: interfaces.UserReducerInterface = {
     },
     error: null,
   },
+  setMainPhoto: {
+    success: {
+      message: '',
+    },
+    error: null,
+  },
 };
 
 const UserReducer = (state = initialState, action: interfaces.UserActionsInterface): interfaces.UserReducerInterface => {

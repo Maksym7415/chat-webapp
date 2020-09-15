@@ -37,6 +37,7 @@ export interface MessageProps extends Messages {
 
 export interface MessageInputProps {
   setAllMessages: Function
+  allMessages: CurrentConversationMessages
   conversationId: number
   userId: number
   firstName: string
@@ -58,4 +59,10 @@ export interface MessageValue {
 
 export interface Pagination {
   [key: number]: number
+}
+
+// MESSAGEINPUT
+export interface DeleteMessageSocketResponse {
+  conversationId: number
+  messageId: number
 }

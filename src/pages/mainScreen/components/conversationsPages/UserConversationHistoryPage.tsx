@@ -167,10 +167,10 @@ export default function UserConversationHistoryPage() {
         <>
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files, isEdit,
+              fkSenderId, message, id, sendDate, User, Files,
             }, index: number) => {
               let isShowAvatar = false;
-              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
+              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
               return (
                 <Message
                   key={id}
@@ -190,6 +190,7 @@ export default function UserConversationHistoryPage() {
       </Grid>
       {(!!conversationId || !!opponentId) && (
         <MessageInput
+          allMessages={allMessages}
           setAllMessages={setAllMessages}
           conversationId={conversationId}
           userId={userId}

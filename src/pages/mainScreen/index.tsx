@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useEffect, useState, useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { resolve } from 'dns';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
 import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
@@ -27,7 +24,6 @@ interface User {
 }
 
 interface BackUsers {
-  // id: number
   firtsName: string
   isTyping: boolean
   userId: number

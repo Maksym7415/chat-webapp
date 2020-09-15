@@ -9,6 +9,7 @@ import { MessageProps } from '../interfaces';
 import useStyles from '../styles/styles';
 import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
 import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
+import contextMenuConfig from './contextMenuConfig';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
@@ -38,16 +39,10 @@ export default function Message({
     }));
   };
 
-  const config = [
-    { id: 1, title: 'Delete Message', callback: handleDeleteMessage },
-    { id: 2, title: 'Edit Message', callback: handleEditMessage },
-    { id: 3, title: 'Share Message', callback: () => console.log('share message') },
-  ];
-
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
       {isShowAvatar && <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} />}
-      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, config, dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
+      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(fkSenderId === userId, handleDeleteMessage, handleEditMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
           <div className='conversations__message-image-container'>
             {

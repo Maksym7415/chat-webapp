@@ -32,6 +32,7 @@ const UserProfile: FunctionComponent = () => {
       return inputs;
     });
   }, [userInfo]);
+
   return (
     // userInfo && userInfo.data && <div>{userInfo.data.fullName}</div>
     <Grid item xs={6} style={{ margin: '20px' }}>

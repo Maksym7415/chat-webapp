@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useEffect, useState, useMemo } from 'react';
+import { Rnd } from "react-rnd";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
@@ -93,7 +94,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
-    // dispatch(userInfoActionRequest(1));
   }, []);
 
   useEffect(() => {
@@ -115,14 +115,51 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: any) => {
       dispatch(getUserConversationsActionRequest());
       dispatch(getConversationIdAction(conversationId));
-      // dispatch(conversationAddNewMessage(message, conversationId));
     });
   }, []);
 
   return (
     <div className='chat__container flex'>
-      <ChatsList data={conversationsList} usersTyping={usersTyping}/>
+      <Rnd 
+        style={{
+          position: 'relative',
+          background: '#dcf2ed'
+        }}
+        minWidth='20vw'
+        maxWidth='60vw'
+        default={{
+          x: 0,
+          y: 0,
+          width: 200,
+          height: '100%'
+        }}
+        disableDragging
+        enableResizing={{ 
+          top:false, 
+          right:true, 
+          bottom:false, 
+          left:false, 
+          topRight:false, 
+          bottomRight:false, 
+          bottomLeft:false, 
+          topLeft:false 
+        }}
+      >
+        <ChatsList data={conversationsList} usersTyping={usersTyping}/>
+      </Rnd>
       <UserConversationHistoryPage />
+        {/* <div>
+          <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+          </ul>
+          <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+          </p>
+      </div> */}
     </div>
   );
 }

@@ -42,12 +42,14 @@ $appbarHeight: 64px;
     display: flex;
     align-items: center;
     -webkit-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
--moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
-    width: 70%;
+    -moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+
     height: 50px;
-    position: fixed;
+    width: inherit;
     padding: 0 10px;
+    box-sizing: border-box;
+    position: sticky;
     bottom: 0;
     background-color: #ffffff;
   }

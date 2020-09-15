@@ -227,8 +227,6 @@ export default function UserConversationHistoryPage() {
 
   return (
     <div
-      // container
-      // item xs={8}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}

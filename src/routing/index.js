@@ -32,11 +32,13 @@ function Router(props) {
         <Preloader />
         <ContextMenu />
         <CssBaseline />
+        <div>
         {
+
           config
             && (
-              <Switch>
-                {
+
+              <Switch>{
                   config.map(({
                     id, Component, roles, isPrivate, path,
                   }) => <PrivatePage
@@ -51,9 +53,12 @@ function Router(props) {
                         />)
                   }
                   <Route component = {() => <div>404</div>} />
+
               </Switch>
+
             )
           }
+        </div>
       </Theme>
     </Fragment>
   );

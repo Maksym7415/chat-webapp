@@ -169,9 +169,6 @@ export default function UserConversationHistoryPage() {
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
               fkSenderId, message, id, sendDate, User, Files, isEdit,
             }, index: number) => {
-              if (isEdit) {
-                // setAllMessages((messages) => messages[conversationId].map((message) => (message.id === id ? { ...messages[conversationId], message: lastMessage[conversationId].message } : message)));
-              }
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
               return (

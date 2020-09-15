@@ -76,7 +76,6 @@ export default function MessageInput({
         messageId: messageEdit.messageId,
       }), (success: boolean) => {
         if (success) console.log('deleted');
-        // setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
       });
       dispatch(deleteMessageAction(false, null));
     }

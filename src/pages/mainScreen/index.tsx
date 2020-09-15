@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { Rnd } from 'react-rnd';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
 import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
@@ -50,6 +51,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       },
     },
   });
+
   // const [timer, setTimer] = useState<Timer>({ });
   const currentUserTyping = (user: BackUsers, conversationId: number) => {
     if (!isEmit) {
@@ -135,7 +137,33 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   return (
     <div className='chat__container flex'>
-      <ChatsList data={conversationsList} usersTyping={usersTyping} />
+      <Rnd
+        style={{
+          position: 'relative',
+          background: '#dcf2ed',
+        }}
+        minWidth= {80}
+        maxWidth='60vw'
+        default={{
+          x: 0,
+          y: 0,
+          width: 300,
+          height: '100%',
+        }}
+        disableDragging
+        enableResizing={{
+          top: false,
+          right: true,
+          bottom: false,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false,
+        }}
+      >
+        <ChatsList data={conversationsList} usersTyping={usersTyping} />
+      </Rnd>
       <UserConversationHistoryPage />
     </div>
   );

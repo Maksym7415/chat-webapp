@@ -2,10 +2,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   dateSender: {
-    position: 'absolute',
-    right: '0',
-    bottom: '0',
     color: '#e8e8e8',
+    marginLeft: 'auto',
+    fontSize: '0.8rem',
   },
   dateSenderChatlist: {
     color: '#252222',
@@ -13,13 +12,20 @@ export default makeStyles((theme) => ({
   bold: {
     fontWeight: 700,
   },
-  messageTextInList: {
-    width: '150px',
+  messageText: {
+    maxWidth: '90%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   circularProgress: {
     display: 'flex',
     '& > * + *': {
       marginLeft: theme.spacing(2),
     },
+  },
+  avatar: {
+    width: '50px',
+    height: '50px',
   },
 }));

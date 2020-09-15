@@ -18,7 +18,7 @@ import MessageInput from './components/MessageInput';
 import AddFiles from './components/addFilesComponent';
 import { contextMenuAction } from '../../../../redux/common/commonActions';
 import {
-  Files, CurrentConversationMessages, ScrollValue, MessageValue, Pagination,
+  Files, CurrentConversationMessages, ScrollValue, Pagination,
 } from './interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
 import './styles/styles.scss';
@@ -41,6 +41,7 @@ export default function UserConversationHistoryPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
+  const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   const ref = useRef(null);
 
@@ -163,17 +164,21 @@ export default function UserConversationHistoryPage() {
       onClick={handleCloseContextMenu}
       onContextMenu={handleCloseContextMenu}
     >
-      <Grid item xs={12} >
+      <Grid
+        item
+        xs={12}
+        className='pd-left-10'
+        style={{
+          height: messageEdit.isEdit ? 'calc(100% - 100px)' : 'calc(100% - 50px)',
+        }}
+      >
         <>
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files, isEdit,
+              fkSenderId, message, id, sendDate, User, Files,
             }, index: number) => {
-              if (isEdit) {
-                // setAllMessages((messages) => messages[conversationId].map((message) => (message.id === id ? { ...messages[conversationId], message: lastMessage[conversationId].message } : message)));
-              }
               let isShowAvatar = false;
-              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], fkSenderId, userId, index)) isShowAvatar = true;
+              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
               return (
                 <Message
                   key={id}
@@ -193,6 +198,7 @@ export default function UserConversationHistoryPage() {
       </Grid>
       {(!!conversationId || !!opponentId) && (
         <MessageInput
+          allMessages={allMessages}
           setAllMessages={setAllMessages}
           conversationId={conversationId}
           userId={userId}

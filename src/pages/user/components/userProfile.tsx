@@ -99,6 +99,7 @@ function UserProfile() {
       return obj;
     });
   }, [userInfo]);
+
   return (
     // userInfo && userInfo.data && <div>{userInfo.data.fullName}</div>
     <Grid container xs={12} item>

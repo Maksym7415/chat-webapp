@@ -3,8 +3,9 @@ $appbarHeight: 64px;
 
   &__container {
     overflow-y: scroll;
-    width: 70%;
-    padding: 20px 0 0 20px;
+    overflow-x: hidden;
+    width: 100%;
+    padding: 20px 0 0 0;
     height: calc(100vh - #{$appbarHeight});
     position: relative;
   }
@@ -52,15 +53,43 @@ $appbarHeight: 64px;
   &__send-message-input {
     display: flex;
     align-items: center;
-    -webkit-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
-    -moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
-    box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
-    width: 70%;
+    width: 100%;
     height: 50px;
-    position: fixed;
+    position: sticky;
     padding: 0 10px;
     bottom: 0;
     background-color: #ffffff;
+  }
+
+  &__send-message-text {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    position: sticky;
+    padding: 0 10px;
+    bottom: 50px;
+    background-color: #ffffff;
+  }
+
+  &__send-message-text > div > p {
+    margin: 5px 0 0 0;
+  }
+
+  &__send-message-text-title-wrapper {
+    max-width: 80%;
+  }
+
+  &__send-message-shadow {
+    -webkit-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    -moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+  }
+
+  &__edit-message-paragraph {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__message-image-container {

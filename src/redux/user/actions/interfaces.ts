@@ -19,6 +19,8 @@ interface UserFail {
 export interface UserReducerInterface {
   userInfo: UserInfo
   setMainPhoto: MainPhotoInteface
+  avatars: GetAvatarsInteface
+  upload: UploadAvatarReducerInterface
 }
 
 export interface PayloadObject {
@@ -27,7 +29,7 @@ export interface PayloadObject {
 
 export type UserReducerKeyType = keyof UserReducerInterface;
 
-export type UserActionsInterface = UserSuccess | UserFail;
+export type UserActionsInterface = UserSuccess | ClearDataActionInterface | UserFail;
 
 // USER INFO INTERFACES
 
@@ -74,7 +76,7 @@ export interface UserInfoSuccess1KeyType {
 
 interface MainPhotoInteface {
   success: {
-    message: string
+    data: string
   }
   error: ErrorResponse
 }
@@ -84,4 +86,44 @@ export interface SetMainPhotoAction {
   userId: number
   photoUrl: string
   photoId: number
+}
+
+// GET AVATARS
+
+interface GetAvatarsInteface {
+  success: {
+    data: Array<AvatarObject>
+  }
+  error: ErrorResponse
+}
+
+interface AvatarObject {
+  id: number,
+  fileName: string,
+  defaultAvatar: boolean,
+  fkUserId: number
+}
+
+export interface GetAvatarsActionInteface {
+  type: typeof types.USER_GET_AVATARS
+}
+
+// UPLOAD PHOTO
+
+interface UploadAvatarReducerInterface {
+  success: {
+    data: string
+  }
+  error: ErrorResponse
+}
+
+export interface UploadAvatarActionInterface {
+  type: typeof types.USER_UPLOAD_AVATAR
+  file: FormData
+}
+
+// CLEAR DATA
+
+export interface ClearDataActionInterface {
+  type: typeof types.USER_CLEAR_DATA
 }

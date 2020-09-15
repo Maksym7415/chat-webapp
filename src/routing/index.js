@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import {
   Switch, Route,
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 import Preloader from '../components/preloader/Preloader';
@@ -13,18 +13,22 @@ import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
 import ContextMenu from '../components/contextMenu';
 
+import { userInfoActionRequest } from '../redux/user/actions/actions';
+
 function Router(props) {
+  const dispatch = useDispatch();
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
   const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
   const [config, setConfig] = useState(null);
 
   useEffect(() => {
-    setConfig((item) => routerConfig);
-  }, [authToken, isLogout]);
-
-  useEffect(() => {
     setAxios();
   }, []);
+
+  useEffect(() => {
+    dispatch(userInfoActionRequest(authToken.userId));
+    setConfig((item) => routerConfig);
+  }, [authToken, isLogout]);
 
   return (
     <Fragment>
@@ -34,10 +38,8 @@ function Router(props) {
         <CssBaseline />
         <div>
         {
-
           config
             && (
-
               <Switch>{
                   config.map(({
                     id, Component, roles, isPrivate, path,
@@ -53,9 +55,7 @@ function Router(props) {
                         />)
                   }
                   <Route component = {() => <div>404</div>} />
-
               </Switch>
-
             )
           }
         </div>

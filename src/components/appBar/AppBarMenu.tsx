@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import MailIcon from '@material-ui/icons/Mail';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from 'react-router-dom';
+import { Avatar } from '@material-ui/core';
 import { actionLogout } from '../../redux/authorization/constants/actionConstants';
 
 interface IAppBarMenuProps {
@@ -16,10 +16,11 @@ interface IAppBarMenuProps {
   setAnchorEl: (value: null | Element) => void
   mobileMoreAnchorEl: null | Element
   setMobileMoreAnchorEl: (value: null | Element) => void
+  userAvatar: string
 }
 
 export default function ({
-  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl,
+  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar,
 }: IAppBarMenuProps) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -70,19 +71,19 @@ export default function ({
           </IconButton>
           <p>Notifications</p>
         </MenuItem>
-        <MenuItem onClick={handleProfileMenuOpen}>
+        <MenuItem component={Link} to='/userProfile'>
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
           >
-            <AccountCircle />
+            {userAvatar && <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} />}
           </IconButton>
           <p>Profile</p>
         </MenuItem>
       </Menu>
-      <Menu
+      {/* <Menu
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         id={'primary-search-account-menu'}
@@ -94,7 +95,7 @@ export default function ({
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         <MenuItem component={Link} to='/userProfile' onClick={handleMenuClose}> My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      </Menu>
+      </Menu> */}
     </>
   );
 }

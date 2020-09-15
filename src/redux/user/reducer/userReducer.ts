@@ -24,7 +24,24 @@ const initialState: interfaces.UserReducerInterface = {
   },
   setMainPhoto: {
     success: {
-      message: '',
+      data: '',
+    },
+    error: null,
+  },
+  avatars: {
+    success: {
+      data: [{
+        id: 0,
+        fileName: '',
+        defaultAvatar: true,
+        fkUserId: 0,
+      }],
+    },
+    error: null,
+  },
+  upload: {
+    success: {
+      data: '',
     },
     error: null,
   },
@@ -33,6 +50,7 @@ const initialState: interfaces.UserReducerInterface = {
 const UserReducer = (state = initialState, action: interfaces.UserActionsInterface): interfaces.UserReducerInterface => {
   switch (action.type) {
     case types.USER_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         [action.name]: {
@@ -47,6 +65,11 @@ const UserReducer = (state = initialState, action: interfaces.UserActionsInterfa
           error: action.payload,
           ...initialState[action.name],
         },
+      };
+    case types.USER_CLEAR_DATA:
+      return {
+        ...state,
+        upload: initialState.upload,
       };
     default:
       return state;

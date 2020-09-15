@@ -13,7 +13,7 @@ import { RootState } from '../../../../../redux/reducer';
 import useStyles from '../styles/styles';
 import {
   MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages,
-} from '../interfaces';
+} from '../../../interfaces';
 import { Messages } from '../../../../../redux/conversations/constants/interfaces';
 import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
 

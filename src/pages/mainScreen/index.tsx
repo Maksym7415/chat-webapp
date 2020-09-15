@@ -9,27 +9,8 @@ import { getUserConversationsActionRequest, conversationAddNewMessage, getConver
 import { RootState } from '../../redux/reducer';
 import { Messages, Users } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
-import { userInfoActionRequest } from '../../redux/user/actions/actions';
+import { Conversation, BackUsers } from './interfaces';
 import './styles/index.scss';
-
-interface Timer {
-  [key: number]: any
-}
-
-export interface Conversation {
-  [key: number]: User
-}
-
-interface User {
-  [key: number]: BackUsers
-}
-
-interface BackUsers {
-  firtsName: string
-  isTyping: boolean
-  userId: number
-  conversationId: number
-}
 
 let isEmit = false;
 let newTimer: any = {};
@@ -51,6 +32,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       },
     },
   });
+  const [containerWidth, setContainerWidth] = useState<number>(300);
 
   // const [timer, setTimer] = useState<Timer>({ });
   const currentUserTyping = (user: BackUsers, conversationId: number) => {
@@ -147,8 +129,11 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
         default={{
           x: 0,
           y: 0,
-          width: 300,
+          width: containerWidth,
           height: '100%',
+        }}
+        onResize={(e, direction, ref, delta, position) => {
+          ref.offsetWidth < 200 && setContainerWidth(80);
         }}
         disableDragging
         enableResizing={{

@@ -13,8 +13,8 @@
     }
 
     &__chat-list-container {
-        padding: 10px;
         overflow-y: scroll;
+        overflow-x: hidden;
         padding: 10px 0 0 10px;
         height: calc(100vh - 64px);
         position: relative;

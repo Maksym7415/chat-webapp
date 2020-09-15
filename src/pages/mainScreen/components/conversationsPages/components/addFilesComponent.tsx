@@ -8,7 +8,7 @@ import socket from '../../../../../socket';
 import { RootState } from '../../../../../redux/reducer';
 import { handleGetBufferFile } from '../../../helpers/addFiles';
 import UploadDialog from './uploadDialog';
-import { AddFilesProps, FilesSrc } from '../interfaces';
+import { AddFilesProps, FilesSrc } from '../../../interfaces';
 
 let filesCount = 0;
 

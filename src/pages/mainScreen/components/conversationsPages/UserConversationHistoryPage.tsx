@@ -19,7 +19,7 @@ import AddFiles from './components/addFilesComponent';
 import { contextMenuAction } from '../../../../redux/common/commonActions';
 import {
   Files, CurrentConversationMessages, ScrollValue, Pagination,
-} from './interfaces';
+} from '../../interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
 import './styles/styles.scss';
 

@@ -3,20 +3,17 @@ import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/reducer/index';
-import { UserConversationsListSuccess, ConversationsList } from '../../../../redux/conversations/constants/interfaces';
+import { ChatListProps } from '../../interfaces';
+import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
 import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
-import { Conversation } from '../../index';
+import contextMenuCallback from '../../../../components/contextMenu/eventCallback';
+import { contextMenuAction } from '../../../../redux/common/commonActions';
+import contextMenuConfig from './contextMenuConfig';
+
 import useStyles from '../../styles/styles';
 
-// type Props = UserConversationsListSuccess | Conversation;
-
-interface Props {
-  data: Array<ConversationsList>
-  usersTyping: Conversation
-}
-
-export default ({ data, usersTyping }: Props) => {
+export default ({ data, usersTyping }: ChatListProps) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -40,6 +37,39 @@ export default ({ data, usersTyping }: Props) => {
     return str;
   };
 
+  const handleClickChatItem = (element: ConversationsList, event: React.MouseEvent<HTMLElement>, id: number) => {
+    contextMenuCallback(event, id, [], dispatch);
+    handleChangeChat(element.conversationId);
+  };
+
+  const handleCloseContextMenu = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.type === 'contextmenu') {
+      event.preventDefault();
+      console.log('prevent');
+    }
+    if (event.type === 'click') {
+      dispatch(contextMenuAction({
+        yPos: '',
+        xPos: '',
+        isShowMenu: false,
+        messageId: 0,
+        config: [],
+      }));
+    }
+  };
+
+  const handleDeleteChat = () => {
+    // dispatch(deleteMessageAction(true, id));
+    console.log('delete chat');
+    dispatch(contextMenuAction({
+      yPos: '',
+      xPos: '',
+      isShowMenu: false,
+      messageId: 0,
+      config: [],
+    }));
+  };
+
   useEffect(() => {
     setConversations((prevState): Array<ConversationsList> => {
       let conversations: Array<ConversationsList> = [...prevState];
@@ -53,9 +83,18 @@ export default ({ data, usersTyping }: Props) => {
   }, [lastMessage]);
 
   return (
-    <div className='chat__chat-list-container'>
+    <div
+      onClick={handleCloseContextMenu}
+      onContextMenu={handleCloseContextMenu}
+      className='chat__chat-list-container'
+    >
       {conversations.map((element) => (
-        <div className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`} key={element.conversationId} onClick={() => handleChangeChat(element.conversationId)} >
+        <div
+          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat), dispatch)}
+          onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
+          className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`}
+          key={element.conversationId}
+        >
           <Avatar className={classes.avatar} src={`http://localhost:8081/${element.conversationAvatar}`} />
           <div className='flex chat__chats-item-message-container relative'>
             <div className='chat__title-container'>

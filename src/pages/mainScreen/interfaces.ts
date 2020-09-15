@@ -1,4 +1,20 @@
-import { Messages } from '../../../../redux/conversations/constants/interfaces';
+import { Messages, ConversationsList } from '../../redux/conversations/constants/interfaces';
+
+// MAIN
+export interface Conversation {
+  [key: number]: User
+}
+
+export interface User {
+  [key: number]: BackUsers
+}
+
+export interface BackUsers {
+  firtsName: string
+  isTyping: boolean
+  userId: number
+  conversationId: number
+}
 
 // USERCONVERSATIONHISTORY
 export interface CurrentConversationMessages {
@@ -26,6 +42,12 @@ export interface FilesSrc {
     file: string
     type: string
   }
+}
+
+// CHAT LIST
+export interface ChatListProps {
+  data: Array<ConversationsList>
+  usersTyping: Conversation
 }
 
 // UPLOAD DIALOG

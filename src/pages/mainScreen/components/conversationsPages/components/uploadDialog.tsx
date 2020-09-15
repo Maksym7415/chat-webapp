@@ -5,7 +5,7 @@ import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
 } from '@material-ui/core';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { DialogProps, FilesSrc } from '../interfaces';
+import { DialogProps, FilesSrc } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import { preloaderAction } from '../../../../../redux/common/commonActions';
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { FileData } from '../../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
-import { MessageProps } from '../interfaces';
+import { MessageProps } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
 import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';

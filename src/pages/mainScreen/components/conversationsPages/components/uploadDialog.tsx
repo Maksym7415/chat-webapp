@@ -40,7 +40,6 @@ export default function UploadDialog({
   useEffect(() => {
     if (files) {
       Object.keys(files).forEach((key: string) => {
-        console.log(files[key]);
         if (files[key].type.includes('image')) return readImage(files[key], key);
         setSrc((prev: FilesSrc) => ({ ...prev, [key]: { file: files[key].name, type: 'file' } }));
       });

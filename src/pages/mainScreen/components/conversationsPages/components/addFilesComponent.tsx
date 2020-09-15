@@ -23,6 +23,7 @@ export default function AddFiles({
 
   const handleSendFiles = (message: string) => {
     if (!files) return;
+    console.log('send');
 
     let fileReader = new FileReader();
     if (files) {
@@ -43,6 +44,7 @@ export default function AddFiles({
           fkSenderId: userId,
           sendDate: fullDate(new Date()),
           messageType: 'File',
+          isEditing: false,
         },
       }, (id: number) => {
         if (id) handleEmitFile(id, fullDate(new Date()));

@@ -95,6 +95,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       conversationsList.forEach((chat) => {
         socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
           notify(message, chat.conversationId);
+          console.log(message);
           dispatch(conversationAddNewMessage(message, chat.conversationId));
         });
         socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {

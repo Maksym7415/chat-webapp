@@ -70,6 +70,7 @@ const UserReducer = (state = initialState, action: interfaces.UserActionsInterfa
       return {
         ...state,
         upload: initialState.upload,
+        setMainPhoto: initialState.setMainPhoto,
       };
     default:
       return state;

@@ -1,11 +1,14 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import {
   TextField, Grid, InputAdornment, IconButton, Tooltip, Button,
 } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import clsx from 'clsx';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/reducer/index';
 import {
@@ -23,6 +26,10 @@ import '../style/style.scss';
 //   [key: string]: CurrentInput
 // }
 
+interface Ref {
+  [x: string]: any;
+}
+
 function UserProfile() {
   const dispatch = useDispatch();
 
@@ -30,6 +37,7 @@ function UserProfile() {
   const userInfo = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success);
   const avatars = useSelector(({ userReducer }: RootState) => userReducer.avatars.success.data);
   const uploadAvatarMessage = useSelector(({ userReducer }: RootState) => userReducer.upload.success.data);
+  const setPhotoMessage = useSelector(({ userReducer }: RootState) => userReducer.setMainPhoto.success.data);
   const [userData, setUserData] = useState<any>({});
   const [index, setIndex] = useState<number>(0);
 
@@ -84,14 +92,12 @@ function UserProfile() {
   }, []);
 
   useEffect(() => {
-    dispatch(userInfoActionRequest(userId));
-  }, [userId]);
-
-  useEffect(() => {
-    console.log(uploadAvatarMessage);
     if (uploadAvatarMessage) {
       dispatch(clearDataAction());
       setIndex(avatars.length - 1);
+    } else if (setPhotoMessage) {
+      dispatch(clearDataAction());
+      setIndex(0);
     }
   }, [avatars]);
 
@@ -99,12 +105,10 @@ function UserProfile() {
     setUserData(() => {
       const obj: any = {};
       const {
-        firstName, lastName, fullName, tagName, userAvatar, ...inputs
+        firstName, lastName, tagName, userAvatar, ...inputs
       } = userInfo.data;
       [
         { name: 'firstName', value: firstName },
-        { name: 'lastName', value: lastName },
-        { name: 'fullName', value: fullName },
         { name: 'tagName', value: tagName },
       ].forEach(({ name, value }: any) => {
         obj[name] = { value, isInput: false, name };
@@ -113,55 +117,15 @@ function UserProfile() {
     });
   }, [userInfo]);
 
-  console.log(userData);
-
   return (
     // userInfo && userInfo.data && <div>{userInfo.data.fullName}</div>
-    <Grid container xs={12} item>
-      <Grid item xs={5} style={{ margin: '20px' }}>
-        {userInfo && userInfo.data && Object.values(userData).map((item: any) => (
-          <div style={{
-            display: 'grid', gridTemplateRows: '1fr', gridTemplateColumns: '1fr 1fr', marginBottom: '10px', fontSize: '1rem', alignItems: 'center',
-          }}
-            key={item.name}
-          >
-
-            {item.name}: {item.value && item.isInput === true
-              ? <TextField
-                id="standard-basic"
-                size='small'
-                name={item.name}
-                onChange={changeHandler}
-                value={item.value}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => handleUpdateProfileRequest(item)}
-                        edge="end"
-                      >
-                        <DoneIcon fontSize='small' />
-                      </IconButton>
-
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              : <Tooltip placement="left-start" title={`Tap to edit - ${item.name}`}>
-                <div style={{
-                  cursor: 'pointer', height: '29px', borderBottom: '1px solid', fontSize: '1rem',
-                }} onClick={() => convertToInputAndToDiv(item.name, item.value || 'Добавьте', true)}>{item.value || 'Добавьте'}</div>
-              </Tooltip>}
-          </div>
-        ))}
-      </Grid>
-      <Grid item xs={5} style={{ margin: '20px' }}>
-        <div className='carousel relative'>
-          <div className='absolute carousel__images-container'>
+    <div style={{ width: '400px', margin: '0 auto' }}>
+       <div style={{ marginBottom: '20px' }}>
+        <div className='carousel relative full-w'>
+          <div className=' carousel__images-container'>
             {!!avatars.length && <img className='carousel__images-container__images br-5' src={`http://localhost:8081/${avatars[index].fileName}`} ></img>}
           </div>
-          <div className='absolute carousel__buttons-container'>
+          <div className='carousel__buttons-container'>
             <div className='carousel__buttons-container__button-wrapper'>
               <IconButton
                 aria-label="toggle password visibility"
@@ -181,7 +145,7 @@ function UserProfile() {
               </IconButton>
             </div>
           </div>
-          <div className='absolute flex js-space-between carousel__options'>
+          <div className='absolute carousel__options'>
             <div className='carousel__options__upload-container'>
               <input
                 accept="image/*"
@@ -191,20 +155,72 @@ function UserProfile() {
                 onChange={uploadAvatar}
               />
               <label htmlFor="contained-button-file">
-                <Button className='carousel__options__upload-container__btn' variant="contained" color="primary" component="span" fullWidth>
-                  Загрузить ещё
-              </Button>
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  className='carousel__options__upload-container__btn'
+                >
+                  <AddAPhotoIcon fontSize='small' />
+                </IconButton>
               </label>
             </div>
             <div className='carousel__options__upload-container'>
-              <Button className='carousel__options__upload-container__btn' onClick={setMainPhoto} variant="contained" color="primary" component="span" fullWidth>
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  className='carousel__options__upload-container__btn'
+                  onClick={setMainPhoto}
+                >
+                  {avatars[index].defaultAvatar === true ? <CheckCircleIcon fontSize='small'/> : <CheckCircleOutlineIcon/>}
+                </IconButton>
+              {/* <Button className='carousel__options__upload-container__btn' onClick={setMainPhoto} variant="contained" color="primary" component="span" fullWidth>
                 Основное фото
-            </Button>
+            </Button> */}
             </div>
           </div>
         </div>
-      </Grid>
-    </Grid>
+      </div>
+      <div style={{ margin: '0px 75px' }}>
+        {userInfo && userInfo.data && Object.values(userData).map((item: any) => (
+            <div
+              key={item.name}
+              style={{ display: 'flex', flexDirection: 'column-reverse', marginBottom: '10px' }}
+            >
+
+              <div>{`Нажмите чтобы изменить ${item.name}`}</div>{item.isInput === true
+                ? <TextField
+                  id="standard-basic"
+                  size='small'
+                  name={item.name}
+                  onChange={changeHandler}
+                  onBlur={() => handleUpdateProfileRequest(item)}
+                  value={item.value}
+                  autoFocus
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => handleUpdateProfileRequest(item)}
+                          edge="end"
+                        >
+                          <DoneIcon fontSize='small' />
+                        </IconButton>
+
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                : <div style={{
+                  cursor: 'pointer', height: '29px', borderBottom: '1px solid', fontSize: '1rem',
+                }} onClick={() => convertToInputAndToDiv(item.name, item.value, true)}>{item.value}</div>
+                }
+            </div>
+        ))}
+      </div>
+      </div>
   );
 }
 

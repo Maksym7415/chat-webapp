@@ -12,7 +12,7 @@ export function* userInfoWatcher() {
 
 function* userInfoWorker({ id }: UserInfoActionInterface) {
   try {
-    const { data } = yield call(axios.get, `getUserProfileData/${id}`);
+    const { data } = yield call(axios.get, '/getUserProfileData');
     yield put(userActionSuccess({ data }, 'userInfo'));
   } catch (error) {
     yield put(userActionFail(error.response, 'userInfo'));

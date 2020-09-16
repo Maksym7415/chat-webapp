@@ -2,9 +2,9 @@ import {
   takeEvery, call, put,
 } from 'redux-saga/effects';
 import axios from 'axios';
-import { USER_SET_MAIN_PHOTO } from '../actions/types';
-import { SetMainPhotoAction } from '../actions/interfaces';
-import { userActionFail, userActionSuccess } from '../actions/actions';
+import { USER_SET_MAIN_PHOTO } from '../constants/types';
+import { SetMainPhotoAction } from '../constants/interfaces';
+import { userActionFail, userActionSuccess } from '../constants/actions';
 
 export function* setMainPhotoWatcher() {
   yield takeEvery(USER_SET_MAIN_PHOTO, setMainPhotoWorker);

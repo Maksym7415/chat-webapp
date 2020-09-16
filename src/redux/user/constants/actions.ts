@@ -38,3 +38,8 @@ export const uploadAvatarAction = (file: FormData): interfaces.UploadAvatarActio
 export const clearDataAction = (): interfaces.ClearDataActionInterface => ({
   type: types.USER_CLEAR_DATA,
 });
+
+export const updateUserProfileAction = (payload: interfaces.UpdateUserReqbody): interfaces.UpdateUserProfileAction => ({
+  type: types.UPDATE_USER_PROFILE,
+  payload,
+});

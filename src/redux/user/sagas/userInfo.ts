@@ -2,9 +2,9 @@ import {
   takeEvery, call, put,
 } from 'redux-saga/effects';
 import axios from 'axios';
-import { USER_GET_USER_INFO } from '../actions/types';
-import { UserInfoActionInterface } from '../actions/interfaces';
-import { userActionFail, userActionSuccess } from '../actions/actions';
+import { USER_GET_USER_INFO } from '../constants/types';
+import { UserInfoActionInterface } from '../constants/interfaces';
+import { userActionFail, userActionSuccess } from '../constants/actions';
 
 export function* userInfoWatcher() {
   yield takeEvery(USER_GET_USER_INFO, userInfoWorker);

@@ -56,14 +56,6 @@ export default function ({
         onClose={handleMobileMenuClose}
       >
         <MenuItem>
-          <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem>
           <IconButton aria-label="show 11 new notifications" color="inherit">
             <Badge badgeContent={11} color="secondary">
               <NotificationsIcon />
@@ -78,24 +70,11 @@ export default function ({
             aria-haspopup="true"
             color="inherit"
           >
-            {userAvatar && <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} />}
+            <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} />
           </IconButton>
           <p>Profile</p>
         </MenuItem>
       </Menu>
-      {/* <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={'primary-search-account-menu'}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem component={Link} to='/userProfile' onClick={handleMenuClose}> My account</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      </Menu> */}
     </>
   );
 }

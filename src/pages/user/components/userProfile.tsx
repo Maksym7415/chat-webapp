@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
-import axios from 'axios';
 import {
   TextField, Grid, InputAdornment, IconButton, Tooltip, Button,
 } from '@material-ui/core';
@@ -10,9 +9,9 @@ import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/reducer/index';
 import {
-  userInfoActionRequest, getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction,
-} from '../../../redux/user/actions/actions';
-import * as interfaces from '../../../redux/user/actions/interfaces';
+  userInfoActionRequest, getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction,
+} from '../../../redux/user/constants/actions';
+import * as interfaces from '../../../redux/user/constants/interfaces';
 import '../style/style.scss';
 
 // interface CurrentInput {
@@ -75,6 +74,11 @@ function UserProfile() {
     dispatch(setMainPhotoAction(userId, avatars[index].fileName, avatars[index].id));
   };
 
+  const handleUpdateProfileRequest = (item: any) => {
+    convertToInputAndToDiv(item.name, item.value, false);
+    dispatch(updateUserProfileAction({ [item.name]: item.value }));
+  };
+
   useEffect(() => {
     dispatch(getAvatarsAction());
   }, []);
@@ -109,6 +113,8 @@ function UserProfile() {
     });
   }, [userInfo]);
 
+  console.log(userData);
+
   return (
     // userInfo && userInfo.data && <div>{userInfo.data.fullName}</div>
     <Grid container xs={12} item>
@@ -132,7 +138,7 @@ function UserProfile() {
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={() => convertToInputAndToDiv(item.name, item.value || 'Добавьте', false)}
+                        onClick={() => handleUpdateProfileRequest(item)}
                         edge="end"
                       >
                         <DoneIcon fontSize='small' />

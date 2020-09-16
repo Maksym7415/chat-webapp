@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import {
   TextField, Grid, InputAdornment, IconButton, Tooltip, Button,
@@ -24,9 +24,14 @@ import '../style/style.scss';
 //   [key: string]: CurrentInput
 // }
 
+interface Ref {
+  [x: string]: any;
+}
+
 function UserProfile() {
   const dispatch = useDispatch();
 
+  const ref = useRef<Ref>();
   const userId = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload.userId);
   const userInfo = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success);
   const avatars = useSelector(({ userReducer }: RootState) => userReducer.avatars.success.data);
@@ -80,11 +85,6 @@ function UserProfile() {
   }, []);
 
   useEffect(() => {
-    dispatch(userInfoActionRequest(userId));
-  }, [userId]);
-
-  useEffect(() => {
-    console.log(uploadAvatarMessage);
     if (uploadAvatarMessage) {
       dispatch(clearDataAction());
       setIndex(avatars.length - 1);
@@ -92,15 +92,20 @@ function UserProfile() {
   }, [avatars]);
 
   useEffect(() => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+  }, [userData]);
+
+  useEffect(() => {
     setUserData(() => {
       const obj: any = {};
       const {
-        firstName, lastName, fullName, tagName, userAvatar, ...inputs
+        firstName, lastName, tagName, userAvatar, ...inputs
       } = userInfo.data;
       [
         { name: 'firstName', value: firstName },
         { name: 'lastName', value: lastName },
-        { name: 'fullName', value: fullName },
         { name: 'tagName', value: tagName },
       ].forEach(({ name, value }: any) => {
         obj[name] = { value, isInput: false, name };
@@ -120,8 +125,9 @@ function UserProfile() {
             key={item.name}
           >
 
-            {item.name}: {item.value && item.isInput === true
+            {item.name}: {item.isInput === true
               ? <TextField
+                inputRef={ref}
                 id="standard-basic"
                 size='small'
                 name={item.name}
@@ -132,7 +138,7 @@ function UserProfile() {
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={() => convertToInputAndToDiv(item.name, item.value || 'Добавьте', false)}
+                        onClick={() => convertToInputAndToDiv(item.name, item.value, false)}
                         edge="end"
                       >
                         <DoneIcon fontSize='small' />
@@ -145,7 +151,7 @@ function UserProfile() {
               : <Tooltip placement="left-start" title={`Tap to edit - ${item.name}`}>
                 <div style={{
                   cursor: 'pointer', height: '29px', borderBottom: '1px solid', fontSize: '1rem',
-                }} onClick={() => convertToInputAndToDiv(item.name, item.value || 'Добавьте', true)}>{item.value || 'Добавьте'}</div>
+                }} onClick={() => convertToInputAndToDiv(item.name, item.value, true)}>{item.value}</div>
               </Tooltip>}
           </div>
         ))}

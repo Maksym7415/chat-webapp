@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import listRenderByRole from './drawerList';
 
 import NewChatScreen from './newChatScreen';
+
+import { actionLogout } from '../redux/authorization/constants/actionConstants';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -31,16 +34,19 @@ interface IDrawerProps {
 
 export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpenNewChatScreen] = React.useState(false);
 
   const handleClose = () => {
     setOpenNewChatScreen(false);
   };
 
-  const handleDrawerClose = (id: number) => {
+  const handleDrawerClose = (title: string) => {
     setOpenDrawer(false);
-    if (id === 1) {
+    if (title === 'New Chat') {
       setOpenNewChatScreen(true);
+    } else if (title === 'Logout') {
+      dispatch(actionLogout());
     }
   };
 
@@ -56,7 +62,7 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
             {listRenderByRole().map(({
               icon, id, title, route,
             }) => (
-                <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(id)}>
+                <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title)}>
                   <ListItem button>
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText primary={title} />
@@ -66,6 +72,7 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
           </List>
         </div>
       </Drawer>
+      {console.log(open)}
       <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} />
     </>
   );

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import Divider from '@material-ui/core/Divider';
@@ -14,7 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MailIcon from '@material-ui/icons/Mail';
 import Badge from '@material-ui/core/Badge';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import InputBase from '@material-ui/core/InputBase';
@@ -44,7 +45,9 @@ export default function MiniDrawer(props: IProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
+  const userAvatar = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success.data.userAvatar);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<Element | null>(null);
@@ -154,8 +157,9 @@ export default function MiniDrawer(props: IProps) {
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="inherit"
+
               >
-                <AccountCircle />
+                {userAvatar && <Link to='/userProfile'><Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /></Link>}
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>
@@ -180,6 +184,7 @@ export default function MiniDrawer(props: IProps) {
           setAnchorEl={setAnchorEl}
           mobileMoreAnchorEl={mobileMoreAnchorEl}
           setMobileMoreAnchorEl={setMobileMoreAnchorEl}
+          userAvatar={userAvatar}
         />
       </>
       <main className={classes.content}>

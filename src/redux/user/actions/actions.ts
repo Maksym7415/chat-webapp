@@ -19,9 +19,22 @@ export const userInfoActionRequest = (id: number): interfaces.UserInfoActionInte
   id,
 });
 
-export const setMainPhoto = (userId: number, photoUrl: string, photoId: number): interfaces.SetMainPhotoAction => ({
+export const setMainPhotoAction = (userId: number, photoUrl: string, photoId: number): interfaces.SetMainPhotoAction => ({
   type: types.USER_SET_MAIN_PHOTO,
   userId,
   photoUrl,
   photoId,
+});
+
+export const getAvatarsAction = (): interfaces.GetAvatarsActionInteface => ({
+  type: types.USER_GET_AVATARS,
+});
+
+export const uploadAvatarAction = (file: FormData): interfaces.UploadAvatarActionInterface => ({
+  type: types.USER_UPLOAD_AVATAR,
+  file,
+});
+
+export const clearDataAction = (): interfaces.ClearDataActionInterface => ({
+  type: types.USER_CLEAR_DATA,
 });

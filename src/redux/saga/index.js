@@ -7,6 +7,9 @@ import { userConversationsListWatcher } from '../conversations/sagas/userConvers
 import { userInfoWatcher } from '../user/sagas/userInfo';
 import { globalSearchWatcher } from '../search/sagas/globalSearch';
 import { createConversWatcher } from '../conversations/sagas/createNewConversation';
+import { getAvatarsWatcher } from '../user/sagas/getUserAvatars';
+import { setMainPhotoWatcher } from '../user/sagas/setMainPhoto.ts';
+import { getUploadAvatarsWatcher } from '../user/sagas/uploadAvatar';
 
 export default function* rootSaga() {
   yield all([
@@ -18,5 +21,8 @@ export default function* rootSaga() {
     userInfoWatcher(),
     globalSearchWatcher(),
     createConversWatcher(),
+    getAvatarsWatcher(),
+    setMainPhotoWatcher(),
+    getUploadAvatarsWatcher(),
   ]);
 }

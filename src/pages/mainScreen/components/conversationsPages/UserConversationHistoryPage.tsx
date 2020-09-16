@@ -159,8 +159,8 @@ export default function UserConversationHistoryPage() {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       className='conversations__container'
-      onScroll={scrollHandler}
-      id='messages'
+      // onScroll={scrollHandler}
+      // id='messages'
       onClick={handleCloseContextMenu}
       onContextMenu={handleCloseContextMenu}
     >
@@ -168,8 +168,10 @@ export default function UserConversationHistoryPage() {
         item
         xs={12}
         className='pd-left-10'
+        onScroll={scrollHandler}
         style={{
           height: messageEdit.isEdit ? 'calc(100% - 100px)' : 'calc(100% - 50px)',
+          overflowY: 'scroll',
         }}
       >
         <>

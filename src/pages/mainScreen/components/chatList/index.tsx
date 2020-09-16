@@ -8,7 +8,7 @@ import { ConversationsList } from '../../../../redux/conversations/constants/int
 import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
 import contextMenuCallback from '../../../../components/contextMenu/eventCallback';
-import { contextMenuAction } from '../../../../redux/common/commonActions';
+import { contextMenuAction, showDialogAction } from '../../../../redux/common/commonActions';
 import contextMenuConfig from './contextMenuConfig';
 
 import useStyles from '../../styles/styles';
@@ -42,32 +42,32 @@ export default ({ data, usersTyping }: ChatListProps) => {
     handleChangeChat(element.conversationId);
   };
 
+  const closeContextMenuAction = () => dispatch(contextMenuAction({
+    yPos: '',
+    xPos: '',
+    isShowMenu: false,
+    messageId: 0,
+    config: [],
+  }));
+
   const handleCloseContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     if (event.type === 'contextmenu') {
       event.preventDefault();
       console.log('prevent');
     }
     if (event.type === 'click') {
-      dispatch(contextMenuAction({
-        yPos: '',
-        xPos: '',
-        isShowMenu: false,
-        messageId: 0,
-        config: [],
-      }));
+      closeContextMenuAction();
     }
   };
 
   const handleDeleteChat = () => {
-    // dispatch(deleteMessageAction(true, id));
     console.log('delete chat');
-    dispatch(contextMenuAction({
-      yPos: '',
-      xPos: '',
-      isShowMenu: false,
-      messageId: 0,
-      config: [],
-    }));
+    closeContextMenuAction();
+  };
+
+  const handleViewProfile = () => {
+    dispatch(showDialogAction('profile'));
+    closeContextMenuAction();
   };
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export default ({ data, usersTyping }: ChatListProps) => {
     >
       {conversations.map((element) => (
         <div
-          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat), dispatch)}
+          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
           className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`}
           key={element.conversationId}

@@ -15,6 +15,10 @@ const initialState: interafaces.CommonReducerInterface = {
     isDelete: false,
     messageId: null,
   },
+  dialogComponent: {
+    isShow: false,
+    title: '',
+  },
 };
 
 export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
@@ -47,6 +51,18 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
           ...state.messageEdit,
           ...action.payload,
         },
+      };
+    }
+    case types.DIALOG_COMPONENT_SHOW: {
+      return {
+        ...state,
+        dialogComponent: action.payload,
+      };
+    }
+    case types.DIALOG_COMPONENT_HIDDEN: {
+      return {
+        ...state,
+        dialogComponent: initialState.dialogComponent,
       };
     }
     default: return state;

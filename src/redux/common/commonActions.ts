@@ -20,3 +20,15 @@ export const deleteMessageAction = (isDelete: boolean, messageId: number | null)
   type: types.IS_EDIT_MESSAGE,
   payload: { isDelete, messageId },
 });
+
+export const showDialogAction = (title: string): interfaces.CommonReducerActions => ({
+  type: types.DIALOG_COMPONENT_SHOW,
+  payload: {
+    isShow: true,
+    title,
+  },
+});
+
+export const hideDialogAction = (): interfaces.CommonReducerActions => ({
+  type: types.DIALOG_COMPONENT_HIDDEN,
+});

@@ -12,6 +12,7 @@ import setAxios from '../axios.config';
 import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
 import ContextMenu from '../components/contextMenu';
+import DialogComponent from '../components/dialog/DialogComponent';
 
 import { userInfoActionRequest } from '../redux/user/constants/actions';
 
@@ -34,6 +35,7 @@ function Router(props) {
     <Fragment>
       <Theme>
         <Preloader />
+        <DialogComponent />
         <ContextMenu />
         <CssBaseline />
         <div>

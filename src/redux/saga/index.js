@@ -10,6 +10,7 @@ import { createConversWatcher } from '../conversations/sagas/createNewConversati
 import { getAvatarsWatcher } from '../user/sagas/getUserAvatars';
 import { setMainPhotoWatcher } from '../user/sagas/setMainPhoto.ts';
 import { getUploadAvatarsWatcher } from '../user/sagas/uploadAvatar';
+import { updateUserProfileWatcher } from '../user/sagas/updateUserProfile';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +25,6 @@ export default function* rootSaga() {
     getAvatarsWatcher(),
     setMainPhotoWatcher(),
     getUploadAvatarsWatcher(),
+    updateUserProfileWatcher(),
   ]);
 }

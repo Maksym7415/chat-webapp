@@ -13,7 +13,7 @@ import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
 import ContextMenu from '../components/contextMenu';
 
-import { userInfoActionRequest } from '../redux/user/actions/actions';
+import { userInfoActionRequest } from '../redux/user/constants/actions';
 
 function Router(props) {
   const dispatch = useDispatch();

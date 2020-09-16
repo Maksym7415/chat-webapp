@@ -2,9 +2,9 @@ import {
   takeEvery, call, put,
 } from 'redux-saga/effects';
 import axios from 'axios';
-import { USER_GET_AVATARS } from '../actions/types';
-import { GetAvatarsActionInteface } from '../actions/interfaces';
-import { userActionFail, userActionSuccess } from '../actions/actions';
+import { USER_GET_AVATARS } from '../constants/types';
+import { GetAvatarsActionInteface } from '../constants/interfaces';
+import { userActionFail, userActionSuccess } from '../constants/actions';
 
 export function* getAvatarsWatcher() {
   yield takeEvery(USER_GET_AVATARS, getAvatarsWorker);

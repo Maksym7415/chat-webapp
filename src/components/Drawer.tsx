@@ -68,7 +68,7 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
                     <ListItemText primary={title} />
                   </ListItem>
                 </Link>
-              ))}
+            ))}
           </List>
         </div>
       </Drawer>

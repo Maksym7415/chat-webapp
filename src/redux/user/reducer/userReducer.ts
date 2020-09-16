@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import * as types from '../actions/types';
-import * as interfaces from '../actions/interfaces';
+import * as types from '../constants/types';
+import * as interfaces from '../constants/interfaces';
 
 const initialState: interfaces.UserReducerInterface = {
   userInfo: {

@@ -61,6 +61,17 @@ interface Roles {
   description: string
 }
 
+export interface UpdateUserReqbody {
+  firstName?: string
+  tagName?: string
+  lastName?: string
+}
+
+export interface UpdateUserProfileAction {
+  type: typeof types.UPDATE_USER_PROFILE
+  payload: UpdateUserReqbody
+}
+
 export interface UserInfoActionInterface {
   type: typeof types.USER_GET_USER_INFO
   id: number

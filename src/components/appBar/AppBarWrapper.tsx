@@ -2,30 +2,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-
-import Divider from '@material-ui/core/Divider';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import MailIcon from '@material-ui/icons/Mail';
 import Badge from '@material-ui/core/Badge';
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
+import { showDialogAction } from '../../redux/common/commonActions';
 import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
 import { createNewChatAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
-
 import Drawer from '../Drawer';
 import AppBarMenu from './AppBarMenu';
 import useStyles from './style/AppWrapperStyles';
@@ -56,8 +50,8 @@ export default function MiniDrawer(props: IProps) {
   const [hide, setHide] = useState<boolean>(true);
   const ref = useRef<Ref>({});
 
-  const handleProfileMenuOpen = (event: any) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpenProfile = (event: any) => {
+    dispatch(showDialogAction('Profile'));
   };
 
   const handleMobileMenuOpen = (event: any) => {
@@ -150,11 +144,11 @@ export default function MiniDrawer(props: IProps) {
                 aria-label="account of current user"
                 aria-controls={'primary-search-account-menu'}
                 aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+                onClick={handleOpenProfile}
                 color="inherit"
 
               >
-                <Link to='/userProfile'><Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /></Link>
+                <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} />
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>

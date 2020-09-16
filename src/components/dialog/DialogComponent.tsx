@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import React from 'react';
+import {
+  Dialog, DialogTitle, DialogContent, IconButton, Typography,
+} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { hideDialogAction } from '../../redux/common/commonActions';
+import UserProfile from '../../pages/user/components/userProfile';
+import useStyles from './styles/styles';
 
 export default function DialogComponent() {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const dialogState = useSelector(({ commonReducer }: RootState) => commonReducer.dialogComponent);
 
   const handleClose = () => dispatch(hideDialogAction());
 
   return (
     <Dialog onClose={handleClose} open={dialogState.isShow}>
-      <DialogTitle id="customized-dialog-title">
-          {dialogState.title}
+      <DialogTitle disableTypography className={classes.titleContainer}>
+          <Typography className={classes.title}>{dialogState.title}</Typography>
+          <IconButton
+            className={classes.closeIconButton}
+            onClick={handleClose}
+          >
+            <CloseIcon className={classes.closeIcon} />
+          </IconButton>
       </DialogTitle>
-      <DialogContent dividers>
-        hello
+      <DialogContent style={{ width: '400px', padding: '10px 0' }} dividers>
+        <UserProfile/>
       </DialogContent>
     </Dialog>
   );

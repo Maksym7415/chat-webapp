@@ -26,10 +26,6 @@ import '../style/style.scss';
 //   [key: string]: CurrentInput
 // }
 
-interface Ref {
-  [x: string]: any;
-}
-
 function UserProfile() {
   const dispatch = useDispatch();
 
@@ -119,7 +115,7 @@ function UserProfile() {
 
   return (
     // userInfo && userInfo.data && <div>{userInfo.data.fullName}</div>
-    <div style={{ width: '400px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
        <div style={{ marginBottom: '20px' }}>
         <div className='carousel relative full-w'>
           <div className=' carousel__images-container'>

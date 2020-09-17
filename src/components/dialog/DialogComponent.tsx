@@ -19,7 +19,7 @@ export default function DialogComponent() {
   return (
     <Dialog onClose={handleClose} open={dialogState.isShow}>
       <DialogTitle disableTypography className={classes.titleContainer}>
-          <Typography className={classes.title}>{dialogState.title}</Typography>
+          <Typography variant='subtitle1' className={classes.title}>{dialogState.title}</Typography>
           <IconButton
             className={classes.closeIconButton}
             onClick={handleClose}

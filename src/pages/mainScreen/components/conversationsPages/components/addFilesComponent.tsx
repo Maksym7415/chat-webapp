@@ -23,7 +23,6 @@ export default function AddFiles({
 
   const handleSendFiles = (message: string) => {
     if (!files) return;
-    console.log('send');
 
     let fileReader = new FileReader();
     if (files) {

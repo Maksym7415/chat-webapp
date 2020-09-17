@@ -105,7 +105,7 @@ export default ({ data, usersTyping }: ChatListProps) => {
             </div>
               <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
                 ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
-                  ? 'Вы:'
+                  ? `Вы: ${element.Messages[0].message}`
                   : element.conversationType === 'Dialog'
                     ? null
                     : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}

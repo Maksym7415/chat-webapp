@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'san-serif-lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/Lato-Regular.ttf') format('truetype');
+} /* подключение шрифта через css с локалки */
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

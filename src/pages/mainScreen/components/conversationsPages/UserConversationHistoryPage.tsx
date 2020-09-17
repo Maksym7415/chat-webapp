@@ -22,6 +22,7 @@ import {
 } from '../../interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
 import './styles/styles.scss';
+import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -178,9 +179,34 @@ export default function UserConversationHistoryPage() {
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
               fkSenderId, message, id, sendDate, User, Files,
-            }, index: number) => {
+            }, index: number, arr) => {
+              // /console.log(arr[index + 1].sendDate, sendDate);
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
+              if (new Date(arr[index + 1]?.sendDate).getTime() - new Date(sendDate).getTime() > 86400000) {
+               return (
+                <React.Fragment key={id + 1}>
+                <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
+                  <p style={{
+                    maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
+                    }}>
+                  {getCurrentDay(new Date(sendDate), false)}
+                  </p>
+                </div>
+                  <Message
+                    key={id}
+                    isShowAvatar={isShowAvatar}
+                    fkSenderId={fkSenderId}
+                    message={message}
+                    id={id}
+                    sendDate={sendDate}
+                    User={User}
+                    Files={Files}
+                    userId={userId}
+                  />
+                </React.Fragment>
+               );
+              }
               return (
                 <Message
                   key={id}

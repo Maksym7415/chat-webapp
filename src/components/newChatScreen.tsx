@@ -28,7 +28,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import { hideDialogAction } from '../redux/common/commonActions';
 import useStyles from './appBar/style/AppWrapperStyles';
 import { initializedGlobalSearchAction } from '../redux/search/constants/actionConstants';
 import { createNewChatAction } from '../redux/conversations/constants/actionConstants';
@@ -37,12 +37,6 @@ import { SearchObjectInteface } from '../redux/search/constants/interfaces';
 
 import socket from '../socket';
 import { fullDate } from '../common/getCorrectDateFormat';
-
-interface ChatProps {
-  open: boolean
-  handleClose: () => void
-  setOpenNewChatScreen: (value: boolean) => void
-}
 
 interface Ref {
   [x: string]: any;
@@ -53,7 +47,7 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>,
 ) => <Slide direction="up" ref={ref} {...props} />);
 
-export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen }: ChatProps) {
+export default function NewChatScreen() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
@@ -138,7 +132,7 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
     if (!groupMembers.length) return;
     const fileExtension = imageData.name.split('.');
     socket.emit('chatCreation', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, imageData, fileExtension[fileExtension.length - 1], (success: boolean) => {
-      if (success) setOpenNewChatScreen(false);
+      if (success) dispatch(hideDialogAction());
     });
   };
 
@@ -165,23 +159,9 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
   }, [hide]);
 
   return (
-    <div>
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-        <AppBar className={classes.newChatAppBar}>
-          <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.newChatTitle}>
-              Новый чат
-            </Typography>
-            <Button autoFocus color="inherit" onClick={createChat}>
-              Создать чат
-            </Button>
-          </Toolbar>
-        </AppBar>
+
         <Grid container style={{ margin: '12px', height: '100%' }}>
-          <Grid item xs={3}>
+          <Grid item xs={12}>
             <TextField
               id="name"
               label="Введите название группы"
@@ -312,7 +292,6 @@ export default function NewChatScreen({ open, handleClose, setOpenNewChatScreen 
             </div>
           </Grid>
         </Grid>
-      </Dialog>
-    </div>
+
   );
 }

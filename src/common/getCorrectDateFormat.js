@@ -5,7 +5,13 @@ const months = ['дек.', 'янв.', 'февр.', 'мар.', 'апр.', 'мая
 const weekDays = ['вс.', 'вт.', 'ср.', 'чт.', 'пт.', 'сб', 'пн.'];
 
 export const getCurrentDay = (value, isMessage) => {
-  if (setDays(value)) return setDays(value, isMessage).split(':').map((d) => (d.length < 2 ? `0${d}` : d)).join(':');
+  if (setDays(value)) {
+    const date = setDays(value, isMessage).split(':');
+    if (date.length < 3 && Number(date[1])) {
+      return date.map((d) => (d.length < 2 ? `0${d}` : d)).join(':');
+    }
+    return date.map((d) => (d.length < 2 ? `0${d}` : d)).join(' ');
+  }
   return '';
 };
 
@@ -30,9 +36,9 @@ const setDays = (date, isMessage) => {
     return `${date.getHours()}:${date.getMinutes()}`;
   }
   if (diffInTime > 31540000000) {
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    return `${date.getFullYear()}:${date.getMonth() + 1}:${date.getDate()}`;
   } if (diffInTime > 604800000) {
-    return `${date.getDate()} ${months[date.getMonth() + 1]}`;
+    return `${date.getDate()}:${months[date.getMonth() + 1]}`;
   } if (diffInTime > 86400000) {
     return `${weekDays[date.getDay()]}`;
   }

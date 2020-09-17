@@ -40,7 +40,7 @@ interface UserInfo {
   error: ErrorResponse
 }
 
-interface UserInfoSuccess {
+export interface UserInfoSuccess {
   id: number
   login: string
   firstName: string

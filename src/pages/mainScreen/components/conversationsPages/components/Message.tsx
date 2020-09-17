@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Paper, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,12 +11,14 @@ import contextMenuCallback from '../../../../../components/contextMenu/eventCall
 import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
 import DefaultAvatar from '../../../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
+import { RootState } from '../../../../../redux/reducer';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
 }: MessageProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const activeConversationType = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.type);
 
   const handleEditMessage = () => {
     dispatch(editMessageAction(true, id));
@@ -39,6 +41,8 @@ export default function Message({
       config: [],
     }));
   };
+
+  console.log(activeConversationType);
 
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
@@ -70,7 +74,7 @@ export default function Message({
             : classes.paperFriendMessage, Files && Files.length ? classes.fullWidth : null)}
         >
           <div className='conversations__user-name-date-container relative'>
-            {userId !== User.id ? <p className='conversations__message-info-text'>{User.tagName}</p> : <div className='conversations__message-info-text' style={{ height: '2px' }}></div>}
+            {activeConversationType !== 'Dialog' ? <p className='conversations__message-info-text'>{User.tagName}</p> : <div className='conversations__message-info-text' style={{ height: '2px' }}></div>}
             <p className='conversations__message-info-time'>{getCurrentDay(new Date(sendDate), true)}</p>
           </div>
           <p className='conversations__message-text'>{message}</p>

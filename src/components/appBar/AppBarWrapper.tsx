@@ -177,6 +177,7 @@ export default function MiniDrawer(props: IProps) {
           userAvatar={userData.userAvatar}
           firstName={userData.firstName}
           lastName={userData.lastName}
+          openProfile={handleOpenProfile}
         />
       </>
       <main className={classes.content}>

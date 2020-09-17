@@ -1,20 +1,15 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import Drawer from '@material-ui/core/Drawer';
+import {
+  Drawer, ListItemIcon, ListItemText, List, ListItem,
+} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import listRenderByRole from './drawerList';
+import { showDialogAction } from '../redux/common/commonActions';
 
-import NewChatScreen from './newChatScreen';
+import NewChatScreen from './newChat/newChatScreen';
 
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
 
@@ -37,14 +32,10 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
   const dispatch = useDispatch();
   const [open, setOpenNewChatScreen] = React.useState(false);
 
-  const handleClose = () => {
-    setOpenNewChatScreen(false);
-  };
-
   const handleDrawerClose = (title: string) => {
     setOpenDrawer(false);
     if (title === 'New Chat') {
-      setOpenNewChatScreen(true);
+      dispatch(showDialogAction('Add New Chat'));
     } else if (title === 'Logout') {
       dispatch(actionLogout());
     }
@@ -72,7 +63,7 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
           </List>
         </div>
       </Drawer>
-      <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} />
+      {/* <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} /> */}
     </>
   );
 }

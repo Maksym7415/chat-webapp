@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import {
-  TextField, Grid, InputAdornment, IconButton, Tooltip, Button,
+  TextField, InputAdornment, IconButton,
 } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
@@ -12,9 +11,8 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/reducer/index';
 import {
-  userInfoActionRequest, getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction,
+  getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction,
 } from '../../../redux/user/constants/actions';
-import * as interfaces from '../../../redux/user/constants/interfaces';
 import '../style/style.scss';
 
 // interface CurrentInput {
@@ -114,7 +112,6 @@ function UserProfile() {
   }, [userInfo]);
 
   return (
-    // userInfo && userInfo.data && <div>{userInfo.data.fullName}</div>
     <div style={{ width: '100%' }}>
        <div style={{ marginBottom: '20px' }}>
         <div className='carousel relative full-w'>

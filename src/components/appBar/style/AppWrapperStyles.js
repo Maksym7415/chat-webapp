@@ -128,41 +128,6 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(2),
     margin: theme.spacing(2),
   },
-  newChatAddContactWraper: {
-    display: 'flex',
-    maxHeight: '40px',
-    // width: '50%',
-    // marginTop: theme.spacing(3),
-  },
-  newChatAppBar: {
-    position: 'relative',
-  },
-  chipWrapper: {
-    maxWidth: '50%',
-  },
-  newChatTitle: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
-  },
-  newChatSearchWrapper: {
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      display: 'flex',
-      justifyContent: 'start',
-    },
-    width: '50%',
-  },
-  chipRoot: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    listStyle: 'none',
-    padding: theme.spacing(0.5),
-    margin: 0,
-  },
-  chip: {
-    margin: theme.spacing(0.5),
-  },
   groupName: {
     width: '50%',
   },

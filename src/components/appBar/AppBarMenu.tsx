@@ -20,31 +20,28 @@ interface IAppBarMenuProps {
   userAvatar: string
   firstName: string
   lastName: string
+  openProfile: Function
 }
 
 export default function ({
-  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, firstName, lastName,
+  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, firstName, lastName, openProfile,
 }: IAppBarMenuProps) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const dispatch = useDispatch();
 
-  const handleProfileMenuOpen = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
+  };
+
+  const handleProfileOpen = (event: any) => {
+    openProfile();
+    handleMobileMenuClose();
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
-
-  const handleLogout = () => {
-    dispatch(actionLogout());
-    handleMenuClose();
   };
 
   return (
@@ -66,12 +63,13 @@ export default function ({
           </IconButton>
           <p>Notifications</p>
         </MenuItem>
-        <MenuItem component={Link} to='/userProfile'>
+        <MenuItem>
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
+            onClick={handleProfileOpen}
           >
            {!userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /> : <DefaultAvatar name={`${firstName} ${lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>

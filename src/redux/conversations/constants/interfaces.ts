@@ -96,6 +96,7 @@ export interface Messages {
   messageType?: string
   Files: Array<FileData>
   isEdit?: boolean
+  component: object
 }
 
 export interface UserConversationHistoryActionRequest {

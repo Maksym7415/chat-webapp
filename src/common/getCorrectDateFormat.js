@@ -15,19 +15,10 @@ export const getCurrentDay = (value, isMessage) => {
   return '';
 };
 
-export const getCurrentMonth = (value) => {
-  if (setMonth(value)) return setMonth(value).split('-').map((d) => (d.length < 2 ? `0${d}` : d)).join('-');
-  return '';
-};
-
 export const fullDate = (value) => {
-  if (setMonth(value)) return `${getCurrentMonth(value)} ${getCurrentDay(value)}`;
-  return '';
-};
-
-const setMonth = (date) => {
-  if (date) return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  return date;
+  const dayTime = `${value.getHours()}:${value.getMinutes()}:${value.getSeconds()}`.split('-').map((d) => (d.length < 2 ? `0${d}` : d)).join('-');
+  const yearTime = `${value.getFullYear()}-${value.getMonth() + 1}-${value.getDate()}`.split('-').map((d) => (d.length < 2 ? `0${d}` : d)).join('-');
+  return `${yearTime} ${dayTime}`;
 };
 
 const setDays = (date, isMessage) => {
@@ -43,4 +34,12 @@ const setDays = (date, isMessage) => {
     return `${weekDays[date.getDay()]}`;
   }
   return `${date.getHours()}:${date.getMinutes()}`;
+};
+
+export const setMessageDate = (date) => {
+  const diffInTime = Date.now() - new Date(date).getTime();
+  if (diffInTime > 31540000000) {
+    return `${date.getFullYear()}:${date.getMonth() + 1}:${date.getDate()}`.split(':').map((d) => (d.length < 2 ? `0${d}` : d)).join('.');
+  }
+  return `${date.getDate()}:${months[date.getMonth() + 1]}`.split(':').map((d) => (d.length < 2 ? `0${d}` : d)).join(' ');
 };

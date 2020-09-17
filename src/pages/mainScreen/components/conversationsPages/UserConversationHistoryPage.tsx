@@ -20,9 +20,10 @@ import { contextMenuAction } from '../../../../redux/common/commonActions';
 import {
   Files, CurrentConversationMessages, ScrollValue, Pagination,
 } from '../../interfaces';
+import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
 import './styles/styles.scss';
-import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
+import { setMessageDate } from '../../../../common/getCorrectDateFormat';
 
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
@@ -42,13 +43,15 @@ export default function UserConversationHistoryPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
+  const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   const ref = useRef(null);
+  let newArr: any = [];
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
-    if (allMessages[conversationId]?.length % 15 === 0 && element.scrollTop === 0) {
+    if (allMessages[conversationId]?.length % (15 + timeDivCounter) === 0 && element.scrollTop === 0) {
       dispatch(conversationUserHistoryActionRequest(conversationId, localPagination[conversationId] + 15));
     }
   };
@@ -132,8 +135,19 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     scrollTop(ref);
+    let currentDay = 0;
+    messageHistory.map((el: Messages) => {
+      if (new Date(el.sendDate).getDate() !== currentDay) {
+        currentDay = new Date(el.sendDate).getDate();
+        newArr = [...newArr, { component: 'div', sendDate: el.sendDate }, el];
+      } else {
+        currentDay = new Date(el.sendDate).getDate();
+        newArr = [...newArr, el];
+      }
+    });
+    setTimeDivCounter(newArr.filter((el: Messages) => el.component).length);
     setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
-    setAllMessages((messages) => ({ ...messages, [conversationId]: [...messageHistory, ...(messages[conversationId] === undefined ? [] : messages[conversationId])], 0: [] }));
+    setAllMessages((messages) => ({ ...messages, [conversationId]: [...newArr, ...(messages[conversationId] === undefined ? [] : messages[conversationId])], 0: [] }));
   }, [messageHistory]);
 
   useEffect(() => {
@@ -178,34 +192,24 @@ export default function UserConversationHistoryPage() {
         <>
           {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files,
+              fkSenderId, message, id, sendDate, User, Files, component,
             }, index: number, arr) => {
               // /console.log(arr[index + 1].sendDate, sendDate);
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
-              if (new Date(arr[index + 1]?.sendDate).getTime() - new Date(sendDate).getTime() > 86400000 || Date.now() - new Date(sendDate).getTime() > 86400000) {
-               return (
-                <React.Fragment key={id + 1}>
-                <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
-                  <p style={{
-                    maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
-                    }}>
-                  {getCurrentDay(new Date(sendDate), false)}
-                  </p>
-                </div>
-                  <Message
-                    key={id}
-                    isShowAvatar={isShowAvatar}
-                    fkSenderId={fkSenderId}
-                    message={message}
-                    id={id}
-                    sendDate={sendDate}
-                    User={User}
-                    Files={Files}
-                    userId={userId}
-                  />
-                </React.Fragment>
-               );
+              if (component) {
+                return (
+                  <React.Fragment key={sendDate}>
+                    <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
+                      <p style={{
+                        maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
+                      }}>
+                        {setMessageDate(new Date(sendDate))}
+
+                      </p>
+                    </div>
+                  </React.Fragment>
+                );
               }
               return (
                 <Message
@@ -218,6 +222,7 @@ export default function UserConversationHistoryPage() {
                   User={User}
                   Files={Files}
                   userId={userId}
+                  component={component}
                 />
               );
             })}

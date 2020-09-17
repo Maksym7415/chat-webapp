@@ -183,7 +183,7 @@ export default function UserConversationHistoryPage() {
               // /console.log(arr[index + 1].sendDate, sendDate);
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
-              if (new Date(arr[index + 1]?.sendDate).getTime() - new Date(sendDate).getTime() > 86400000) {
+              if (new Date(arr[index + 1]?.sendDate).getTime() - new Date(sendDate).getTime() > 86400000 || Date.now() - new Date(sendDate).getTime() > 86400000) {
                return (
                 <React.Fragment key={id + 1}>
                 <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>

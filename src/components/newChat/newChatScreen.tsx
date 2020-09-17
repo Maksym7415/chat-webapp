@@ -5,18 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
@@ -28,15 +25,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { hideDialogAction } from '../redux/common/commonActions';
-import useStyles from './appBar/style/AppWrapperStyles';
-import { initializedGlobalSearchAction } from '../redux/search/constants/actionConstants';
-import { createNewChatAction } from '../redux/conversations/constants/actionConstants';
-import { RootState } from '../redux/reducer';
-import { SearchObjectInteface } from '../redux/search/constants/interfaces';
-
-import socket from '../socket';
-import { fullDate } from '../common/getCorrectDateFormat';
+import { hideDialogAction } from '../../redux/common/commonActions';
+import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
+import { RootState } from '../../redux/reducer';
+import { SearchObjectInteface } from '../../redux/search/constants/interfaces';
+import useStyles from './styles/styles';
+import socket from '../../socket';
+import { fullDate } from '../../common/getCorrectDateFormat';
 
 interface Ref {
   [x: string]: any;
@@ -159,8 +154,7 @@ export default function NewChatScreen() {
   }, [hide]);
 
   return (
-
-        <Grid container style={{ margin: '12px', height: '100%' }}>
+        <Grid container className={classes.container}>
           <Grid item xs={12}>
             <TextField
               id="name"
@@ -207,7 +201,52 @@ export default function NewChatScreen() {
             </DialogActions>
             </Dialog>
           </Grid>
-          <Grid item xs={9} className={classes.newChatAddContactWraper}>
+          <Grid item xs={12} className={classes.newChatAddContactWraper}>
+          {/* <div style={{ width: '100%' }}> */}
+            {!!groupMembers.length && <div className={classes.chipWrapper}>
+              {!!groupMembers.length
+                && <Paper component="ul" className={classes.chipRoot}>
+                  {groupMembers.map((data: SearchObjectInteface) => (
+                    <li key={data.id} >
+                      <Chip
+                        style={{ cursor: 'pointer' }}
+                        avatar={<Avatar alt="" src={`http://localhost:8081/${data.userAvatar}`} />}
+                        label={data.firstName}
+                        onDelete={handleDelete(data)}
+                        onClick={(event) => chipHandler(event, data.id)}
+                        className={classes.chip}
+                      />
+                    </li>
+                  ))}
+                </Paper>
+              }
+              <Popover
+                id={'popover'}
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+              >
+                <Typography className={classes.popover}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        style={{ color: '#64c8bc' }}
+                        checked={checked[memberId] === undefined ? false : checked[memberId].isAdmin}
+                        onChange={handleChange}
+                      />}
+                    label="Администратор"
+                  />
+                </Typography>
+              </Popover>
+            </div>}
             <div className={classes.newChatSearchWrapper}>
               <div className={classes.search} onBlur={blur}>
                 <div className={classes.searchIcon} >
@@ -245,52 +284,8 @@ export default function NewChatScreen() {
                 </Paper>}
               </div>
             </div>
-            <div className={classes.chipWrapper}>
-              {!!groupMembers.length
-                && <Paper component="ul" className={classes.chipRoot}>
-                  {groupMembers.map((data: SearchObjectInteface) => (
-                    <li key={data.id} >
-                      <Chip
-                        style={{ cursor: 'pointer' }}
-                        avatar={<Avatar alt="" src={`http://localhost:8081/${data.userAvatar}`} />}
-                        label={data.firstName}
-                        onDelete={handleDelete(data)}
-                        onClick={(event) => chipHandler(event, data.id)}
-                        className={classes.chip}
-                      />
-                    </li>
-                  ))}
-                </Paper>
-
-              }
-              <Popover
-                id={'popover'}
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-                onClose={handlePopoverClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-                <Typography className={classes.popover}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        style={{ color: '#64c8bc' }}
-                        checked={checked[memberId] === undefined ? false : checked[memberId].isAdmin}
-                        onChange={handleChange}
-                      />}
-                    label="Администратор"
-                  />
-                </Typography>
-              </Popover>
-            </div>
           </Grid>
+          {/* </div> */}
         </Grid>
 
   );

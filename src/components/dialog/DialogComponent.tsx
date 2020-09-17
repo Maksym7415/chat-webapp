@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { hideDialogAction } from '../../redux/common/commonActions';
 import UserProfile from '../../pages/user/components/userProfile';
-import NewChat from '../newChatScreen';
+import NewChat from '../newChat/newChatScreen';
 import useStyles from './styles/styles';
 
 export default function DialogComponent() {
@@ -39,7 +39,9 @@ export default function DialogComponent() {
           <CloseIcon className={classes.closeIcon} />
         </IconButton>
       </DialogTitle>
-      <DialogContent style={{ width: '400px', padding: '10px 0' }} dividers>
+      <DialogContent style={{
+        width: '400px', position: 'relative', height: '100%', padding: '10px 0',
+      }} dividers>
         <Content />
       </DialogContent>
     </Dialog>

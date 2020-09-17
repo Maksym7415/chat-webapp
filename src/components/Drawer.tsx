@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import listRenderByRole from './drawerList';
 import { showDialogAction } from '../redux/common/commonActions';
 
-import NewChatScreen from './newChatScreen';
+import NewChatScreen from './newChat/newChatScreen';
 
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
 

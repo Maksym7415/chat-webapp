@@ -9,6 +9,7 @@ import { MessageProps } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
 import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
+import DefaultAvatar from '../../../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
 
 export default function Message({
@@ -41,7 +42,7 @@ export default function Message({
 
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
-      {isShowAvatar && <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} />}
+      {isShowAvatar && (User.userAvatar ? <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} /> : <DefaultAvatar name={`${User.firstName} ${User.lastName}`} width='30px' height='30px' fontSize='0.7rem' />)}
       <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(fkSenderId === userId, handleDeleteMessage, handleEditMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
           <div className='conversations__message-image-container'>

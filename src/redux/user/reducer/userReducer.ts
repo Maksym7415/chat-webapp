@@ -50,7 +50,6 @@ const initialState: interfaces.UserReducerInterface = {
 const UserReducer = (state = initialState, action: interfaces.UserActionsInterface): interfaces.UserReducerInterface => {
   switch (action.type) {
     case types.USER_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         [action.name]: {

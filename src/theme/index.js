@@ -62,6 +62,7 @@ let theme = createMuiTheme({
       },
       subtitle1: {
         fontFamily: 'san-serif-lato',
+        color: '#323536',
       },
     },
     MuiBadge: {

@@ -10,6 +10,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import { actionLogout } from '../../redux/authorization/constants/actionConstants';
+import DefaultAvatar from '../defaultAvatar';
 
 interface IAppBarMenuProps {
   anchorEl: null | Element
@@ -17,10 +18,12 @@ interface IAppBarMenuProps {
   mobileMoreAnchorEl: null | Element
   setMobileMoreAnchorEl: (value: null | Element) => void
   userAvatar: string
+  firstName: string
+  lastName: string
 }
 
 export default function ({
-  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar,
+  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, firstName, lastName,
 }: IAppBarMenuProps) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -70,7 +73,7 @@ export default function ({
             aria-haspopup="true"
             color="inherit"
           >
-            <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} />
+           {!userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /> : <DefaultAvatar name={`${firstName} ${lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>
           <p>Profile</p>
         </MenuItem>

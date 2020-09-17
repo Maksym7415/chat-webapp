@@ -10,7 +10,7 @@ export function* loginWatcher() {
   yield takeEvery(AUTH_LOGIN, loginWorker);
 }
 
-function* loginWorker({ login }: LoginAction) {
+function* loginWorker({ login }: any) {
   try {
     const response = yield call(axios.post, '/signIn', { ...login });
     yield put(requestSuccess(response, 'login'));

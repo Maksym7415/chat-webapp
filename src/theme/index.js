@@ -60,6 +60,10 @@ let theme = createMuiTheme({
       root: {
         color: '#0000007a',
       },
+      subtitle1: {
+        fontFamily: 'san-serif-lato',
+        color: '#323536',
+      },
     },
     MuiBadge: {
       colorSecondary: {

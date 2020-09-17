@@ -23,6 +23,7 @@ import { RootState } from '../../redux/reducer';
 import Drawer from '../Drawer';
 import AppBarMenu from './AppBarMenu';
 import useStyles from './style/AppWrapperStyles';
+import DefaultAvatar from '../defaultAvatar';
 
 interface IProps {
   children: Record<string, unknown>
@@ -39,7 +40,7 @@ export default function MiniDrawer(props: IProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
-  const userAvatar = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success.data.userAvatar);
+  const userData = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
 
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
@@ -148,7 +149,7 @@ export default function MiniDrawer(props: IProps) {
                 color="inherit"
 
               >
-                <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} />
+                {!userData.userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userData.userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>
@@ -173,7 +174,9 @@ export default function MiniDrawer(props: IProps) {
           setAnchorEl={setAnchorEl}
           mobileMoreAnchorEl={mobileMoreAnchorEl}
           setMobileMoreAnchorEl={setMobileMoreAnchorEl}
-          userAvatar={userAvatar}
+          userAvatar={userData.userAvatar}
+          firstName={userData.firstName}
+          lastName={userData.lastName}
         />
       </>
       <main className={classes.content}>

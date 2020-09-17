@@ -72,7 +72,6 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
           </List>
         </div>
       </Drawer>
-      {console.log(open)}
       <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} />
     </>
   );

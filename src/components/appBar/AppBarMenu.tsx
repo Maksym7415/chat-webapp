@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import MailIcon from '@material-ui/icons/Mail';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -11,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import { actionLogout } from '../../redux/authorization/constants/actionConstants';
 import DefaultAvatar from '../defaultAvatar';
+import { UserInfoSuccess } from '../../redux/user/constants/interfaces';
 
 interface IAppBarMenuProps {
   anchorEl: null | Element
@@ -18,13 +17,12 @@ interface IAppBarMenuProps {
   mobileMoreAnchorEl: null | Element
   setMobileMoreAnchorEl: (value: null | Element) => void
   userAvatar: string
-  firstName: string
-  lastName: string
+  userData: UserInfoSuccess
   openProfile: Function
 }
 
 export default function ({
-  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, firstName, lastName, openProfile,
+  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, userData, openProfile,
 }: IAppBarMenuProps) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -71,7 +69,7 @@ export default function ({
             color="inherit"
             onClick={handleProfileOpen}
           >
-           {!userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /> : <DefaultAvatar name={`${firstName} ${lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
+           {userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>
           <p>Profile</p>
         </MenuItem>

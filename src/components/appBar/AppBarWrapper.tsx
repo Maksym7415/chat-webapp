@@ -149,7 +149,7 @@ export default function MiniDrawer(props: IProps) {
                 color="inherit"
 
               >
-                {!userData.userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userData.userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
+                {userData.userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userData.userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>
@@ -175,8 +175,7 @@ export default function MiniDrawer(props: IProps) {
           mobileMoreAnchorEl={mobileMoreAnchorEl}
           setMobileMoreAnchorEl={setMobileMoreAnchorEl}
           userAvatar={userData.userAvatar}
-          firstName={userData.firstName}
-          lastName={userData.lastName}
+          userData={userData}
           openProfile={handleOpenProfile}
         />
       </>

@@ -32,8 +32,14 @@ export default function DefaultAvatar({
             flexShrink: 0,
           }}
         >
-          <span style={{ ...lettersStyle, fontSize }}>{letters[0][0].toUpperCase()}</span>
-          {letters[1] && <span style={{ ...lettersStyle, fontSize }}>{letters[1][0].toUpperCase()}</span>}
+          {letters[0]
+            && (
+                <>
+                  <span style={{ ...lettersStyle, fontSize }}>{letters[0][0].toUpperCase()}</span>
+                  {letters[1] && <span style={{ ...lettersStyle, fontSize }}>{letters[1][0].toUpperCase()}</span>}
+                </>
+            )
+          }
         </div>
   );
 }

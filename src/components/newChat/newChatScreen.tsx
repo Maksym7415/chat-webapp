@@ -3,28 +3,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import Typography from '@material-ui/core/Typography';
+import {
+  Button, Dialog, DialogContentText, Typography, Slide, Input, FormControl, InputAdornment, Paper, Chip, TextField, Grid, Popover, FormControlLabel, Checkbox, Avatar, DialogActions, DialogContent, DialogTitle,
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import Input from '@material-ui/core/Input';
-import FormControl from '@material-ui/core/FormControl';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Popover from '@material-ui/core/Popover';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Avatar from '@material-ui/core/Avatar';
 import { TransitionProps } from '@material-ui/core/transitions';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { hideDialogAction } from '../../redux/common/commonActions';
 import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
@@ -46,10 +30,8 @@ export default function NewChatScreen() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
-
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
-
   const [value, setValue] = useState<string>('');
   const [hide, setHide] = useState<boolean>(true);
   const [localSearchResult, setLocalSearchResult] = useState<Array<SearchObjectInteface>>([]);
@@ -124,7 +106,7 @@ export default function NewChatScreen() {
   };
 
   const createChat = () => {
-    if (!groupMembers.length) return;
+    if (!groupMembers.length || !chatName) return;
     const fileExtension = imageData.name.split('.');
     socket.emit('chatCreation', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, imageData, fileExtension[fileExtension.length - 1], (success: boolean) => {
       if (success) dispatch(hideDialogAction());

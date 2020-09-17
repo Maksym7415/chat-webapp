@@ -34,9 +34,12 @@ export const conversationAddNewMessage = (message: interfaces.Messages, id: numb
 
 export const getUserConversationsActionRequest = (): interfaces.UserConversationsListActionRequest => ({ type: types.CONVERSATIONS_USER_CONVERSATIONS });
 
-export const getConversationIdAction = (id: number): interfaces.ConversationIdAction => ({
+export const getConversationIdAction = (id: number, type: string): interfaces.ConversationIdAction => ({
   type: types.CONVERSATION_ID,
-  payload: id,
+  payload: {
+    id,
+    type,
+  },
 });
 
 export const conversationTypeStateAction = (conversationId: number, isTyping: boolean, users: Array<interfaces.Users>, userId: number): interfaces.ConversationTypeStateInterfaceAction => ({

@@ -161,9 +161,9 @@ export default function UserConversationHistoryPage() {
 
   useEffect(() => {
     if (opponentId) {
-      dispatch(getConversationIdAction(0));
+      dispatch(getConversationIdAction(0, ''));
       if (isCreateChat.length) {
-        dispatch(getConversationIdAction(isCreateChat[0].id));
+        dispatch(getConversationIdAction(isCreateChat[0].id, 'dialog'));
       }
     }
   }, [isCreateChat]);

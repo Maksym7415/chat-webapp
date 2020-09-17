@@ -59,8 +59,6 @@ export default makeStyles((theme) => ({
   reactSearch: {
     width: '100%',
     maxHeight: '200px',
-    // position: 'absolute',
-    // top: '40px',
     padding: theme.spacing(4),
     outline: 'none',
     overflow: 'auto',
@@ -92,5 +90,9 @@ export default makeStyles((theme) => ({
   },
   popover: {
     padding: theme.spacing(2),
+  },
+  createChatButton: {
+    margin: '20px 0 0 auto',
+
   },
 }));

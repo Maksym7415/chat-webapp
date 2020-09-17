@@ -186,9 +186,7 @@ export default function NewChatScreen() {
               <DialogTitle id="alert-dialog-title">Фото</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-
                     <img src={image}/>
-
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -202,10 +200,8 @@ export default function NewChatScreen() {
             </Dialog>
           </Grid>
           <Grid item xs={12} className={classes.newChatAddContactWraper}>
-          {/* <div style={{ width: '100%' }}> */}
             {!!groupMembers.length && <div className={classes.chipWrapper}>
-              {!!groupMembers.length
-                && <Paper component="ul" className={classes.chipRoot}>
+                <Paper component="ul" className={classes.chipRoot}>
                   {groupMembers.map((data: SearchObjectInteface) => (
                     <li key={data.id} >
                       <Chip
@@ -219,7 +215,6 @@ export default function NewChatScreen() {
                     </li>
                   ))}
                 </Paper>
-              }
               <Popover
                 id={'popover'}
                 open={Boolean(anchorEl)}
@@ -286,6 +281,9 @@ export default function NewChatScreen() {
             </div>
           </Grid>
           {/* </div> */}
+            <Button autoFocus className={classes.createChatButton} variant='outlined' onClick={createChat}>
+              Создать чат
+            </Button>
         </Grid>
 
   );

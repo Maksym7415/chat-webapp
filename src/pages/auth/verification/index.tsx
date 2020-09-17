@@ -10,10 +10,15 @@ import { RootState } from '../../../redux/reducer';
 export default function ({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
   const response = useSelector(({ authReducer }: RootState) => authReducer.verification);
+  const isRedirectToSignIn = useSelector(({ authReducer }: RootState) => authReducer.login.success.status);
 
   const submit = (value: any): void => {
     dispatch(actionCheckVerificationCode({ ...value, login: history.location.state.login }));
   };
+
+  useEffect(() => {
+    if (!isRedirectToSignIn) history.push('/signIn');
+  }, []);
 
   useEffect(() => {
     if (response.success.accessToken && !response.error) {

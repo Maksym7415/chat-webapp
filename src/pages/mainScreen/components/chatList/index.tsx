@@ -100,7 +100,7 @@ export default ({ data, usersTyping }: ChatListProps) => {
             <div className='chat__title-container'>
               <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
               <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
-              <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate))}</Typography>
+              <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
             </div>
               <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
                 ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId

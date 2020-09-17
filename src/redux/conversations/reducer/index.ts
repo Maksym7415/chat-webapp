@@ -33,6 +33,7 @@ const initialState: ConversationReducerStateInterface = {
   },
   conversationId: {
     id: 0,
+    type: '',
   },
   conversationTypeState: {
     0: {
@@ -97,9 +98,7 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
     case types.CONVERSATION_ID: {
       return {
         ...state,
-        conversationId: {
-          id: action.payload,
-        },
+        conversationId: action.payload,
       };
     }
     case types.CONVERSATION_TYPE_STATE: {

@@ -45,6 +45,7 @@ export interface ConversationReducerStateInterface {
   }
   conversationId: {
     id: number
+    type: string
   }
   conversationTypeState: {
     [key: number]: ConverstaionTypeStateForReducer
@@ -195,7 +196,10 @@ interface CurrentChat {
 
 export interface ConversationIdAction {
   type: typeof types.CONVERSATION_ID
-  payload: number
+  payload: {
+    id: number,
+    type: string
+  }
 }
 
 // CREATE NEW CONVERSATION

@@ -69,11 +69,11 @@ export default function Message({
           className={clsx(fkSenderId === userId ? classes.paperSenderMessage
             : classes.paperFriendMessage, Files && Files.length ? classes.fullWidth : null)}
         >
-          <p className='conversations__message-text'>{message}</p>
           <div className='conversations__user-name-date-container relative'>
             {userId !== User.id ? <p className='conversations__message-info-text'>{User.tagName}</p> : <div className='conversations__message-info-text' style={{ height: '2px' }}></div>}
             <p className='conversations__message-info-time'>{getCurrentDay(new Date(sendDate), true)}</p>
           </div>
+          <p className='conversations__message-text'>{message}</p>
         </Paper>}
       </div>
     </div>

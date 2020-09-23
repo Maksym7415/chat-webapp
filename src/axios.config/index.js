@@ -59,7 +59,7 @@ const LocalStorageService = (() => {
 
 const setAxios = () => {
   const setDeafults = (() => {
-    axios.defaults.baseURL = 'http://localhost:8081/api';
+    axios.defaults.baseURL = 'https://stun-server.hopto.org/chat/api';
     // host for remote connection
     // axios.defaults.baseURL = 'http://10.4.30.172:8081/api';
     axios.defaults.headers.common['Content-Type'] = 'application/json';

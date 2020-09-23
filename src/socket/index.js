@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-export default io('http://localhost:8081');
+export default io('https://stun-server.hopto.org/chat');
 
 // socket for remote connection
 

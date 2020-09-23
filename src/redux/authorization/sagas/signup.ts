@@ -10,7 +10,7 @@ export function* signUpWatcher() {
 
 function* signUpWorker({ params }: SignUpAction) {
   try {
-    const { data } = yield call(axios.post, 'http://localhost:8081/api/signUp', { ...params });
+    const { data } = yield call(axios.post, '/signUp', { ...params });
     yield call(axios.post, 'http://localhost:8081/api/signIn', { login: params.login });
     yield put(requestSuccess(data, 'signUp'));
     yield put(actionLogin({ login: params.login }));

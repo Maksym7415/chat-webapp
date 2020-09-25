@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Input, InputAdornment, IconButton, Typography,
 } from '@material-ui/core';
+import { History } from 'history';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,8 +19,8 @@ import { Messages } from '../../../../../redux/conversations/constants/interface
 import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
 
 export default function MessageInput({
-  conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog,
-}: MessageInputProps) {
+  conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,
+}: MessageInputProps<History>) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [message, setMessage] = useState<MessageValue>({ 0: '' });

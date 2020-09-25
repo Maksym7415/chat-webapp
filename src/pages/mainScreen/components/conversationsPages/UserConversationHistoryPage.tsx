@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { History } from 'history';
 import {
   Grid, Paper,
 } from '@material-ui/core';
@@ -30,9 +31,13 @@ interface ParamsId{
   id: string
 }
 
+interface Props<H>{
+  history: H
+}
+
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
-export default function UserConversationHistoryPage() {
+export default function UserConversationHistoryPage({ history }: Props<History>) {
   const dispatch = useDispatch();
   const conversationId = +useParams<ParamsId>().id;
   const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
@@ -51,7 +56,7 @@ export default function UserConversationHistoryPage() {
   const [isInputState, setIsInputState] = useState<boolean>(false);
   const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
-  console.log(conversationId);
+  console.log(opponentId);
   const ref = useRef(null);
   let newArr: any = [];
 
@@ -132,12 +137,13 @@ export default function UserConversationHistoryPage() {
     if (!allMessages[conversationId] && conversationId) {
       dispatch(conversationUserHistoryActionRequest(conversationId, 0));
     }
-    return () => {
-      if (!conversationId) {
-        dispatch(createNewChatAction({ userId: 0, opponentId: 0 }));
-      }
-    };
   }, [conversationId]);
+
+  // useEffect(() => () => {
+  //     if (!isNaN(conversationId)) {
+  //       dispatch(createNewChatAction({ userId: 0, opponentId: 0 }));
+  //     }
+  //   }, []);
 
   useEffect(() => {
     scrollTop(ref);
@@ -195,8 +201,9 @@ export default function UserConversationHistoryPage() {
           overflowY: 'scroll',
         }}
       >
+        {console.log(isNaN(conversationId), opponentId)}
         <>
-          {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+          {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
               fkSenderId, message, id, sendDate, User, Files, component,
             }, index: number, arr) => {
@@ -244,6 +251,7 @@ export default function UserConversationHistoryPage() {
           firstName={firstName}
           opponentId={opponentId}
           openFileDialog={openFileDialog}
+          history={history}
         />
       )}
       {!isInputState && <input

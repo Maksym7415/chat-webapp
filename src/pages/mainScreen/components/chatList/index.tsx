@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
+import { useParams } from 'react-router-dom';
 import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,9 +16,14 @@ import DefaultAvatar from '../../../../components/defaultAvatar';
 
 import useStyles from '../../styles/styles';
 
+interface ParamsId{
+  id: string
+}
+
 export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const params = useParams<ParamsId>();
 
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
@@ -96,7 +102,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
         <div
           onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
-          className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`}
+          className={`flex chat__chats-item ${element.conversationId === +params.id ? 'chat__active' : ''}`}
           key={element.conversationId}
         >
           {element.conversationAvatar ? <Avatar className={classes.avatar} src={`http://localhost:8081/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}

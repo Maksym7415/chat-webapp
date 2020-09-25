@@ -79,7 +79,7 @@ export interface MessageProps extends Messages {
 }
 
 // MESSAGEINPUT
-export interface MessageInputProps {
+export interface MessageInputProps<H> {
   setAllMessages: Function
   allMessages: CurrentConversationMessages
   conversationId: number
@@ -87,6 +87,7 @@ export interface MessageInputProps {
   firstName: string
   opponentId: number
   openFileDialog: any
+  history: H
 }
 
 export interface DeleteMessageSocketResponse {

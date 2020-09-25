@@ -84,10 +84,10 @@ export default function NewChatScreen() {
     setLocalSearchResult((prevSearchResult) => prevSearchResult.filter((item) => item.id !== newMember.id));
     setGroupMembers((prevMembers) => {
       const {
-        id, isAdmin, firstName, userAvatar, ...otherInfo
+        id, isAdmin, firstName, userAvatar, fullName, ...otherInfo
       } = newMember;
       return [...prevMembers, {
-        isAdmin: false, id, firstName, userAvatar,
+        isAdmin: false, id, firstName, userAvatar, fullName,
       }];
     });
   };

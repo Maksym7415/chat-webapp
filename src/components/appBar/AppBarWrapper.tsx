@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { useState, useRef, useEffect } from 'react';
+import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
@@ -25,8 +27,9 @@ import AppBarMenu from './AppBarMenu';
 import useStyles from './style/AppWrapperStyles';
 import DefaultAvatar from '../defaultAvatar';
 
-interface IProps {
+interface IProps<H> {
   children: Record<string, unknown>
+  history: H
 }
 interface IElements {
   title: string
@@ -36,10 +39,16 @@ interface Ref {
   [x: string]: any;
 }
 
-export default function MiniDrawer(props: IProps) {
+interface ParamsId{
+  id: string
+}
+
+export default function MiniDrawer(props: IProps<History>) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const params = useParams<ParamsId>();
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
+  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const userData = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
 
@@ -73,9 +82,14 @@ export default function MiniDrawer(props: IProps) {
     // setReactSearch(() => top100Films.filter((el) => el.title.slice(0, event.target.value.length).toLowerCase() === event.target.value.toLowerCase()));
   };
 
-  const createNewChat = (id: number) => {
+  const createNewChat = (id: number, fullName: string) => {
     dispatch(createNewChatAction({ userId, opponentId: id }));
     setHide(true);
+    const chat = conversationsList.find((el) => el.conversationName === fullName);
+    if (chat) {
+      return props.history.push(`/chat/${chat.conversationId}`);
+    }
+    props.history.push('/newchat');
   };
 
   useEffect(() => {
@@ -129,7 +143,7 @@ export default function MiniDrawer(props: IProps) {
                 {!!searchResult.length && <Paper tabIndex={1} elevation={3} className={clsx(classes.reactSearch, {
                   [classes.hideReactSearch]: hide,
                 })}>
-                  {searchResult.map((result) => <Paper elevation={2} key={result.id} onClick={() => createNewChat(result.id)}> <Typography className={classes.searchContent} variant="body1" >{result.firstName}</Typography></Paper>)}
+                  {searchResult.map((result) => <Paper elevation={2} key={result.id} onClick={() => createNewChat(result.id, result.fullName)}> <Typography className={classes.searchContent} variant="body1" >{result.firstName}</Typography></Paper>)}
                 </Paper>}
               </div>
             </div>

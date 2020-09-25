@@ -73,19 +73,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   };
 
   useEffect(() => {
-    Notification.requestPermission((permission) => {
-      if (permission === 'granted') console.log('granted');
-    });
-  }, []);
-
-  const notify = (message: Messages, conversationId: number) => {
-    // let notification = new Notification('Новое сообщение', { body: `${message.User.firstName}: ${message.message}` });
-    // notification.onclick = function (event) {
-    //   dispatch(getConversationIdAction(conversationId));
-    // };
-  };
-
-  useEffect(() => {
     dispatch(getUserConversationsActionRequest());
     // dispatch(userInfoActionRequest(1));
   }, []);
@@ -94,7 +81,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     if (conversationsList.length) {
       conversationsList.forEach((chat) => {
         socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-          notify(message, chat.conversationId);
           dispatch(conversationAddNewMessage(message, chat.conversationId));
         });
         socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
@@ -108,6 +94,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
       dispatch(getUserConversationsActionRequest());
       dispatch(getConversationIdAction(conversationId, 'Chat'));
+      history.push(`/chat/${conversationId}`);
       // dispatch(conversationAddNewMessage(message, conversationId));
     });
   }, [conversationsList]);
@@ -149,7 +136,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       >
         <ChatsList data={conversationsList} usersTyping={usersTyping} history={history} />
       </Rnd>
-      <UserConversationHistoryPage />
+      <UserConversationHistoryPage history={history}/>
     </div>
   );
 }

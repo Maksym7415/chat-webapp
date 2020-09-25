@@ -72,4 +72,15 @@ export default [
     ],
     isPrivate: true,
   },
+  {
+    id: 8,
+    Component: MainScreen,
+    path: '/newchat',
+    roles: [
+      'admin',
+      'user',
+      'superadmin',
+    ],
+    isPrivate: true,
+  },
 ];

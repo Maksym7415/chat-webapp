@@ -1,9 +1,6 @@
 import io from 'socket.io-client';
 
-export default io('https://stun-server.hopto.org', {
-  path: '/chat',
-  transports: ['polling', 'websocket'],
-});
+export default io('https://stun-server.hopto.org', { path: '/chat' });
 
 // socket for remote connection
 

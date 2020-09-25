@@ -147,7 +147,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
           topLeft: false,
         }}
       >
-        <ChatsList data={conversationsList} usersTyping={usersTyping} />
+        <ChatsList data={conversationsList} usersTyping={usersTyping} history={history} />
       </Rnd>
       <UserConversationHistoryPage />
     </div>

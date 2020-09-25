@@ -45,10 +45,11 @@ export interface FilesSrc {
 }
 
 // CHAT LIST
-export interface ChatListProps {
+export type ChatListProps<T> = {
   data: Array<ConversationsList>
   usersTyping: Conversation
-}
+  history: T
+};
 
 // UPLOAD DIALOG
 export interface DialogProps {

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FunctionComponent } from 'react';
 import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
+import { History } from 'history';
 import { RootState } from '../../../../redux/reducer/index';
 import { ChatListProps } from '../../interfaces';
 import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
@@ -14,7 +15,7 @@ import DefaultAvatar from '../../../../components/defaultAvatar';
 
 import useStyles from '../../styles/styles';
 
-export default ({ data, usersTyping }: ChatListProps) => {
+export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -41,7 +42,8 @@ export default ({ data, usersTyping }: ChatListProps) => {
 
   const handleClickChatItem = (element: ConversationsList, event: React.MouseEvent<HTMLElement>, id: number) => {
     contextMenuCallback(event, id, [], dispatch);
-    handleChangeChat(element.conversationId, element.conversationType);
+    history.push(`/chat/${id}`);
+    // handleChangeChat(element.conversationId, element.conversationType);
   };
 
   const closeContextMenuAction = () => dispatch(contextMenuAction({
@@ -97,7 +99,6 @@ export default ({ data, usersTyping }: ChatListProps) => {
           className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`}
           key={element.conversationId}
         >
-          {console.log(element.conversationAvatar)}
           {element.conversationAvatar ? <Avatar className={classes.avatar} src={`http://localhost:8081/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
           <div className='flex chat__chats-item-message-container relative'>
             <div className='chat__title-container'>
@@ -108,7 +109,7 @@ export default ({ data, usersTyping }: ChatListProps) => {
               <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
                 ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
                   ? `Вы: ${element.Messages[0].message}`
-                  : element.conversationType === 'Dialog'
+                  : element.conversationType !== 'Dialog'
                     ? null
                     : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
               </Typography>

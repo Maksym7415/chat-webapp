@@ -3,6 +3,7 @@ import React, {
   useEffect, useState, useRef,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import {
   Grid, Paper,
 } from '@material-ui/core';
@@ -25,16 +26,21 @@ import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/
 import './styles/styles.scss';
 import { setMessageDate } from '../../../../common/getCorrectDateFormat';
 
+interface ParamsId{
+  id: string
+}
+
 const getCurrentScrollTop = (element: any) => element.scrollTop;
 
 export default function UserConversationHistoryPage() {
   const dispatch = useDispatch();
+  const conversationId = +useParams<ParamsId>().id;
   const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
   const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
+ // const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
@@ -45,7 +51,7 @@ export default function UserConversationHistoryPage() {
   const [isInputState, setIsInputState] = useState<boolean>(false);
   const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
-
+  console.log(conversationId);
   const ref = useRef(null);
   let newArr: any = [];
 
@@ -190,7 +196,7 @@ export default function UserConversationHistoryPage() {
         }}
       >
         <>
-          {Object.keys(allMessages).length === 1 && !opponentId ? <p>Выберите чат</p> : conversationId === 0 ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+          {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
               fkSenderId, message, id, sendDate, User, Files, component,
             }, index: number, arr) => {

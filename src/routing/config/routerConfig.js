@@ -53,7 +53,7 @@ export default [
   },
   {
     id: 6,
-    Component: UserConversationHistoryPage,
+    Component: MainScreen,
     path: '/chat/:id',
     roles: [
       'admin',

@@ -14,6 +14,7 @@ import {
   getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction,
 } from '../../../redux/user/constants/actions';
 import '../style/style.scss';
+import DefaultAvatar from '../../../components/defaultAvatar';
 
 // interface CurrentInput {
 //   value: string
@@ -110,14 +111,19 @@ function UserProfile() {
       return obj;
     });
   }, [userInfo]);
-
+  // {avatars[index] === undefined ?
+  //   <div className=' carousel__images-container'>
+  //   <DefaultAvatar name={`${userInfo.data.firstName} ${userInfo.data.lastName}`} width='300px' height='300px' fontSize='1.1rem' /> </div> : <div className=' carousel__images-container'>
+  //      {!!avatars.length && <img className='carousel__images-container__images br-5' src={`http://localhost:8081/${avatars[index].fileName}`} ></img>}
+  //    </div>}
   return (
     <div style={{ width: '100%' }}>
        <div style={{ marginBottom: '20px' }}>
         <div className='carousel relative full-w'>
+         {
           <div className=' carousel__images-container'>
-            {!!avatars.length && <img className='carousel__images-container__images br-5' src={`http://localhost:8081/${avatars[index].fileName}`} ></img>}
-          </div>
+            {avatars[index] === undefined ? <DefaultAvatar name={`${userInfo.data.firstName} ${userInfo.data.lastName}`} width='300px' height='300px' fontSize='5.5rem' /> : !!avatars.length && <img className='carousel__images-container__images br-5' src={`http://localhost:8081/${avatars[index].fileName}`} ></img>}
+          </div>}
           <div className='carousel__buttons-container'>
             <div className='carousel__buttons-container__button-wrapper'>
               <IconButton
@@ -159,15 +165,15 @@ function UserProfile() {
               </label>
             </div>
             <div className='carousel__options__upload-container'>
-                <IconButton
+                {avatars[index] && <IconButton
                   color="primary"
                   aria-label="upload picture"
                   component="span"
                   className='carousel__options__upload-container__btn'
                   onClick={setMainPhoto}
                 >
-                  {avatars[index].defaultAvatar === true ? <CheckCircleIcon fontSize='small'/> : <CheckCircleOutlineIcon/>}
-                </IconButton>
+                  {avatars[index]?.defaultAvatar === true ? <CheckCircleIcon fontSize='small'/> : <CheckCircleOutlineIcon/>}
+                </IconButton>}
               {/* <Button className='carousel__options__upload-container__btn' onClick={setMainPhoto} variant="contained" color="primary" component="span" fullWidth>
                 Основное фото
             </Button> */}

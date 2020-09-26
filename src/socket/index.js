@@ -1,7 +1,8 @@
 import io from 'socket.io-client';
+import dotenv from 'dotenv';
 
-export default io('https://stun-server.hopto.org', { path: '/socket', transports: ['websocket', 'polling'] });
+dotenv.config();
 
-// socket for remote connection
+const soketUrl = process.env.NODE_ENV === 'production' ? process.env.SOCKET_URL_PROD : process.env.SOCKET_URL_DEV;
 
-// export default io('http://10.4.30.172:8081');
+export default io(soketUrl, { path: '/socket', transports: ['websocket', 'polling'] });

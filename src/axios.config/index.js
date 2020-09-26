@@ -7,11 +7,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import axios from 'axios';
-import dotenv from 'dotenv';
 import store from '../redux';
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
-
-dotenv.config();
 
 const baseURL = process.env.NODE_ENV === 'production' ? process.env.BASE_URL_PROD : process.env.BASE_URL_DEV;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paper, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +19,7 @@ export default function Message({
   const classes = useStyles();
   const dispatch = useDispatch();
   const activeConversationType = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.type);
+  const [baseURL] = useState<string>(process.env.NODE_ENV === 'production' ? 'https://stun-server.hopto.org' : 'http://localhost:8081');
 
   const handleEditMessage = () => {
     dispatch(editMessageAction(true, id));
@@ -46,7 +47,7 @@ export default function Message({
 
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
-      {isShowAvatar && (User.userAvatar ? <Avatar className={classes.messageAvatar} src={`http://localhost:8081/${User.userAvatar}`} /> : <DefaultAvatar name={`${User.firstName} ${User.lastName}`} width='30px' height='30px' fontSize='0.7rem' />)}
+      {isShowAvatar && (User.userAvatar ? <Avatar className={classes.messageAvatar} src={`${baseURL}/${User.userAvatar}`} /> : <DefaultAvatar name={`${User.firstName} ${User.lastName}`} width='30px' height='30px' fontSize='0.7rem' />)}
       <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(fkSenderId === userId, handleDeleteMessage, handleEditMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
           <div className='conversations__message-image-container'>
@@ -55,7 +56,7 @@ export default function Message({
                 ? <img
                   key={file.fileStorageName}
                   className='conversations__message-image-item'
-                  src={`http://localhost:8081/${file.fileStorageName}.${file.extension}`}
+                  src={`${baseURL}/${file.fileStorageName}.${file.extension}`}
                   alt={file.fileStorageName}
                 />
                 : <Paper

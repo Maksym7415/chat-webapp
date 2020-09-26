@@ -10,7 +10,7 @@ import axios from 'axios';
 import store from '../redux';
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
 
-const baseURL = 'https://stun-server.hopto.org/chat';
+const baseURL = process.NODE_ENV === 'production' ? 'https://stun-server.hopto.org/chat' : 'http://localhost:8081';
 
 let isRefreshing = false;
 let failedQueue = [];

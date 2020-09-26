@@ -34,6 +34,7 @@ function UserProfile() {
   const setPhotoMessage = useSelector(({ userReducer }: RootState) => userReducer.setMainPhoto.success.data);
   const [userData, setUserData] = useState<any>({});
   const [index, setIndex] = useState<number>(0);
+  const [baseURL] = useState<string>(process.env.NODE_ENV === 'production' ? 'https://stun-server.hopto.org' : 'http://localhost:8081');
 
   const convertToInputAndToDiv = (id: string, value: string, isInput: boolean) => {
     setUserData((prev: any) => ({ ...prev, [id]: { value, isInput, name: id } }));
@@ -116,7 +117,7 @@ function UserProfile() {
        <div style={{ marginBottom: '20px' }}>
         <div className='carousel relative full-w'>
           <div className=' carousel__images-container'>
-            {!!avatars.length && <img className='carousel__images-container__images br-5' src={`http://localhost:8081/${avatars[index].fileName}`} ></img>}
+            {!!avatars.length && <img className='carousel__images-container__images br-5' src={`${baseURL}/${avatars[index].fileName}`} ></img>}
           </div>
           <div className='carousel__buttons-container'>
             <div className='carousel__buttons-container__button-wrapper'>

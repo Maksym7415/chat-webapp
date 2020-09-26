@@ -166,7 +166,7 @@ function UserProfile() {
                   className='carousel__options__upload-container__btn'
                   onClick={setMainPhoto}
                 >
-                  {avatars[index].defaultAvatar === true ? <CheckCircleIcon fontSize='small'/> : <CheckCircleOutlineIcon/>}
+                  {avatars[index]?.defaultAvatar === true ? <CheckCircleIcon fontSize='small'/> : <CheckCircleOutlineIcon/>}
                 </IconButton>
               {/* <Button className='carousel__options__upload-container__btn' onClick={setMainPhoto} variant="contained" color="primary" component="span" fullWidth>
                 Основное фото

@@ -27,7 +27,7 @@ function Router(props) {
   }, []);
 
   useEffect(() => {
-    dispatch(userInfoActionRequest());
+    if (authToken?.userId) dispatch(userInfoActionRequest());
     setConfig((item) => routerConfig);
   }, [authToken, isLogout]);
 

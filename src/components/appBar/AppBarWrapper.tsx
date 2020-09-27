@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { useState, useRef, useEffect } from 'react';
@@ -46,7 +47,6 @@ export default function MiniDrawer(props: IProps) {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<Element | null>(null);
-  const [reactSearch, setReactSearch] = useState<IElements[]>([]);
   const [value, setValue] = useState<string>('');
   const [hide, setHide] = useState<boolean>(true);
   const ref = useRef<Ref>({});
@@ -149,7 +149,7 @@ export default function MiniDrawer(props: IProps) {
                 color="inherit"
 
               >
-                {userData.userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userData.userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
+                {userData.userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userData.userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>

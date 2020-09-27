@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
@@ -97,8 +98,7 @@ export default ({ data, usersTyping }: ChatListProps) => {
           className={`flex chat__chats-item ${element.conversationId === activeConversationId ? 'chat__active' : ''}`}
           key={element.conversationId}
         >
-          {console.log(element.conversationAvatar)}
-          {element.conversationAvatar ? <Avatar className={classes.avatar} src={`http://localhost:8081/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
+          {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
           <div className='flex chat__chats-item-message-container relative'>
             <div className='chat__title-container'>
               <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>

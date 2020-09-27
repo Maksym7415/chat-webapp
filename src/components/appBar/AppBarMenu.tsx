@@ -58,13 +58,12 @@ export default function ({
           </IconButton>
           <p>Notifications</p>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleProfileOpen}>
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
-            onClick={handleProfileOpen}
           >
            {userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>

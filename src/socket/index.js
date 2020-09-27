@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 
-const socketUrl = 'https://stun-server.hopto.org';
+const socketUrl = 'http://localhost:5050';
 
 // const socketUrl = process.NODE_ENV === 'production' ? process.env.SOCKET_URL_PROD : process.env.SOCKET_URL_DEV;
 
-export default io(socketUrl, { path: '/socket', transports: ['websocket', 'polling'] });
+export default io(process.env.REACT_APP_SOCKET_URL, { path: '/socket', transports: ['websocket', 'polling'] });

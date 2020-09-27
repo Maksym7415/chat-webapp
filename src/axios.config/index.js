@@ -10,8 +10,6 @@ import axios from 'axios';
 import store from '../redux';
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
 
-const baseURL = 'https://stun-server.hopto.org/chat';
-
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -61,7 +59,7 @@ const LocalStorageService = (() => {
 
 const setAxios = () => {
   const setDeafults = (() => {
-    axios.defaults.baseURL = `${baseURL}/api`;
+    axios.defaults.baseURL = `${process.env.REACT_APP_BASE_URL}/api`;
     axios.defaults.headers.common['Content-Type'] = 'application/json';
     axios.defaults.headers.common.accept = 'application/json';
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

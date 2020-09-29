@@ -10,14 +10,15 @@ import { RootState } from '../../../redux/reducer';
 export default function ({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
   const response = useSelector(({ authReducer }: RootState) => authReducer.verification);
-  const isRedirectToSignIn = useSelector(({ authReducer }: RootState) => authReducer.login.success.status);
+  const isRedirectToSignIn = useSelector(({ authReducer }: RootState) => authReducer.login.success?.status);
+  const isSignUp = useSelector(({ authReducer }: RootState) => authReducer.signUp.success?.email); // this provided to prevent redirect in case we signing up, making automatically login and redirecting user straight to verification page
 
   const submit = (value: any): void => {
     dispatch(actionCheckVerificationCode({ ...value, login: history.location.state.login }));
   };
 
   useEffect(() => {
-    if (!isRedirectToSignIn) history.push('/signIn');
+    if (!isRedirectToSignIn && !isSignUp) history.push('/signIn');
   }, []);
 
   useEffect(() => {

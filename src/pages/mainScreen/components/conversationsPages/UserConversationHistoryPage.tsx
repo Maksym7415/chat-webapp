@@ -56,7 +56,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const [isInputState, setIsInputState] = useState<boolean>(false);
   const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
-  console.log(opponentId);
   const ref = useRef(null);
   let newArr: any = [];
 
@@ -201,7 +200,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
           overflowY: 'scroll',
         }}
       >
-        {console.log(isNaN(conversationId), opponentId)}
         <>
           {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({

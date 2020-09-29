@@ -16,7 +16,7 @@ import DefaultAvatar from '../../../../components/defaultAvatar';
 
 import useStyles from '../../styles/styles';
 
-interface ParamsId{
+interface ParamsId {
   id: string
 }
 
@@ -29,11 +29,6 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
-  const activeConversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
-  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
-  const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
-
-  const handleChangeChat = (id: number, type: string) => dispatch(getConversationIdAction(id, type));
 
   useEffect(() => {
     setConversations(data);
@@ -105,7 +100,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
           className={`flex chat__chats-item ${element.conversationId === +params.id ? 'chat__active' : ''}`}
           key={element.conversationId}
         >
-          {element.conversationAvatar ? <Avatar className={classes.avatar} src={`http://localhost:8081/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
+          {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
           <div className='flex chat__chats-item-message-container relative'>
             <div className='chat__title-container'>
               <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>

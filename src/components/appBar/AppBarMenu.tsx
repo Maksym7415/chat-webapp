@@ -1,13 +1,12 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
-import { actionLogout } from '../../redux/authorization/constants/actionConstants';
 import DefaultAvatar from '../defaultAvatar';
 import { UserInfoSuccess } from '../../redux/user/constants/interfaces';
 
@@ -24,9 +23,7 @@ interface IAppBarMenuProps {
 export default function ({
   anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, userData, openProfile,
 }: IAppBarMenuProps) {
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const dispatch = useDispatch();
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -61,15 +58,14 @@ export default function ({
           </IconButton>
           <p>Notifications</p>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleProfileOpen}>
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
             aria-haspopup="true"
             color="inherit"
-            onClick={handleProfileOpen}
           >
-           {userAvatar ? <Avatar alt="" src={`http://localhost:8081/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
+           {userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>
           <p>Profile</p>
         </MenuItem>

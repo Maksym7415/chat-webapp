@@ -92,7 +92,8 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
-      dispatch(getUserConversationsActionRequest());
+      console.log(message, conversationId);
+      // dispatch(getUserConversationsActionRequest());
       dispatch(getConversationIdAction(conversationId, 'Chat'));
       history.push(`/chat/${conversationId}`);
       // dispatch(conversationAddNewMessage(message, conversationId));

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useState, useEffect, useRef } from 'react';
@@ -6,7 +7,6 @@ import clsx from 'clsx';
 import {
   Button, Dialog, DialogContentText, Typography, Slide, Input, FormControl, InputAdornment, Paper, Chip, TextField, Grid, Popover, FormControlLabel, Checkbox, Avatar, DialogActions, DialogContent, DialogTitle,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { hideDialogAction } from '../../redux/common/commonActions';
@@ -188,7 +188,7 @@ export default function NewChatScreen() {
                     <li key={data.id} >
                       <Chip
                         style={{ cursor: 'pointer' }}
-                        avatar={<Avatar alt="" src={`http://localhost:8081/${data.userAvatar}`} />}
+                        avatar={<Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${data.userAvatar}`} />}
                         label={data.firstName}
                         onDelete={handleDelete(data)}
                         onClick={(event) => chipHandler(event, data.id)}

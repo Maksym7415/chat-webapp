@@ -3,7 +3,6 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import { AUTH_LOGIN } from '../constants/types';
-import { LoginAction } from '../constants/interfaces';
 import { requestSuccess, requestFail } from '../constants/actionConstants';
 
 export function* loginWatcher() {

@@ -17,7 +17,7 @@ const backgroundColors = ['#42d1f5', '#43de7b', '#d9e31b', '#5786ff'];
 export default function DefaultAvatar({
   name, width, height, fontSize,
 }: Props) {
-  const letters: Array<string> = name.split(' ');
+  const letters: Array<string> = (name && name.split(' ')) || ['Chat'];
 
   return (
         <div

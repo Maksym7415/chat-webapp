@@ -59,7 +59,7 @@ function subscribeUserToPush(registration) {
 
 function sendSubscriptionToBackEnd(subscription) {
   const { userId } = jwtDecode(getAccessToken());
-  return fetch(`http://localhost:8081/api/save-subscription/${userId}`, {
+  return fetch(`${process.env.REACT_APP_BASE_URL}/api/save-subscription/${userId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

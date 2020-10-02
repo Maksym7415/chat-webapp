@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Rnd } from 'react-rnd';
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
 import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
@@ -21,7 +22,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const [usersTyping, setUsersTyping] = useState<Conversation>({
     0: {
       0: {
@@ -33,7 +33,13 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     },
   });
   const [containerWidth, setContainerWidth] = useState<number>(300);
+  const [isHideChatListPanel, setIsHideChatListPanel] = useState<boolean>(false);
 
+  const handleHideChatList = () => {
+    setIsHideChatListPanel(!isHideChatListPanel);
+    console.log(containerWidth);
+    !isHideChatListPanel && setContainerWidth(80);
+  };
   // const [timer, setTimer] = useState<Timer>({ });
   const currentUserTyping = (user: BackUsers, conversationId: number) => {
     if (!isEmit) {
@@ -112,6 +118,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
           position: 'relative',
           background: '#dcf2ed',
         }}
+        // size={{ width: containerWidth, height: '100%' }}
         minWidth= {80}
         maxWidth='60vw'
         default={{
@@ -121,7 +128,8 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
           height: '100%',
         }}
         onResize={(e, direction, ref, delta, position) => {
-          ref.offsetWidth < 200 && setContainerWidth(80);
+          // ref.offsetWidth < 200 && setContainerWidth(80);
+          setIsHideChatListPanel(false);
         }}
         disableDragging
         enableResizing={{
@@ -135,6 +143,9 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
           topLeft: false,
         }}
       >
+        <div className='chat__container__hide-chat-list-button'>
+          <UnfoldMoreIcon onClick={handleHideChatList} />
+        </div>
         <ChatsList data={conversationsList} usersTyping={usersTyping} history={history} />
       </Rnd>
       <UserConversationHistoryPage history={history}/>

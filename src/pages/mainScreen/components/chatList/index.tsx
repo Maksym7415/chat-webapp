@@ -7,7 +7,6 @@ import { History } from 'history';
 import { RootState } from '../../../../redux/reducer/index';
 import { ChatListProps } from '../../interfaces';
 import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
-import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
 import contextMenuCallback from '../../../../components/contextMenu/eventCallback';
 import { contextMenuAction, showDialogAction } from '../../../../redux/common/commonActions';

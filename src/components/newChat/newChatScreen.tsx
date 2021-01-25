@@ -108,7 +108,7 @@ export default function NewChatScreen() {
   const createChat = () => {
     if (!groupMembers.length || !chatName) return;
     const fileExtension = imageData.name.split('.');
-    socket.emit('chatCreation', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, imageData, fileExtension[fileExtension.length - 1], (success: boolean) => {
+    socket.emit('roomConnect', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, imageData, fileExtension[fileExtension.length - 1], (success: boolean) => {
       if (success) dispatch(hideDialogAction());
     });
   };

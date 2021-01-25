@@ -74,36 +74,36 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
-    // dispatch(userInfoActionRequest(1));
+  }, []);
+
+  // useEffect(() => {
+  //   if (conversationsList.length) {
+  //     conversationsList.forEach((chat) => {
+  //       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
+  //         dispatch(conversationAddNewMessage(message, chat.conversationId));
+  //       });
+  //       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
+  //         timer(conversation, chat.conversationId);
+  //       });
+  //     });
+  //   }
+  // }, [conversationsList, typing]);
+
+  useEffect(() => {
+    // socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
+    //   // dispatch(getUserConversationsActionRequest());
+    //   dispatch(getConversationIdAction(conversationId, 'Chat'));
+    //   history.push(`/chat/${conversationId}`);
+    //   // dispatch(conversationAddNewMessage(message, conversationId));
+    // });
   }, []);
 
   useEffect(() => {
-    if (conversationsList.length) {
-      conversationsList.forEach((chat) => {
-        socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-          dispatch(conversationAddNewMessage(message, chat.conversationId));
-        });
-        socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
-          timer(conversation, chat.conversationId);
-        });
-      });
-    }
-  }, [conversationsList, typing]);
-
-  useEffect(() => {
-    socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
-      console.log(message, conversationId);
-      // dispatch(getUserConversationsActionRequest());
-      dispatch(getConversationIdAction(conversationId, 'Chat'));
-      history.push(`/chat/${conversationId}`);
-      // dispatch(conversationAddNewMessage(message, conversationId));
+    socket.emit('handshake', userId);
+    socket.on('message', (message: Messages, conversationId: number) => {
+      dispatch(conversationAddNewMessage(message, conversationId));
     });
-  }, [conversationsList]);
-
-  useEffect(() => () => {
-    // if (history.location.pathname === '/') return;
-    socket.removeAllListeners();
-  }, [conversationsList]);
+  }, []);
 
   return (
     <div className='chat__container flex'>

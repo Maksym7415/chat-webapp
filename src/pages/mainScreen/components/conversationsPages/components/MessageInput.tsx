@@ -44,7 +44,7 @@ export default function MessageInput({
     }
   };
 
-  const socketSendMessageCommonFun = (id: undefined | number) => socket.emit('chats', ({
+  const socketSendMessageCommonFun = (id: undefined | number) => socket.emit('message', ({
     conversationId: id,
     message: {
       message: message[conversationId], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',

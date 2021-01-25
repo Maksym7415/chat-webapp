@@ -45,6 +45,8 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
+  const editedMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.editedMessage);
+  const deletedMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.deleteMessageId.id);
  // const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
@@ -57,7 +59,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
   const ref = useRef(null);
-  let newArr: any = [];
 
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
@@ -147,6 +148,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   useEffect(() => {
     scrollTop(ref);
     let currentDay = 0;
+    let newArr: any = [];
     messageHistory.map((el: Messages) => {
       if (new Date(el.sendDate).getDate() !== currentDay) {
         currentDay = new Date(el.sendDate).getDate();
@@ -163,12 +165,29 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
 
   useEffect(() => {
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
-      if (lastMessage[conversationId].isEdit) {
+      if (lastMessage[conversationId].isEditing) {
         return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
       }
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
     }
   }, [lastMessage]);
+
+  useEffect(() => {
+    setAllMessages((messages) => ({
+      ...messages,
+      [conversationId]: messages[conversationId].map((el) => {
+        if (editedMessage && el.id === editedMessage.id) return { ...el, ...editedMessage };
+        return el;
+      }),
+    }));
+  }, [editedMessage]);
+
+  useEffect(() => {
+    setAllMessages((messages) => ({
+      ...messages,
+      [conversationId]: messages[conversationId].filter((el) => deletedMessage && el.id !== deletedMessage),
+    }));
+  }, [deletedMessage]);
 
   useEffect(() => {
     if (opponentId) {
@@ -178,6 +197,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       }
     }
   }, [isCreateChat]);
+  console.log(lastMessage);
 
   return (
     <div

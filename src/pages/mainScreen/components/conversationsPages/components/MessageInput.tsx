@@ -13,7 +13,7 @@ import { fullDate } from '../../../../../common/getCorrectDateFormat';
 import { RootState } from '../../../../../redux/reducer';
 import useStyles from '../styles/styles';
 import {
-  MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages,
+  MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages, MessageSocketEmit,
 } from '../../../interfaces';
 import { Messages } from '../../../../../redux/conversations/constants/interfaces';
 import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
@@ -44,35 +44,87 @@ export default function MessageInput({
     }
   };
 
-  const socketSendMessageCommonFun = (id: undefined | number) => socket.emit('message', ({
-    conversationId: id,
-    message: {
-      message: message[conversationId], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
-    },
-    messageId: messageEdit.messageId,
-    userId,
-    opponentId,
-  }), (success: boolean) => {
-    if (success) setMessage({ ...message, [conversationId]: '' });
-  });
+  const socketSendMessageCommonFun = (actionType: string, id?: number) => {
+    console.log('SEND MESSAGE', {
+      conversationId: id,
+      message: {
+        message: message[conversationId], sendDate: fullDate(new Date()), messageType: 'Text',
+      },
+      actionType,
+      userId,
+      messageId: messageEdit.messageId,
+      // opponentId,
+    });
+
+    function emit(emitData: MessageSocketEmit) {
+      socket.emit('message', (emitData), (success: boolean, actionType: string) => {
+        console.log(success);
+        if (success && actionType === 'new') setMessage({ ...message, [conversationId]: '' });
+        if (success && actionType === 'edit') {
+          dispatch(editMessageAction(false, null));
+          setMessage({ ...message, [conversationId]: '' });
+        }
+      });
+    }
+
+    const emitData: MessageSocketEmit = {
+      conversationId: id,
+      actionType,
+      userId,
+    };
+    switch (actionType) {
+      case 'new': {
+        return emit({
+          ...emitData,
+          actionType,
+          message: {
+            message: message[conversationId], sendDate: fullDate(new Date()), messageType: 'Text',
+          },
+        });
+      }
+      case 'edit': {
+        return emit({
+          ...emitData,
+          message: {
+            message: message[conversationId], messageType: 'Text',
+          },
+          messageId: messageEdit.messageId,
+        });
+      }
+      case 'delete': {
+        console.log('conversationId', conversationId);
+        return emit({
+          ...emitData,
+          messageId: messageEdit.messageId,
+        });
+      }
+      default:
+    }
+  };
 
   const handleSendMessage = () => {
     if (!message[conversationId]) return;
     if (!conversationId) {
-      return socketSendMessageCommonFun(undefined);
+      return socketSendMessageCommonFun('new');
     }
-    socketSendMessageCommonFun(conversationId);
-    if (messageEdit.isEdit) dispatch(editMessageAction(false, null));
+    if (messageEdit.isEdit) return socketSendMessageCommonFun('edit', conversationId); // dispatch(editMessageAction(false, null));
+    socketSendMessageCommonFun('new', conversationId);
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      handleClearEditMessage();
+    }
     if (event.key === 'Enter') {
       if (!message[conversationId]) return;
       if (!conversationId) {
-        return socketSendMessageCommonFun(undefined);
+        return socketSendMessageCommonFun('new');
       }
-      socketSendMessageCommonFun(conversationId);
-      dispatch(editMessageAction(false, null));
+      if (messageEdit.isEdit) {
+        dispatch(editMessageAction(false, null));
+        return socketSendMessageCommonFun('edit', conversationId);
+      }
+      socketSendMessageCommonFun('new', conversationId);
     }
   };
 
@@ -82,12 +134,6 @@ export default function MessageInput({
     setEditedMessage('');
   };
 
-  const escFunction = (event: KeyboardEvent) => {
-    if (event.keyCode === 27) {
-      handleClearEditMessage();
-    }
-  };
-
   useEffect(() => {
     if (messageEdit.isEdit) {
       const resultMessage = allMessages[conversationId].find((message) => message.id === messageEdit.messageId);
@@ -95,33 +141,20 @@ export default function MessageInput({
       setMessage(() => ({ ...message, [conversationId]: resultMessage ? resultMessage.message : '' }));
     }
     if (messageEdit.isDelete) {
-      socket.emit('chats', ({
-        conversationId,
-        isDeleteMessage: true,
-        messageId: messageEdit.messageId,
-      }), (success: boolean) => {
-        if (success) console.log('deleted');
-      });
+      socketSendMessageCommonFun('delete', conversationId);
       dispatch(deleteMessageAction(false, null));
     }
   }, [messageEdit]);
 
-  useEffect(() => {
-    socket.on('deleteMessage', ({ conversationId, messageId }: DeleteMessageSocketResponse) => {
-      setAllMessages((messages: CurrentConversationMessages) => ({ ...messages, [conversationId]: messages[conversationId].filter((message: Messages) => (message.id !== messageId)) }));
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on('deleteMessage', ({ conversationId, messageId }: DeleteMessageSocketResponse) => {
+  //     setAllMessages((messages: CurrentConversationMessages) => ({ ...messages, [conversationId]: messages[conversationId].filter((message: Messages) => (message.id !== messageId)) }));
+  //   });
+  // }, []);
 
   useEffect(() => {
     handleClearEditMessage();
   }, [conversationId]);
-
-  useEffect(() => {
-    document.addEventListener('keydown', escFunction);
-    return () => {
-      document.removeEventListener('keydown', escFunction);
-    };
-  }, []);
 
   return (
     <>

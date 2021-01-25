@@ -28,6 +28,10 @@ const initialState: ConversationReducerStateInterface = {
     id: 0,
   },
   lastMessages: {},
+  editedMessage: null,
+  deleteMessageId: {
+    id: null,
+  },
   currentConversationIdObject: {
     currentConversationId: 0,
   },
@@ -93,6 +97,18 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         currentConversationIdObject: {
           currentConversationId: action.id,
         },
+      };
+    }
+    case types.CONVERSATIONS_EDIT_MESSAGE: {
+      return {
+        ...state,
+        editedMessage: action.message,
+      };
+    }
+    case types.CONVERSATIONS_DELETE_MESSAGE: {
+      return {
+        ...state,
+        deleteMessageId: { id: action.id },
       };
     }
     case types.CONVERSATION_ID: {

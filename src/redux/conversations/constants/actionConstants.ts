@@ -32,6 +32,16 @@ export const conversationAddNewMessage = (message: interfaces.Messages, id: numb
   id,
 });
 
+export const conversationEditMessage = (message: interfaces.Messages): interfaces.ConversationEditMessageAction => ({
+  type: types.CONVERSATIONS_EDIT_MESSAGE,
+  message,
+});
+
+export const conversationDeleteMessage = (id: number): interfaces.ConversationDeleteMessage => ({
+  type: types.CONVERSATIONS_DELETE_MESSAGE,
+  id,
+});
+
 export const getUserConversationsActionRequest = (): interfaces.UserConversationsListActionRequest => ({ type: types.CONVERSATIONS_USER_CONVERSATIONS });
 
 export const getConversationIdAction = (id: number, type: string): interfaces.ConversationIdAction => ({

@@ -40,6 +40,10 @@ export interface ConversationReducerStateInterface {
   conversations: Conversations
   currentChat: CurrentChat
   lastMessages: LastMessagesStateKey
+  editedMessage: Messages | null
+  deleteMessageId: {
+    id: number | null
+  }
   currentConversationIdObject: {
     currentConversationId: number
   }
@@ -60,7 +64,7 @@ export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray |
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface | ConversationEditMessageAction | ConversationDeleteMessage;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
@@ -96,7 +100,7 @@ export interface Messages {
   sendDate: string
   messageType?: string
   Files: Array<FileData>
-  isEdit?: boolean
+  isEditing?: boolean
   component: object
 }
 
@@ -189,8 +193,19 @@ export interface ConversationAddNewMessageAction {
   id: number
 }
 
-// CURRENT CHAT
+// EDITED MESSAGE
+export interface ConversationEditMessageAction {
+  type: typeof types.CONVERSATIONS_EDIT_MESSAGE
+  message: Messages
+}
 
+// DELETE MESSAGE
+export interface ConversationDeleteMessage {
+  type: typeof types.CONVERSATIONS_DELETE_MESSAGE
+  id: number
+}
+
+// CURRENT CHAT
 interface CurrentChat {
   id: number
 }

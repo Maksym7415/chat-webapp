@@ -5,11 +5,13 @@ import { RouteComponentProps } from 'react-router';
 import { Rnd } from 'react-rnd';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
-import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
+import {
+  getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction, conversationEditMessage, conversationDeleteMessage,
+} from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
-import { Messages, Users } from '../../redux/conversations/constants/interfaces';
+import { MessageSocketOn, Conversation, BackUsers } from './interfaces';
 import socket from '../../socket';
-import { Conversation, BackUsers } from './interfaces';
+
 import './styles/index.scss';
 
 let isEmit = false;
@@ -33,6 +35,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     },
   });
   const [containerWidth, setContainerWidth] = useState<number>(300);
+  // const []
 
   // const [timer, setTimer] = useState<Timer>({ });
   const currentUserTyping = (user: BackUsers, conversationId: number) => {
@@ -74,34 +77,14 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
-  }, []);
-
-  // useEffect(() => {
-  //   if (conversationsList.length) {
-  //     conversationsList.forEach((chat) => {
-  //       socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-  //         dispatch(conversationAddNewMessage(message, chat.conversationId));
-  //       });
-  //       socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
-  //         timer(conversation, chat.conversationId);
-  //       });
-  //     });
-  //   }
-  // }, [conversationsList, typing]);
-
-  useEffect(() => {
-    // socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
-    //   // dispatch(getUserConversationsActionRequest());
-    //   dispatch(getConversationIdAction(conversationId, 'Chat'));
-    //   history.push(`/chat/${conversationId}`);
-    //   // dispatch(conversationAddNewMessage(message, conversationId));
-    // });
-  }, []);
-
-  useEffect(() => {
     socket.emit('handshake', userId);
-    socket.on('message', (message: Messages, conversationId: number) => {
-      dispatch(conversationAddNewMessage(message, conversationId));
+    socket.on('message', ({ message, conversationId, actionType }: MessageSocketOn) => {
+      console.log('SOCKET MESSAGE', { message, conversationId, actionType });
+      if (actionType === 'new') {
+        dispatch(conversationAddNewMessage(message, conversationId));
+      }
+      if (actionType === 'edit') dispatch(conversationEditMessage(message));
+      if (actionType === 'delete') dispatch(conversationDeleteMessage(message.id));
     });
   }, []);
 

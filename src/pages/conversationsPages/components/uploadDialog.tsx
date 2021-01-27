@@ -5,9 +5,9 @@ import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
 } from '@material-ui/core';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { DialogProps, FilesSrc } from '../../../interfaces';
+import { DialogProps, FilesSrc } from '../../mainScreen/interfaces';
 import useStyles from '../styles/styles';
-import { preloaderAction } from '../../../../../redux/common/commonActions';
+import { preloaderAction } from '../../../redux/common/commonActions';
 
 export default function UploadDialog({
   handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage,

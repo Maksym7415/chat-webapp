@@ -1,20 +1,20 @@
 import { Messages, ConversationsList } from '../../redux/conversations/constants/interfaces';
 
 // MAIN
-export interface Conversation {
-  [key: number]: User
-}
+// export interface Conversation {
+//   [key: number]: User
+// }
 
-export interface User {
-  [key: number]: BackUsers
-}
+// export interface User {
+//   [key: number]: BackUsers
+// }
 
-export interface BackUsers {
-  firtsName: string
-  isTyping: boolean
-  userId: number
-  conversationId: number
-}
+// export interface BackUsers {
+//   firtsName: string
+//   isTyping: boolean
+//   userId: number
+//   conversationId: number
+// }
 
 export interface MessageSocketOn {
   message: Messages
@@ -61,13 +61,6 @@ export interface FilesSrc {
     type: string
   }
 }
-
-// CHAT LIST
-export type ChatListProps<T> = {
-  data: Array<ConversationsList>
-  usersTyping: Conversation
-  history: T
-};
 
 // UPLOAD DIALOG
 export interface DialogProps {

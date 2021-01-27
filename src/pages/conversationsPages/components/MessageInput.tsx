@@ -8,15 +8,15 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
-import socket from '../../../../../socket';
-import { fullDate } from '../../../../../common/getCorrectDateFormat';
-import { RootState } from '../../../../../redux/reducer';
+import socket from '../../../socket';
+import { fullDate } from '../../../common/getCorrectDateFormat';
+import { RootState } from '../../../redux/reducer';
 import useStyles from '../styles/styles';
 import {
   MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages, MessageSocketEmit,
-} from '../../../interfaces';
-import { Messages } from '../../../../../redux/conversations/constants/interfaces';
-import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
+} from '../../mainScreen/interfaces';
+import { Messages } from '../../../redux/conversations/constants/interfaces';
+import { editMessageAction, deleteMessageAction } from '../../../redux/common/commonActions';
 
 export default function MessageInput({
   conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,

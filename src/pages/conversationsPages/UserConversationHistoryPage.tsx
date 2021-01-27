@@ -13,19 +13,19 @@ import {
   createNewChatAction,
   getConversationIdAction,
   clearConversationData,
-} from '../../../../redux/conversations/constants/actionConstants';
-import { RootState } from '../../../../redux/reducer';
+} from '../../redux/conversations/constants/actionConstants';
+import { RootState } from '../../redux/reducer';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
 import AddFiles from './components/addFilesComponent';
-import { contextMenuAction } from '../../../../redux/common/commonActions';
+import { contextMenuAction } from '../../redux/common/commonActions';
 import {
   Files, CurrentConversationMessages, ScrollValue, Pagination,
-} from '../../interfaces';
-import { Messages } from '../../../../redux/conversations/constants/interfaces';
-import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
+} from '../mainScreen/interfaces';
+import { Messages } from '../../redux/conversations/constants/interfaces';
+import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../mainScreen/helpers/userHistoryConversations';
 import './styles/styles.scss';
-import { setMessageDate } from '../../../../common/getCorrectDateFormat';
+import { setMessageDate } from '../../common/getCorrectDateFormat';
 
 interface ParamsId{
   id: string
@@ -47,7 +47,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const editedMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.editedMessage);
   const deletedMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.deleteMessageId.id);
- // const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
@@ -139,12 +138,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [conversationId]);
 
-  // useEffect(() => () => {
-  //     if (!isNaN(conversationId)) {
-  //       dispatch(createNewChatAction({ userId: 0, opponentId: 0 }));
-  //     }
-  //   }, []);
-
   useEffect(() => {
     scrollTop(ref);
     let currentDay = 0;
@@ -164,15 +157,21 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   }, [messageHistory]);
 
   useEffect(() => {
+    console.log('lastMessage');
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
-      if (lastMessage[conversationId].isEditing) {
-        return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
-      }
+      // if (lastMessage[conversationId].isEditing) {
+      //   return setAllMessages((messages) => ({
+      //     ...messages,
+      //     [conversationId]: messages[conversationId]
+      //                         .map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)),
+      //     }));
+      // }
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
     }
   }, [lastMessage]);
 
   useEffect(() => {
+    console.log('editMessage');
     setAllMessages((messages) => ({
       ...messages,
       [conversationId]: messages[conversationId].map((el) => {
@@ -183,6 +182,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   }, [editedMessage]);
 
   useEffect(() => {
+    console.log('deleteMessage');
     setAllMessages((messages) => ({
       ...messages,
       [conversationId]: messages[conversationId].filter((el) => deletedMessage && el.id !== deletedMessage),

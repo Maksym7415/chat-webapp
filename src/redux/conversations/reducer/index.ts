@@ -94,9 +94,9 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
           ...state.lastMessages,
           [action.id]: action.message,
         },
-        currentConversationIdObject: {
-          currentConversationId: action.id,
-        },
+        // currentConversationIdObject: {
+        //   currentConversationId: action.id,
+        // },
       };
     }
     case types.CONVERSATIONS_EDIT_MESSAGE: {

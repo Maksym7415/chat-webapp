@@ -2,7 +2,7 @@ import SignInPage from '../../pages/auth/authorization';
 import SignUpPage from '../../pages/auth/registration';
 import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
-import UserConversationHistoryPage from '../../pages/mainScreen/components/conversationsPages/UserConversationHistoryPage';
+import UserConversationHistoryPage from '../../pages/conversationsPages';
 import UserProfile from '../../pages/user/components/userProfile';
 
 export default [
@@ -53,7 +53,7 @@ export default [
   },
   {
     id: 6,
-    Component: MainScreen,
+    Component: UserConversationHistoryPage,
     path: '/chat/:id',
     roles: [
       'admin',

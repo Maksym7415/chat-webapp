@@ -4,15 +4,15 @@ import { Paper, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { FileData } from '../../../../../redux/conversations/constants/interfaces';
-import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
-import { MessageProps } from '../../../interfaces';
+import { FileData } from '../../../redux/conversations/constants/interfaces';
+import { getCurrentDay } from '../../../common/getCorrectDateFormat';
+import { MessageProps } from '../../mainScreen/interfaces';
 import useStyles from '../styles/styles';
-import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
-import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
-import DefaultAvatar from '../../../../../components/defaultAvatar';
+import contextMenuCallback from '../../../components/contextMenu/eventCallback';
+import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../redux/common/commonActions';
+import DefaultAvatar from '../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
-import { RootState } from '../../../../../redux/reducer';
+import { RootState } from '../../../redux/reducer';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,

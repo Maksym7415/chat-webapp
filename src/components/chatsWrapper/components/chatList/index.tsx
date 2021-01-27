@@ -1,41 +1,48 @@
-import React, { useState, useEffect, FunctionComponent } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { History } from 'history';
 import { RootState } from '../../../../redux/reducer/index';
-import { ChatListProps } from '../../interfaces';
+import { Conversation } from './interfaces';
 import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
-import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
-import contextMenuCallback from '../../../../components/contextMenu/eventCallback';
+import contextMenuCallback from '../../../contextMenu/eventCallback';
 import { contextMenuAction, showDialogAction } from '../../../../redux/common/commonActions';
+import { getUserConversationsActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import contextMenuConfig from './contextMenuConfig';
 import DefaultAvatar from '../../../../components/defaultAvatar';
 
-import useStyles from '../../styles/styles';
+import useStyles from './styles/styles';
 
 interface ParamsId {
   id: string
 }
 
-export default ({ data, usersTyping, history }: ChatListProps<History>) => {
+function ChatsList() {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const params = useParams<ParamsId>();
+  const currentConversationId = +useParams<ParamsId>().id;
+  const history = useHistory();
 
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
+  const data = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
-
-  useEffect(() => {
-    setConversations(data);
-  }, [data]);
+  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  const [usersTyping, setUsersTyping] = useState<Conversation>({
+    0: {
+      0: {
+        firtsName: '',
+        isTyping: false,
+        userId: 0,
+        conversationId: 0,
+      },
+    },
+  });
 
   const getString = (element: any) => {
-    const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
+    const arr = Object.values(usersTyping[element.currentConversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
     let str = '';
     arr.forEach((el: any) => str += el.firstName);
     return str;
@@ -76,11 +83,20 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   };
 
   useEffect(() => {
+    console.log('CHAT LIST');
+    dispatch(getUserConversationsActionRequest());
+  }, []);
+
+  useEffect(() => {
+    setConversations(data);
+  }, [data]);
+
+  useEffect(() => {
     setConversations((prevState): Array<ConversationsList> => {
       let conversations: Array<ConversationsList> = [...prevState];
       prevState.forEach((el: ConversationsList, index: number) => {
-        if (el.conversationId === conversationId) {
-          conversations[index].Messages[0] = lastMessage[conversationId];
+        if (el.conversationId === currentConversationId) {
+          conversations[index].Messages[0] = lastMessage[currentConversationId];
         }
       });
       return conversations;
@@ -97,7 +113,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
         <div
           onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
-          className={`flex chat__chats-item ${element.conversationId === +params.id ? 'chat__active' : ''}`}
+          className={`flex chat__chats-item ${element.conversationId === currentConversationId ? 'chat__active' : ''}`}
           key={element.conversationId}
         >
           {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
@@ -119,4 +135,6 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
       ))}
     </div>
   );
-};
+}
+
+export default ChatsList;

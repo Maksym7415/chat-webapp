@@ -14,7 +14,7 @@ import { initializedGlobalSearchAction } from '../../redux/search/constants/acti
 import { RootState } from '../../redux/reducer';
 import { SearchObjectInteface } from '../../redux/search/constants/interfaces';
 import useStyles from './styles/styles';
-import socket from '../../socket';
+import { socket } from '../../socket';
 import { fullDate } from '../../common/getCorrectDateFormat';
 
 interface Ref {

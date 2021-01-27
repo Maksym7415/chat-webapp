@@ -8,7 +8,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
-import socket from '../../../socket';
+import { socket } from '../../../socket';
 import { fullDate } from '../../../common/getCorrectDateFormat';
 import { RootState } from '../../../redux/reducer';
 import useStyles from '../styles/styles';

@@ -19,6 +19,9 @@ interface ParamsId {
   id: string
 }
 
+let isEmit = false;
+let newTimer: any = {};
+
 function ChatsList() {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -47,6 +50,58 @@ function ChatsList() {
     arr.forEach((el: any) => str += el.firstName);
     return str;
   };
+
+  // const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  // const [usersTyping, setUsersTyping] = useState<Conversation>({
+  //   0: {
+  //     0: {
+  //       firtsName: '',
+  //       isTyping: false,
+  //       userId: 0,
+  //       conversationId: 0,
+  //     },
+  //   },
+  // });
+
+  // const []
+
+  // const [timer, setTimer] = useState<Timer>({ });
+  // const currentUserTyping = (user: BackUsers, conversationId: number) => {
+  //   if (!isEmit) {
+  //     isEmit = true;
+  //     setUsersTyping((prev: any) => {
+  //       const conversation = prev[conversationId];
+  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
+  //     });
+  //     newTimer[conversationId] = { ...newTimer[conversationId] };
+  //     newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+  //       const conversation = prev[conversationId];
+  //       isEmit = false;
+  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+  //     }), 3000);
+  //   } else {
+  //     clearTimeout(newTimer[conversationId][user.userId]);
+  //     setUsersTyping((prev: any) => {
+  //       const conversation = prev[conversationId];
+  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
+  //     });
+  //     newTimer[conversationId] = { ...newTimer[conversationId] };
+  //     newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+  //       const conversation = prev[conversationId];
+  //       isEmit = false;
+  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+  //     }), 3000);
+  //   }
+  // };
+
+  // const timer = (user: BackUsers, conversationId: number) => {
+  //   if (conversationId in newTimer) {
+  //     currentUserTyping(user, conversationId);
+  //   } else {
+  //     isEmit = false;
+  //     currentUserTyping(user, conversationId);
+  //   }
+  // };
 
   const handleClickChatItem = (element: ConversationsList, event: React.MouseEvent<HTMLElement>, id: number) => {
     contextMenuCallback(event, id, [], dispatch);
@@ -104,36 +159,36 @@ function ChatsList() {
   }, [lastMessage]);
 
   return (
-    <div
-      onClick={handleCloseContextMenu}
-      onContextMenu={handleCloseContextMenu}
-      className='chat__chat-list-container'
-    >
-      {conversations.map((element) => (
-        <div
-          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
-          onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
-          className={`flex chat__chats-item ${element.conversationId === currentConversationId ? 'chat__active' : ''}`}
-          key={element.conversationId}
-        >
-          {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
-          <div className='flex chat__chats-item-message-container relative'>
-            <div className='chat__title-container'>
-              <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
-              <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
-              <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
+      <div
+        onClick={handleCloseContextMenu}
+        onContextMenu={handleCloseContextMenu}
+        className='chat__chat-list-container'
+      >
+        {conversations.map((element) => (
+          <div
+            onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
+            onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
+            className={`flex chat__chats-item ${element.conversationId === currentConversationId ? 'chat__active' : ''}`}
+            key={element.conversationId}
+          >
+            {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
+            <div className='flex chat__chats-item-message-container relative'>
+              <div className='chat__title-container'>
+                <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
+                <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
+                <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
+              </div>
+                <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
+                  ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
+                    ? `Вы: ${element.Messages[0].message}`
+                    : element.conversationType !== 'Dialog'
+                      ? null
+                      : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
+                </Typography>
             </div>
-              <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
-                ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
-                  ? `Вы: ${element.Messages[0].message}`
-                  : element.conversationType !== 'Dialog'
-                    ? null
-                    : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
-              </Typography>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
   );
 }
 

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { fullDate } from '../../../common/getCorrectDateFormat';
-import socket from '../../../socket';
+import { socket } from '../../../socket';
 import { RootState } from '../../../redux/reducer';
 import { handleGetBufferFile } from '../../mainScreen/helpers/addFiles';
 import UploadDialog from './uploadDialog';

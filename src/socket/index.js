@@ -1,3 +1,2 @@
-import io from 'socket.io-client';
-
-export default io(process.env.REACT_APP_SOCKET_URL, { path: '/socket', transports: ['websocket', 'polling'] });
+export { default as socket } from './socketConnection';
+export { default as SocketOnwrapper } from './SocketOnWrapper';

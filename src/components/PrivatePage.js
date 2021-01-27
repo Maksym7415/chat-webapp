@@ -5,7 +5,7 @@ import {
 import AppBarWrapper from './appBar/AppBarWrapper';
 import setConfig from '../routing/config/setConfig';
 
-export default function PrivatePage({
+function PrivatePage({
   Component, roles, isPrivate, token, ...rest
 }) {
   return (
@@ -17,7 +17,7 @@ export default function PrivatePage({
                       if (setConfig(roles, ['superadmin'], false).includes(true)) {
                         return (
                                 <AppBarWrapper {...props}>
-                                  <Component {...props}/>
+                                    <Component {...props}/>
                                 </AppBarWrapper>
                         );
                       }
@@ -30,3 +30,5 @@ export default function PrivatePage({
             />
   );
 }
+
+export default PrivatePage;

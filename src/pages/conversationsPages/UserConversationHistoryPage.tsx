@@ -5,12 +5,9 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { History } from 'history';
-import {
-  Grid, Paper,
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import {
   conversationUserHistoryActionRequest,
-  createNewChatAction,
   getConversationIdAction,
   clearConversationData,
 } from '../../redux/conversations/constants/actionConstants';
@@ -26,6 +23,7 @@ import { Messages } from '../../redux/conversations/constants/interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../mainScreen/helpers/userHistoryConversations';
 import './styles/styles.scss';
 import { setMessageDate } from '../../common/getCorrectDateFormat';
+import ChatsWrapper from '../../components/chatsWrapper';
 
 interface ParamsId{
   id: string
@@ -159,13 +157,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   useEffect(() => {
     console.log('lastMessage');
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
-      // if (lastMessage[conversationId].isEditing) {
-      //   return setAllMessages((messages) => ({
-      //     ...messages,
-      //     [conversationId]: messages[conversationId]
-      //                         .map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)),
-      //     }));
-      // }
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
     }
   }, [lastMessage]);
@@ -200,86 +191,88 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   console.log(lastMessage);
 
   return (
-    <div
-      onDrop={onDrop}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      className='conversations__container'
-      // onScroll={scrollHandler}
-      // id='messages'
-      onClick={handleCloseContextMenu}
-      onContextMenu={handleCloseContextMenu}
-    >
-      <Grid
-        item
-        xs={12}
-        className='pd-left-10'
-        onScroll={scrollHandler}
-        style={{
-          height: messageEdit.isEdit ? 'calc(100% - 100px)' : 'calc(100% - 50px)',
-          overflowY: 'scroll',
-        }}
+    <ChatsWrapper>
+      <div
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        className='conversations__container'
+        // onScroll={scrollHandler}
+        // id='messages'
+        onClick={handleCloseContextMenu}
+        onContextMenu={handleCloseContextMenu}
       >
-        <>
-          {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
-            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files, component,
-            }, index: number, arr) => {
-              // /console.log(arr[index + 1].sendDate, sendDate);
-              let isShowAvatar = false;
-              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
-              if (component) {
-                return (
-                  <React.Fragment key={sendDate}>
-                    <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
-                      <p style={{
-                        maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
-                      }}>
-                        {setMessageDate(new Date(sendDate))}
+        <Grid
+          item
+          xs={12}
+          className='pd-left-10'
+          onScroll={scrollHandler}
+          style={{
+            height: messageEdit.isEdit ? 'calc(100% - 100px)' : 'calc(100% - 50px)',
+            overflowY: 'scroll',
+          }}
+        >
+          <>
+            {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+              : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
+                fkSenderId, message, id, sendDate, User, Files, component,
+              }, index: number, arr) => {
+                // /console.log(arr[index + 1].sendDate, sendDate);
+                let isShowAvatar = false;
+                if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
+                if (component) {
+                  return (
+                    <React.Fragment key={sendDate}>
+                      <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
+                        <p style={{
+                          maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
+                        }}>
+                          {setMessageDate(new Date(sendDate))}
 
-                      </p>
-                    </div>
-                  </React.Fragment>
+                        </p>
+                      </div>
+                    </React.Fragment>
+                  );
+                }
+                return (
+                  <Message
+                    key={id}
+                    isShowAvatar={isShowAvatar}
+                    fkSenderId={fkSenderId}
+                    message={message}
+                    id={id}
+                    sendDate={sendDate}
+                    User={User}
+                    Files={Files}
+                    userId={userId}
+                    component={component}
+                  />
                 );
-              }
-              return (
-                <Message
-                  key={id}
-                  isShowAvatar={isShowAvatar}
-                  fkSenderId={fkSenderId}
-                  message={message}
-                  id={id}
-                  sendDate={sendDate}
-                  User={User}
-                  Files={Files}
-                  userId={userId}
-                  component={component}
-                />
-              );
-            })}
-          <div style={{ height: '50px' }} ref={ref}></div>
-        </>
-      </Grid>
-      {(!!conversationId || !!opponentId) && (
-        <MessageInput
-          allMessages={allMessages}
-          setAllMessages={setAllMessages}
-          conversationId={conversationId}
-          userId={userId}
-          firstName={firstName}
-          opponentId={opponentId}
-          openFileDialog={openFileDialog}
-          history={history}
-        />
-      )}
-      {!isInputState && <input
-        ref={inputRef}
-        style={{ display: 'none' }}
-        type="file"
-        multiple
-        onChange={onFilesAdded}
-      />}
-      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
-    </div>
+              })}
+            <div style={{ height: '50px' }} ref={ref}></div>
+          </>
+        </Grid>
+        {(!!conversationId || !!opponentId) && (
+          <MessageInput
+            allMessages={allMessages}
+            setAllMessages={setAllMessages}
+            conversationId={conversationId}
+            userId={userId}
+            firstName={firstName}
+            opponentId={opponentId}
+            openFileDialog={openFileDialog}
+            history={history}
+          />
+        )}
+        {!isInputState && <input
+          ref={inputRef}
+          style={{ display: 'none' }}
+          type="file"
+          multiple
+          onChange={onFilesAdded}
+        />}
+        <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
+      </div>
+    </ChatsWrapper>
   );
 }

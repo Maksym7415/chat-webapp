@@ -1,4 +1,4 @@
-import { Messages, ConversationsList } from '../../redux/conversations/constants/interfaces';
+import { Messages } from '../../redux/conversations/constants/interfaces';
 
 // MAIN
 // export interface Conversation {

@@ -8,19 +8,19 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
-import { socket } from '../../../socket';
-import { fullDate } from '../../../common/getCorrectDateFormat';
 import { RootState } from '../../../redux/reducer';
+import AddFiles from './addFilesComponent';
 import useStyles from '../styles/styles';
 import {
-  MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages, MessageSocketEmit,
+  MessageInputProps, MessageValue,
 } from '../../mainScreen/interfaces';
-import { Messages } from '../../../redux/conversations/constants/interfaces';
 import { editMessageAction, deleteMessageAction } from '../../../redux/common/commonActions';
+import sendMessage from '../../../socket/utils/sendMessage';
+import { socket } from '../../../socket';
 
 export default function MessageInput({
-  conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,
-}: MessageInputProps<History>) {
+  conversationId, allMessages, files, userId, firstName, isOpenDialog, openFileDialog, handleOpenDialog,
+}: MessageInputProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
@@ -44,71 +44,29 @@ export default function MessageInput({
     }
   };
 
-  const socketSendMessageCommonFun = (actionType: string, id?: number) => {
-    console.log('SEND MESSAGE', {
-      conversationId: id,
-      message: {
-        message: message[conversationId], sendDate: fullDate(new Date()), messageType: 'Text',
-      },
-      actionType,
-      userId,
-      messageId: messageEdit.messageId,
-      // opponentId,
-    });
-
-    function emit(emitData: MessageSocketEmit) {
-      socket.emit('message', (emitData), (success: boolean, actionType: string) => {
-        console.log(success);
-        if (success && actionType === 'new') setMessage({ ...message, [conversationId]: '' });
-        if (success && actionType === 'edit') {
-          dispatch(editMessageAction(false, null));
-          setMessage({ ...message, [conversationId]: '' });
-        }
-      });
-    }
-
-    const emitData: MessageSocketEmit = {
-      conversationId: id,
-      actionType,
-      userId,
-    };
-    switch (actionType) {
-      case 'new': {
-        return emit({
-          ...emitData,
-          actionType,
-          message: {
-            message: message[conversationId], sendDate: fullDate(new Date()), messageType: 'Text',
-          },
-        });
-      }
-      case 'edit': {
-        return emit({
-          ...emitData,
-          message: {
-            message: message[conversationId], messageType: 'Text',
-          },
-          messageId: messageEdit.messageId,
-        });
-      }
-      case 'delete': {
-        console.log('conversationId', conversationId);
-        return emit({
-          ...emitData,
-          messageId: messageEdit.messageId,
-        });
-      }
-      default:
+  const sendMessageSuccessCallback = (success: boolean, actionType: string) => {
+    if (success && actionType === 'new') setMessage({ ...message, [conversationId]: '' });
+    if (success && actionType === 'edit') {
+      dispatch(editMessageAction(false, null));
+      setMessage({ ...message, [conversationId]: '' });
     }
   };
 
   const handleSendMessage = () => {
     if (!message[conversationId]) return;
     if (!conversationId) {
-      return socketSendMessageCommonFun('new');
+      return sendMessage({
+        actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      });
     }
-    if (messageEdit.isEdit) return socketSendMessageCommonFun('edit', conversationId); // dispatch(editMessageAction(false, null));
-    socketSendMessageCommonFun('new', conversationId);
+    if (messageEdit.isEdit) {
+      return sendMessage({
+        actionType: 'edit', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      });
+    } // dispatch(editMessageAction(false, null));
+    return sendMessage({
+      actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+    });
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -118,13 +76,19 @@ export default function MessageInput({
     if (event.key === 'Enter') {
       if (!message[conversationId]) return;
       if (!conversationId) {
-        return socketSendMessageCommonFun('new');
+        return sendMessage({
+          actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        });
       }
       if (messageEdit.isEdit) {
         dispatch(editMessageAction(false, null));
-        return socketSendMessageCommonFun('edit', conversationId);
+        return sendMessage({
+          actionType: 'edit', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        });
       }
-      socketSendMessageCommonFun('new', conversationId);
+      return sendMessage({
+        actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      });
     }
   };
 
@@ -141,16 +105,12 @@ export default function MessageInput({
       setMessage(() => ({ ...message, [conversationId]: resultMessage ? resultMessage.message : '' }));
     }
     if (messageEdit.isDelete) {
-      socketSendMessageCommonFun('delete', conversationId);
+      sendMessage({
+        actionType: 'delete', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      });
       dispatch(deleteMessageAction(false, null));
     }
   }, [messageEdit]);
-
-  // useEffect(() => {
-  //   socket.on('deleteMessage', ({ conversationId, messageId }: DeleteMessageSocketResponse) => {
-  //     setAllMessages((messages: CurrentConversationMessages) => ({ ...messages, [conversationId]: messages[conversationId].filter((message: Messages) => (message.id !== messageId)) }));
-  //   });
-  // }, []);
 
   useEffect(() => {
     handleClearEditMessage();
@@ -174,7 +134,7 @@ export default function MessageInput({
         </div>
       </div>}
       <div className={messageEdit.isEdit ? 'conversations__send-message-input' : 'conversations__send-message-input conversations__send-message-shadow'}>
-          <Input
+        <Input
           onKeyDown={sendMessageByKey}
           value={message[conversationId] || ''}
           onChange={handleChangeMessage}
@@ -208,6 +168,7 @@ export default function MessageInput({
           )}
         />
       </div>
+      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
     </>
   );
 }

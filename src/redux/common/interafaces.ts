@@ -23,9 +23,10 @@ export interface CommonReducerInterface {
   contextMenu: ContextMenuState
   messageEdit: MessageEditState
   dialogComponent: DialogComponentState
+  messageFiles: Array<MessageFiles>
 }
 
-export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction | DialogShowAction | DialogHideAction;
+export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction | DialogShowAction | DialogHideAction | MessageFilesAction | ClearMessageFilesAction;
 
 // CONTEXT MENU
 export interface ContextMenuConfig {
@@ -77,4 +78,23 @@ interface DialogHideAction {
 export interface DialogComponentState {
   isShow: boolean
   title: string
+}
+
+// MESSAGE FILES
+export interface MessageFiles {
+  extension: string
+  filePath: string
+  filename: string
+  mimetype: string
+  originalname: string
+  size: number
+}
+
+export interface MessageFilesAction {
+  type: typeof types.MESSAGE_FILES
+  data: Array<MessageFiles>
+}
+
+export interface ClearMessageFilesAction {
+  type: typeof types.CLEAR_MESSAGE_FILES
 }

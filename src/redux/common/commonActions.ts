@@ -32,3 +32,12 @@ export const showDialogAction = (title: string): interfaces.CommonReducerActions
 export const hideDialogAction = (): interfaces.CommonReducerActions => ({
   type: types.DIALOG_COMPONENT_HIDDEN,
 });
+
+export const setMessageFilesAction = (data: Array<interfaces.MessageFiles>): interfaces.MessageFilesAction => ({
+  type: types.MESSAGE_FILES,
+  data,
+});
+
+export const clearMessageFilesAction = (): interfaces.ClearMessageFilesAction => ({
+  type: types.CLEAR_MESSAGE_FILES,
+});

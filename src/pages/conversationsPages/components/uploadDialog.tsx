@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
@@ -7,10 +8,10 @@ import {
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { DialogProps, FilesSrc } from '../../mainScreen/interfaces';
 import useStyles from '../styles/styles';
-import { preloaderAction } from '../../../redux/common/commonActions';
+import { preloaderAction, setMessageFilesAction } from '../../../redux/common/commonActions';
 
 export default function UploadDialog({
-  handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage,
+  handleClose, isOpen, files, handleAddFile, message, src, setSrc, setMessage,
 }: DialogProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -23,18 +24,34 @@ export default function UploadDialog({
     reader.readAsDataURL(file);
   };
 
-  const handleSendFiles = () => {
+  const handleSendFiles = async () => {
     dispatch(preloaderAction(true));
-    handleSend(message);
+    const formData = new FormData();
+    if (!files) return;
+    Object.values(files).forEach((el) => formData.append('file', el));
+    try {
+      const filesNames = await axios('/upload-message-files', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+      });
+      dispatch(setMessageFilesAction(filesNames.data));
+      dispatch(preloaderAction(false));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCloseDialog = () => {
     handleClose(false);
+    setMessage('');
     setSrc({});
   };
 
-  const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') handleSendFiles();
+  const sendMessageByKey = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') await handleSendFiles();
   };
 
   useEffect(() => {

@@ -22,18 +22,6 @@ export interface MessageSocketOn {
   conversationId: number
 }
 
-export interface MessageSocketEmit {
-  message?: {
-    message: string
-    sendDate?: string
-    messageType: string
-  }
-  actionType: string
-  conversationId: number | undefined
-  userId: number
-  messageId?: number | null
-}
-
 // USERCONVERSATIONHISTORY
 export interface CurrentConversationMessages {
   [key: number]: Array<Messages>
@@ -65,7 +53,6 @@ export interface FilesSrc {
 // UPLOAD DIALOG
 export interface DialogProps {
   handleClose: Function
-  handleSend: Function
   isOpen: boolean
   files: Files | null
   handleAddFile: Function
@@ -90,15 +77,15 @@ export interface MessageProps extends Messages {
 }
 
 // MESSAGEINPUT
-export interface MessageInputProps<H> {
-  setAllMessages: Function
+export interface MessageInputProps {
   allMessages: CurrentConversationMessages
   conversationId: number
   userId: number
   firstName: string
-  opponentId: number
   openFileDialog: any
-  history: H
+  files: Files
+  isOpenDialog: boolean
+  handleOpenDialog: (isOpen: boolean) => void
 }
 
 export interface DeleteMessageSocketResponse {

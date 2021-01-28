@@ -19,6 +19,7 @@ const initialState: interafaces.CommonReducerInterface = {
     isShow: false,
     title: '',
   },
+  messageFiles: [],
 };
 
 export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
@@ -63,6 +64,18 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
       return {
         ...state,
         dialogComponent: initialState.dialogComponent,
+      };
+    }
+    case types.MESSAGE_FILES: {
+      return {
+        ...state,
+        messageFiles: action.data,
+      };
+    }
+    case types.CLEAR_MESSAGE_FILES: {
+      return {
+        ...state,
+        messageFiles: [],
       };
     }
     default: return state;

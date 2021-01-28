@@ -14,7 +14,6 @@ import {
 import { RootState } from '../../redux/reducer';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
-import AddFiles from './components/addFilesComponent';
 import { contextMenuAction } from '../../redux/common/commonActions';
 import {
   Files, CurrentConversationMessages, ScrollValue, Pagination,
@@ -25,11 +24,11 @@ import './styles/styles.scss';
 import { setMessageDate } from '../../common/getCorrectDateFormat';
 import ChatsWrapper from '../../components/chatsWrapper';
 
-interface ParamsId{
+interface ParamsId {
   id: string
 }
 
-interface Props<H>{
+interface Props<H> {
   history: H
 }
 
@@ -213,55 +212,60 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
           }}
         >
           <>
-            {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
-              : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-                fkSenderId, message, id, sendDate, User, Files, component,
-              }, index: number, arr) => {
-                // /console.log(arr[index + 1].sendDate, sendDate);
-                let isShowAvatar = false;
-                if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
-                if (component) {
-                  return (
-                    <React.Fragment key={sendDate}>
-                      <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
-                        <p style={{
-                          maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
-                        }}>
-                          {setMessageDate(new Date(sendDate))}
+            {isNaN(conversationId) && !opponentId
+              ? <p>Выберите чат</p>
+              : opponentId && !conversationId
+                ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+                : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(
+                  ({
+                    fkSenderId, message, id, sendDate, User, Files, component,
+                  }, index: number, arr) => {
+                    // /console.log(arr[index + 1].sendDate, sendDate);
+                    let isShowAvatar = false;
+                    if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
+                    if (component) {
+                      return (
+                        <React.Fragment key={sendDate}>
+                          <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
+                            <p style={{
+                              maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
+                            }}>
+                              {setMessageDate(new Date(sendDate))}
 
-                        </p>
-                      </div>
-                    </React.Fragment>
-                  );
-                }
-                return (
-                  <Message
-                    key={id}
-                    isShowAvatar={isShowAvatar}
-                    fkSenderId={fkSenderId}
-                    message={message}
-                    id={id}
-                    sendDate={sendDate}
-                    User={User}
-                    Files={Files}
-                    userId={userId}
-                    component={component}
-                  />
-                );
-              })}
+                            </p>
+                          </div>
+                        </React.Fragment>
+                      );
+                    }
+                    return (
+                      <Message
+                        key={id}
+                        isShowAvatar={isShowAvatar}
+                        fkSenderId={fkSenderId}
+                        message={message}
+                        id={id}
+                        sendDate={sendDate}
+                        User={User}
+                        Files={Files}
+                        userId={userId}
+                        component={component}
+                      />
+                    );
+                  },
+                )}
             <div style={{ height: '50px' }} ref={ref}></div>
           </>
         </Grid>
         {(!!conversationId || !!opponentId) && (
           <MessageInput
             allMessages={allMessages}
-            setAllMessages={setAllMessages}
             conversationId={conversationId}
             userId={userId}
             firstName={firstName}
-            opponentId={opponentId}
             openFileDialog={openFileDialog}
-            history={history}
+            files={files}
+            handleOpenDialog={handleOpenDialog}
+            isOpenDialog={isOpenDialog}
           />
         )}
         {!isInputState && <input
@@ -271,7 +275,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
           multiple
           onChange={onFilesAdded}
         />}
-        <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
+        {/* <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} /> */}
       </div>
     </ChatsWrapper>
   );

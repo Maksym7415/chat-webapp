@@ -35,7 +35,7 @@ function SocketOn({ children }: any) {
 
   return (
     <>
-      {children}
+      { children }
     </>
   );
 }

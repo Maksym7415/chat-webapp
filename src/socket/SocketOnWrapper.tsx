@@ -19,16 +19,18 @@ function SocketOn({ children }: any) {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
 
   useEffect(() => {
-    socket.emit('handshake', userId);
-    socket.on('message', ({ message, conversationId, actionType }: MessageSocketOn) => {
-      console.log('SOCKET MESSAGE', { message, conversationId, actionType });
+    const messageCallback = ({ message, conversationId, actionType }: MessageSocketOn) => {
       if (actionType === 'new') {
         return dispatch(conversationAddNewMessage(message, conversationId));
       }
       if (actionType === 'edit') return dispatch(conversationEditMessage(message));
       if (actionType === 'delete') return dispatch(conversationDeleteMessage(message.id));
-    });
-    return () => console.log('return');
+    };
+    socket.emit('handshake', userId);
+    socket.on('message', messageCallback);
+    return () => {
+      socket.removeListener('message', messageCallback);
+    };
   }, []);
 
   return (

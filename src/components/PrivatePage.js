@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import AppBarWrapper from './appBar/AppBarWrapper';
 import setConfig from '../routing/config/setConfig';
+import { SocketOnwrapper } from '../socket';
 
 function PrivatePage({
   Component, roles, isPrivate, token, ...rest
@@ -16,9 +17,11 @@ function PrivatePage({
                     if (token) {
                       if (setConfig(roles, ['superadmin'], false).includes(true)) {
                         return (
-                                <AppBarWrapper {...props}>
-                                    <Component {...props}/>
-                                </AppBarWrapper>
+                          <SocketOnwrapper>
+                            <AppBarWrapper {...props}>
+                              <Component {...props}/>
+                            </AppBarWrapper>
+                          </SocketOnwrapper>
                         );
                       }
                       return <Redirect to='/'/>;

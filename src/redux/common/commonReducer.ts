@@ -19,7 +19,7 @@ const initialState: interafaces.CommonReducerInterface = {
     isShow: false,
     title: '',
   },
-  messageFiles: [],
+  messageFiles: null,
 };
 
 export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
@@ -75,7 +75,7 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
     case types.CLEAR_MESSAGE_FILES: {
       return {
         ...state,
-        messageFiles: [],
+        messageFiles: null,
       };
     }
     default: return state;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Input, InputAdornment, IconButton, Typography,
 } from '@material-ui/core';
-import { History } from 'history';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,7 +13,10 @@ import useStyles from '../styles/styles';
 import {
   MessageInputProps, MessageValue,
 } from '../../mainScreen/interfaces';
-import { editMessageAction, deleteMessageAction } from '../../../redux/common/commonActions';
+import { MessageFiles } from '../../../redux/common/interafaces';
+import {
+  editMessageAction, deleteMessageAction, clearMessageFilesAction,
+} from '../../../redux/common/commonActions';
 import sendMessage from '../../../socket/utils/sendMessage';
 import { socket } from '../../../socket';
 
@@ -26,6 +28,7 @@ export default function MessageInput({
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
+  const messageFiles = useSelector(({ commonReducer }: RootState) => commonReducer.messageFiles);
   const [editedMessage, setEditedMessage] = useState<string>('');
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,28 +48,44 @@ export default function MessageInput({
   };
 
   const sendMessageSuccessCallback = (success: boolean, actionType: string) => {
-    if (success && actionType === 'new') setMessage({ ...message, [conversationId]: '' });
+    if (success && actionType === 'new') {
+      setMessage({ ...message, [conversationId]: '' });
+    }
     if (success && actionType === 'edit') {
       dispatch(editMessageAction(false, null));
       setMessage({ ...message, [conversationId]: '' });
     }
   };
 
-  const handleSendMessage = () => {
-    if (!message[conversationId]) return;
+  const handleSendMessage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, meta: Array<MessageFiles> | null) => {
+    if (!message[conversationId] && !meta) return;
     if (!conversationId) {
-      return sendMessage({
-        actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      if (!meta) {
+        return sendMessage({
+          actionType: 'new', messageType: 'Text', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        });
+      }
+      sendMessage({
+        actionType: 'new', messageType: 'File', meta, chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
       });
+      handleOpenDialog(false);
+      return dispatch(clearMessageFilesAction());
     }
     if (messageEdit.isEdit) {
       return sendMessage({
-        actionType: 'edit', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        actionType: 'edit', messageType: 'Text', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
       });
     } // dispatch(editMessageAction(false, null));
-    return sendMessage({
-      actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+    if (!meta) {
+      return sendMessage({
+        actionType: 'new', messageType: 'Text', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      });
+    }
+    sendMessage({
+      actionType: 'new', messageType: 'File', meta, chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
     });
+    handleOpenDialog(false);
+    return dispatch(clearMessageFilesAction());
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -77,17 +96,17 @@ export default function MessageInput({
       if (!message[conversationId]) return;
       if (!conversationId) {
         return sendMessage({
-          actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+          actionType: 'new', chatId: conversationId, messageType: 'Text', message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
         });
       }
       if (messageEdit.isEdit) {
         dispatch(editMessageAction(false, null));
         return sendMessage({
-          actionType: 'edit', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+          actionType: 'edit', chatId: conversationId, messageType: 'Text', message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
         });
       }
       return sendMessage({
-        actionType: 'new', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        actionType: 'new', chatId: conversationId, messageType: 'Text', message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
       });
     }
   };
@@ -106,11 +125,16 @@ export default function MessageInput({
     }
     if (messageEdit.isDelete) {
       sendMessage({
-        actionType: 'delete', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        actionType: 'delete', chatId: conversationId, message, messageType: 'Text', successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
       });
       dispatch(deleteMessageAction(false, null));
     }
   }, [messageEdit]);
+
+  useEffect(() => {
+    if (!messageFiles) return;
+    handleSendMessage(null, messageFiles);
+  }, [messageFiles]);
 
   useEffect(() => {
     handleClearEditMessage();
@@ -159,7 +183,7 @@ export default function MessageInput({
                 <InputAdornment position="end">
                   <IconButton
                     classes={{ root: classes.iconButton }}
-                    onClick={handleSendMessage}
+                    onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null) => handleSendMessage(event, null)}
                   >
                     <SendIcon />
                   </IconButton>

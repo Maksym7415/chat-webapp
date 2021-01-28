@@ -23,7 +23,7 @@ export interface CommonReducerInterface {
   contextMenu: ContextMenuState
   messageEdit: MessageEditState
   dialogComponent: DialogComponentState
-  messageFiles: Array<MessageFiles>
+  messageFiles: Array<MessageFiles> | null
 }
 
 export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction | DialogShowAction | DialogHideAction | MessageFilesAction | ClearMessageFilesAction;

@@ -1,7 +1,7 @@
 import { fullDate } from '../../common/getCorrectDateFormat';
 import { socket } from '..';
 import { MessageSocketEmit } from '../interfaces';
-import { MessageValue } from '../../pages/mainScreen/interfaces';
+import { MessageValue } from '../../pages/conversationsPages/interfaces';
 import { MessageFiles } from '../../redux/common/interafaces';
 
 interface MessageParams {
@@ -24,7 +24,7 @@ function sendMessage({
   function emit(emitData: MessageSocketEmit) {
     socket.emit('message', emitData, successCallback);
   }
-
+  console.log(message);
   const emitData: MessageSocketEmit = {
     conversationId: chatId,
     actionType,

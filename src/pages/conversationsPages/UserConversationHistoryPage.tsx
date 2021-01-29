@@ -17,9 +17,9 @@ import MessageInput from './components/MessageInput';
 import { contextMenuAction } from '../../redux/common/commonActions';
 import {
   Files, CurrentConversationMessages, ScrollValue, Pagination,
-} from '../mainScreen/interfaces';
+} from './interfaces';
 import { Messages } from '../../redux/conversations/constants/interfaces';
-import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../mainScreen/helpers/userHistoryConversations';
+import { checkIsShowAvatar, scrollTop, settingFilesObject } from './helpers/userHistoryConversations';
 import './styles/styles.scss';
 import { setMessageDate } from '../../common/getCorrectDateFormat';
 import ChatsWrapper from '../../components/chatsWrapper';
@@ -275,7 +275,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
           multiple
           onChange={onFilesAdded}
         />}
-        {/* <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} /> */}
       </div>
     </ChatsWrapper>
   );

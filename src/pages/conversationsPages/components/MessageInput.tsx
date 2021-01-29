@@ -8,11 +8,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close';
 import { RootState } from '../../../redux/reducer';
-import AddFiles from './addFilesComponent';
+import UploadDialog from './uploadDialog';
 import useStyles from '../styles/styles';
 import {
   MessageInputProps, MessageValue,
-} from '../../mainScreen/interfaces';
+  FilesSrc,
+} from '../interfaces';
 import { MessageFiles } from '../../../redux/common/interafaces';
 import {
   editMessageAction, deleteMessageAction, clearMessageFilesAction,
@@ -30,6 +31,8 @@ export default function MessageInput({
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
   const messageFiles = useSelector(({ commonReducer }: RootState) => commonReducer.messageFiles);
   const [editedMessage, setEditedMessage] = useState<string>('');
+  const [messageDialog, setMessageDialog] = useState<string>('');
+  const [src, setSrc] = useState<FilesSrc | object>({});
 
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
@@ -57,6 +60,18 @@ export default function MessageInput({
     }
   };
 
+  const sendMessageFileSuccessCallback = (success: boolean, actionType: string) => {
+    if (success && actionType === 'new') {
+      setMessageDialog('');
+      setSrc({});
+    }
+    if (success && actionType === 'edit') {
+      dispatch(editMessageAction(false, null));
+      setMessageDialog('');
+      setSrc({});
+    }
+  };
+
   const handleSendMessage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, meta: Array<MessageFiles> | null) => {
     if (!message[conversationId] && !meta) return;
     if (!conversationId) {
@@ -66,7 +81,7 @@ export default function MessageInput({
         });
       }
       sendMessage({
-        actionType: 'new', messageType: 'File', meta, chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+        actionType: 'new', messageType: 'File', meta, chatId: conversationId, message: messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
       });
       handleOpenDialog(false);
       return dispatch(clearMessageFilesAction());
@@ -82,7 +97,7 @@ export default function MessageInput({
       });
     }
     sendMessage({
-      actionType: 'new', messageType: 'File', meta, chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+      actionType: 'new', messageType: 'File', meta, chatId: conversationId, message: messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
     });
     handleOpenDialog(false);
     return dispatch(clearMessageFilesAction());
@@ -192,7 +207,7 @@ export default function MessageInput({
           )}
         />
       </div>
-      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
+      <UploadDialog files={files} isOpen={isOpenDialog} handleClose={handleOpenDialog} handleAddFile={openFileDialog} message={messageDialog} src={src} setSrc={setSrc} setMessage={setMessageDialog} />
     </>
   );
 }

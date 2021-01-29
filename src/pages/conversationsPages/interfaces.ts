@@ -1,20 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Messages } from '../../redux/conversations/constants/interfaces';
-
-// MAIN
-// export interface Conversation {
-//   [key: number]: User
-// }
-
-// export interface User {
-//   [key: number]: BackUsers
-// }
-
-// export interface BackUsers {
-//   firtsName: string
-//   isTyping: boolean
-//   userId: number
-//   conversationId: number
-// }
 
 export interface MessageSocketOn {
   message: Messages
@@ -52,22 +37,14 @@ export interface FilesSrc {
 
 // UPLOAD DIALOG
 export interface DialogProps {
-  handleClose: Function
+  handleClose: (isOpen: boolean) => void
   isOpen: boolean
   files: Files | null
-  handleAddFile: Function
+  handleAddFile: () => void
   message: string
+  setMessage: Dispatch<SetStateAction<string>>
+  setSrc: Dispatch<SetStateAction<FilesSrc | object>>
   src: FilesSrc | object
-  setSrc: Function
-  setMessage: Function
-}
-
-// ADD FILES COMPONENT
-export interface AddFilesProps {
-  files: Files
-  isOpen: boolean
-  handleOpenDialog: Function
-  handleAddFile: Function
 }
 
 // MESSAGE COMPONENT

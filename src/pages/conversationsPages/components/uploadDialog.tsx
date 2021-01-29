@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -6,12 +6,12 @@ import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
 } from '@material-ui/core';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { DialogProps, FilesSrc } from '../../mainScreen/interfaces';
+import { DialogProps, FilesSrc } from '../interfaces';
 import useStyles from '../styles/styles';
 import { preloaderAction, setMessageFilesAction } from '../../../redux/common/commonActions';
 
-export default function UploadDialog({
-  handleClose, isOpen, files, handleAddFile, message, src, setSrc, setMessage,
+function UploadDialog({
+  handleClose, isOpen, files, handleAddFile, src, setSrc, message, setMessage,
 }: DialogProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -42,12 +42,6 @@ export default function UploadDialog({
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleCloseDialog = () => {
-    handleClose(false);
-    setMessage('');
-    setSrc({});
   };
 
   const sendMessageByKey = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -101,14 +95,16 @@ export default function UploadDialog({
         />
       </DialogContent>
       <DialogActions classes={{ root: classes.actionsContainer }}>
-        <Button variant='contained' color='primary' onClick={() => handleAddFile()}>Add</Button>
+        <Button variant='contained' color='primary' onClick={handleAddFile}>Add</Button>
         <div className='full-w flex'>
           <div className='conversations__send-close-buttons-container'>
             <Button variant='contained' color='primary' onClick={handleSendFiles}>Send</Button>
-            <Button classes={{ root: classes.buttonMargin }} variant='contained' color='primary' onClick={handleCloseDialog}>Close</Button>
+            <Button classes={{ root: classes.buttonMargin }} variant='contained' color='primary' onClick={() => handleClose(false)}>Close</Button>
           </div>
         </div>
       </DialogActions>
     </Dialog>
   );
 }
+
+export default UploadDialog;

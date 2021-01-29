@@ -2,7 +2,7 @@ import { MessageFiles } from '../redux/common/interafaces';
 
 export interface MessageSocketEmit {
   message?: {
-    message: string
+    message: string | undefined
     sendDate?: string
     messageType: string
     meta?: Array<MessageFiles> | null

@@ -12,6 +12,7 @@ interface MessageParams {
   meta?: Array<MessageFiles>
   userId: number
   message: MessageValue
+  messageDialog?: string | undefined
   messageId: number | null
   messageType: string
   successCallback: (success: boolean, actionType: string) => void
@@ -19,7 +20,7 @@ interface MessageParams {
 }
 
 function sendMessage({
-  actionType, chatId, message, userId, messageId, successCallback, messageType, meta,
+  actionType, chatId, message, messageDialog, userId, messageId, successCallback, messageType, meta,
 }: MessageParams) {
   function emit(emitData: MessageSocketEmit) {
     socket.emit('message', emitData, successCallback);
@@ -37,7 +38,7 @@ function sendMessage({
           ...emitData,
           actionType,
           message: {
-            message: message[chatId], sendDate: fullDate(new Date()), messageType, meta,
+            message: messageDialog, sendDate: fullDate(new Date()), messageType, meta,
           },
         });
       }

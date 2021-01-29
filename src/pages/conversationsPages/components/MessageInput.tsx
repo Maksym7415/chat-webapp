@@ -81,7 +81,7 @@ export default function MessageInput({
         });
       }
       sendMessage({
-        actionType: 'new', messageType: 'File', meta, chatId: conversationId, message: messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
+        actionType: 'new', messageType: 'File', message, meta, chatId: conversationId, messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
       });
       handleOpenDialog(false);
       return dispatch(clearMessageFilesAction());
@@ -97,7 +97,7 @@ export default function MessageInput({
       });
     }
     sendMessage({
-      actionType: 'new', messageType: 'File', meta, chatId: conversationId, message: messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
+      actionType: 'new', messageType: 'File', meta, message, chatId: conversationId, messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
     });
     handleOpenDialog(false);
     return dispatch(clearMessageFilesAction());

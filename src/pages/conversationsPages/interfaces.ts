@@ -57,6 +57,7 @@ export interface MessageProps extends Messages {
 export interface MessageInputProps {
   allMessages: CurrentConversationMessages
   conversationId: number
+  opponentId: number
   userId: number
   firstName: string
   openFileDialog: any

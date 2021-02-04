@@ -58,6 +58,7 @@ const initialState: ConversationReducerStateInterface = {
   },
   opponentId: {
     id: 0,
+    name: '',
   },
 };
 
@@ -128,6 +129,7 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         ...state,
         opponentId: {
           id: action.payload.opponentId,
+          name: action.payload.name,
         },
       };
     }

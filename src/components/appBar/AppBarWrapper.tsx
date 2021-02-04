@@ -83,7 +83,8 @@ export default function MiniDrawer(props: IProps<History>) {
   };
 
   const createNewChat = (id: number, fullName: string) => {
-    dispatch(createNewChatAction({ userId, opponentId: id }));
+    console.log(fullName);
+    dispatch(createNewChatAction({ userId, opponentId: id, name: fullName }));
     setHide(true);
     const chat = conversationsList.find((el) => el.conversationName === fullName);
     if (chat) {

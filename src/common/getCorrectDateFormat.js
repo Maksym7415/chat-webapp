@@ -16,7 +16,7 @@ export const getCurrentDay = (value, isMessage) => {
 };
 
 export const fullDate = (value) => {
-  const dayTime = `${value.getHours()}:${value.getMinutes()}:${value.getSeconds()}`.split('-').map((d) => (d.length < 2 ? `0${d}` : d)).join('-');
+  const dayTime = `${value.getHours()}:${value.getMinutes()}:${value.getSeconds()}`.split(':').map((d) => (d.length < 2 ? `0${d}` : d)).join(':');
   const yearTime = `${value.getFullYear()}-${value.getMonth() + 1}-${value.getDate()}`.split('-').map((d) => (d.length < 2 ? `0${d}` : d)).join('-');
   return `${yearTime} ${dayTime}`;
 };

@@ -3,7 +3,7 @@ import React, {
   useEffect, useState, useRef,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { History } from 'history';
 import { Grid } from '@material-ui/core';
 import {
@@ -37,8 +37,9 @@ const getCurrentScrollTop = (element: any) => element.scrollTop;
 export default function UserConversationHistoryPage({ history }: Props<History>) {
   const dispatch = useDispatch();
   const conversationId = +useParams<ParamsId>().id;
+  const location = useLocation();
   const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
-  const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
+  const { id: opponentId, name } = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId);
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
@@ -154,7 +155,14 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   }, [messageHistory]);
 
   useEffect(() => {
-    console.log('lastMessage');
+    const chatID:number = +Object.keys(lastMessage)[0];
+    if (location.pathname === '/newchat' && !(NaN in allMessages)) {
+      return;
+    }
+    if (isNaN(conversationId)) {
+      console.log(allMessages, chatID);
+      history.push(`/chat/${chatID}`);
+    }
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
     }
@@ -187,7 +195,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       }
     }
   }, [isCreateChat]);
-  console.log(lastMessage);
 
   return (
     <ChatsWrapper>
@@ -266,6 +273,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
             files={files}
             handleOpenDialog={handleOpenDialog}
             isOpenDialog={isOpenDialog}
+            opponentId={opponentId}
           />
         )}
         {!isInputState && <input

@@ -22,7 +22,7 @@ import sendMessage from '../../../socket/utils/sendMessage';
 import { socket } from '../../../socket';
 
 export default function MessageInput({
-  conversationId, allMessages, files, userId, firstName, isOpenDialog, openFileDialog, handleOpenDialog,
+  conversationId, allMessages, files, userId, firstName, isOpenDialog, openFileDialog, handleOpenDialog, opponentId,
 }: MessageInputProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -74,14 +74,14 @@ export default function MessageInput({
 
   const handleSendMessage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, meta: Array<MessageFiles> | null) => {
     if (!message[conversationId] && !meta) return;
-    if (!conversationId) {
+    if (isNaN(conversationId)) {
       if (!meta) {
         return sendMessage({
-          actionType: 'new', messageType: 'Text', chatId: conversationId, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+          actionType: 'new', messageType: 'Text', opponentId, chatId: NaN, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
         });
       }
       sendMessage({
-        actionType: 'new', messageType: 'File', message, meta, chatId: conversationId, messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
+        actionType: 'new', messageType: 'File', opponentId, chatId: NaN, message, meta, messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
       });
       handleOpenDialog(false);
       return dispatch(clearMessageFilesAction());
@@ -103,15 +103,20 @@ export default function MessageInput({
     return dispatch(clearMessageFilesAction());
   };
 
-  const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>, meta: Array<MessageFiles> | null) => {
     if (event.key === 'Escape') {
       handleClearEditMessage();
     }
     if (event.key === 'Enter') {
-      if (!message[conversationId]) return;
-      if (!conversationId) {
+      if (!message[conversationId] && !meta) return;
+      if (isNaN(conversationId)) {
+        if (!meta) {
+          return sendMessage({
+            actionType: 'new', messageType: 'Text', opponentId, chatId: NaN, message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+          });
+        }
         return sendMessage({
-          actionType: 'new', chatId: conversationId, messageType: 'Text', message, successCallback: sendMessageSuccessCallback, userId, messageId: messageEdit.messageId,
+          actionType: 'new', messageType: 'File', opponentId, chatId: NaN, message, meta, messageDialog, successCallback: sendMessageFileSuccessCallback, userId, messageId: messageEdit.messageId,
         });
       }
       if (messageEdit.isEdit) {
@@ -174,7 +179,7 @@ export default function MessageInput({
       </div>}
       <div className={messageEdit.isEdit ? 'conversations__send-message-input' : 'conversations__send-message-input conversations__send-message-shadow'}>
         <Input
-          onKeyDown={sendMessageByKey}
+          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => sendMessageByKey(event, messageFiles)}
           value={message[conversationId] || ''}
           onChange={handleChangeMessage}
           disableUnderline

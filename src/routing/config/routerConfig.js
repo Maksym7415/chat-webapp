@@ -74,7 +74,7 @@ export default [
   },
   {
     id: 8,
-    Component: MainScreen,
+    Component: UserConversationHistoryPage,
     path: '/newchat',
     roles: [
       'admin',

@@ -57,6 +57,7 @@ export interface ConversationReducerStateInterface {
   createConversation: UserCreateConversation
   opponentId: {
     id: number
+    name: string
   }
 }
 
@@ -235,6 +236,7 @@ interface UserCreateConversation {
 export interface IdsInterface {
   opponentId: number
   userId: number
+  name: string
 }
 export interface CreateNewChatActionInterface {
   type: typeof types.CONVERSATION_CREATE_NEW_CONVERSATION

@@ -8,7 +8,9 @@ export interface MessageSocketEmit {
     meta?: Array<MessageFiles> | null
   }
   actionType: string
-  conversationId: number | undefined
+
+  conversationId?: number | undefined
+  opponentId?: number
   userId: number
   messageId?: number | null
 }

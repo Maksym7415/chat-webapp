@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import clsx from 'clsx';
 import {
   Button, Dialog, DialogContentText, Typography, Slide, Input, FormControl, InputAdornment, Paper, Chip, TextField, Grid, Popover, FormControlLabel, Checkbox, Avatar, DialogActions, DialogContent, DialogTitle,
@@ -41,12 +42,12 @@ export default function NewChatScreen() {
   const [memberId, setMemberId] = useState(0);
   const [chatName, setChatName] = useState('');
   const [image, setImage] = useState('');
-  const [imageData, setImageData] = useState({ name: '' });
+  const [imageData, setImageData] = useState<Blob | string>('');
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleCloseDialog = (isAddavatar: boolean) => {
     if (!isAddavatar) {
-      setImageData({ name: '' });
+      setImageData('');
       setImage('');
     }
     setOpenDialog(false);
@@ -105,12 +106,34 @@ export default function NewChatScreen() {
     setChatName(event.target.value);
   };
 
-  const createChat = () => {
+  const createChat = async () => {
     if (!groupMembers.length || !chatName) return;
-    const fileExtension = imageData.name.split('.');
-    socket.emit('roomConnect', [...groupMembers, { id: userId, firstName, isAdmin: true }], fullDate(new Date()), chatName, imageData, fileExtension[fileExtension.length - 1], (success: boolean) => {
-      if (success) dispatch(hideDialogAction());
-    });
+    // const fileExtension = imageData.name.split('.');
+    const formData = new FormData();
+    formData.append('file', imageData);
+    try {
+      let fileName:any;
+      if (imageData) {
+        fileName = await axios('/upload-message-files', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          data: formData,
+        });
+      }
+      socket.emit('roomConnect', {
+        userId,
+        groupMembers: groupMembers.map(({ id }) => id),
+        chat: {
+          chatName, conversationType: 'Chat', conversationAvatar: fileName.data[0].filename, conversationCreationDate: fullDate(new Date()),
+        },
+      }, (success: boolean) => {
+        if (success) dispatch(hideDialogAction());
+      });
+    } catch (error) {
+      console.log(error, 'create group');
+    }
   };
 
   const handleChangeAvatarHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

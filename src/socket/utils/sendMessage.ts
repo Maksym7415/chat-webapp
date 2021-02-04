@@ -10,6 +10,7 @@ interface MessageParams {
   // setMessage: () => void
   // editMessageAction: () => void
   meta?: Array<MessageFiles>
+  opponentId?: number
   userId: number
   message: MessageValue
   messageDialog?: string | undefined
@@ -20,16 +21,17 @@ interface MessageParams {
 }
 
 function sendMessage({
-  actionType, chatId, message, messageDialog, userId, messageId, successCallback, messageType, meta,
+  actionType, chatId, message, messageDialog, userId, opponentId, messageId, successCallback, messageType, meta,
 }: MessageParams) {
   function emit(emitData: MessageSocketEmit) {
     socket.emit('message', emitData, successCallback);
   }
   console.log(message);
   const emitData: MessageSocketEmit = {
-    conversationId: chatId,
+    conversationId: isNaN(chatId) ? 0 : chatId,
     actionType,
     userId,
+    opponentId,
   };
   switch (actionType) {
     case 'new': {

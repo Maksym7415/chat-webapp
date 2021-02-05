@@ -1,3 +1,4 @@
+import { conversationActionFail } from '../constants/actionConstants';
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import * as types from '../constants/types';
 import { ConversationReducerStateInterface, ConversationActionsType } from '../constants/interfaces';
@@ -40,14 +41,12 @@ const initialState: ConversationReducerStateInterface = {
     type: '',
   },
   conversationTypeState: {
-    0: {
+    isTyping: false,
+    conversationId: 0,
+    user: {
       isTyping: false,
+      firstName: '',
       userId: 0,
-      users: [{
-        isTyping: false,
-        firstName: '',
-        userId: 0,
-      }],
     },
   },
   createConversation: {
@@ -121,7 +120,7 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
     case types.CONVERSATION_TYPE_STATE: {
       return {
         ...state,
-        conversationTypeState: { ...state.conversationTypeState, [action.payload.conversationId]: action.payload },
+        conversationTypeState: action.payload,
       };
     }
     case types.CONVERSATION_CREATE_NEW_CONVERSATION: {

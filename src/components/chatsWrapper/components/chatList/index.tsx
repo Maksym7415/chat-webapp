@@ -4,7 +4,7 @@ import { Typography, Grid, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/reducer/index';
-import { Conversation } from './interfaces';
+import { Conversation, BackUsers } from './interfaces';
 import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
 import contextMenuCallback from '../../../contextMenu/eventCallback';
@@ -12,7 +12,6 @@ import { contextMenuAction, showDialogAction } from '../../../../redux/common/co
 import { getUserConversationsActionRequest } from '../../../../redux/conversations/constants/actionConstants';
 import contextMenuConfig from './contextMenuConfig';
 import DefaultAvatar from '../../../../components/defaultAvatar';
-
 import useStyles from './styles/styles';
 
 interface ParamsId {
@@ -30,13 +29,13 @@ function ChatsList() {
 
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
   const data = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
-  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  const typingObject = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const [usersTyping, setUsersTyping] = useState<Conversation>({
     0: {
       0: {
-        firtsName: '',
+        firstName: '',
         isTyping: false,
         userId: 0,
         conversationId: 0,
@@ -45,8 +44,9 @@ function ChatsList() {
   });
 
   const getString = (element: any) => {
-    const arr = Object.values(usersTyping[element.currentConversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
+    const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
     let str = '';
+    console.log(arr, userId, Object.values(usersTyping[element.conversationId]));
     arr.forEach((el: any) => str += el.firstName);
     return str;
   };
@@ -66,42 +66,42 @@ function ChatsList() {
   // const []
 
   // const [timer, setTimer] = useState<Timer>({ });
-  // const currentUserTyping = (user: BackUsers, conversationId: number) => {
-  //   if (!isEmit) {
-  //     isEmit = true;
-  //     setUsersTyping((prev: any) => {
-  //       const conversation = prev[conversationId];
-  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
-  //     });
-  //     newTimer[conversationId] = { ...newTimer[conversationId] };
-  //     newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
-  //       const conversation = prev[conversationId];
-  //       isEmit = false;
-  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
-  //     }), 3000);
-  //   } else {
-  //     clearTimeout(newTimer[conversationId][user.userId]);
-  //     setUsersTyping((prev: any) => {
-  //       const conversation = prev[conversationId];
-  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
-  //     });
-  //     newTimer[conversationId] = { ...newTimer[conversationId] };
-  //     newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
-  //       const conversation = prev[conversationId];
-  //       isEmit = false;
-  //       return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
-  //     }), 3000);
-  //   }
-  // };
+  const currentUserTyping = (user: BackUsers, conversationId: number) => {
+    if (!isEmit) {
+      isEmit = true;
+      setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
+      });
+      newTimer[conversationId] = { ...newTimer[conversationId] };
+      newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        isEmit = false;
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+      }), 3000);
+    } else {
+      clearTimeout(newTimer[conversationId][user.userId]);
+      setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: true } } };
+      });
+      newTimer[conversationId] = { ...newTimer[conversationId] };
+      newTimer[conversationId][user.userId] = setTimeout(() => setUsersTyping((prev: any) => {
+        const conversation = prev[conversationId];
+        isEmit = false;
+        return { ...prev, [conversationId]: { ...conversation, [user.userId]: { ...user, isTyping: false } } };
+      }), 3000);
+    }
+  };
 
-  // const timer = (user: BackUsers, conversationId: number) => {
-  //   if (conversationId in newTimer) {
-  //     currentUserTyping(user, conversationId);
-  //   } else {
-  //     isEmit = false;
-  //     currentUserTyping(user, conversationId);
-  //   }
-  // };
+  const timer = (user: BackUsers, conversationId: number) => {
+    if (conversationId in newTimer) {
+      currentUserTyping(user, conversationId);
+    } else {
+      isEmit = false;
+      currentUserTyping(user, conversationId);
+    }
+  };
 
   const handleClickChatItem = (element: ConversationsList, event: React.MouseEvent<HTMLElement>, id: number) => {
     contextMenuCallback(event, id, [], dispatch);
@@ -141,6 +141,11 @@ function ChatsList() {
     console.log('CHAT LIST');
     dispatch(getUserConversationsActionRequest());
   }, []);
+
+  useEffect(() => {
+    const { user, conversationId } = typingObject;
+    timer(user, conversationId);
+  }, [typingObject]);
 
   useEffect(() => {
     setConversations(data);

@@ -8,8 +8,8 @@ export interface User {
 }
 
 export interface BackUsers {
-  firtsName: string
+  firstName: string
   isTyping: boolean
   userId: number
-  conversationId: number
+  conversationId?: number
 }

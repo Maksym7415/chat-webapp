@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/reducer';
 import { Messages } from '../redux/conversations/constants/interfaces';
 import {
-  conversationAddNewMessage, conversationEditMessage, conversationDeleteMessage, getUserConversationsActionRequest,
+  conversationAddNewMessage, conversationEditMessage, conversationDeleteMessage, getUserConversationsActionRequest, conversationTypeStateAction,
 } from '../redux/conversations/constants/actionConstants';
 import { socket } from './index';
+import { BackUsers } from '../components/chatsWrapper/components/chatList/interfaces';
 
 interface MessageSocketOn {
   message: Messages
@@ -16,6 +17,11 @@ interface MessageSocketOn {
 interface Room {
   status: string
   chatId: number
+}
+
+interface TypingData {
+  user: BackUsers
+  conversationId: number
 }
 
 function SocketOn({ children }: any) {
@@ -42,6 +48,7 @@ function SocketOn({ children }: any) {
     socket.emit('handshake', userId);
     socket.on('message', messageCallback);
     socket.on('roomConnect', roomConnectionResult);
+    socket.on('typing', ({ user, conversationId }: TypingData) => dispatch(conversationTypeStateAction(conversationId, true, user)));
     return () => {
       socket.removeListener('message', messageCallback);
       socket.removeListener('roomConnect', roomConnectionResult);

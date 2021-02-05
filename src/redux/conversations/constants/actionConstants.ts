@@ -52,13 +52,12 @@ export const getConversationIdAction = (id: number, type: string): interfaces.Co
   },
 });
 
-export const conversationTypeStateAction = (conversationId: number, isTyping: boolean, users: Array<interfaces.Users>, userId: number): interfaces.ConversationTypeStateInterfaceAction => ({
+export const conversationTypeStateAction = (conversationId: number, isTyping: boolean, user: interfaces.Users): interfaces.ConversationTypeStateInterfaceAction => ({
   type: types.CONVERSATION_TYPE_STATE,
   payload: {
     conversationId,
     isTyping,
-    users,
-    userId,
+    user,
   },
 });
 

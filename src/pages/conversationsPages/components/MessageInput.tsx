@@ -43,11 +43,11 @@ export default function MessageInput({
       conversationId,
       isTyping: false,
     };
-    if (!typing[conversationId]) {
-      socket.emit('typingState', user, conversationId);
-    } else {
-      socket.emit('typingState', user);
-    }
+    // if (!typing[conversationId]) {
+    socket.emit('typing', user, conversationId);
+    // } else {
+    //   socket.emit('typing', user);
+    // }
   };
 
   const sendMessageSuccessCallback = (success: boolean, actionType: string) => {

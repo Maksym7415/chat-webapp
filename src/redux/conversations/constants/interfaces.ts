@@ -1,3 +1,4 @@
+import { conversationActionFail } from './actionConstants';
 /* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
 import { ErrorResponse } from '../../common/interafaces';
@@ -51,9 +52,7 @@ export interface ConversationReducerStateInterface {
     id: number
     type: string
   }
-  conversationTypeState: {
-    [key: number]: ConverstaionTypeStateForReducer
-  }
+  conversationTypeState: ConverstaionTypeStateForReducer
   createConversation: UserCreateConversation
   opponentId: {
     id: number
@@ -125,15 +124,14 @@ interface UserConversationsList {
 
 interface ConverstaionTypeStateForReducer {
   isTyping: boolean
-  users: Array<Users>
-  userId: number
+  user: Users
+  conversationId: number
 }
 
 interface ConverstaionTypeState {
   isTyping: boolean
   conversationId: number
-  users: Array<Users>
-  userId: number
+  user: Users
 }
 
 export interface Users {

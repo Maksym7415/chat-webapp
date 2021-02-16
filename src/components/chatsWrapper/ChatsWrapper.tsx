@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Rnd } from 'react-rnd';
 import ChatsList from './components/chatList';
+import ChatInfo from './components/chatInfo';
 
 export function ChatsWrapper({ children }: any) {
   const [containerWidth, setContainerWidth] = useState<number>(300);
@@ -37,6 +38,7 @@ export function ChatsWrapper({ children }: any) {
         <ChatsList />
       </Rnd>
       { children }
+      <ChatInfo/>
     </div>
   );
 }

@@ -31,6 +31,7 @@ function ChatsList() {
   const data = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
+  const createConversationInfo = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject);
   const typingObject = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const [usersTyping, setUsersTyping] = useState<Conversation>({
     0: {
@@ -46,7 +47,6 @@ function ChatsList() {
   const getString = (element: any) => {
     const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
     let str = '';
-    console.log(arr, userId, Object.values(usersTyping[element.conversationId]));
     arr.forEach((el: any) => str += el.firstName);
     return str;
   };
@@ -152,11 +152,18 @@ function ChatsList() {
   }, [data]);
 
   useEffect(() => {
+    console.log(history);
     setConversations((prevState): Array<ConversationsList> => {
       let conversations: Array<ConversationsList> = [...prevState];
       prevState.forEach((el: ConversationsList, index: number) => {
+        console.log(el, currentConversationId);
         if (el.conversationId === currentConversationId) {
           conversations[index].Messages[0] = lastMessage[currentConversationId];
+        } else {
+          conversations.push({
+            ...createConversationInfo.conversationInfo,
+            Messages: [lastMessage[createConversationInfo.currentConversationId]],
+          });
         }
       });
       return conversations;
@@ -183,12 +190,11 @@ function ChatsList() {
                 <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
                 <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
               </div>
+              {console.log(element)}
                 <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
                   ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
                     ? `Вы: ${element.Messages[0].message}`
-                    : element.conversationType !== 'Dialog'
-                      ? null
-                      : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
+                    : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
                 </Typography>
             </div>
           </div>

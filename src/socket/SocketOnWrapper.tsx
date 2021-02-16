@@ -12,6 +12,7 @@ interface MessageSocketOn {
   message: Messages
   actionType: string
   conversationId: number
+  conversationInfo: any
 }
 
 interface Room {
@@ -30,10 +31,14 @@ function SocketOn({ children }: any) {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
 
   useEffect(() => {
-    const messageCallback = ({ message, conversationId, actionType }: MessageSocketOn) => {
-      console.log('new Chat create', { message, conversationId, actionType });
+    const messageCallback = ({
+      message, conversationId, conversationInfo, actionType,
+    }: MessageSocketOn) => {
+      console.log('new Chat create', {
+        message, conversationId, conversationInfo, actionType,
+      });
       if (actionType === 'new') {
-        return dispatch(conversationAddNewMessage(message, conversationId));
+        return dispatch(conversationAddNewMessage(message, conversationId, conversationInfo));
       }
       if (actionType === 'edit') return dispatch(conversationEditMessage(message));
       if (actionType === 'delete') return dispatch(conversationDeleteMessage(message.id));

@@ -26,10 +26,11 @@ export const lastConversationMessageAction = (data: interfaces.ConversationReduc
   data,
 });
 
-export const conversationAddNewMessage = (message: interfaces.Messages, id: number): interfaces.ConversationAddNewMessageAction => ({
+export const conversationAddNewMessage = (message: interfaces.Messages, id: number, conversationInfo: any): interfaces.ConversationAddNewMessageAction => ({
   type: types.CONVERSATIONS_ADD_NEW_MESSAGE,
   message,
   id,
+  conversationInfo,
 });
 
 export const conversationEditMessage = (message: interfaces.Messages): interfaces.ConversationEditMessageAction => ({

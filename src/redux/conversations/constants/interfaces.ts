@@ -47,6 +47,7 @@ export interface ConversationReducerStateInterface {
   }
   currentConversationIdObject: {
     currentConversationId: number
+    conversationInfo:any
   }
   conversationId: {
     id: number
@@ -190,6 +191,7 @@ export interface ConversationAddNewMessageAction {
   type: typeof types.CONVERSATIONS_ADD_NEW_MESSAGE
   message: Messages
   id: number
+  conversationInfo:any
 }
 
 // EDITED MESSAGE

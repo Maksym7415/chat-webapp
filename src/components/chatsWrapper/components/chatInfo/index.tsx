@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
-import axios, { AxiosResponse } from 'axios';
+import { RootState } from '../../../../redux/reducer/index';
+import { showDialogAction } from '../../../../redux/common/commonActions';
 import './styles/styles.scss';
+
+import { conversationInfoAction } from '../../../../redux/conversations/constants/actionConstants';
+
+interface ParamsId {
+  id: string
+}
 
 interface Users {
   firstName: string
@@ -14,17 +23,23 @@ interface Info {
 }
 
 function ChatInfo() {
-  const [data, setData] = useState<Info>({ Users: [] });
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const currentConversationId = +useParams<ParamsId>().id;
+  const data = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationInfo.success);
+
+  const userProfile = (id:number) => {
+    // history.push(`/user/${id}`);
+    dispatch(showDialogAction('Profile', id));
+  };
 
   useEffect(() => {
-    (async () => {
-      const d: AxiosResponse = await axios.get('http://localhost:8081/api/getConversation/11?type=Chat');
-      return setData(d.data);
-    })();
+    dispatch(conversationInfoAction(currentConversationId, 'Chat'));
   }, []);
 
   return (
-        <div className='chat_info'>
+      <>
+        {!isNaN(currentConversationId) && <div className='chat_info'>
           <div className='chat_info-container'>
             <div className='chat_info-header'>
               <Typography variant='h5' align='center'>
@@ -42,14 +57,13 @@ function ChatInfo() {
                   </Typography>
                 </div>
                 <div className='userscontainer-users'>
-                  {data.Users.map(({ firstName }) => <p>{firstName}</p>)}
+                  {data.Users?.map(({ firstName, id }, key) => <p onClick={() => userProfile(id)} key={key}>{firstName}</p>)}
                 </div>
               </div>
             </div>
-
           </div>
-
-        </div>
+        </div>}
+      </>
   );
 }
 

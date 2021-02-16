@@ -70,3 +70,8 @@ export const createNewChatAction = (ids: interfaces.IdsInterface): interfaces.Cr
 export const clearConversationData = () : interfaces.ClearConversationInterface => ({
   type: types.CONVERSATION_CLEAR_DATA,
 });
+
+export const conversationInfoAction = (id: number, type: string): interfaces.ConversationInfo => ({
+  type: types.CONVERSATION_INFO,
+  payload: { id, type },
+});

@@ -19,6 +19,11 @@ export const userInfoActionRequest = (id: number): interfaces.UserInfoActionInte
   id,
 });
 
+export const userInfoByIdActionRequest = (id: number): interfaces.UserInfoByIdActionInterface => ({
+  type: types.USER_GET_USER_INFO_BY_ID,
+  id,
+});
+
 export const setMainPhotoAction = (userId: number, photoUrl: string, photoId: number): interfaces.SetMainPhotoAction => ({
   type: types.USER_SET_MAIN_PHOTO,
   userId,
@@ -26,13 +31,15 @@ export const setMainPhotoAction = (userId: number, photoUrl: string, photoId: nu
   photoId,
 });
 
-export const getAvatarsAction = (): interfaces.GetAvatarsActionInteface => ({
+export const getAvatarsAction = (id: number): interfaces.GetAvatarsActionInteface => ({
   type: types.USER_GET_AVATARS,
+  payload: id,
 });
 
-export const uploadAvatarAction = (file: FormData): interfaces.UploadAvatarActionInterface => ({
+export const uploadAvatarAction = (id:number, file: FormData): interfaces.UploadAvatarActionInterface => ({
   type: types.USER_UPLOAD_AVATAR,
   file,
+  id,
 });
 
 export const clearDataAction = (): interfaces.ClearDataActionInterface => ({

@@ -7,10 +7,12 @@ import { userConversationsListWatcher } from '../conversations/sagas/userConvers
 import { userInfoWatcher } from '../user/sagas/userInfo';
 import { globalSearchWatcher } from '../search/sagas/globalSearch';
 import { createConversWatcher } from '../conversations/sagas/createNewConversation';
+import { conversInfoWatcher } from '../conversations/sagas/conversationInfo';
 import { getAvatarsWatcher } from '../user/sagas/getUserAvatars';
 import { setMainPhotoWatcher } from '../user/sagas/setMainPhoto.ts';
 import { getUploadAvatarsWatcher } from '../user/sagas/uploadAvatar';
 import { updateUserProfileWatcher } from '../user/sagas/updateUserProfile';
+import { userInfoByIdWatcher } from '../user/sagas/getUserInfoById';
 
 export default function* rootSaga() {
   yield all([
@@ -18,6 +20,7 @@ export default function* rootSaga() {
     signUpWatcher(),
     verificationCodeWatcher(),
     userConversationWatcher(),
+    userInfoByIdWatcher(),
     userConversationsListWatcher(),
     userInfoWatcher(),
     globalSearchWatcher(),
@@ -26,5 +29,6 @@ export default function* rootSaga() {
     setMainPhotoWatcher(),
     getUploadAvatarsWatcher(),
     updateUserProfileWatcher(),
+    conversInfoWatcher(),
   ]);
 }

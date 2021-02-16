@@ -6,7 +6,7 @@ import './styles/index.scss';
 
 function MainScreen({ history }: RouteComponentProps) {
   return (
-    <ChatsWrapper/>
+    <ChatsWrapper isMain={true}/>
   );
 }
 

@@ -133,7 +133,7 @@ function ChatsList() {
   };
 
   const handleViewProfile = () => {
-    dispatch(showDialogAction('profile'));
+    dispatch(showDialogAction('Profile', userId));
     closeContextMenuAction();
   };
 
@@ -152,11 +152,9 @@ function ChatsList() {
   }, [data]);
 
   useEffect(() => {
-    console.log(history);
     setConversations((prevState): Array<ConversationsList> => {
       let conversations: Array<ConversationsList> = [...prevState];
       prevState.forEach((el: ConversationsList, index: number) => {
-        console.log(el, currentConversationId);
         if (el.conversationId === currentConversationId) {
           conversations[index].Messages[0] = lastMessage[currentConversationId];
         } else {

@@ -10,11 +10,11 @@ export function* getUploadAvatarsWatcher() {
   yield takeEvery(USER_UPLOAD_AVATAR, getUploadAvatarsWorker);
 }
 
-function* getUploadAvatarsWorker({ file }: UploadAvatarActionInterface) {
+function* getUploadAvatarsWorker({ file, id }: UploadAvatarActionInterface) {
   try {
     const { data } = yield call(axios.post, '/upload', file);
     yield put(userActionSuccess({ data }, 'upload'));
-    yield put(getAvatarsAction());
+    yield put(getAvatarsAction(id));
   } catch (error) {
     yield put(userActionFail(error.response, 'upload'));
   }

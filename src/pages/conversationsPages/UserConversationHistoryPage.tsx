@@ -160,7 +160,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       return;
     }
     if (isNaN(conversationId)) {
-      console.log(allMessages, chatID);
       history.push(`/chat/${chatID}`);
     }
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {

@@ -59,6 +59,7 @@ export interface ConversationReducerStateInterface {
     id: number
     name: string
   }
+  conversationInfo: ConversationInfoData
 }
 
 export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
@@ -247,4 +248,35 @@ export interface CreateNewChatActionInterface {
 
 export interface ClearConversationInterface {
   type: typeof types.CONVERSATION_CLEAR_DATA
+}
+
+interface CInfo {
+  id: number,
+  type: string
+}
+
+interface ConversationInfoData {
+  success: {
+    Users: Array<CUser>
+    conversationAvatar: null | string
+    conversationCreationDate: string
+    conversationName: string
+    conversationType:string
+    conversationUpdateDate: null
+    id: number
+  }
+  error: ErrorResponse
+
+}
+
+interface CUser {
+  firstName: string
+  userUpdateTime: null | string
+  activityStatus: string
+  id: number
+}
+
+export interface ConversationInfo {
+  type: typeof types.CONVERSATION_INFO,
+  payload: CInfo
 }

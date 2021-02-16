@@ -61,7 +61,7 @@ export default function MiniDrawer(props: IProps<History>) {
   const ref = useRef<Ref>({});
 
   const handleOpenProfile = (event: any) => {
-    dispatch(showDialogAction('Profile'));
+    dispatch(showDialogAction('Profile', userId));
   };
 
   const handleMobileMenuOpen = (event: any) => {

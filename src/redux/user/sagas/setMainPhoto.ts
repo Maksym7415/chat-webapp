@@ -14,7 +14,7 @@ function* setMainPhotoWorker({ userId, photoUrl, photoId }: SetMainPhotoAction) 
   try {
     const { data } = yield call(axios.put, `setMainPhoto/${photoId}/?url=${photoUrl}`);
     yield put(userActionSuccess({ data }, 'setMainPhoto'));
-    yield put(getAvatarsAction());
+    yield put(getAvatarsAction(userId));
   } catch (error) {
     yield put(userActionFail(error.response, 'setMainPhoto'));
   }

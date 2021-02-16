@@ -10,9 +10,9 @@ export function* getAvatarsWatcher() {
   yield takeEvery(USER_GET_AVATARS, getAvatarsWorker);
 }
 
-function* getAvatarsWorker(data: GetAvatarsActionInteface) {
+function* getAvatarsWorker({ payload: id }: GetAvatarsActionInteface) {
   try {
-    const { data } = yield call(axios.get, '/getAvatars');
+    const { data } = yield call(axios.get, `/getAvatars/${id}`);
     yield put(userActionSuccess({ data }, 'avatars'));
   } catch (error) {
     yield put(userActionFail(error.response, 'avatars'));

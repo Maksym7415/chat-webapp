@@ -78,6 +78,7 @@ interface DialogHideAction {
 export interface DialogComponentState {
   isShow: boolean
   title: string
+  id: number
 }
 
 // MESSAGE FILES

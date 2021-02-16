@@ -18,6 +18,7 @@ const initialState: interafaces.CommonReducerInterface = {
   dialogComponent: {
     isShow: false,
     title: '',
+    id: 0,
   },
   messageFiles: null,
 };

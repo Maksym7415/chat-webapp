@@ -21,11 +21,12 @@ export const deleteMessageAction = (isDelete: boolean, messageId: number | null)
   payload: { isDelete, messageId },
 });
 
-export const showDialogAction = (title: string): interfaces.CommonReducerActions => ({
+export const showDialogAction = (title: string, id: number): interfaces.CommonReducerActions => ({
   type: types.DIALOG_COMPONENT_SHOW,
   payload: {
     isShow: true,
     title,
+    id,
   },
 });
 

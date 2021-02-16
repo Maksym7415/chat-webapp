@@ -11,8 +11,10 @@
                 &-title {
 
                 }
-                &-user {
-                    
+                &-users p {
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
         }

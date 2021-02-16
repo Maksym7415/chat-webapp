@@ -3,7 +3,7 @@ import { Rnd } from 'react-rnd';
 import ChatsList from './components/chatList';
 import ChatInfo from './components/chatInfo';
 
-export function ChatsWrapper({ children }: any) {
+export function ChatsWrapper({ children, isMain }: any) {
   const [containerWidth, setContainerWidth] = useState<number>(300);
   return (
     <div className='full-w flex'>
@@ -38,7 +38,7 @@ export function ChatsWrapper({ children }: any) {
         <ChatsList />
       </Rnd>
       { children }
-      <ChatInfo/>
+      {!isMain && <ChatInfo/>}
     </div>
   );
 }

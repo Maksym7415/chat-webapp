@@ -4,6 +4,7 @@ import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
 import UserConversationHistoryPage from '../../pages/conversationsPages';
 import UserProfile from '../../pages/user/components/userProfile';
+import UserInfoProfile from '../../pages/user/userInfoProfile';
 
 export default [
   {
@@ -76,6 +77,17 @@ export default [
     id: 8,
     Component: UserConversationHistoryPage,
     path: '/newchat',
+    roles: [
+      'admin',
+      'user',
+      'superadmin',
+    ],
+    isPrivate: true,
+  },
+  {
+    id: 8,
+    Component: UserInfoProfile,
+    path: '/user/:id',
     roles: [
       'admin',
       'user',

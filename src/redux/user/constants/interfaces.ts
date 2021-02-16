@@ -18,6 +18,7 @@ interface UserFail {
 
 export interface UserReducerInterface {
   userInfo: UserInfo
+  userInfoById: UserInfo
   setMainPhoto: MainPhotoInteface
   avatars: GetAvatarsInteface
   upload: UploadAvatarReducerInterface
@@ -77,6 +78,11 @@ export interface UserInfoActionInterface {
   id: number
 }
 
+export interface UserInfoByIdActionInterface {
+  type: typeof types.USER_GET_USER_INFO_BY_ID
+  id: number
+}
+
 export type UserInfoSuccessKeyType = keyof UserInfoSuccess;
 
 export interface UserInfoSuccess1KeyType {
@@ -116,7 +122,8 @@ interface AvatarObject {
 }
 
 export interface GetAvatarsActionInteface {
-  type: typeof types.USER_GET_AVATARS
+  type: typeof types.USER_GET_AVATARS,
+  payload: number
 }
 
 // UPLOAD PHOTO
@@ -131,6 +138,7 @@ interface UploadAvatarReducerInterface {
 export interface UploadAvatarActionInterface {
   type: typeof types.USER_UPLOAD_AVATAR
   file: FormData
+  id: number
 }
 
 // CLEAR DATA

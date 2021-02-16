@@ -12,16 +12,20 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/reducer/index';
 import {
-  getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction,
+  getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction, userInfoByIdActionRequest,
 } from '../../../redux/user/constants/actions';
 import '../style/style.scss';
 import DefaultAvatar from '../../../components/defaultAvatar';
 
-function UserProfile() {
+interface Props {
+  id: number
+}
+
+function UserProfile(props: Props) {
   const dispatch = useDispatch();
 
   const userId = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload.userId);
-  const userInfo = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success);
+  const userInfo = useSelector(({ userReducer }: RootState) => userReducer.userInfoById.success);
   const avatars = useSelector(({ userReducer }: RootState) => userReducer.avatars.success.data);
   const uploadAvatarMessage = useSelector(({ userReducer }: RootState) => userReducer.upload.success.data);
   const setPhotoMessage = useSelector(({ userReducer }: RootState) => userReducer.setMainPhoto.success.data);
@@ -61,12 +65,12 @@ function UserProfile() {
     const formData = new FormData();
     if (file) {
       formData.append('file', file[0]);
-      dispatch(uploadAvatarAction(formData));
+      dispatch(uploadAvatarAction(props.id, formData));
     }
   };
 
   const setMainPhoto = () => {
-    dispatch(setMainPhotoAction(userId, avatars[index].fileName, avatars[index].id));
+    dispatch(setMainPhotoAction(props.id, avatars[index].fileName, avatars[index].id));
   };
 
   const handleUpdateProfileRequest = (item: any) => {
@@ -75,7 +79,11 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    dispatch(getAvatarsAction());
+    dispatch(getAvatarsAction(props.id));
+  }, []);
+
+  useEffect(() => {
+    dispatch(userInfoByIdActionRequest(props.id));
   }, []);
 
   useEffect(() => {
@@ -103,10 +111,6 @@ function UserProfile() {
       return obj;
     });
   }, [userInfo]);
-  // {avatars[index] === undefined ?
-  //   <div className=' carousel__images-container'>
-  //   <DefaultAvatar name={`${userInfo.data.firstName} ${userInfo.data.lastName}`} width='300px' height='300px' fontSize='1.1rem' /> </div> : <div className=' carousel__images-container'>
-  //      {!!avatars.length && <img className='carousel__images-container__images br-5' src={`http://localhost:8081/${avatars[index].fileName}`} ></img>}
 
   return (
     <div style={{ width: '100%' }}>
@@ -136,7 +140,7 @@ function UserProfile() {
               </IconButton>
             </div>
           </div>
-          <div className='absolute carousel__options'>
+          {props.id === userId && <div className='absolute carousel__options'>
             <div className='carousel__options__upload-container'>
               <input
                 accept="image/*"
@@ -170,7 +174,7 @@ function UserProfile() {
                 Основное фото
             </Button> */}
             </div>
-          </div>
+          </div>}
         </div>
       </div>
       <div style={{ margin: '0px 75px' }}>
@@ -180,7 +184,7 @@ function UserProfile() {
               style={{ display: 'flex', flexDirection: 'column-reverse', marginBottom: '10px' }}
             >
 
-              <div>{`Нажмите чтобы изменить ${item.name}`}</div>{item.isInput === true
+              <div>{props.id === userId && `Нажмите чтобы изменить ${item.name}`}</div>{props.id === userId && item.isInput === true
                 ? <TextField
                   id="standard-basic"
                   size='small'
@@ -205,7 +209,7 @@ function UserProfile() {
                   }}
                 />
                 : <div style={{
-                  cursor: 'pointer', height: '29px', borderBottom: '1px solid', fontSize: '1rem',
+                  cursor: props.id === userId ? 'pointer' : '', height: '29px', borderBottom: '1px solid', fontSize: '1rem',
                 }} onClick={() => convertToInputAndToDiv(item.name, item.value, true)}>{item.value}</div>
                 }
             </div>

@@ -22,6 +22,25 @@ const initialState: interfaces.UserReducerInterface = {
     },
     error: null,
   },
+  userInfoById: {
+    success: {
+      data: {
+        id: 0,
+        login: '',
+        firstName: '',
+        lastName: '',
+        tagName: '',
+        fullName: '',
+        status: '',
+        userAvatar: '',
+        userCreationTime: '',
+        userUpdateTime: '',
+        userLastTimeOnline: '',
+        Roles: [],
+      },
+    },
+    error: null,
+  },
   setMainPhoto: {
     success: {
       data: '',

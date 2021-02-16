@@ -1,11 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import {
   Drawer, ListItemIcon, ListItemText, List, ListItem,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import { RootState } from '../redux/reducer';
 import listRenderByRole from './drawerList';
 import { showDialogAction } from '../redux/common/commonActions';
 
@@ -29,13 +30,14 @@ interface IDrawerProps {
 
 export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) {
   const classes = useStyles();
+  const userId = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload.userId);
   const dispatch = useDispatch();
   const [open, setOpenNewChatScreen] = React.useState(false);
 
   const handleDrawerClose = (title: string) => {
     setOpenDrawer(false);
     if (title === 'New Chat') {
-      dispatch(showDialogAction('Add New Chat'));
+      dispatch(showDialogAction('Add New Chat', userId));
     } else if (title === 'Logout') {
       dispatch(actionLogout());
     }

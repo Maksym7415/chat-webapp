@@ -1,7 +1,7 @@
+import { ConversationInfo, ConversationReducerStateInterface, ConversationActionsType } from '../constants/interfaces';
 import { conversationActionFail } from '../constants/actionConstants';
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import * as types from '../constants/types';
-import { ConversationReducerStateInterface, ConversationActionsType } from '../constants/interfaces';
 
 const initialState: ConversationReducerStateInterface = {
   userHistoryConversation: {
@@ -59,6 +59,20 @@ const initialState: ConversationReducerStateInterface = {
   opponentId: {
     id: 0,
     name: '',
+  },
+  conversationInfo: {
+    success: {
+      Users: [{
+        firstName: '', userUpdateTime: '', activityStatus: '', id: 0,
+      }],
+      conversationAvatar: '',
+      conversationCreationDate: '',
+      conversationName: '',
+      conversationType: '',
+      conversationUpdateDate: null,
+      id: 0,
+    },
+    error: null,
   },
 };
 
@@ -142,6 +156,12 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         conversationsList: initialState.conversationsList,
       };
     }
+    // case types.CONVERSATION_INFO: {
+    //   return {
+    //     ...state,
+    //     conversationInfo: action.payload,
+    //   };
+    // }
     default:
       return state;
   }

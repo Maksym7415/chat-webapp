@@ -20,7 +20,7 @@ export default function DialogComponent() {
   const Content = () => {
     switch (dialogState.title) {
       case 'Profile':
-        return <UserProfile />;
+        return <UserProfile id={dialogState.id}/>;
       case 'Add New Chat':
         return <NewChat />;
       default:

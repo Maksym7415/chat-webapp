@@ -39,6 +39,11 @@ export const setMessageFilesAction = (data: Array<interfaces.MessageFiles>): int
   data,
 });
 
+export const showChatInfoPanel = (data: boolean): interfaces.ShowChatInfoPanelAction => ({
+  type: types.SHOW_CHAT_INFO_PANEL,
+  data,
+});
+
 export const clearMessageFilesAction = (): interfaces.ClearMessageFilesAction => ({
   type: types.CLEAR_MESSAGE_FILES,
 });

@@ -16,10 +16,11 @@ import Badge from '@material-ui/core/Badge';
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import InfoIcon from '@material-ui/icons/Info';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { showDialogAction } from '../../redux/common/commonActions';
+import { showDialogAction, showChatInfoPanel } from '../../redux/common/commonActions';
 import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
 import { createNewChatAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
@@ -67,6 +68,8 @@ export default function MiniDrawer(props: IProps<History>) {
   const handleMobileMenuOpen = (event: any) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleShowChatInfoPanel = () => dispatch(showChatInfoPanel(true));
 
   const blur = (event: any) => {
     if (event.currentTarget.contains(event.relatedTarget)) return; // чтобы событие onlur не сработало на родители, при взаимодействии с дочерними элементами
@@ -154,6 +157,9 @@ export default function MiniDrawer(props: IProps<History>) {
                 <Badge badgeContent={17} color="secondary">
                   <NotificationsIcon />
                 </Badge>
+              </IconButton>
+              <IconButton aria-label="info" color="inherit" onClick={handleShowChatInfoPanel}>
+                  <InfoIcon />
               </IconButton>
               <IconButton
                 edge="end"

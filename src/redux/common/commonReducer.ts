@@ -21,6 +21,7 @@ const initialState: interafaces.CommonReducerInterface = {
     id: 0,
   },
   messageFiles: null,
+  isShowChatInfoPanel: false,
 };
 
 export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
@@ -71,6 +72,13 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
       return {
         ...state,
         messageFiles: action.data,
+      };
+    }
+    case types.SHOW_CHAT_INFO_PANEL
+    : {
+      return {
+        ...state,
+        isShowChatInfoPanel: action.data,
       };
     }
     case types.CLEAR_MESSAGE_FILES: {

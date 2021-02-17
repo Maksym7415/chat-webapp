@@ -24,9 +24,10 @@ export interface CommonReducerInterface {
   messageEdit: MessageEditState
   dialogComponent: DialogComponentState
   messageFiles: Array<MessageFiles> | null
+  isShowChatInfoPanel: boolean
 }
 
-export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction | DialogShowAction | DialogHideAction | MessageFilesAction | ClearMessageFilesAction;
+export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction | DialogShowAction | DialogHideAction | MessageFilesAction | ClearMessageFilesAction | ShowChatInfoPanelAction;
 
 // CONTEXT MENU
 export interface ContextMenuConfig {
@@ -98,4 +99,10 @@ export interface MessageFilesAction {
 
 export interface ClearMessageFilesAction {
   type: typeof types.CLEAR_MESSAGE_FILES
+}
+
+// CHAT INFO LEFT PANEL
+export interface ShowChatInfoPanelAction {
+  type: typeof types.SHOW_CHAT_INFO_PANEL
+  data: boolean
 }

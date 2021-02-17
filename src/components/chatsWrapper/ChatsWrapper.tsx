@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Rnd } from 'react-rnd';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/reducer/index';
 import ChatsList from './components/chatList';
 import ChatInfo from './components/chatInfo';
 
 export function ChatsWrapper({ children, isMain }: any) {
   const [containerWidth, setContainerWidth] = useState<number>(300);
+  const isShowChatInfoPanel = useSelector(({ commonReducer }: RootState) => commonReducer.isShowChatInfoPanel);
   return (
     <div className='full-w flex'>
-      <Rnd
+      {window.innerWidth > 800 && <Rnd
         style={{
           position: 'relative',
           background: '#dcf2ed',
@@ -36,9 +39,9 @@ export function ChatsWrapper({ children, isMain }: any) {
         }}
       >
         <ChatsList />
-      </Rnd>
+      </Rnd>}
       { children }
-      {!isMain && <ChatInfo/>}
+      {!isMain && isShowChatInfoPanel && <ChatInfo />}
     </div>
   );
 }

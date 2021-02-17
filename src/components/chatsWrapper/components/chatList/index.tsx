@@ -152,20 +152,29 @@ function ChatsList() {
   }, [data]);
 
   useEffect(() => {
-    setConversations((prevState): Array<ConversationsList> => {
-      let conversations: Array<ConversationsList> = [...prevState];
-      prevState.forEach((el: ConversationsList, index: number) => {
-        if (el.conversationId === currentConversationId) {
-          conversations[index].Messages[0] = lastMessage[currentConversationId];
-        } else {
-          conversations.push({
-            ...createConversationInfo.conversationInfo,
-            Messages: [lastMessage[createConversationInfo.currentConversationId]],
-          });
+    if (Object.keys(lastMessage).length) {
+      setConversations((prevState): Array<ConversationsList> => {
+        let conversations: Array<ConversationsList> = [...prevState];
+        for (let i = 0; i < prevState.length; i++) {
+          if (prevState[i].conversationId === currentConversationId) {
+            console.log('lastmessage', { currentConversationId, conversations, lastMessage });
+            conversations[i].Messages[0] = lastMessage[currentConversationId];
+            break;
+          }
+          if (isNaN(currentConversationId)) {
+            conversations.push({
+              ...createConversationInfo.conversationInfo,
+              Messages: [lastMessage[createConversationInfo.currentConversationId]],
+            });
+            break;
+          }
         }
+        prevState.forEach((el: ConversationsList, index: number) => {
+
+        });
+        return conversations;
       });
-      return conversations;
-    });
+    }
   }, [lastMessage]);
 
   return (
@@ -174,12 +183,12 @@ function ChatsList() {
         onContextMenu={handleCloseContextMenu}
         className='chat__chat-list-container'
       >
-        {conversations.map((element) => (
+        {conversations.map((element, i) => (
           <div
             onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
             onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
             className={`flex chat__chats-item ${element.conversationId === currentConversationId ? 'chat__active' : ''}`}
-            key={element.conversationId}
+            key={element.conversationId || i}
           >
             {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
             <div className='flex chat__chats-item-message-container relative'>
@@ -188,7 +197,6 @@ function ChatsList() {
                 <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
                 <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
               </div>
-              {console.log(element)}
                 <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
                   ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
                     ? `Вы: ${element.Messages[0].message}`

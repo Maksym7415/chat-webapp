@@ -26,7 +26,9 @@ function sendMessage({
   function emit(emitData: MessageSocketEmit) {
     socket.emit('message', emitData, successCallback);
   }
-  console.log(message);
+  console.log({
+    actionType, chatId, message, messageDialog, userId, opponentId, messageId, successCallback, messageType, meta,
+  });
   const emitData: MessageSocketEmit = {
     conversationId: isNaN(chatId) ? 0 : chatId,
     actionType,
@@ -68,6 +70,7 @@ function sendMessage({
       });
     }
     default:
+      console.log('default');
   }
 }
 

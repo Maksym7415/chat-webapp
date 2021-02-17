@@ -102,7 +102,7 @@ export default function MessageInput({
     handleOpenDialog(false);
     return dispatch(clearMessageFilesAction());
   };
-
+  console.log('message', message);
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>, meta: Array<MessageFiles> | null) => {
     if (event.key === 'Escape') {
       handleClearEditMessage();

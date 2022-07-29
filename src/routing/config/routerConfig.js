@@ -4,12 +4,13 @@ import VerificationPage from '../../pages/auth/verification';
 import MainScreen from '../../pages/mainScreen';
 import UserConversationHistoryPage from '../../pages/mainScreen/components/conversationsPages/UserConversationHistoryPage';
 import UserProfile from '../../pages/user/components/userProfile';
+import { Paths } from './paths';
 
 export default [
   {
     id: 1,
     Component: SignInPage,
-    path: '/signIn',
+    path: Paths.signIn,
     roles: [],
     isPrivate: false,
 
@@ -17,7 +18,7 @@ export default [
   {
     id: 2,
     Component: SignUpPage,
-    path: '/signUp',
+    path: Paths.signUp,
     roles: [],
     isPrivate: false,
 
@@ -25,7 +26,7 @@ export default [
   {
     id: 3,
     Component: VerificationPage,
-    path: '/verification',
+    path: Paths.verification,
     roles: [],
     isPrivate: false,
 
@@ -33,7 +34,7 @@ export default [
   {
     id: 4,
     Component: MainScreen,
-    path: '/',
+    path: Paths.main,
     roles: [
       'admin',
       'user',
@@ -45,7 +46,7 @@ export default [
   {
     id: 5,
     Component: SignUpPage,
-    path: '/profile',
+    path: Paths.profile,
     roles: [
       'admin',
     ],
@@ -54,7 +55,7 @@ export default [
   {
     id: 6,
     Component: MainScreen,
-    path: '/chat/:id',
+    path: `${Paths.chat}/:id`,
     roles: [
       'admin',
       'superadmin',
@@ -64,7 +65,7 @@ export default [
   {
     id: 7,
     Component: UserProfile,
-    path: '/userProfile',
+    path: Paths.userProfile,
     roles: [
       'admin',
       'user',
@@ -75,7 +76,7 @@ export default [
   {
     id: 8,
     Component: MainScreen,
-    path: '/newchat',
+    path: Paths.newchat,
     roles: [
       'admin',
       'user',

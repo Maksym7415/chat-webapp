@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { RootState } from '../../../redux/reducer';
 import AuthForm from '../common/authForm';
 import { actionLogin } from '../../../redux/authorization/constants/actionConstants';
+import { Paths } from '../../../routing/config/paths';
 
 export default function ({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export default function ({ history }: RouteComponentProps) {
   };
 
   useEffect(() => {
-    if (response.success?.status && !response.error) history.push('/verification', login);
+    if (response.success?.status && !response.error) history.push(Paths.verification, login);
   }, [response]);
 
   return (

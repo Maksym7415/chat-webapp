@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import AppBarWrapper from './appBar/AppBarWrapper';
 import setConfig from '../routing/config/setConfig';
+import { Paths } from '../routing/config/paths';
 
 export default function PrivatePage({
   Component, roles, isPrivate, token, ...rest
@@ -21,9 +22,9 @@ export default function PrivatePage({
                                 </AppBarWrapper>
                         );
                       }
-                      return <Redirect to='/'/>;
+                      return <Redirect to={Paths.main} />;
                     }
-                    return <Redirect to='/signIn'/>;
+                    return <Redirect to={Paths.signIn} />;
                   }
                   return !token ? <Component {...props}/> : <Redirect to='/'/>;
                 }}

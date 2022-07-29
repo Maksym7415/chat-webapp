@@ -13,6 +13,7 @@ import { validate } from './validate';
 import useStyles from './style';
 import { IPropsForm, IFIeldRenderConfig } from './authInterfaces';
 import authFieldRenderConfig from './authConfig';
+import { Paths } from '../../../routing/config/paths';
 
 const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string> & IPropsForm> = ({
   handleSubmit, pageName, icon, formTitle, submitBtnTitle, callBack,
@@ -53,13 +54,13 @@ const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string
         </div>
         {pageName === 'signUpPage'
           ? (
-              <Link href="/signIn" color="primary">
+              <Link href={Paths.signIn} color="primary">
               Have an account? Sign In.
               </Link>
           )
           : pageName === 'signInPage'
             ? (
-                <Link href="/signUp" color="primary">
+                <Link href={Paths.signUp} color="primary">
                   Have no account? Sign Up.
                   </Link>
             )

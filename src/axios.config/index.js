@@ -25,7 +25,7 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-const LocalStorageService = (() => {
+export const LocalStorageService = (() => {
   let _service;
   function _getService() {
     if (!_service) {

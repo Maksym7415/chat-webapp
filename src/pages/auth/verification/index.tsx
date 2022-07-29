@@ -6,6 +6,7 @@ import AuthForm from '../common/authForm';
 import { actionCheckVerificationCode, actionToken } from '../../../redux/authorization/constants/actionConstants';
 import { VeirficationLocationState } from '../common/authInterfaces'; // interface for history.location.state
 import { RootState } from '../../../redux/reducer';
+import { Paths } from '../../../routing/config/paths';
 
 export default function ({ history }: RouteComponentProps) {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export default function ({ history }: RouteComponentProps) {
   };
 
   useEffect(() => {
-    if (!isRedirectToSignIn && !isSignUp) history.push('/signIn');
+    if (!isRedirectToSignIn && !isSignUp) history.push(Paths.signIn);
   }, []);
 
   useEffect(() => {

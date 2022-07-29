@@ -29,6 +29,7 @@ import AppBarMenu from './AppBarMenu';
 import useStyles from './style/AppWrapperStyles';
 import DefaultAvatar from '../defaultAvatar';
 import { useDebounce } from '../../hooks/useDebounce';
+import { Paths } from '../../routing/config/paths';
 
 interface IProps<H> {
   children: Record<string, unknown>
@@ -98,9 +99,9 @@ export default function MiniDrawer(props: IProps<History>) {
     setHide(true);
     const chat = conversationsList.find((el) => el.conversationName === fullName);
     if (chat) {
-      return props.history.push(`/chat/${chat.conversationId}`);
+      return props.history.push(`${Paths.chat}/${chat.conversationId}`);
     }
-    props.history.push('/newchat');
+    props.history.push(Paths.newchat);
   };
 
   // USEEFFECTS

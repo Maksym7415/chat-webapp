@@ -11,6 +11,7 @@ import { Messages, Users } from '../../redux/conversations/constants/interfaces'
 import socket from '../../socket';
 import { Conversation, BackUsers } from './interfaces';
 import './styles/index.scss';
+import { Paths } from '../../routing/config/paths';
 
 let isEmit = false;
 let newTimer: any = {};
@@ -95,7 +96,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
       console.log(message, conversationId);
       // dispatch(getUserConversationsActionRequest());
       dispatch(getConversationIdAction(conversationId, 'Chat'));
-      history.push(`/chat/${conversationId}`);
+      history.push(`${Paths.chat}/${conversationId}`);
       // dispatch(conversationAddNewMessage(message, conversationId));
     });
   }, [conversationsList]);

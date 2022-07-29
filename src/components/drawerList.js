@@ -1,29 +1,31 @@
+/* eslint-disable no-return-assign */
 import React from 'react';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Fingerprint2 from 'fingerprintjs2';
 import GroupIcon from '@material-ui/icons/Group';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { Paths } from '../routing/config/paths';
 
 const drawerList = [
   {
     id: 1,
     title: 'New Chat',
-    route: '/',
+    route: Paths.main,
     roles: ['admin', 'user'],
     icon: <GroupIcon />,
   },
   {
     id: 2,
     title: 'Send email',
-    route: '/',
+    route: Paths.main,
     roles: ['admin', 'user'],
     icon: <MailIcon />,
   },
   {
     id: 3,
     title: 'Logout',
-    route: '/',
+    route: Paths.signIn,
     roles: ['admin', 'user'],
     icon: <ExitToAppIcon />,
   },

@@ -4,6 +4,7 @@ import {
 import axios from 'axios';
 import { AUTH_LOGIN } from '../constants/types';
 import { requestSuccess, requestFail } from '../constants/actionConstants';
+import { Paths } from '../../../routing/config/paths';
 
 export function* loginWatcher() {
   yield takeEvery(AUTH_LOGIN, loginWorker);
@@ -11,7 +12,8 @@ export function* loginWatcher() {
 
 function* loginWorker({ login }: any) {
   try {
-    const response = yield call(axios.post, '/signIn', { ...login });
+    const response = yield call(axios.post, Paths.signIn, { ...login });
+    console.log(response.data.verificationCode, 'verificationCode');
     yield put(requestSuccess(response, 'login'));
   } catch (error) {
     yield put(requestFail(error, 'login'));

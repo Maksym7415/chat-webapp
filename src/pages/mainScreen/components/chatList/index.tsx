@@ -13,7 +13,7 @@ import contextMenuCallback from '../../../../components/contextMenu/eventCallbac
 import { contextMenuAction, showDialogAction } from '../../../../redux/common/commonActions';
 import contextMenuConfig from './contextMenuConfig';
 import DefaultAvatar from '../../../../components/defaultAvatar';
-
+import { Paths } from '../../../../routing/config/paths';
 import useStyles from '../../styles/styles';
 
 interface ParamsId {
@@ -43,7 +43,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
 
   const handleClickChatItem = (element: ConversationsList, event: React.MouseEvent<HTMLElement>, id: number) => {
     contextMenuCallback(event, id, [], dispatch);
-    history.push(`/chat/${id}`);
+    history.push(`${Paths.chat}/${id}`);
     // handleChangeChat(element.conversationId, element.conversationType);
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -16,6 +17,7 @@ import { SearchObjectInteface } from '../../redux/search/constants/interfaces';
 import useStyles from './styles/styles';
 import socket from '../../socket';
 import { fullDate } from '../../common/getCorrectDateFormat';
+import { useDebounce } from '../../hooks/useDebounce';
 
 interface Ref {
   [x: string]: any;
@@ -27,12 +29,19 @@ const Transition = React.forwardRef((
 ) => <Slide direction="up" ref={ref} {...props} />);
 
 export default function NewChatScreen() {
+  // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  // REFS
   const ref = useRef<HTMLDivElement>(null);
+
+  // SELECTORS
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
-  const [value, setValue] = useState<string>('');
+
+  // STATES
+  const [searchvalue, setSearchValue] = useState<string>('');
   const [hide, setHide] = useState<boolean>(true);
   const [localSearchResult, setLocalSearchResult] = useState<Array<SearchObjectInteface>>([]);
   const [groupMembers, setGroupMembers] = useState<Array<SearchObjectInteface>>([]);
@@ -44,6 +53,10 @@ export default function NewChatScreen() {
   const [imageData, setImageData] = useState({ name: '' });
   const [openDialog, setOpenDialog] = React.useState(false);
 
+  // CUSTOM HOOKS
+  const debouncedSearchValue = useDebounce<string>(searchvalue, 500);
+
+  // FUNCTIONS
   const handleCloseDialog = (isAddavatar: boolean) => {
     if (!isAddavatar) {
       setImageData({ name: '' });
@@ -75,9 +88,8 @@ export default function NewChatScreen() {
 
   const handlerSearch = (event: any) => {
     event.persist();
-    setValue(event.target.value);
+    setSearchValue(event.target.value);
     setHide(false);
-    dispatch(initializedGlobalSearchAction(event.target.value));
   };
 
   const handleAdd = (newMember: SearchObjectInteface) => {
@@ -123,6 +135,7 @@ export default function NewChatScreen() {
     setOpenDialog(true);
   };
 
+  // USEEFFECTS
   useEffect(() => {
     let sortGroup: any = [];
     const groupMembersId = groupMembers.map((el) => el.id);
@@ -134,6 +147,10 @@ export default function NewChatScreen() {
   useEffect(() => {
     ref.current && ref.current.focus();
   }, [hide]);
+
+  useEffect(() => {
+    dispatch(initializedGlobalSearchAction(debouncedSearchValue));
+  }, [debouncedSearchValue]);
 
   return (
         <Grid container className={classes.container}>
@@ -237,7 +254,7 @@ export default function NewChatScreen() {
                     autoComplete='off'
                     disableUnderline={true}
                     id="standard-adornment-weight"
-                    value={value}
+                    value={searchvalue}
                     onChange={handlerSearch}
                     onFocus={() => {
                       if (searchResult.length) return setHide(false);

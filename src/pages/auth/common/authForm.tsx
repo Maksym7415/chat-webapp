@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { useParams } from 'react-router';
 import { reduxForm, Field, InjectedFormProps } from 'redux-form';
 import {
   Container,
@@ -18,10 +17,12 @@ import { Paths } from '../../../routing/config/paths';
 const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string> & IPropsForm> = ({
   handleSubmit, pageName, icon, formTitle, submitBtnTitle, callBack,
 }) => {
+  // HOOKS
   const classes = useStyles();
+
+  // VARIABLES
   const config: IFIeldRenderConfig = authFieldRenderConfig;
 
-  console.log(pageName);
   return (
     <Container component="main" maxWidth="xs">
         <div className={classes.paper}>

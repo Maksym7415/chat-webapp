@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Messages, ConversationsList } from '../../redux/conversations/constants/interfaces';
 
 // MAIN
@@ -71,7 +72,7 @@ export interface AddFilesProps {
   isOpen: boolean
   handleOpenDialog: Function
   handleAddFile: Function
-  setFiles: Function 
+  setFiles: Function
 }
 
 // MESSAGE COMPONENT

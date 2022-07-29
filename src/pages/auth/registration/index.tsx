@@ -9,12 +9,18 @@ import { RootState } from '../../../redux/reducer';
 import { Paths } from '../../../routing/config/paths';
 
 export default function ({ history }: RouteComponentProps) {
+  // HOOKS
   const dispatch = useDispatch();
+
+  // SELECTORS
   const { success: { email: login }, error } = useSelector(({ authReducer }: RootState) => authReducer.signUp);
+
+  // FUNCTIONS
   const submit = (value: any): void => {
     dispatch(actionSignUp(value));
   };
 
+  // USEEFFECTS
   useEffect(() => {
     if (login && !error) history.push(Paths.verification, { login });
   }, [error, login]);

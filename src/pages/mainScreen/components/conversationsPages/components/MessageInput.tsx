@@ -21,13 +21,19 @@ import { editMessageAction, deleteMessageAction } from '../../../../../redux/com
 export default function MessageInput({
   conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,
 }: MessageInputProps<History>) {
+  // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [message, setMessage] = useState<MessageValue>({ 0: '' });
+
+  // SELECTORS
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
-  const [editedMessage, setEditedMessage] = useState<string>('');
 
+  // STATES
+  const [editedMessage, setEditedMessage] = useState<string>('');
+  const [message, setMessage] = useState<MessageValue>({ 0: '' });
+
+  // FUNCTIONS
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
     setMessage({ ...message, [conversationId]: event.target.value });
@@ -88,6 +94,7 @@ export default function MessageInput({
     }
   };
 
+  // USEEFFECTS
   useEffect(() => {
     if (messageEdit.isEdit) {
       const resultMessage = allMessages[conversationId].find((message) => message.id === messageEdit.messageId);

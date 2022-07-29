@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-types */
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +8,7 @@ import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
 import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
-import { Messages, Users } from '../../redux/conversations/constants/interfaces';
+import { Messages } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
 import { Conversation, BackUsers } from './interfaces';
 import './styles/index.scss';
@@ -17,12 +18,15 @@ let isEmit = false;
 let newTimer: any = {};
 
 export default function BasicTextFields({ history }: RouteComponentProps) {
+  // HOOKS
   const dispatch = useDispatch();
-  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
 
+  // SELECTORS
+  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
+
+  // STATES
   const [usersTyping, setUsersTyping] = useState<Conversation>({
     0: {
       0: {
@@ -35,7 +39,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   });
   const [containerWidth, setContainerWidth] = useState<number>(300);
 
-  // const [timer, setTimer] = useState<Timer>({ });
+  // FUNCTIONS
   const currentUserTyping = (user: BackUsers, conversationId: number) => {
     if (!isEmit) {
       isEmit = true;
@@ -73,6 +77,7 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     }
   };
 
+  // USEEFFECTS
   useEffect(() => {
     dispatch(getUserConversationsActionRequest());
     // dispatch(userInfoActionRequest(1));
@@ -93,7 +98,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
 
   useEffect(() => {
     socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
-      console.log(message, conversationId);
       // dispatch(getUserConversationsActionRequest());
       dispatch(getConversationIdAction(conversationId, 'Chat'));
       history.push(`${Paths.chat}/${conversationId}`);

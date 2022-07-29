@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable no-unused-expressions */
 import { v4 as uuidv4 } from 'uuid';
 import { Messages } from '../../../redux/conversations/constants/interfaces';

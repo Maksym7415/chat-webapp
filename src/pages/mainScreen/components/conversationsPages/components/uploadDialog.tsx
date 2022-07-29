@@ -27,6 +27,7 @@ export default function UploadDialog({
   };
 
   const handleSendFiles = () => {
+    if (files && Object.keys(files).length < 1) return;
     dispatch(preloaderAction(true));
     handleSend(message);
   };

@@ -1,7 +1,7 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { fullDate } from '../../../../../common/getCorrectDateFormat';
 import socket from '../../../../../socket';
@@ -13,14 +13,20 @@ import { AddFilesProps, FilesSrc } from '../../../interfaces';
 let filesCount = 0;
 
 export default function AddFiles({
-  files, isOpen, handleOpenDialog, handleAddFile, setFiles
+  files, isOpen, handleOpenDialog, handleAddFile, setFiles,
 }: AddFilesProps) {
+  // HOOKS
   const dispatch = useDispatch();
+
+  // SELECTORS
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
-  const [message, setMessage] = useState<string>('');
-  const [src, setSrc] = useState<FilesSrc | object>({});
 
+  // STATES
+  const [message, setMessage] = useState<string>('');
+  const [src, setSrc] = useState<FilesSrc>({});
+
+  // FUNCTIONS
   const handleSendFiles = (message: string) => {
     if (!files) return;
 

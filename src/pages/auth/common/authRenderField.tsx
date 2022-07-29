@@ -8,7 +8,9 @@ import useStyles from './style';
 export const AuthRenderField = ({
   input, meta: { touched, error, invalid }, label, placeholder, variant,
 }: IPropsRenderField) => {
+  // HOOKS
   const classes = useStyles();
+
   return (
         <TextField
             className={classes.textField}

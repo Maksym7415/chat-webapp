@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { FormSubmitHandler } from 'redux-form';
 
 interface IFields {
@@ -29,7 +30,7 @@ export interface IPropsRenderField {
 
 export interface IPropsForm {
   pageName: string
-  icon: {}
+  icon: object
   formTitle: string
   submitBtnTitle: string
   callBack: (e: any) => void

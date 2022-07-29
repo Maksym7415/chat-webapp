@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState } from 'react';
 import { Paper, Avatar } from '@material-ui/core';
@@ -17,10 +18,14 @@ import { RootState } from '../../../../../redux/reducer';
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
 }: MessageProps) {
+  // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  // SELECTORS
   const activeConversationType = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.type);
 
+  // FUNCTIONS
   const handleEditMessage = () => {
     dispatch(editMessageAction(true, id));
     dispatch(contextMenuAction({

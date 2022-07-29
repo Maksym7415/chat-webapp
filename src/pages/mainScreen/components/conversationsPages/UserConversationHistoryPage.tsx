@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/indent */
 import React, {
   useEffect, useState, useRef,
@@ -6,11 +7,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { History } from 'history';
 import {
-  Grid, Paper,
+  Grid,
 } from '@material-ui/core';
 import {
   conversationUserHistoryActionRequest,
-  createNewChatAction,
   getConversationIdAction,
   clearConversationData,
 } from '../../../../redux/conversations/constants/actionConstants';
@@ -20,7 +20,7 @@ import MessageInput from './components/MessageInput';
 import AddFiles from './components/addFilesComponent';
 import { contextMenuAction } from '../../../../redux/common/commonActions';
 import {
-  Files, CurrentConversationMessages, ScrollValue, Pagination,
+  Files, CurrentConversationMessages, Pagination,
 } from '../../interfaces';
 import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
@@ -35,30 +35,36 @@ interface Props<H>{
   history: H
 }
 
-const getCurrentScrollTop = (element: any) => element.scrollTop;
-
 export default function UserConversationHistoryPage({ history }: Props<History>) {
+  // HOOKS
   const dispatch = useDispatch();
   const conversationId = +useParams<ParamsId>().id;
+
+  // REFS
+  const inputRef = useRef<HTMLInputElement>(null);
+  const ref = useRef(null);
+
+  // SELECTERS
   const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
   const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
   const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
- // const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.id);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+
+  // STATES
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
   const [localPagination, setLocalPagination] = useState<Pagination>({});
-  const [scrollValue, setScrollValue] = useState<ScrollValue>({});
   const [files, setFiles] = useState<Files>({});
-  const inputRef = useRef<HTMLInputElement>(null);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
   const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
-  const ref = useRef(null);
+
+  // VARIABLES
   let newArr: any = [];
 
+  // FUNCTIONS
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
     let element = event.currentTarget;
     if (allMessages[conversationId]?.length % (15 + timeDivCounter) === 0 && element.scrollTop === 0) {
@@ -69,7 +75,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const handleCloseContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     if (event.type === 'contextmenu') {
       event.preventDefault();
-      console.log('prevent');
     }
     if (event.type === 'click') {
       dispatch(contextMenuAction({
@@ -121,9 +126,9 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     handleOpenDialog(true);
     settingFilesObject(file, setFiles);
     setIsInputState(true);
-    // event.target.value = '';
   };
 
+  // USEEFFECTS
   useEffect(() => () => {
     dispatch(clearConversationData());
   }, []);
@@ -138,12 +143,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [conversationId]);
 
-  // useEffect(() => () => {
-  //     if (!isNaN(conversationId)) {
-  //       dispatch(createNewChatAction({ userId: 0, opponentId: 0 }));
-  //     }
-  //   }, []);
-
   useEffect(() => {
     scrollTop(ref);
     let currentDay = 0;
@@ -155,6 +154,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
         currentDay = new Date(el.sendDate).getDate();
         newArr = [...newArr, el];
       }
+      return el;
     });
     setTimeDivCounter(newArr.filter((el: Messages) => el.component).length);
     setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
@@ -201,11 +201,10 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
         }}
       >
         <>
-          {isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
+          {Number.isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
               fkSenderId, message, id, sendDate, User, Files, component,
             }, index: number, arr) => {
-              // /console.log(arr[index + 1].sendDate, sendDate);
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
               if (component) {
@@ -216,7 +215,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
                         maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
                       }}>
                         {setMessageDate(new Date(sendDate))}
-
                       </p>
                     </div>
                   </React.Fragment>

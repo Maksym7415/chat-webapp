@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable no-return-assign */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Grid, Avatar } from '@material-ui/core';
@@ -21,19 +24,20 @@ interface ParamsId {
 }
 
 export default ({ data, usersTyping, history }: ChatListProps<History>) => {
+  // HOOKS
   const dispatch = useDispatch();
   const classes = useStyles();
   const params = useParams<ParamsId>();
 
-  const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
+  // SELECTORS
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
 
-  useEffect(() => {
-    setConversations(data);
-  }, [data]);
+  // STATES
+  const [conversations, setConversations] = useState<Array<ConversationsList>>([]);
 
+  // FUNCTIONS
   const getString = (element: any) => {
     const arr = Object.values(usersTyping[element.conversationId]).filter((el: any) => el.isTyping && el.userId !== userId);
     let str = '';
@@ -58,7 +62,6 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const handleCloseContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     if (event.type === 'contextmenu') {
       event.preventDefault();
-      console.log('prevent');
     }
     if (event.type === 'click') {
       closeContextMenuAction();
@@ -66,7 +69,6 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   };
 
   const handleDeleteChat = () => {
-    console.log('delete chat');
     closeContextMenuAction();
   };
 
@@ -74,6 +76,11 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
     dispatch(showDialogAction('profile'));
     closeContextMenuAction();
   };
+
+  // USEEFECTS
+  useEffect(() => {
+    setConversations(data);
+  }, [data]);
 
   useEffect(() => {
     setConversations((prevState): Array<ConversationsList> => {

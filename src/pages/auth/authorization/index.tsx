@@ -9,15 +9,22 @@ import { actionLogin } from '../../../redux/authorization/constants/actionConsta
 import { Paths } from '../../../routing/config/paths';
 
 export default function ({ history }: RouteComponentProps) {
+  // HOOKS
   const dispatch = useDispatch();
-  const [login, setLogin] = useState<string>('');
+
+  // SELECTORS
   const response = useSelector(({ authReducer }: RootState) => authReducer.login);
 
+  // STATES
+  const [login, setLogin] = useState<string>('');
+
+  // FUNCTIONS
   const submit = (value: any): void => {
     setLogin(value);
     dispatch(actionLogin(value));
   };
 
+  // USEEFFECTS
   useEffect(() => {
     if (response.success?.status && !response.error) history.push(Paths.verification, login);
   }, [response]);

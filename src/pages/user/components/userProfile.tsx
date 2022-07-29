@@ -9,6 +9,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/reducer/index';
 import {
@@ -18,16 +19,21 @@ import '../style/style.scss';
 import DefaultAvatar from '../../../components/defaultAvatar';
 
 function UserProfile() {
+  // HOOKS
   const dispatch = useDispatch();
 
+  // SELECTORS
   const userId = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload.userId);
   const userInfo = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success);
   const avatars = useSelector(({ userReducer }: RootState) => userReducer.avatars.success.data);
   const uploadAvatarMessage = useSelector(({ userReducer }: RootState) => userReducer.upload.success.data);
   const setPhotoMessage = useSelector(({ userReducer }: RootState) => userReducer.setMainPhoto.success.data);
+
+  // STATES
   const [userData, setUserData] = useState<any>({});
   const [index, setIndex] = useState<number>(0);
 
+  // FUNCTIONS
   const convertToInputAndToDiv = (id: string, value: string, isInput: boolean) => {
     setUserData((prev: any) => ({ ...prev, [id]: { value, isInput, name: id } }));
   };
@@ -69,11 +75,16 @@ function UserProfile() {
     dispatch(setMainPhotoAction(userId, avatars[index].fileName, avatars[index].id));
   };
 
+  const removeAvatar = () => {
+    console.log(avatars[index].id, 'removeAvatar');
+  };
+
   const handleUpdateProfileRequest = (item: any) => {
     convertToInputAndToDiv(item.name, item.value, false);
     dispatch(updateUserProfileAction({ [item.name]: item.value }));
   };
 
+  // USEEFFECTS
   useEffect(() => {
     dispatch(getAvatarsAction());
   }, []);
@@ -116,26 +127,31 @@ function UserProfile() {
           <div className=' carousel__images-container'>
             {avatars[index] === undefined ? <DefaultAvatar name={`${userInfo.data.firstName} ${userInfo.data.lastName}`} width='300px' height='300px' fontSize='5.5rem' /> : !!avatars.length && <img className='carousel__images-container__images br-5' src={`${process.env.REACT_APP_BASE_URL}/${avatars[index].fileName}`} ></img>}
           </div>}
-          <div className='carousel__buttons-container'>
-            <div className='carousel__buttons-container__button-wrapper'>
-              <IconButton
-                aria-label="toggle password visibility"
-                edge="end"
-                onClick={() => changeImage('back')}
-              >
-                <ArrowLeftIcon fontSize='small' />
-              </IconButton>
-            </div>
-            <div className='carousel__buttons-container__button-wrapper'>
-              <IconButton
-                aria-label="toggle password visibility"
-                edge="end"
-                onClick={() => changeImage('forward')}
-              >
-                <ArrowRightIcon fontSize='small' />
-              </IconButton>
-            </div>
-          </div>
+          {
+            avatars.length > 1
+              ? <div className='carousel__buttons-container'>
+                  <div className='carousel__buttons-container__button-wrapper'>
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      edge="end"
+                      onClick={() => changeImage('back')}
+                    >
+                      <ArrowLeftIcon fontSize='small' />
+                    </IconButton>
+                  </div>
+                  <div className='carousel__buttons-container__button-wrapper'>
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      edge="end"
+                      onClick={() => changeImage('forward')}
+                    >
+                      <ArrowRightIcon fontSize='small' />
+                    </IconButton>
+                  </div>
+                </div>
+              : null
+          }
+
           <div className='absolute carousel__options'>
             <div className='carousel__options__upload-container'>
               <input
@@ -155,6 +171,17 @@ function UserProfile() {
                   <AddAPhotoIcon fontSize='small' />
                 </IconButton>
               </label>
+            </div>
+            <div className='carousel__options__upload-container'>
+                {avatars[index] && <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  className='carousel__options__upload-container__btn'
+                  onClick={removeAvatar}
+                >
+                  {<DeleteIcon />}
+                </IconButton>}
             </div>
             <div className='carousel__options__upload-container'>
                 {avatars[index] && <IconButton
@@ -186,7 +213,7 @@ function UserProfile() {
                   size='small'
                   name={item.name}
                   onChange={changeHandler}
-                  onBlur={() => handleUpdateProfileRequest(item)}
+                  onBlur={() => convertToInputAndToDiv(item.name, item.value, true)}
                   value={item.value}
                   autoFocus
                   InputProps={{

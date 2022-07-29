@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
-  Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
+  Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper, IconButton,
 } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { DialogProps, FilesSrc } from '../../../interfaces';
+import { DialogProps, FilesSrc, Files } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import { preloaderAction } from '../../../../../redux/common/commonActions';
 
 export default function UploadDialog({
-  handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage,
+  handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage, setFiles,
 }: DialogProps) {
+  // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  // FUNCTIONS
   const readImage = (file: File, name: string) => {
     const reader: FileReader = new FileReader();
     reader.onload = (event: Event) => {
@@ -37,6 +40,18 @@ export default function UploadDialog({
     if (event.key === 'Enter') handleSendFiles();
   };
 
+  const handleRemoveFile = (indexFile: string) => {
+    let newFiles:Files = { ...files };
+    let newSrc:FilesSrc = { ...src };
+
+    delete newFiles[indexFile];
+    delete newSrc[indexFile];
+
+    setFiles(newFiles);
+    setSrc(newSrc);
+  };
+
+  // USEEFFECTS
   useEffect(() => {
     if (files) {
       Object.keys(files).forEach((key: string) => {
@@ -46,6 +61,18 @@ export default function UploadDialog({
     }
   }, [files]);
 
+  const deleteElement = (hash: string, style?: React.CSSProperties): any => <div className={classes.deleteFileWrapper} style={style}>
+                        <IconButton
+                          color="primary"
+                          aria-label="upload picture"
+                          // component="span"
+                          className={classes.deleteFile}
+                          onClick={() => handleRemoveFile(hash)}
+
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                    </div>;
   return (
     <Dialog
       fullWidth
@@ -59,17 +86,23 @@ export default function UploadDialog({
       <DialogContent dividers>
         <div className='conversations__upload-image-container'>
           {
-            Object.values(src).map((file: any, i) => (
-              file.type === 'image'
-                ? <img key={i} className='conversations__upload-image' src={file.file} />
+            Object.entries(src).map((item: any) => {
+              const hash = item[0];
+              const file = item[1];
+              return (file.type === 'image'
+                ? <div className={classes.wrapperFile} key={hash}>
+                        <img className='conversations__upload-image' src={file.file} />
+                        {deleteElement(hash)}
+                  </div>
                 : <Paper
-                    className={classes.paperFileContainerDialog}
-                    key={i}
-                  >
-                    <InsertDriveFileIcon/>
-                    <p>{file.file}</p>
-                  </Paper>
-            ))
+                      className={classes.paperFileContainerDialog}
+                      key={hash}
+                    >
+                      <InsertDriveFileIcon/>
+                      <p>{file.file}</p>
+                      {deleteElement(hash, { right: '-10px' })}
+                    </Paper>);
+            })
           }
         </div>
         <TextField

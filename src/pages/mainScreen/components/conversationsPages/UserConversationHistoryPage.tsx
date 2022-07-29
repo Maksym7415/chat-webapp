@@ -259,7 +259,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
         multiple
         onChange={onFilesAdded}
       />}
-      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} />
+      <AddFiles files={files} isOpen={isOpenDialog} handleOpenDialog={handleOpenDialog} handleAddFile={openFileDialog} setFiles={setFiles}/>
     </div>
   );
 }

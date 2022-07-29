@@ -62,6 +62,7 @@ export interface DialogProps {
   src: FilesSrc | object
   setSrc: Function
   setMessage: Function
+  setFiles: Function
 }
 
 // ADD FILES COMPONENT
@@ -70,6 +71,7 @@ export interface AddFilesProps {
   isOpen: boolean
   handleOpenDialog: Function
   handleAddFile: Function
+  setFiles: Function 
 }
 
 // MESSAGE COMPONENT

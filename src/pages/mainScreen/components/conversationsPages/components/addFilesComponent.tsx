@@ -13,7 +13,7 @@ import { AddFilesProps, FilesSrc } from '../../../interfaces';
 let filesCount = 0;
 
 export default function AddFiles({
-  files, isOpen, handleOpenDialog, handleAddFile,
+  files, isOpen, handleOpenDialog, handleAddFile, setFiles
 }: AddFilesProps) {
   const dispatch = useDispatch();
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
@@ -53,7 +53,7 @@ export default function AddFiles({
 
   return (
     <>
-      <UploadDialog handleSend={handleSendFiles} isOpen={isOpen} handleClose={handleOpenDialog} files={files} handleAddFile={handleAddFile} message={message} src={src} setSrc={setSrc} setMessage={setMessage} />
+      <UploadDialog handleSend={handleSendFiles} isOpen={isOpen} handleClose={handleOpenDialog} files={files} handleAddFile={handleAddFile} message={message} src={src} setSrc={setSrc} setMessage={setMessage} setFiles={setFiles}/>
     </>
   );
 }

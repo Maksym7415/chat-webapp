@@ -41,6 +41,7 @@ export default makeStyles((theme) => ({
     marginBottom: '5px',
   },
   paperFileContainerDialog: {
+    position: 'relative',
     width: '80%',
     backgroundColor: '#b5f5ca',
     display: 'flex',
@@ -57,5 +58,32 @@ export default makeStyles((theme) => ({
     position: 'absolute',
     bottom: 0,
     left: 0,
+  },
+  deleteFileWrapper: {
+    width: '20px',
+    height: '20px',
+    position: 'absolute',
+    top: -10,
+    right: 10,
+  },
+  wrapperFile: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  deleteFile: {
+    width: '100%',
+    height: '100%',
+    padding: 0,
+    '& > span ': {
+      width: '20px',
+      height: '20px',
+      '& > svg': { 
+        width: '20px',
+        height: '20px',
+      }
+    },
   },
 }));

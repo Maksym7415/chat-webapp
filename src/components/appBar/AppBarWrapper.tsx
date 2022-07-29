@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -27,6 +28,7 @@ import Drawer from '../Drawer';
 import AppBarMenu from './AppBarMenu';
 import useStyles from './style/AppWrapperStyles';
 import DefaultAvatar from '../defaultAvatar';
+import { useDebounce } from '../../hooks/useDebounce';
 
 interface IProps<H> {
   children: Record<string, unknown>
@@ -45,21 +47,31 @@ interface ParamsId{
 }
 
 export default function MiniDrawer(props: IProps<History>) {
+  // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
   const params = useParams<ParamsId>();
+
+  // REFS
+  const ref = useRef<Ref>({});
+
+  // SELECTORS
   const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
   const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
   const userData = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success.data);
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
 
+  // STATES
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<Element | null>(null);
-  const [value, setValue] = useState<string>('');
+  const [searchvalue, setSearchValue] = useState<string>('');
   const [hide, setHide] = useState<boolean>(true);
-  const ref = useRef<Ref>({});
 
+  // CUSTOM HOOKS
+  const debouncedSearchValue = useDebounce<string>(searchvalue, 500);
+
+  // FUNCTIONS
   const handleOpenProfile = (event: any) => {
     dispatch(showDialogAction('Profile'));
   };
@@ -75,10 +87,9 @@ export default function MiniDrawer(props: IProps<History>) {
 
   const handlerSearch = (event: any) => {
     event.persist();
-    setValue(event.target.value);
+    setSearchValue(event.target.value);
     // if (!event.target.value) return setReactSearch([]);
     setHide(false);
-    dispatch(initializedGlobalSearchAction(event.target.value));
     // setReactSearch(() => top100Films.filter((el) => el.title.slice(0, event.target.value.length).toLowerCase() === event.target.value.toLowerCase()));
   };
 
@@ -92,9 +103,14 @@ export default function MiniDrawer(props: IProps<History>) {
     props.history.push('/newchat');
   };
 
+  // USEEFFECTS
   useEffect(() => {
     ref.current && ref.current.focus(); // Если элемент виден на экране даем ему фокус
   }, [hide]);
+
+  useEffect(() => {
+    dispatch(initializedGlobalSearchAction(debouncedSearchValue));
+  }, [debouncedSearchValue]);
 
   return (
     <div className={classes.root}>
@@ -129,7 +145,7 @@ export default function MiniDrawer(props: IProps<History>) {
                     disableUnderline={true}
                     ref={ref}
                     id="standard-adornment-weight"
-                    value={value}
+                    value={searchvalue}
                     onChange={handlerSearch}
                     onFocus={() => {
                       if (searchResult.length) return setHide(false);
@@ -161,7 +177,6 @@ export default function MiniDrawer(props: IProps<History>) {
                 aria-haspopup="true"
                 onClick={handleOpenProfile}
                 color="inherit"
-
               >
                 {userData.userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userData.userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
               </IconButton>

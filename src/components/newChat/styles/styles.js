@@ -95,4 +95,17 @@ export default makeStyles((theme) => ({
     margin: '20px 0 0 auto',
 
   },
+  wrapperImg: {
+    maxWidth: 150,
+    maxHeight: 150,
+    width: '100%',
+    height: '100%',
+    margin: '10px auto 0',
+    position: 'relative',
+    '& > img': {
+      width: '100%',
+      height: '100%',
+      borderRadius: '100%',
+    },
+  },
 }));

@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
-  Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper, IconButton,
+  Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { DialogProps, FilesSrc, Files } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import { preloaderAction } from '../../../../../redux/common/commonActions';
+import DeleteItem from '../../../../../components/deleteItem/DeleteItem';
 
 export default function UploadDialog({
   handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage, setFiles,
@@ -62,18 +62,16 @@ export default function UploadDialog({
     }
   }, [files]);
 
-  const deleteElement = (hash: string, style?: React.CSSProperties): any => <div className={classes.deleteFileWrapper} style={style}>
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          // component="span"
-                          className={classes.deleteFile}
-                          onClick={() => handleRemoveFile(hash)}
+  const deleteElement = (hash: string, style?: React.CSSProperties): JSX.Element => <DeleteItem
+      settingWrapper={{ style }}
+      settingWrapperIcon={{
+        ariaLabel: 'upload picture',
+        className: classes.deleteFile,
+        onClick: () => handleRemoveFile(hash),
+        component: 'span',
+      }}
+    />;
 
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                    </div>;
   return (
     <Dialog
       fullWidth

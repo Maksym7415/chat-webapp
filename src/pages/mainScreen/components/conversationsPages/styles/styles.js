@@ -80,10 +80,10 @@ export default makeStyles((theme) => ({
     '& > span ': {
       width: '20px',
       height: '20px',
-      '& > svg': { 
+      '& > svg': {
         width: '20px',
         height: '20px',
-      }
+      },
     },
   },
 }));

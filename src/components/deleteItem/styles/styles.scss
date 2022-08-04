@@ -1,0 +1,143 @@
+$appbarHeight: 64px;
+.conversations {
+
+  &__container {
+    overflow-x: hidden;
+    width: 100%;
+    padding: 20px 0 0 0;
+    height: calc(100vh - #{$appbarHeight});
+    position: relative;
+  }
+
+  &__message-container {
+    display: flex;
+    position: relative;
+    padding-right: 10px;
+    max-width: 600px;
+  }
+
+  &__message-container-margin-sender {
+    margin: 0 0 25px 50px;
+  }
+
+  &__message-container-margin-friend {
+    margin: 0 auto 25px 0;
+  }
+
+  &__message-file-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__upload-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  &__upload-image {
+    width: 80%;
+    margin-bottom: 5px;
+    height: 200px;
+  }
+
+  &__send-close-buttons-container {
+    display: flex;
+    margin-left: auto;
+  }
+
+  &__send-message-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    position: sticky;
+    padding: 0 10px;
+    bottom: 0;
+    background-color: #ffffff;
+  }
+
+  &__send-message-text {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    position: sticky;
+    padding: 0 10px;
+    bottom: 50px;
+    background-color: #ffffff;
+  }
+
+  &__send-message-text > div > p {
+    margin: 5px 0 0 0;
+  }
+
+  &__send-message-text-title-wrapper {
+    max-width: 80%;
+  }
+
+  &__send-message-shadow {
+    -webkit-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    -moz-box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+    box-shadow: 0px -5px 14px -2px rgba(209,209,209,1);
+  }
+
+  &__edit-message-paragraph {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__message-image-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+  }
+
+  &__message-image-item {
+    max-width: 500px;
+    max-height: 500px;
+    margin: 0 0 5px 0;
+    border-radius: 4px;
+  }
+
+  &__message-text {
+    max-width: 80%;
+    color: #e8e8e8;
+    margin: 0;
+    overflow: hidden;
+    word-break: keep-all;;
+  }
+
+  &__message-info-text {
+    color: #e8e8e8;
+    margin: 0
+  }
+
+  &__message-info-time {
+    color: #e8e8e8;
+    margin: 0;
+  }
+
+  &__message-data-sender {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #e8e8e8;
+  }
+
+  &__user-name-date-container {
+    display: flex;
+    // flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 1000px) {
+    &__message-image-container {
+      margin-left: 40px;
+    }
+  }
+}

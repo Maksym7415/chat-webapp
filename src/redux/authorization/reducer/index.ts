@@ -48,6 +48,9 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
           success: action.payload,
           error: null,
         },
+        logout: {
+          isLogout: false,
+        },
       };
     case types.AUTH_FAIL:
       return {
@@ -85,6 +88,20 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
         ...state,
         logout: {
           isLogout: true,
+        },
+        verification: {
+          ...state.verification,
+          success: {
+            ...state.verification.success,
+            accessToken: '',
+            refreshToken: '',
+          },
+        },
+        login: {
+          success: {
+            status: false,
+          },
+          error: null,
         },
       };
 

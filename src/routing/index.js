@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from '../theme';
 import Preloader from '../components/preloader/Preloader';
-import setAxios from '../axios.config';
+import setAxios, { LocalStorageService } from '../axios.config';
 import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
 import ContextMenu from '../components/contextMenu';
@@ -29,7 +29,7 @@ function Router(props) {
   useEffect(() => {
     if (authToken?.userId) dispatch(userInfoActionRequest());
     setConfig((item) => routerConfig);
-  }, [authToken, isLogout]);
+  }, [authToken]);
 
   return (
     <Fragment>
@@ -53,7 +53,7 @@ function Router(props) {
                           path={path}
                           exact
                           key={id}
-                          token={localStorage.accessToken}
+                          token={LocalStorageService.getAccessToken()}
                         />)
                   }
                   <Route component = {() => <div>404</div>} />

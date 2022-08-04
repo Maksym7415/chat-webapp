@@ -123,6 +123,18 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         conversationsList: initialState.conversationsList,
       };
     }
+    case types.UPDATE_CONVERSATION_DATA: {
+      return {
+        ...state,
+        conversationsList: {
+          ...state.conversationsList,
+          success: {
+            ...state.conversationsList.success,
+            data: action.payload,
+          },
+        },
+      };
+    }
     default:
       return state;
   }

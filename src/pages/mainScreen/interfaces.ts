@@ -79,6 +79,8 @@ export interface AddFilesProps {
 export interface MessageProps extends Messages {
   userId: number
   isShowAvatar?: boolean
+  conversationId: number,
+  allMassages: Array<Messages>
 }
 
 // MESSAGEINPUT

@@ -138,6 +138,12 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   }, [files]);
 
   useEffect(() => {
+    if (messageEdit.isDelete) {
+      setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].filter((message: any) => message.id !== messageEdit.messageId) }));
+    }
+  }, [messageEdit.isDelete]);
+
+  useEffect(() => {
     if (!allMessages[conversationId] && conversationId) {
       dispatch(conversationUserHistoryActionRequest(conversationId, 0));
     }
@@ -158,7 +164,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     });
     setTimeDivCounter(newArr.filter((el: Messages) => el.component).length);
     setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
-    setAllMessages((messages) => ({ ...messages, [conversationId]: [...newArr, ...(messages[conversationId] === undefined ? [] : messages[conversationId])], 0: [] }));
+    setAllMessages((messages) => ({ ...messages, [conversationId]: [...newArr, ...(messages[conversationId] === undefined ? [] : messages[conversationId])] }));
   }, [messageHistory]);
 
   useEffect(() => {
@@ -232,6 +238,8 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
                   Files={Files}
                   userId={userId}
                   component={component}
+                  conversationId={conversationId}
+                  allMassages={allMessages[conversationId]}
                 />
               );
             })}

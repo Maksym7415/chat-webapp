@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
 import { ErrorResponse } from '../../common/interafaces';
@@ -60,7 +61,7 @@ export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray |
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface | ConversationUpdate;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
@@ -188,19 +189,18 @@ export interface ConversationAddNewMessageAction {
   message: Messages
   id: number
 }
-
-// CURRENT CHAT
-
-interface CurrentChat {
-  id: number
-}
-
 export interface ConversationIdAction {
   type: typeof types.CONVERSATION_ID
   payload: {
     id: number,
     type: string
   }
+}
+
+// CURRENT CHAT
+
+interface CurrentChat {
+  id: number
 }
 
 // CREATE NEW CONVERSATION
@@ -230,4 +230,16 @@ export interface CreateNewChatActionInterface {
 
 export interface ClearConversationInterface {
   type: typeof types.CONVERSATION_CLEAR_DATA
+}
+
+// UPDATE CONVERSATION LIST
+export interface ConversationUpdate {
+  type: typeof types.UPDATE_CONVERSATION_DATA
+  payload: Array<ConversationsList>
+}
+export interface IUpdateConversationData {
+  mode: 'deleteMessage' | 'deleteConversation'
+  conversationId: number,
+  messages?: Array<Messages> | [],
+  conversationsList: Array<ConversationsList>
 }

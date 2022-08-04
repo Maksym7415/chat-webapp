@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState } from 'react';
@@ -5,7 +6,7 @@ import { Paper, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import { FileData } from '../../../../../redux/conversations/constants/interfaces';
+import { FileData, Messages } from '../../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
 import { MessageProps } from '../../../interfaces';
 import useStyles from '../styles/styles';
@@ -14,9 +15,10 @@ import { editMessageAction, deleteMessageAction, contextMenuAction } from '../..
 import DefaultAvatar from '../../../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
 import { RootState } from '../../../../../redux/reducer';
+import { updateConversationData } from '../../../../../redux/conversations/constants/actionConstants';
 
 export default function Message({
-  fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar,
+  fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar, conversationId, allMassages,
 }: MessageProps) {
   // HOOKS
   const classes = useStyles();
@@ -24,6 +26,7 @@ export default function Message({
 
   // SELECTORS
   const activeConversationType = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.type);
+  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
 
   // FUNCTIONS
   const handleEditMessage = () => {
@@ -38,6 +41,17 @@ export default function Message({
   };
 
   const handleDeleteMessage = () => {
+    const filterAllMassages = allMassages.filter((message: Messages) => (message.id !== id && !message.component));
+
+    updateConversationData(
+      {
+        mode: 'deleteMessage',
+        conversationId,
+        messages: filterAllMassages.length ? [filterAllMassages[filterAllMassages.length - 1]] : [],
+        conversationsList,
+      },
+      dispatch,
+    );
     dispatch(deleteMessageAction(true, id));
     dispatch(contextMenuAction({
       yPos: '',

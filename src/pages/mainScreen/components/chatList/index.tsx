@@ -33,6 +33,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
+  const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   // STATES
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);

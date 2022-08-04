@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
 import * as interfaces from './interfaces';
@@ -52,6 +53,11 @@ export const conversationTypeStateAction = (conversationId: number, isTyping: bo
   },
 });
 
+export const updateConversationDataAction = (data: Array<interfaces.ConversationsList>): interfaces.ConversationUpdate => ({
+  type: types.UPDATE_CONVERSATION_DATA,
+  payload: data,
+});
+
 export const createNewChatAction = (ids: interfaces.IdsInterface): interfaces.CreateNewChatActionInterface => ({
   type: types.CONVERSATION_CREATE_NEW_CONVERSATION,
   payload: ids,
@@ -60,3 +66,20 @@ export const createNewChatAction = (ids: interfaces.IdsInterface): interfaces.Cr
 export const clearConversationData = () : interfaces.ClearConversationInterface => ({
   type: types.CONVERSATION_CLEAR_DATA,
 });
+
+export const updateConversationData = (data: interfaces.IUpdateConversationData, dispatch: any) => {
+  switch (data.mode) {
+    case 'deleteMessage':
+      return dispatch(updateConversationDataAction(data.conversationsList.map((conversation: any) => {
+        if (conversation.conversationId === data.conversationId) {
+          return {
+            ...conversation,
+            Messages: data.messages,
+          };
+        }
+        return conversation;
+      })));
+    default:
+      return null;
+  }
+};

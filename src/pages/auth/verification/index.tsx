@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
@@ -20,9 +21,13 @@ export default function ({ history }: RouteComponentProps) {
   // this provided to prevent redirect in case we signing up, making automatically login and redirecting user straight to verification page
   const isSignUp = useSelector(({ authReducer }: RootState) => authReducer.signUp.success?.email);
 
+  // STATES
+  const [error, setError] = useState<string>('');
+
   // FUNCTIONS
   const submit = (value: any): void => {
     dispatch(actionCheckVerificationCode({ ...value, login: history.location.state.login }));
+    error && setError('');
   };
 
   // USEEFFECTS
@@ -31,10 +36,15 @@ export default function ({ history }: RouteComponentProps) {
   }, []);
 
   useEffect(() => {
-    if (!!response.success.accessToken && !response.error) {
+    const errorBack = response.error;
+    if (!!response.success.accessToken && !errorBack) {
       localStorage.setItem('accessToken', response.success.accessToken);
       dispatch(actionToken(response.success.accessToken));
       history.push('/', {});
+    }
+    if (errorBack) {
+      const errorBackData = errorBack.response?.data;
+      errorBackData?.message && setError(errorBackData?.message);
     }
   }, [response]);
 
@@ -46,6 +56,7 @@ export default function ({ history }: RouteComponentProps) {
         pageName={'verificationPage'}
         icon={<VerifiedUserIcon />}
         callBack={submit}
+        errorBack={error}
       />
     </>
   );

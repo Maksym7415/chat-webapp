@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,16 +18,23 @@ export default function ({ history }: RouteComponentProps) {
 
   // STATES
   const [login, setLogin] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   // FUNCTIONS
   const submit = (value: any): void => {
     setLogin(value);
     dispatch(actionLogin(value));
+    error && setError('');
   };
 
   // USEEFFECTS
   useEffect(() => {
-    if (response.success?.status && !response.error) history.push(Paths.verification, login);
+    const errorBack = response.error;
+    if (response.success?.status && !errorBack) history.push(Paths.verification, login);
+    if (errorBack) {
+      const errorBackData = errorBack.response?.data;
+      errorBackData?.message && setError(errorBackData?.message);
+    }
   }, [response]);
 
   return (
@@ -37,6 +45,7 @@ export default function ({ history }: RouteComponentProps) {
         pageName={'signInPage'}
         icon={<LockOutlinedIcon />}
         callBack={submit}
+        errorBack={error}
       />
     </>
   );

@@ -21,4 +21,13 @@ export default makeStyles((theme) => ({
   textField: {
     marginTop: theme.spacing(2),
   },
+  error: {
+    color: '#f44336',
+    margin: 0,
+    '& > p': {
+      textAlign: 'center',
+      margin: '10px 0 0',
+    },
+  },
+
 }));

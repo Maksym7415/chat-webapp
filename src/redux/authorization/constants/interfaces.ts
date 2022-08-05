@@ -48,7 +48,7 @@ export interface SignUpBody {
 
 export interface SignUp {
   success: SignUpSuccess
-  error: ErrorResponse
+  error: ErrorResponse | any
 }
 
 export interface SignUpAction {
@@ -69,7 +69,7 @@ export interface LoginAction {
 
 export interface Login {
   success: LoginSuccess
-  error: ErrorResponse
+  error: ErrorResponse | any
 }
 
 // VERIFICATION INTERFACES
@@ -86,7 +86,7 @@ export interface CheckVerificationCodeAction {
 
 export interface Verification {
   success: Tokens
-  error: ErrorResponse
+  error: ErrorResponse | any
 }
 
 // TOKENS INTERFACES

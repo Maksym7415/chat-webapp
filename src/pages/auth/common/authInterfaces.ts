@@ -34,6 +34,7 @@ export interface IPropsForm {
   formTitle: string
   submitBtnTitle: string
   callBack: (e: any) => void
+  errorBack?: string,
 }
 
 export interface IFIeldRenderConfig {

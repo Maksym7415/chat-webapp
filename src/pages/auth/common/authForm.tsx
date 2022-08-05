@@ -15,7 +15,7 @@ import authFieldRenderConfig from './authConfig';
 import { Paths } from '../../../routing/config/paths';
 
 const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string> & IPropsForm> = ({
-  handleSubmit, pageName, icon, formTitle, submitBtnTitle, callBack,
+  handleSubmit, pageName, icon, formTitle, submitBtnTitle, errorBack, callBack,
 }) => {
   // HOOKS
   const classes = useStyles();
@@ -41,6 +41,7 @@ const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string
                         required={el.required}
                         variant='outlined'
                     />)}
+                    {errorBack && <div className={classes.error}><p>{errorBack}</p></div>}
                 <Button
                     type="submit"
                     fullWidth

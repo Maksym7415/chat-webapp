@@ -62,7 +62,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   // VARIABLES
-  let newArr: any = [];
+
 
   // FUNCTIONS
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
@@ -144,7 +144,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   }, [messageEdit.isDelete]);
 
   useEffect(() => {
-    if (!allMessages[conversationId] && conversationId) {
+    if (conversationId) {
       dispatch(conversationUserHistoryActionRequest(conversationId, 0));
     }
   }, [conversationId]);
@@ -152,6 +152,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   useEffect(() => {
     scrollTop(ref);
     let currentDay = 0;
+    let newArr: any = [];
     messageHistory.map((el: Messages) => {
       if (new Date(el.sendDate).getDate() !== currentDay) {
         currentDay = new Date(el.sendDate).getDate();
@@ -162,9 +163,10 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       }
       return el;
     });
+
     setTimeDivCounter(newArr.filter((el: Messages) => el.component).length);
     setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
-    setAllMessages((messages) => ({ ...messages, [conversationId]: [...newArr, ...(messages[conversationId] === undefined ? [] : messages[conversationId])] }));
+    setAllMessages((messages) => ({ ...messages, [conversationId]: [...newArr] }));
   }, [messageHistory]);
 
   useEffect(() => {
@@ -185,6 +187,8 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
+  // console.log(messageHistory, "messageHistory");
+  // console.log(allMessages, "allMessages");
   return (
     <div
       onDrop={onDrop}

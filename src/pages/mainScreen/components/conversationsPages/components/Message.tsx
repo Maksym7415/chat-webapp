@@ -11,14 +11,16 @@ import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
 import { MessageProps } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import contextMenuCallback from '../../../../../components/contextMenu/eventCallback';
-import { editMessageAction, deleteMessageAction, contextMenuAction } from '../../../../../redux/common/commonActions';
+import {
+  editMessageAction, deleteMessageAction, contextMenuAction, showDialogAction,
+} from '../../../../../redux/common/commonActions';
 import DefaultAvatar from '../../../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
 import { RootState } from '../../../../../redux/reducer';
 import { updateConversationData } from '../../../../../redux/conversations/constants/actionConstants';
 
 export default function Message({
-  fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar, conversationId, allMassages,
+  fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar, conversationId, allMassages, isEditing,
 }: MessageProps) {
   // HOOKS
   const classes = useStyles();
@@ -29,15 +31,18 @@ export default function Message({
   const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
 
   // FUNCTIONS
+
+  const closeContextMenuAction = () => dispatch(contextMenuAction({
+    yPos: '',
+    xPos: '',
+    isShowMenu: false,
+    messageId: 0,
+    config: [],
+  }));
+
   const handleEditMessage = () => {
     dispatch(editMessageAction(true, id));
-    dispatch(contextMenuAction({
-      yPos: '',
-      xPos: '',
-      isShowMenu: false,
-      messageId: 0,
-      config: [],
-    }));
+    closeContextMenuAction();
   };
 
   const handleDeleteMessage = () => {
@@ -53,19 +58,26 @@ export default function Message({
       dispatch,
     );
     dispatch(deleteMessageAction(true, id));
-    dispatch(contextMenuAction({
-      yPos: '',
-      xPos: '',
-      isShowMenu: false,
-      messageId: 0,
-      config: [],
-    }));
+    closeContextMenuAction();
+  };
+
+  const handleShareMessage = () => {
+    dispatch(showDialogAction('Share Message', [{
+      Files,
+      User,
+      fkSenderId,
+      id,
+      isEditing,
+      message,
+      sendDate,
+    }]));
+    closeContextMenuAction();
   };
 
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
       {isShowAvatar && (User.userAvatar ? <Avatar className={classes.messageAvatar} src={`${process.env.REACT_APP_BASE_URL}/${User.userAvatar}`} /> : <DefaultAvatar name={`${User.firstName} ${User.lastName}`} width='30px' height='30px' fontSize='0.7rem' />)}
-      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(fkSenderId === userId, handleDeleteMessage, handleEditMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
+      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(fkSenderId === userId, handleDeleteMessage, handleEditMessage, handleShareMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
           <div className='conversations__message-image-container'>
             {

@@ -1,5 +1,6 @@
 import * as types from './types';
 import * as interfaces from './interafaces';
+import { Messages } from '../conversations/constants/interfaces';
 
 export const preloaderAction = (isShow: boolean): interfaces.CommonReducerActions => ({
   type: types.APP_PRELOADER,
@@ -21,11 +22,17 @@ export const deleteMessageAction = (isDelete: boolean, messageId: number | null)
   payload: { isDelete, messageId },
 });
 
-export const showDialogAction = (title: string): interfaces.CommonReducerActions => ({
+export const shareMessageAction = (messages: Array<Messages> | []): interfaces.CommonReducerActions => ({
+  type: types.SHARE_MESSAGES,
+  payload: messages,
+});
+
+export const showDialogAction = (title: string, data?: any): interfaces.CommonReducerActions => ({
   type: types.DIALOG_COMPONENT_SHOW,
   payload: {
     isShow: true,
     title,
+    data,
   },
 });
 

@@ -8,6 +8,7 @@ import { RootState } from '../../redux/reducer';
 import { hideDialogAction } from '../../redux/common/commonActions';
 import UserProfile from '../../pages/user/components/userProfile';
 import NewChat from '../newChat/newChatScreen';
+import ShareMessage from '../popups/shareMessage';
 import useStyles from './styles/styles';
 
 export default function DialogComponent() {
@@ -23,13 +24,20 @@ export default function DialogComponent() {
         return <UserProfile />;
       case 'Add New Chat':
         return <NewChat />;
+      case 'Share Message':
+        return <ShareMessage data={dialogState.data}/>;
       default:
         return null;
     }
   };
 
   return (
-    <Dialog onClose={handleClose} open={dialogState.isShow}>
+    <Dialog onClose={handleClose} open={dialogState.isShow} PaperProps={{
+      style: {
+        overflow: 'unset',
+      },
+    }}
+    >
       <DialogTitle disableTypography className={classes.titleContainer}>
         <Typography variant='subtitle1' className={classes.title}>{dialogState.title}</Typography>
         <IconButton
@@ -39,9 +47,7 @@ export default function DialogComponent() {
           <CloseIcon className={classes.closeIcon} />
         </IconButton>
       </DialogTitle>
-      <DialogContent style={{
-        width: '400px', position: 'relative', height: '100%', padding: '10px 0',
-      }} dividers>
+      <DialogContent className={classes.dialogContent}>
         <Content />
       </DialogContent>
     </Dialog>

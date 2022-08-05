@@ -81,6 +81,7 @@ export interface MessageProps extends Messages {
   isShowAvatar?: boolean
   conversationId: number,
   allMassages: Array<Messages>
+  isEditing: boolean,
 }
 
 // MESSAGEINPUT

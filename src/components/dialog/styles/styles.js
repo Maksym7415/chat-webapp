@@ -17,4 +17,12 @@ export default makeStyles((theme) => ({
   title: {
     fontSize: '1.3rem',
   },
+  dialogContent: {
+    width: '400px',
+    position: 'relative',
+    height: '100%',
+    padding: '10px 0',
+    overflow: 'unset',
+  },
+
 }));

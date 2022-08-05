@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
@@ -97,8 +98,8 @@ export interface Messages {
   sendDate: string
   messageType?: string
   Files: Array<FileData>
-  isEdit?: boolean
-  component: object
+  isEditing: boolean
+  component?: object
 }
 
 export interface UserConversationHistoryActionRequest {

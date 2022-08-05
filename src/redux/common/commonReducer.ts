@@ -19,6 +19,7 @@ const initialState: interafaces.CommonReducerInterface = {
     isShow: false,
     title: '',
   },
+  sheraMessages: [],
 };
 
 export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
@@ -63,6 +64,12 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
       return {
         ...state,
         dialogComponent: initialState.dialogComponent,
+      };
+    }
+    case types.SHARE_MESSAGES: {
+      return {
+        ...state,
+        sheraMessages: action.payload,
       };
     }
     default: return state;

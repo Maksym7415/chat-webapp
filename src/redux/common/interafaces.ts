@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable import/no-cycle */
 import * as types from './types';
+import { Messages } from '../conversations/constants/interfaces';
 
 interface SimpleErrorResponse {
   code: number
@@ -9,6 +12,11 @@ interface ComplexErrorResponse {
   code: number
   message: string
   details: SimpleErrorResponse[]
+}
+
+interface ShareMessageActionInterface {
+  type: typeof types.SHARE_MESSAGES
+  payload: Array<Messages> | []
 }
 
 interface PreloaderActionInterface {
@@ -23,9 +31,16 @@ export interface CommonReducerInterface {
   contextMenu: ContextMenuState
   messageEdit: MessageEditState
   dialogComponent: DialogComponentState
+  sheraMessages: Array<Messages> | []
 }
 
-export type CommonReducerActions = PreloaderActionInterface | ShowContextMenuAction | MessageEditAction | MessageDeleteAction | DialogShowAction | DialogHideAction;
+export type CommonReducerActions = PreloaderActionInterface
+| ShowContextMenuAction
+| MessageEditAction
+| MessageDeleteAction
+| DialogShowAction
+| DialogHideAction
+| ShareMessageActionInterface;
 
 // CONTEXT MENU
 export interface ContextMenuConfig {
@@ -77,4 +92,5 @@ interface DialogHideAction {
 export interface DialogComponentState {
   isShow: boolean
   title: string
+  data?: any,
 }

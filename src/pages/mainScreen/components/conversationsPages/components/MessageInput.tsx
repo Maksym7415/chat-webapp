@@ -7,6 +7,7 @@ import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
+import ShareIcon from '@material-ui/icons/Share';
 import CloseIcon from '@material-ui/icons/Close';
 import socket from '../../../../../socket';
 import { fullDate } from '../../../../../common/getCorrectDateFormat';
@@ -16,7 +17,7 @@ import {
   MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages,
 } from '../../../interfaces';
 import { Messages } from '../../../../../redux/conversations/constants/interfaces';
-import { editMessageAction, deleteMessageAction } from '../../../../../redux/common/commonActions';
+import { editMessageAction, deleteMessageAction, shareMessageAction } from '../../../../../redux/common/commonActions';
 
 export default function MessageInput({
   conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,
@@ -28,8 +29,10 @@ export default function MessageInput({
   // SELECTORS
   const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
+  const sheraMessages = useSelector(({ commonReducer }: RootState) => commonReducer.sheraMessages);
 
   // STATES
+  const [sheredMessages, setSheredMessages] = useState<any>([]);
   const [editedMessage, setEditedMessage] = useState<string>('');
   const [message, setMessage] = useState<MessageValue>({ 0: '' });
 
@@ -51,10 +54,10 @@ export default function MessageInput({
     }
   };
 
-  const socketSendMessageCommonFun = (id: undefined | number) => socket.emit('chats', ({
+  const socketSendMessageCommonFun = (id: undefined | number, data?: any) => socket.emit('chats', ({
     conversationId: id,
     message: {
-      message: message[conversationId], fkSenderId: userId, sendDate: fullDate(new Date()), messageType: 'Text',
+      message: data?.message || message[conversationId], fkSenderId: data?.User?.id || userId, sendDate: fullDate(new Date()), messageType: 'Text',
     },
     messageId: messageEdit.messageId,
     userId,
@@ -64,23 +67,37 @@ export default function MessageInput({
   });
 
   const handleSendMessage = () => {
-    if (!message[conversationId]) return;
+    if (!message[conversationId] && !sheredMessages.length) return;
     if (!conversationId) {
       return socketSendMessageCommonFun(undefined);
     }
-    socketSendMessageCommonFun(conversationId);
+    if (sheredMessages.length) {
+      sheredMessages.map((message: any) => {
+        socketSendMessageCommonFun(conversationId, message);
+        return message;
+      });
+      dispatch(shareMessageAction([]));
+    }
+    if (message[conversationId]) {
+      socketSendMessageCommonFun(conversationId);
+    }
     if (messageEdit.isEdit) dispatch(editMessageAction(false, null));
   };
 
   const sendMessageByKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      if (!message[conversationId]) return;
+      if (!message[conversationId] && !sheredMessages.length) return;
       if (!conversationId) {
         return socketSendMessageCommonFun(undefined);
       }
       socketSendMessageCommonFun(conversationId);
       dispatch(editMessageAction(false, null));
     }
+  };
+
+  const handleClearSheraMessages = () => {
+    dispatch(shareMessageAction([]));
+    setSheredMessages([]);
   };
 
   const handleClearEditMessage = () => {
@@ -125,12 +142,17 @@ export default function MessageInput({
   }, [conversationId]);
 
   useEffect(() => {
+    setSheredMessages(sheraMessages);
+  }, [sheraMessages]);
+
+  useEffect(() => {
     document.addEventListener('keydown', escFunction);
     return () => {
       document.removeEventListener('keydown', escFunction);
     };
   }, []);
 
+  console.log(sheredMessages, 'sheredMessages');
   return (
     <>
       {messageEdit.isEdit && <div className='conversations__send-message-text conversations__send-message-shadow'>
@@ -148,7 +170,22 @@ export default function MessageInput({
           </IconButton>
         </div>
       </div>}
-      <div className={messageEdit.isEdit ? 'conversations__send-message-input' : 'conversations__send-message-input conversations__send-message-shadow'}>
+      {sheredMessages.length ? <div className='conversations__send-message-text conversations__send-message-shadow'>
+        <ShareIcon color='primary' className='mr-10' />
+        <div className='flex-col conversations__send-message-text-title-wrapper'>
+          <Typography color='primary'>Share Message</Typography>
+          <p className='conversations__edit-message-paragraph'>{sheredMessages[0].message}</p>
+        </div>
+        <div className='ml-auto pd-right-30'>
+          <IconButton
+            style={{ width: '20px', height: '20px' }}
+            onClick={handleClearSheraMessages}
+          >
+            <CloseIcon style={{ width: '20px', height: '20px' }} />
+          </IconButton>
+        </div>
+      </div> : null}
+      <div className={(messageEdit.isEdit || sheredMessages.length) ? 'conversations__send-message-input' : 'conversations__send-message-input conversations__send-message-shadow'}>
           <Input
           onKeyDown={sendMessageByKey}
           value={message[conversationId] || ''}
@@ -157,7 +194,7 @@ export default function MessageInput({
           fullWidth
           placeholder='Type message...'
           endAdornment={(
-            (message[conversationId] || '') === ''
+            ((message[conversationId] || '') === '') && !sheredMessages.length
               ? (
                 <InputAdornment position="end">
                   <IconButton

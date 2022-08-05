@@ -51,6 +51,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const sheraMessages = useSelector(({ commonReducer }: RootState) => commonReducer.sheraMessages);
 
   // STATES
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
@@ -146,6 +147,9 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     if (conversationId) {
       dispatch(conversationUserHistoryActionRequest(conversationId, 0));
     }
+    if (sheraMessages.length) {
+      console.log(sheraMessages, 'sheraMessages');
+    }
   }, [conversationId]);
 
   useEffect(() => {
@@ -170,7 +174,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
 
   useEffect(() => {
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
-      if (lastMessage[conversationId].isEdit) {
+      if (lastMessage[conversationId].isEditing) {
         return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
       }
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
@@ -186,7 +190,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
-  // console.log(allMessages, "allMessages");
+  console.log(allMessages, 'allMessages');
   return (
     <div
       onDrop={onDrop}
@@ -204,14 +208,14 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
         className='pd-left-10'
         onScroll={scrollHandler}
         style={{
-          height: messageEdit.isEdit ? 'calc(100% - 100px)' : 'calc(100% - 50px)',
+          height: (messageEdit.isEdit || sheraMessages.length) ? 'calc(100% - 100px)' : 'calc(100% - 50px)',
           overflowY: 'scroll',
         }}
       >
         <>
           {Number.isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files, component,
+              fkSenderId, message, id, sendDate, User, Files, component, isEditing,
             }, index: number, arr) => {
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
@@ -241,6 +245,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
                   userId={userId}
                   component={component}
                   conversationId={conversationId}
+                  isEditing={isEditing}
                   allMassages={allMessages[conversationId]}
                 />
               );

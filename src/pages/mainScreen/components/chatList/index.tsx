@@ -27,7 +27,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   // HOOKS
   const dispatch = useDispatch();
   const classes = useStyles();
-  const params = useParams<ParamsId>();
+  const params = useParams<any>();
 
   // SELECTORS
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);

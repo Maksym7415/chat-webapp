@@ -1,9 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 
-let theme = createMuiTheme({
+let theme = createTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {

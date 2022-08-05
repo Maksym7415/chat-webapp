@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import Adapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import Login from '../../../pages/auth/authorization';
 
 configure({ adapter: new Adapter() });

@@ -38,7 +38,7 @@ interface Props<H>{
 export default function UserConversationHistoryPage({ history }: Props<History>) {
   // HOOKS
   const dispatch = useDispatch();
-  const conversationId = +useParams<ParamsId>().id;
+  const conversationId = +useParams<any>()?.id;
 
   // REFS
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +62,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   // VARIABLES
-
 
   // FUNCTIONS
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
@@ -187,7 +186,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
-  // console.log(messageHistory, "messageHistory");
   // console.log(allMessages, "allMessages");
   return (
     <div

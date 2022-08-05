@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import { RootState } from '../../../redux/reducer';
 import AuthForm from '../common/authForm';
 import { actionLogin } from '../../../redux/authorization/constants/actionConstants';

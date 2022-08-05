@@ -51,7 +51,7 @@ export default function MiniDrawer(props: IProps<History>) {
   // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
-  const params = useParams<ParamsId>();
+  const params = useParams<any>();
 
   // REFS
   const ref = useRef<Ref>({});
@@ -109,9 +109,9 @@ export default function MiniDrawer(props: IProps<History>) {
     ref.current && ref.current.focus(); // Если элемент виден на экране даем ему фокус
   }, [hide]);
 
-  useEffect(() => {
-    dispatch(initializedGlobalSearchAction(debouncedSearchValue));
-  }, [debouncedSearchValue]);
+  // useEffect(() => {
+  //   dispatch(initializedGlobalSearchAction(debouncedSearchValue));
+  // }, [debouncedSearchValue]);
 
   return (
     <div className={classes.root}>

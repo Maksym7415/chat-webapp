@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -38,7 +40,7 @@ export default function ({
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
+  console.log(userAvatar, 'userAvatar');
   return (
     <>
       <Menu
@@ -65,7 +67,7 @@ export default function ({
             aria-haspopup="true"
             color="inherit"
           >
-           {userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
+          {userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>
           <p>Profile</p>
         </MenuItem>

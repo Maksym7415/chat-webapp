@@ -36,6 +36,7 @@ export default function MessageInput({
   // FUNCTIONS
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
+    console.log(event.target.value, 'event.target.value');
     setMessage({ ...message, [conversationId]: event.target.value });
     const user = {
       userId,

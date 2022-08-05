@@ -62,7 +62,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
 
       };
     case types.AUTH_TOKEN:
-      let payload = {
+      let payload: any = {
         role: '',
         login: '',
         userAgent: '',
@@ -73,7 +73,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
         exp: 0,
       };
       try {
-        payload = jwtDecode(action.token);
+        payload = jwtDecode(action.token)!;
       } catch (e) {
         console.log(e);
       }

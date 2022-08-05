@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import AuthForm from '../common/authForm';
 import { actionCheckVerificationCode, actionToken } from '../../../redux/authorization/constants/actionConstants';

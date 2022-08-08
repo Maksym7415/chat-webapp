@@ -78,7 +78,7 @@ export default function MiniDrawer(props: IProps<History>) {
   const debouncedSearchValue = useDebounce<string>(searchvalue, 500);
 
   // FUNCTIONS
-  const handleOpenProfile = (event: any) => {
+  const handleOpenProfile = () => {
     dispatch(showDialogAction('Profile'));
   };
 

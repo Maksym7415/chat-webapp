@@ -21,8 +21,8 @@ interface IAppBarMenuProps {
   openProfile: Function
 }
 
-export default function ({
-  anchorEl, setAnchorEl, mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, userData, openProfile,
+export default function AppBarMenu({
+  mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, userData, openProfile,
 }: IAppBarMenuProps) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 

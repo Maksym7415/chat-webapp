@@ -126,7 +126,7 @@ export default function MessageInput({
         isDeleteMessage: true,
         messageId: messageEdit.messageId,
       }), (success: boolean) => {
-        if (success) console.log('deleted');
+        // if (success) console.log('deleted');
       });
       dispatch(deleteMessageAction(false, null));
     }

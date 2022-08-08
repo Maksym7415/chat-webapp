@@ -13,13 +13,14 @@ import { hideDialogAction, shareMessageAction } from '../../../redux/common/comm
 import DefaultAvatar from '../../defaultAvatar';
 import { Paths } from '../../../routing/config/paths';
 import useStyles from './styles/styles';
+import { ShareMessageProps } from './interfaces';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 // rework ts
 
-export default function ShareMessage({ data }: any) {
+export default function ShareMessage({ data }: ShareMessageProps) {
   // HOOKS
   const classes = useStyles();
   const history = useHistory();

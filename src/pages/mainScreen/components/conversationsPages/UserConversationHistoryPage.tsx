@@ -149,7 +149,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       dispatch(conversationUserHistoryActionRequest(conversationId, 0));
     }
     if (sheraMessages.length) {
-      console.log(sheraMessages, 'sheraMessages');
+      // console.log(sheraMessages, 'sheraMessages');
     }
   }, [conversationId]);
 
@@ -191,7 +191,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
-  console.log(allMessages, 'allMessages');
   return (
     <div
       onDrop={onDrop}

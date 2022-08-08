@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState, useEffect } from 'react';
@@ -16,6 +17,7 @@ import {
 } from '../../../redux/user/constants/actions';
 import '../style/style.scss';
 import DefaultAvatar from '../../../components/defaultAvatar';
+import { UserInfoSuccess } from '../../../redux/user/constants/interfaces';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -32,7 +34,7 @@ function UserProfile() {
   const setPhotoMessage = useAppSelector(({ userReducer }) => userReducer.setMainPhoto.success.data);
 
   // STATES
-  const [userData, setUserData] = useState<any>({});
+  const [userData, setUserData] = useState<UserInfoSuccess | object>({});
   const [index, setIndex] = useState<number>(0);
 
   // FUNCTIONS
@@ -78,7 +80,7 @@ function UserProfile() {
   };
 
   const removeAvatar = () => {
-    console.log(avatars[index].id, 'removeAvatar');
+    // console.log(avatars[index].id, 'removeAvatar');
   };
 
   const handleUpdateProfileRequest = (item: any) => {

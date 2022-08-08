@@ -4,6 +4,9 @@ import { Paper, MenuList, MenuItem } from '@material-ui/core';
 // hooks
 import { useAppSelector } from '../../hooks/redux';
 
+// redux
+import { ContextMenuConfig } from '../../redux/common/interafaces';
+
 export default function ContextMenu() {
   const menuConfig = useAppSelector(({ commonReducer }) => commonReducer.contextMenu);
 
@@ -18,7 +21,7 @@ export default function ContextMenu() {
         }}
       >
         <MenuList>
-          {menuConfig.config.map((item: any) => <MenuItem key={item.id} onClick={() => item.callback()}>{item.title}</MenuItem>)}
+          {menuConfig.config.map((item: ContextMenuConfig) => <MenuItem key={item.id} onClick={() => item.callback()}>{item.title}</MenuItem>)}
         </MenuList>
       </Paper>
     );

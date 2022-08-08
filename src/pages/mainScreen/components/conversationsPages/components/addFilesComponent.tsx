@@ -34,7 +34,7 @@ export default function AddFiles({
     let fileReader = new FileReader();
     if (files) {
       let filesArray = Object.values(files);
-      const handleEmitFile = async (messageId: number, sendDate: any) => {
+      const handleEmitFile = async (messageId: number, sendDate: string) => {
         if (filesCount === filesArray.length) {
           filesCount = 0;
         } else {

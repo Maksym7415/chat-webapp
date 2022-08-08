@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-case-declarations */
-import { AuthReducerInterface, AuthActionsInterface } from '../constants/interfaces';
+import { AuthReducerInterface, AuthActionsInterface, TokenPayload } from '../constants/interfaces';
 import jwtDecode from '../../../common/jwtdecode';
 
 import * as types from '../constants/types';
@@ -62,7 +63,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
 
       };
     case types.AUTH_TOKEN:
-      let payload: any = {
+      let payload: TokenPayload | any = {
         role: '',
         login: '',
         userAgent: '',
@@ -75,7 +76,7 @@ const authReducer = (state = initialState, action: AuthActionsInterface): AuthRe
       try {
         payload = jwtDecode(action.token)!;
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
       return {
         ...state,

@@ -13,7 +13,6 @@ export function* loginWatcher() {
 function* loginWorker({ login }: any) {
   try {
     const response = yield call(axios.post, Paths.signIn, { ...login });
-    console.log(response.data.verificationCode, 'verificationCode');
     yield put(requestSuccess(response, 'login'));
   } catch (error) {
     yield put(requestFail(error, 'login'));

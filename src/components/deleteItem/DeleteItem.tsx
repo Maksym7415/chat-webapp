@@ -13,7 +13,7 @@ interface IProps {
     color?: any,
     ariaLabel?: string,
     className?: string,
-    onClick?: any,
+    onClick?: () => void,
     component?: any
   }
 }

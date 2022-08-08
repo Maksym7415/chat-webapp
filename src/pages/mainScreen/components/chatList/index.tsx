@@ -77,6 +77,8 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
     closeContextMenuAction();
   };
 
+  const handleClearHistory = () => {};
+
   // USEEFECTS
   useEffect(() => {
     setConversations(data);
@@ -102,7 +104,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
     >
       {conversations.map((element) => (
         <div
-          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile), dispatch)}
+          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile, handleClearHistory), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
           className={`flex chat__chats-item ${element.conversationId === +params.id ? 'chat__active' : ''}`}
           key={element.conversationId}

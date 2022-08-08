@@ -9,7 +9,7 @@ import { Paths } from '../../../routing/config/paths';
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
-export default function ({ history }: RouteComponentProps) {
+export default function Authorization({ history }: RouteComponentProps) {
   // HOOKS
   const dispatch = useAppDispatch();
 

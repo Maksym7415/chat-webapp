@@ -1,16 +1,15 @@
 /* eslint-disable max-len */
 /* eslint-disable no-return-assign */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React, { useState, useEffect, FunctionComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Grid, Avatar } from '@material-ui/core';
+import { Typography, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import { RootState } from '../../../../redux/reducer/index';
 import { ChatListProps } from '../../interfaces';
 import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
-import { getConversationIdAction } from '../../../../redux/conversations/constants/actionConstants';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
 import contextMenuCallback from '../../../../components/contextMenu/eventCallback';
 import { contextMenuAction, showDialogAction } from '../../../../redux/common/commonActions';
@@ -33,7 +32,6 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
   const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
   const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
-  const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   // STATES
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);

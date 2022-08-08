@@ -27,6 +27,8 @@ interface Ref {
   [x: string]: any;
 }
 
+// rework ts
+
 const Transition = React.forwardRef((
   props: TransitionProps & { children?: React.ReactElement },
   ref: React.Ref<unknown>,

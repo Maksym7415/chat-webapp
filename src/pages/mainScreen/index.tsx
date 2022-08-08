@@ -87,7 +87,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     if (conversationsList.length) {
       conversationsList.forEach((chat) => {
         socket.on(`userIdChat${chat.conversationId}`, (message: Messages) => {
-          console.log(message, 'message');
           dispatch(conversationAddNewMessage(message, chat.conversationId));
         });
         socket.on(`typingStateId${chat.conversationId}`, (conversation: BackUsers) => {
@@ -100,7 +99,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
   useEffect(() => {
     socket.on(`userIdNewChat${userId}`, (message: Messages, conversationId: number) => {
       // dispatch(getUserConversationsActionRequest());
-      console.log(message, 'message');
       dispatch(getConversationIdAction(conversationId, 'Chat'));
       history.push(`${Paths.chat}/${conversationId}`);
       // dispatch(conversationAddNewMessage(message, conversationId));
@@ -112,7 +110,6 @@ export default function BasicTextFields({ history }: RouteComponentProps) {
     socket.removeAllListeners();
   }, [conversationsList]);
 
-  console.log('render');
   return (
     <div className='chat__container flex'>
       <Rnd

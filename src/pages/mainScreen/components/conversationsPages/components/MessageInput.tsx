@@ -39,7 +39,7 @@ export default function MessageInput({
   // FUNCTIONS
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
-    console.log(event.target.value, 'event.target.value');
+
     setMessage({ ...message, [conversationId]: event.target.value });
     const user = {
       userId,
@@ -152,7 +152,6 @@ export default function MessageInput({
     };
   }, []);
 
-  console.log(sheredMessages, 'sheredMessages');
   return (
     <>
       {messageEdit.isEdit && <div className='conversations__send-message-text conversations__send-message-shadow'>

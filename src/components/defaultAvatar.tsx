@@ -12,11 +12,13 @@ const lettersStyle = {
   color: '#ffffff',
 };
 
-const backgroundColors = ['#42d1f5', '#43de7b', '#d9e31b', '#5786ff'];
+// maybe needed (08.08)
+// const backgroundColors = ['#42d1f5', '#43de7b', '#d9e31b', '#5786ff'];
 
 export default function DefaultAvatar({
   name, width, height, fontSize,
 }: Props) {
+  // VARIABLES
   const letters: Array<string> = (name && name.split(' ')) || ['Chat'];
 
   return (

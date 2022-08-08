@@ -13,15 +13,19 @@ import routerConfig from './config/routerConfig';
 import PrivatePage from '../components/PrivatePage';
 import ContextMenu from '../components/contextMenu';
 import DialogComponent from '../components/dialog/DialogComponent';
-
 import { userInfoActionRequest } from '../redux/user/constants/actions';
 
-function Router(props) {
+function Router() {
+  // HOOKS
   const dispatch = useDispatch();
+
+  // SELECTORS
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
-  const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
+
+  // STATES
   const [config, setConfig] = useState(null);
 
+  // USEEFFECTS
   useEffect(() => {
     setAxios();
   }, []);

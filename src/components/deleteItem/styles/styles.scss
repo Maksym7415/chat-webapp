@@ -1,4 +1,5 @@
 $appbarHeight: 64px;
+
 .conversations {
 
   &__container {
@@ -130,7 +131,6 @@ $appbarHeight: 64px;
 
   &__user-name-date-container {
     display: flex;
-    // flex-direction: column;
     width: 100%;
     justify-content: space-between;
   }

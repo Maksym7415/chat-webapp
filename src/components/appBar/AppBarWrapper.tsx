@@ -5,7 +5,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { History } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
@@ -21,7 +20,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { showDialogAction } from '../../redux/common/commonActions';
-import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
+// import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
 import { createNewChatAction } from '../../redux/conversations/constants/actionConstants';
 import { RootState } from '../../redux/reducer';
 import Drawer from '../Drawer';
@@ -43,15 +42,20 @@ interface Ref {
   [x: string]: any;
 }
 
-interface ParamsId{
-  id: string
-}
+// maybe needed (08.08)
+// interface ParamsId{
+//   id: string
+// }
+
+// rework
 
 export default function MiniDrawer(props: IProps<History>) {
   // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
-  const params = useParams<any>();
+
+  // maybe needed (08.08)
+  // const params = useParams<any>();
 
   // REFS
   const ref = useRef<Ref>({});

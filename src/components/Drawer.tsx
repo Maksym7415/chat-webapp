@@ -5,13 +5,9 @@ import { Link, useHistory } from 'react-router-dom';
 import {
   Drawer, ListItemIcon, ListItemText, List, ListItem,
 } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import listRenderByRole from './drawerList';
 import { showDialogAction } from '../redux/common/commonActions';
 import { Paths } from '../routing/config/paths';
-
-import NewChatScreen from './newChat/newChatScreen';
-
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +27,13 @@ interface IDrawerProps {
 const notLinkItemsRoute = [Paths.signIn];
 
 export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) {
+  // HOOKS
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [open, setOpenNewChatScreen] = React.useState(false);
 
-  const handleDrawerClose = (title: string, route: string) => {
+  // FUNCTIONS
+  const handleDrawerClose = (title: string) => {
     setOpenDrawer(false);
     if (title === 'New Chat') {
       dispatch(showDialogAction('Add New Chat'));
@@ -64,17 +61,20 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
                                 </ListItem>;
 
               return notLinkItemsRoute.includes(route)
-                ? <div style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title, route)}>
+                ? <div style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title)}>
                     {bodyItem}
                   </div>
-                : <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title, route)}>
+                : <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title)}>
                     {bodyItem}
                   </Link>;
             })}
           </List>
         </div>
       </Drawer>
-      {/* <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} /> */}
+      {/*
+        // maybe needed (08.08)
+        <NewChatScreen open={open} handleClose={handleClose} setOpenNewChatScreen={setOpenNewChatScreen} />
+      */}
     </>
   );
 }

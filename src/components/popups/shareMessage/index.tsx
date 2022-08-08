@@ -4,29 +4,19 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
-  Button, Dialog, DialogContentText, Typography, Slide, Input, FormControl, InputAdornment, Paper, Chip, TextField, Grid, Popover, FormControlLabel, Checkbox, Avatar, DialogActions, DialogContent, DialogTitle,
+  Typography, TextField, Avatar,
 } from '@material-ui/core';
-import { TransitionProps } from '@material-ui/core/transitions';
 import { hideDialogAction, shareMessageAction } from '../../../redux/common/commonActions';
 import { RootState } from '../../../redux/reducer';
 import DefaultAvatar from '../../defaultAvatar';
 import { Paths } from '../../../routing/config/paths';
 import useStyles from './styles/styles';
 
-interface Ref {
-  [x: string]: any;
-}
-
-const Transition = React.forwardRef((
-  props: TransitionProps & { children?: React.ReactElement },
-  ref: React.Ref<unknown>,
-) => <Slide direction="up" ref={ref} {...props} />);
-
-const _borderError = '1px solid red';
+// rework ts
 
 export default function ShareMessage({ data }: any) {
   // HOOKS
@@ -49,7 +39,6 @@ export default function ShareMessage({ data }: any) {
   };
 
   const handleShareMessageId = (conversationId: number) => {
-    console.log(conversationId, 'conversationId');
     dispatch(shareMessageAction(data));
     history.push({
       pathname: `${Paths.chat}/${conversationId}`,
@@ -60,7 +49,6 @@ export default function ShareMessage({ data }: any) {
     dispatch(hideDialogAction());
   };
 
-  console.log(conversationsList, 'conversationsList');
   return (
         <div className={classes.container}>
             <TextField

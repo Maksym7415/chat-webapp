@@ -1,4 +1,4 @@
-import { makeStyles, fade } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   container: {
@@ -48,15 +48,10 @@ export default makeStyles((theme) => ({
   },
   inputFilter: {
     width: '100%',
-    // position: 'absolute',
-    // left: '50%',
-    // transform: 'translateX(-50%)',
-    // width: '90%',
   },
   wrapperConversation: {
     display: 'flex',
     flexDirection: 'column',
-    // maxHeight: '40px',
     overflow: 'auto',
     height: 'calc(100% - 40px)',
     marginTop: theme.spacing(1),

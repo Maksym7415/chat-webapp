@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -27,20 +26,22 @@ export default function ({
 }: IAppBarMenuProps) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  // FUNCTIONS
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleProfileOpen = (event: any) => {
+  const handleProfileOpen = () => {
     openProfile();
     handleMobileMenuClose();
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-  console.log(userAvatar, 'userAvatar');
+  // maybe needed (08.08)
+  // const handleMenuClose = () => {
+  //   setAnchorEl(null);
+  //   handleMobileMenuClose();
+  // };
+
   return (
     <>
       <Menu

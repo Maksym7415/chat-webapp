@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Dialog, DialogTitle, DialogContent, IconButton, Typography,
 } from '@material-ui/core';
@@ -12,10 +12,14 @@ import ShareMessage from '../popups/shareMessage';
 import useStyles from './styles/styles';
 
 export default function DialogComponent() {
+  // HOOKS
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  // SELECTORS
   const dialogState = useSelector(({ commonReducer }: RootState) => commonReducer.dialogComponent);
 
+  // HOOKS
   const handleClose = () => dispatch(hideDialogAction());
 
   const Content = () => {

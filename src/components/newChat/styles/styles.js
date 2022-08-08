@@ -1,4 +1,4 @@
-import { makeStyles, fade } from '@material-ui/core/styles';
+import { makeStyles, alpha } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   container: {
@@ -20,9 +20,9 @@ export default makeStyles((theme) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     marginBottom: '10px',
-    backgroundColor: fade(theme.palette.primary.main, 0.45),
+    backgroundColor: alpha(theme.palette.primary.main, 0.45),
     '&:hover': {
-      backgroundColor: fade(theme.palette.primary.main, 0.15),
+      backgroundColor: alpha(theme.palette.primary.main, 0.15),
     },
     // marginRight: theme.spacing(4),
     // marginLeft: 0,

@@ -19,7 +19,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { showDialogAction } from '../../redux/common/commonActions';
-// import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
+import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
 import { createNewChatAction } from '../../redux/conversations/constants/actionConstants';
 import Drawer from '../Drawer';
 import AppBarMenu from './AppBarMenu';
@@ -114,9 +114,9 @@ export default function MiniDrawer(props: IProps<History>) {
     ref.current && ref.current.focus(); // Если элемент виден на экране даем ему фокус
   }, [hide]);
 
-  // useEffect(() => {
-  //   dispatch(initializedGlobalSearchAction(debouncedSearchValue));
-  // }, [debouncedSearchValue]);
+  useEffect(() => {
+    !hide && dispatch(initializedGlobalSearchAction(debouncedSearchValue));
+  }, [debouncedSearchValue]);
 
   return (
     <div className={classes.root}>
@@ -172,7 +172,7 @@ export default function MiniDrawer(props: IProps<History>) {
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
+                <Badge badgeContent={17} color="secondary" overlap="rectangular">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>

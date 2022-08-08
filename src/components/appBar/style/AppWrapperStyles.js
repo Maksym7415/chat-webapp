@@ -1,5 +1,5 @@
 import {
-  makeStyles, fade,
+  makeStyles, alpha,
 } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
@@ -45,9 +45,9 @@ export default makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.primary.main, 0.45),
+    backgroundColor: alpha(theme.palette.primary.main, 0.45),
     '&:hover': {
-      backgroundColor: fade(theme.palette.primary.main, 0.15),
+      backgroundColor: alpha(theme.palette.primary.main, 0.15),
     },
     marginRight: theme.spacing(4),
     marginLeft: 0,

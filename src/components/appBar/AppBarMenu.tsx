@@ -55,7 +55,7 @@ export default function AppBarMenu({
       >
         <MenuItem>
           <IconButton aria-label="show 11 new notifications" color="inherit">
-            <Badge badgeContent={11} color="secondary">
+            <Badge badgeContent={11} color="secondary" overlap="rectangular">
               <NotificationsIcon />
             </Badge>
           </IconButton>

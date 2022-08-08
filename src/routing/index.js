@@ -21,6 +21,7 @@ function Router() {
 
   // SELECTORS
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
+  const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
 
   // STATES
   const [config, setConfig] = useState(null);
@@ -57,7 +58,7 @@ function Router() {
                           path={path}
                           exact
                           key={id}
-                          token={LocalStorageService.getAccessToken()}
+                          token={isLogout ? null : LocalStorageService.getAccessToken()}
                         />)
                   }
                   <Route component = {() => <div>404</div>} />

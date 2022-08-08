@@ -4,7 +4,6 @@
 import React from 'react';
 import { Paper, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
-import { useDispatch, useSelector } from 'react-redux';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { FileData, Messages } from '../../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay } from '../../../../../common/getCorrectDateFormat';
@@ -16,19 +15,21 @@ import {
 } from '../../../../../redux/common/commonActions';
 import DefaultAvatar from '../../../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
-import { RootState } from '../../../../../redux/reducer';
 import { updateConversationData } from '../../../../../redux/conversations/constants/actionConstants';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
 
 export default function Message({
   fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar, conversationId, allMassages, isEditing,
 }: MessageProps) {
   // HOOKS
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const activeConversationType = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationId.type);
-  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
+  const activeConversationType = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationId.type);
+  const conversationsList = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationsList.success.data);
 
   // FUNCTIONS
 

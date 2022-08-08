@@ -3,21 +3,22 @@ import {
   Dialog, DialogTitle, DialogContent, IconButton, Typography,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../redux/reducer';
 import { hideDialogAction } from '../../redux/common/commonActions';
 import UserProfile from '../../pages/user/components/userProfile';
 import NewChat from '../newChat/newChatScreen';
 import ShareMessage from '../popups/shareMessage';
 import useStyles from './styles/styles';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+
 export default function DialogComponent() {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const classes = useStyles();
 
   // SELECTORS
-  const dialogState = useSelector(({ commonReducer }: RootState) => commonReducer.dialogComponent);
+  const dialogState = useAppSelector(({ commonReducer }) => commonReducer.dialogComponent);
 
   // HOOKS
   const handleClose = () => dispatch(hideDialogAction());

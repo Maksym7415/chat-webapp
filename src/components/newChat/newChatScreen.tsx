@@ -5,7 +5,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import {
   Button, Dialog, DialogContentText, Typography, Slide, Input, FormControl, InputAdornment, Paper, Chip, TextField, Grid, Popover, FormControlLabel, Checkbox, Avatar, DialogActions, DialogContent, DialogTitle,
@@ -14,7 +13,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { hideDialogAction } from '../../redux/common/commonActions';
 import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
-import { RootState } from '../../redux/reducer';
 import { SearchObjectInteface } from '../../redux/search/constants/interfaces';
 import useStyles from './styles/styles';
 import socket from '../../socket';
@@ -22,6 +20,9 @@ import { fullDate } from '../../common/getCorrectDateFormat';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import DeleteItem from '../deleteItem/DeleteItem';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 interface Ref {
   [x: string]: any;
@@ -39,7 +40,7 @@ const _borderError = '1px solid red';
 export default function NewChatScreen() {
   // HOOKS
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // REFS
   const ref = useRef<HTMLDivElement>(null);
@@ -47,8 +48,8 @@ export default function NewChatScreen() {
   const refContactWraper = useRef<any>(null);
 
   // SELECTORS
-  const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
-  const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const searchResult = useAppSelector(({ globalSearchReducer }) => globalSearchReducer.globalSearchResult);
+  const { userId, firstName } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
 
   // STATES
   const [searchvalue, setSearchValue] = useState<string>('');

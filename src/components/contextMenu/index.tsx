@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Paper, MenuList, MenuItem } from '@material-ui/core';
 
-import { RootState } from '../../redux/reducer';
+// hooks
+import { useAppSelector } from '../../hooks/redux';
 
 export default function ContextMenu() {
-  const menuConfig = useSelector(({ commonReducer }: RootState) => commonReducer.contextMenu);
+  const menuConfig = useAppSelector(({ commonReducer }) => commonReducer.contextMenu);
 
   if (menuConfig.isShowMenu) {
     return (
@@ -18,7 +18,7 @@ export default function ContextMenu() {
         }}
       >
         <MenuList>
-          {menuConfig.config.map((item) => <MenuItem key={item.id} onClick={() => item.callback()}>{item.title}</MenuItem>)}
+          {menuConfig.config.map((item: any) => <MenuItem key={item.id} onClick={() => item.callback()}>{item.title}</MenuItem>)}
         </MenuList>
       </Paper>
     );

@@ -2,13 +2,14 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { fullDate } from '../../../../../common/getCorrectDateFormat';
 import socket from '../../../../../socket';
-import { RootState } from '../../../../../redux/reducer';
 import { handleGetBufferFile } from '../../../helpers/addFiles';
 import UploadDialog from './uploadDialog';
 import { AddFilesProps, FilesSrc } from '../../../interfaces';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
 
 let filesCount = 0;
 
@@ -16,11 +17,11 @@ export default function AddFiles({
   files, isOpen, handleOpenDialog, handleAddFile, setFiles,
 }: AddFilesProps) {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentChat.id);
+  const { userId } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
+  const conversationId = useAppSelector(({ userConversationReducer }) => userConversationReducer.currentChat.id);
 
   // STATES
   const [message, setMessage] = useState<string>('');

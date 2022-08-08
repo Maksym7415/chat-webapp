@@ -1,30 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { useEffect, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Rnd } from 'react-rnd';
 import ChatsList from './components/chatList';
 import UserConversationHistoryPage from './components/conversationsPages/UserConversationHistoryPage';
 import { getUserConversationsActionRequest, conversationAddNewMessage, getConversationIdAction } from '../../redux/conversations/constants/actionConstants';
-import { RootState } from '../../redux/reducer';
 import { Messages } from '../../redux/conversations/constants/interfaces';
 import socket from '../../socket';
 import { Conversation, BackUsers } from './interfaces';
 import './styles/index.scss';
 import { Paths } from '../../routing/config/paths';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+
 let isEmit = false;
 let newTimer: any = {};
 
 export default function BasicTextFields({ history }: RouteComponentProps) {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
-  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
-  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
+  const conversationsList = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationsList.success.data);
+  const { userId } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
+  const typing = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationTypeState);
 
   // STATES
   const [usersTyping, setUsersTyping] = useState<Conversation>({

@@ -5,16 +5,17 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
   Typography, TextField, Avatar,
 } from '@material-ui/core';
 import { hideDialogAction, shareMessageAction } from '../../../redux/common/commonActions';
-import { RootState } from '../../../redux/reducer';
 import DefaultAvatar from '../../defaultAvatar';
 import { Paths } from '../../../routing/config/paths';
 import useStyles from './styles/styles';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 // rework ts
 
@@ -22,10 +23,10 @@ export default function ShareMessage({ data }: any) {
   // HOOKS
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
+  const conversationsList = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationsList.success.data);
 
   // STATES
   const [searchNameChat, setSearchNameChat] = useState<string>('');

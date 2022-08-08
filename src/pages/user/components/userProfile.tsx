@@ -11,24 +11,25 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/reducer/index';
 import {
   getAvatarsAction, setMainPhotoAction, clearDataAction, uploadAvatarAction, updateUserProfileAction,
 } from '../../../redux/user/constants/actions';
 import '../style/style.scss';
 import DefaultAvatar from '../../../components/defaultAvatar';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+
 function UserProfile() {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const userId = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload.userId);
-  const userInfo = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success);
-  const avatars = useSelector(({ userReducer }: RootState) => userReducer.avatars.success.data);
-  const uploadAvatarMessage = useSelector(({ userReducer }: RootState) => userReducer.upload.success.data);
-  const setPhotoMessage = useSelector(({ userReducer }: RootState) => userReducer.setMainPhoto.success.data);
+  const userId = useAppSelector(({ authReducer }) => authReducer.tokenPayload.userId);
+  const userInfo = useAppSelector(({ userReducer }) => userReducer.userInfo.success);
+  const avatars = useAppSelector(({ userReducer }) => userReducer.avatars.success.data);
+  const uploadAvatarMessage = useAppSelector(({ userReducer }) => userReducer.upload.success.data);
+  const setPhotoMessage = useAppSelector(({ userReducer }) => userReducer.setMainPhoto.success.data);
 
   // STATES
   const [userData, setUserData] = useState<any>({});

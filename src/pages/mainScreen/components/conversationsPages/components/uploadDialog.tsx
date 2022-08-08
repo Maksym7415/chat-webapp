@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
   Dialog, DialogContent, DialogTitle, DialogActions, TextField, Paper,
@@ -10,12 +9,15 @@ import useStyles from '../styles/styles';
 import { preloaderAction } from '../../../../../redux/common/commonActions';
 import DeleteItem from '../../../../../components/deleteItem/DeleteItem';
 
+// hooks
+import { useAppDispatch } from '../../../../../hooks/redux';
+
 export default function UploadDialog({
   handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage, setFiles,
 }: DialogProps) {
   // HOOKS
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // FUNCTIONS
   const readImage = (file: File, name: string) => {

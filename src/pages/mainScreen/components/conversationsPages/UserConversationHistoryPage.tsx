@@ -3,7 +3,6 @@
 import React, {
   useEffect, useState, useRef,
 } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { History } from 'history';
 import {
@@ -14,7 +13,6 @@ import {
   getConversationIdAction,
   clearConversationData,
 } from '../../../../redux/conversations/constants/actionConstants';
-import { RootState } from '../../../../redux/reducer';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
 import AddFiles from './components/addFilesComponent';
@@ -27,6 +25,9 @@ import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/
 import './styles/styles.scss';
 import { setMessageDate } from '../../../../common/getCorrectDateFormat';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+
 interface ParamsId{
   id: string
 }
@@ -37,7 +38,7 @@ interface Props<H>{
 
 export default function UserConversationHistoryPage({ history }: Props<History>) {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const conversationId = +useParams<any>()?.id;
 
   // REFS
@@ -45,13 +46,14 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const ref = useRef(null);
 
   // SELECTERS
-  const isCreateChat = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.createConversation.success.data);
-  const opponentId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.opponentId.id);
-  const messageHistory = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.data);
-  const pagination = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.userHistoryConversation.success.pagination);
-  const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const { userId, firstName } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
-  const sheraMessages = useSelector(({ commonReducer }: RootState) => commonReducer.sheraMessages);
+  const isCreateChat = useAppSelector(({ userConversationReducer }) => userConversationReducer.createConversation.success.data);
+  const opponentId = useAppSelector(({ userConversationReducer }) => userConversationReducer.opponentId.id);
+  const messageHistory = useAppSelector(({ userConversationReducer }) => userConversationReducer.userHistoryConversation.success.data);
+  const pagination = useAppSelector(({ userConversationReducer }) => userConversationReducer.userHistoryConversation.success.pagination);
+  const lastMessage = useAppSelector(({ userConversationReducer }) => userConversationReducer.lastMessages);
+  const { userId, firstName } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
+  const sheraMessages = useAppSelector(({ commonReducer }) => commonReducer.sheraMessages);
+  const messageEdit = useAppSelector(({ commonReducer }) => commonReducer.messageEdit);
 
   // STATES
   const [allMessages, setAllMessages] = useState<CurrentConversationMessages>({});
@@ -60,7 +62,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isInputState, setIsInputState] = useState<boolean>(false);
   const [timeDivCounter, setTimeDivCounter] = useState<number>(0);
-  const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
 
   // VARIABLES
 

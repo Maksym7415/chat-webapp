@@ -5,13 +5,11 @@ import {
 import { History } from 'history';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@material-ui/icons/Edit';
 import ShareIcon from '@material-ui/icons/Share';
 import CloseIcon from '@material-ui/icons/Close';
 import socket from '../../../../../socket';
 import { fullDate } from '../../../../../common/getCorrectDateFormat';
-import { RootState } from '../../../../../redux/reducer';
 import useStyles from '../styles/styles';
 import {
   MessageInputProps, MessageValue, DeleteMessageSocketResponse, CurrentConversationMessages,
@@ -19,17 +17,20 @@ import {
 import { Messages } from '../../../../../redux/conversations/constants/interfaces';
 import { editMessageAction, deleteMessageAction, shareMessageAction } from '../../../../../redux/common/commonActions';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
+
 export default function MessageInput({
   conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,
 }: MessageInputProps<History>) {
   // HOOKS
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const typing = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationTypeState);
-  const messageEdit = useSelector(({ commonReducer }: RootState) => commonReducer.messageEdit);
-  const sheraMessages = useSelector(({ commonReducer }: RootState) => commonReducer.sheraMessages);
+  const typing = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationTypeState);
+  const messageEdit = useAppSelector(({ commonReducer }) => commonReducer.messageEdit);
+  const sheraMessages = useAppSelector(({ commonReducer }) => commonReducer.sheraMessages);
 
   // STATES
   const [sheredMessages, setSheredMessages] = useState<any>([]);

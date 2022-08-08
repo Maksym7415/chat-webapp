@@ -5,9 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Avatar } from '@material-ui/core';
 import clsx from 'clsx';
-import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
-import { RootState } from '../../../../redux/reducer/index';
 import { ChatListProps } from '../../interfaces';
 import { ConversationsList } from '../../../../redux/conversations/constants/interfaces';
 import { getCurrentDay } from '../../../../common/getCorrectDateFormat';
@@ -18,20 +16,23 @@ import DefaultAvatar from '../../../../components/defaultAvatar';
 import { Paths } from '../../../../routing/config/paths';
 import useStyles from '../../styles/styles';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+
 interface ParamsId {
   id: string
 }
 
 export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const classes = useStyles();
   const params = useParams<any>();
 
   // SELECTORS
-  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
-  const lastMessage = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.lastMessages);
-  const conversationId = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.currentConversationIdObject.currentConversationId);
+  const { userId } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
+  const lastMessage = useAppSelector(({ userConversationReducer }) => userConversationReducer.lastMessages);
+  const conversationId = useAppSelector(({ userConversationReducer }) => userConversationReducer.currentConversationIdObject.currentConversationId);
 
   // STATES
   const [conversations, setConversations] = useState<Array<ConversationsList>>([]);

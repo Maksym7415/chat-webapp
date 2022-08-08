@@ -1,8 +1,10 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/ban-types */
 import * as types from './types';
 import * as interfaces from './interfaces';
 import { ErrorResponse } from '../../common/interafaces';
+import { AppDispatch } from '../../index';
 
 export const conversationActionSuccess = (payload: interfaces.ConversationReducerPayload, name: interfaces.ConversationReducerStateType): interfaces.ConversationActionsType => ({
   type: types.CONVERSATION_SUCCESS,
@@ -67,7 +69,7 @@ export const clearConversationData = () : interfaces.ClearConversationInterface 
   type: types.CONVERSATION_CLEAR_DATA,
 });
 
-export const updateConversationData = (data: interfaces.IUpdateConversationData, dispatch: any) => {
+export const updateConversationData = (data: interfaces.IUpdateConversationData, dispatch: AppDispatch) => {
   switch (data.mode) {
     case 'deleteMessage':
       return dispatch(updateConversationDataAction(data.conversationsList.map((conversation: any) => {

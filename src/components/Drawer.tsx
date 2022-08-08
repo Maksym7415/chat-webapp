@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useHistory } from 'react-router-dom';
 import {
@@ -9,6 +8,9 @@ import listRenderByRole from './drawerList';
 import { showDialogAction } from '../redux/common/commonActions';
 import { Paths } from '../routing/config/paths';
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -29,7 +31,7 @@ const notLinkItemsRoute = [Paths.signIn];
 export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) {
   // HOOKS
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   // FUNCTIONS

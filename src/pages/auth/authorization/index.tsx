@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { RouteComponentProps } from 'react-router-dom';
-import { RootState } from '../../../redux/reducer';
 import AuthForm from '../common/authForm';
 import { actionLogin } from '../../../redux/authorization/constants/actionConstants';
 import { Paths } from '../../../routing/config/paths';
 
+// hooks
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+
 export default function ({ history }: RouteComponentProps) {
   // HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
-  const response = useSelector(({ authReducer }: RootState) => authReducer.login);
+  const response = useAppSelector(({ authReducer }) => authReducer.login);
 
   // STATES
   const [login, setLogin] = useState<string>('');

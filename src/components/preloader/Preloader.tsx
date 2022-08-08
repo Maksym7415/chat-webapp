@@ -1,12 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { RootState } from '../../redux/reducer';
 import './styles.scss';
+
+// hooks
+import { useAppSelector } from '../../hooks/redux';
 
 export default function Preloader() {
   // SELECTORS
-  const isShow = useSelector(({ commonReducer }: RootState) => commonReducer.preloader);
+  const isShow = useAppSelector(({ commonReducer }) => commonReducer.preloader);
 
   return (
     <>

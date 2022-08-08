@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { useState, useRef, useEffect } from 'react';
 import { History } from 'history';
-import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
@@ -22,13 +21,15 @@ import Typography from '@material-ui/core/Typography';
 import { showDialogAction } from '../../redux/common/commonActions';
 // import { initializedGlobalSearchAction } from '../../redux/search/constants/actionConstants';
 import { createNewChatAction } from '../../redux/conversations/constants/actionConstants';
-import { RootState } from '../../redux/reducer';
 import Drawer from '../Drawer';
 import AppBarMenu from './AppBarMenu';
 import useStyles from './style/AppWrapperStyles';
 import DefaultAvatar from '../defaultAvatar';
 import { useDebounce } from '../../hooks/useDebounce';
 import { Paths } from '../../routing/config/paths';
+
+// hooks
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 interface IProps<H> {
   children: Record<string, unknown>
@@ -52,7 +53,7 @@ interface Ref {
 export default function MiniDrawer(props: IProps<History>) {
   // HOOKS
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // maybe needed (08.08)
   // const params = useParams<any>();
@@ -61,10 +62,10 @@ export default function MiniDrawer(props: IProps<History>) {
   const ref = useRef<Ref>({});
 
   // SELECTORS
-  const searchResult = useSelector(({ globalSearchReducer }: RootState) => globalSearchReducer.globalSearchResult);
-  const conversationsList = useSelector(({ userConversationReducer }: RootState) => userConversationReducer.conversationsList.success.data);
-  const userData = useSelector(({ userReducer }: RootState) => userReducer.userInfo.success.data);
-  const { userId } = useSelector(({ authReducer }: RootState) => authReducer.tokenPayload);
+  const searchResult = useAppSelector(({ globalSearchReducer }) => globalSearchReducer.globalSearchResult);
+  const conversationsList = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationsList.success.data);
+  const userData = useAppSelector(({ userReducer }) => userReducer.userInfo.success.data);
+  const { userId } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
 
   // STATES
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);

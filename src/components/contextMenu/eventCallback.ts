@@ -1,7 +1,8 @@
 import { contextMenuAction } from '../../redux/common/commonActions';
 import { ContextMenuConfig } from '../../redux/common/interafaces';
+import { AppDispatch } from '../../redux';
 
-export default (event: React.MouseEvent<HTMLElement>, id: number, config: Array<ContextMenuConfig>, dispatch: any) => {
+export default (event: React.MouseEvent<HTMLElement>, id: number, config: Array<ContextMenuConfig>, dispatch: AppDispatch) => {
   event.preventDefault();
   if (event.type === 'click') {
     dispatch(contextMenuAction({

@@ -28,6 +28,7 @@ export default function Message({
   const dispatch = useAppDispatch();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const activeConversationType = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationId.type);
   const conversationsList = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationsList.success.data);
 
@@ -78,7 +79,7 @@ export default function Message({
   return (
     <div className={`conversations__message-container flex ${fkSenderId === userId ? 'conversations__message-container-margin-sender' : 'conversations__message-container-margin-friend'}`}>
       {isShowAvatar && (User.userAvatar ? <Avatar className={classes.messageAvatar} src={`${process.env.REACT_APP_BASE_URL}/${User.userAvatar}`} /> : <DefaultAvatar name={`${User.firstName} ${User.lastName}`} width='30px' height='30px' fontSize='0.7rem' />)}
-      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(fkSenderId === userId, handleDeleteMessage, handleEditMessage, handleShareMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
+      <div onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, contextMenuConfig(lang, fkSenderId === userId, handleDeleteMessage, handleEditMessage, handleShareMessage), dispatch)} onClick={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, id, [], dispatch)} className='conversations__message-file-container'>
         {Files && !!Files.length && (
           <div className='conversations__message-image-container'>
             {

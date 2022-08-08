@@ -24,6 +24,7 @@ import { Messages } from '../../../../redux/conversations/constants/interfaces';
 import { checkIsShowAvatar, scrollTop, settingFilesObject } from '../../helpers/userHistoryConversations';
 import './styles/styles.scss';
 import { setMessageDate } from '../../../../common/getCorrectDateFormat';
+import languages from '../../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
@@ -45,7 +46,8 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   const inputRef = useRef<HTMLInputElement>(null);
   const ref = useRef(null);
 
-  // SELECTERS
+  // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const isCreateChat = useAppSelector(({ userConversationReducer }) => userConversationReducer.createConversation.success.data);
   const opponentId = useAppSelector(({ userConversationReducer }) => userConversationReducer.opponentId.id);
   const messageHistory = useAppSelector(({ userConversationReducer }) => userConversationReducer.userHistoryConversation.success.data);
@@ -213,8 +215,8 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
         }}
       >
         <>
-          {Number.isNaN(conversationId) && !opponentId ? <p>Выберите чат</p> : opponentId && !conversationId ? <p> Отправьте новое соообщение, чтобы создать чат</p>
-            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p> В этом чате еще нет соообщений</p> : allMessages[conversationId] && allMessages[conversationId].map(({
+          {Number.isNaN(conversationId) && !opponentId ? <p>{languages[lang].mainScreen.chooseAChat}</p> : opponentId && !conversationId ? <p>{languages[lang].mainScreen.sendANewMessageToStartAChat}</p>
+            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p>{languages[lang].mainScreen.thereAreNoMessagesInChatYet}</p> : allMessages[conversationId] && allMessages[conversationId].map(({
               fkSenderId, message, id, sendDate, User, Files, component, isEditing,
             }, index: number, arr) => {
               let isShowAvatar = false;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import * as types from './types';
 import * as interafaces from './interafaces';
 
@@ -20,10 +21,18 @@ const initialState: interafaces.CommonReducerInterface = {
     title: '',
   },
   sheraMessages: [],
+  lang: localStorage.getItem('@@lang') || 'ua',
 };
 
 export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
   switch (action.type) {
+    case types.SET_LANGUAGE: {
+      localStorage.setItem('@@lang', action.payload);
+      return {
+        ...state,
+        lang: action.payload,
+      };
+    }
     case types.APP_PRELOADER: {
       return {
         ...state,

@@ -32,6 +32,7 @@ export interface CommonReducerInterface {
   messageEdit: MessageEditState
   dialogComponent: DialogComponentState
   sheraMessages: Array<Messages> | []
+  lang: string;
 }
 
 export type CommonReducerActions = PreloaderActionInterface
@@ -40,7 +41,8 @@ export type CommonReducerActions = PreloaderActionInterface
 | MessageDeleteAction
 | DialogShowAction
 | DialogHideAction
-| ShareMessageActionInterface;
+| ShareMessageActionInterface
+| SetLanguageAction;
 
 // CONTEXT MENU
 export interface ContextMenuConfig {
@@ -60,6 +62,12 @@ export interface ContextMenuState {
 interface ShowContextMenuAction {
   type: typeof types.SHOW_CONTEXT_MENU
   payload: ContextMenuState
+}
+
+// SET LANGUAGE
+interface SetLanguageAction {
+  type: typeof types.SET_LANGUAGE
+  payload: string;
 }
 
 // MESSAGE EDIT

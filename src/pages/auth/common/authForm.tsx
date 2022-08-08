@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, { FunctionComponent } from 'react';
 import { reduxForm, Field, InjectedFormProps } from 'redux-form';
 import {
@@ -13,12 +14,19 @@ import useStyles from './style';
 import { IPropsForm, IFIeldRenderConfig } from './authInterfaces';
 import authFieldRenderConfig from './authConfig';
 import { Paths } from '../../../routing/config/paths';
+import languages from '../../../translations';
+
+// hooks
+import { useAppSelector } from '../../../hooks/redux';
 
 const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string> & IPropsForm> = ({
   handleSubmit, pageName, icon, formTitle, submitBtnTitle, errorBack, callBack,
 }) => {
   // HOOKS
   const classes = useStyles();
+
+  // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
 
   // VARIABLES
   const config: IFIeldRenderConfig = authFieldRenderConfig;
@@ -57,13 +65,13 @@ const ValidationForm: FunctionComponent<InjectedFormProps<{}, IPropsForm, string
         {pageName === 'signUpPage'
           ? (
               <Link href={Paths.signIn} color="primary">
-              Have an account? Sign In.
+              {languages[lang].authorization.haveAnAccount} {languages[lang].authorization.signin}.
               </Link>
           )
           : pageName === 'signInPage'
             ? (
                 <Link href={Paths.signUp} color="primary">
-                  Have no account? Sign Up.
+                  {languages[lang].authorization.haveNoAccount} {languages[lang].authorization.signUp}.
                   </Link>
             )
             : null

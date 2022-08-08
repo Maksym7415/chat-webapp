@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable no-param-reassign */
@@ -48,12 +49,20 @@ export const LocalStorageService = (() => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }
+  function _setLanguage(lang) {
+    localStorage.setItem('@@lang', lang);
+  }
+  function _getLanguage() {
+    return localStorage.getItem('@@lang');
+  }
   return {
     getService: _getService,
     setToken: _setToken,
     getAccessToken: _getAccessToken,
     getRefreshToken: _getRefreshToken,
     clearToken: _clearToken,
+    setLanguage: _setLanguage,
+    getLanguage: _getLanguage,
   };
 })();
 

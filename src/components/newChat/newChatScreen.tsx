@@ -20,6 +20,7 @@ import { fullDate } from '../../common/getCorrectDateFormat';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import DeleteItem from '../deleteItem/DeleteItem';
+import languages from '../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -48,6 +49,7 @@ export default function NewChatScreen() {
   const refContactWraper = useRef<any>(null);
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const searchResult = useAppSelector(({ globalSearchReducer }) => globalSearchReducer.globalSearchResult);
   const { userId, firstName } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
 
@@ -210,7 +212,7 @@ export default function NewChatScreen() {
           <Grid item xs={12}>
             <TextField
               id="name"
-              label="Введите название группы"
+              label={languages[lang].newChatScreen.enterAGroupMame}
               variant="outlined"
               fullWidth
               required={true}
@@ -247,7 +249,7 @@ export default function NewChatScreen() {
             />
             <label onClick={() => !image && refInputFile.current.click()}>
               <Button variant="contained" color="primary" component="span" fullWidth style={{ marginTop: imageData?.name ? '10px' : '25px', border: error.image.bool ? _borderError : '' }} disabled={!!image}>
-                Добавить аватар группы
+                {languages[lang].newChatScreen.addGroupAvatar}
               </Button>
             </label>
             <Dialog
@@ -256,7 +258,7 @@ export default function NewChatScreen() {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">Фото</DialogTitle>
+              <DialogTitle id="alert-dialog-title">{languages[lang].generals.photo}</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <img src={image} />
@@ -264,10 +266,10 @@ export default function NewChatScreen() {
               </DialogContent>
               <DialogActions>
                 <Button onClick={() => handleCloseDialog(true)} color="primary" variant="contained">
-                  Добавить
+                  {languages[lang].generals.add}
                 </Button>
                 <Button onClick={() => handleCloseDialog(false)} color="primary" variant="contained">
-                  Отменить
+                  {languages[lang].generals.cancel}
                 </Button>
             </DialogActions>
             </Dialog>
@@ -324,7 +326,7 @@ export default function NewChatScreen() {
                   <Input
                     ref={ref}
                     className={classes.inputRoot}
-                    placeholder='Выберите контакт'
+                    placeholder={languages[lang].generals.chooseAContact}
                     autoComplete='off'
                     disableUnderline={true}
                     id="standard-adornment-weight"
@@ -355,7 +357,7 @@ export default function NewChatScreen() {
           </Grid>
           {/* </div> */}
             <Button autoFocus className={classes.createChatButton} variant='outlined' onClick={createChat}>
-              Создать чат
+              {languages[lang].generals.createAChat}
             </Button>
         </Grid>
 

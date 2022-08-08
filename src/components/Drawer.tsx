@@ -35,11 +35,11 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
   const history = useHistory();
 
   // FUNCTIONS
-  const handleDrawerClose = (title: string) => {
+  const handleDrawerClose = (value: string) => {
     setOpenDrawer(false);
-    if (title === 'New Chat') {
+    if (value === 'newChat') {
       dispatch(showDialogAction('Add New Chat'));
-    } else if (title === 'Logout') {
+    } else if (value === 'logout') {
       dispatch(actionLogout());
       history.push(Paths.signIn);
     }
@@ -55,7 +55,7 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
         >
           <List>
             {listRenderByRole().map(({
-              icon, id, title, route,
+              icon, id, title, route, value,
             }) => {
               const bodyItem = <ListItem button>
                                   <ListItemIcon>{icon}</ListItemIcon>
@@ -63,10 +63,10 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
                                 </ListItem>;
 
               return notLinkItemsRoute.includes(route)
-                ? <div style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title)}>
+                ? <div style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(value)}>
                     {bodyItem}
                   </div>
-                : <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(title)}>
+                : <Link to={route} style={{ textDecoration: 'none' }} key={id} onClick={() => handleDrawerClose(value)}>
                     {bodyItem}
                   </Link>;
             })}

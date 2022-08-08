@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { actionSignUp } from '../../../redux/authorization/constants/actionConstants';
 import AuthForm from '../common/authForm';
 import { Paths } from '../../../routing/config/paths';
+import languages from '../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -15,6 +16,7 @@ export default function Registration({ history }: RouteComponentProps) {
 
   // SELECTORS
   const { success: { email: login }, error: errorBack } = useAppSelector(({ authReducer }) => authReducer.signUp);
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
 
   // STATES
   const [error, setError] = useState<string>('');
@@ -37,8 +39,8 @@ export default function Registration({ history }: RouteComponentProps) {
   return (
     <>
       <AuthForm
-        formTitle={'Sign up'}
-        submitBtnTitle={'Sign up'}
+        formTitle={languages[lang].authorization.signUp}
+        submitBtnTitle={languages[lang].authorization.signUp}
         pageName={'signUpPage'}
         icon={<LockOutlinedIcon />}
         callBack={submit}

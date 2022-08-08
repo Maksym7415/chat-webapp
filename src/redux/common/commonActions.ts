@@ -17,6 +17,11 @@ export const editMessageAction = (isEdit: boolean, messageId: number | null): in
   payload: { isEdit, messageId },
 });
 
+export const setLanguageAction = (lang: string): interfaces.CommonReducerActions => ({
+  type: types.SET_LANGUAGE,
+  payload: lang,
+});
+
 export const deleteMessageAction = (isDelete: boolean, messageId: number | null): interfaces.CommonReducerActions => ({
   type: types.IS_EDIT_MESSAGE,
   payload: { isDelete, messageId },

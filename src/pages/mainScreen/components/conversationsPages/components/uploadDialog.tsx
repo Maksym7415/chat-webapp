@@ -8,9 +8,10 @@ import { DialogProps, FilesSrc, Files } from '../../../interfaces';
 import useStyles from '../styles/styles';
 import { preloaderAction } from '../../../../../redux/common/commonActions';
 import DeleteItem from '../../../../../components/deleteItem/DeleteItem';
+import languages from '../../../../../translations';
 
 // hooks
-import { useAppDispatch } from '../../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
 
 export default function UploadDialog({
   handleClose, handleSend, isOpen, files, handleAddFile, message, src, setSrc, setMessage, setFiles,
@@ -18,6 +19,9 @@ export default function UploadDialog({
   // HOOKS
   const classes = useStyles();
   const dispatch = useAppDispatch();
+
+  // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
 
   // FUNCTIONS
   const readImage = (file: File, name: string) => {
@@ -107,7 +111,7 @@ export default function UploadDialog({
           }
         </div>
         <TextField
-          label='Caption'
+          label={languages[lang].generals.caption}
           fullWidth
           value={message}
           onKeyDown={sendMessageByKey}
@@ -118,11 +122,11 @@ export default function UploadDialog({
         />
       </DialogContent>
       <DialogActions classes={{ root: classes.actionsContainer }}>
-        <Button variant='contained' color='primary' onClick={() => handleAddFile()}>Add</Button>
+        <Button variant='contained' color='primary' onClick={() => handleAddFile()}>{languages[lang].generals.add}</Button>
         <div className='full-w flex'>
           <div className='conversations__send-close-buttons-container'>
-            <Button variant='contained' color='primary' onClick={handleSendFiles}>Send</Button>
-            <Button classes={{ root: classes.buttonMargin }} variant='contained' color='primary' onClick={handleCloseDialog}>Close</Button>
+            <Button variant='contained' color='primary' onClick={handleSendFiles}>{languages[lang].generals.send}</Button>
+            <Button classes={{ root: classes.buttonMargin }} variant='contained' color='primary' onClick={handleCloseDialog}>{languages[lang].generals.close}</Button>
           </div>
         </div>
       </DialogActions>

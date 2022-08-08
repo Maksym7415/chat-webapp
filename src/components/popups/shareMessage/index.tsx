@@ -14,6 +14,7 @@ import DefaultAvatar from '../../defaultAvatar';
 import { Paths } from '../../../routing/config/paths';
 import useStyles from './styles/styles';
 import { ShareMessageProps } from './interfaces';
+import languages from '../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -27,6 +28,7 @@ export default function ShareMessage({ data }: ShareMessageProps) {
   const dispatch = useAppDispatch();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const conversationsList = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationsList.success.data);
 
   // STATES
@@ -57,7 +59,7 @@ export default function ShareMessage({ data }: ShareMessageProps) {
               id="name"
               variant="outlined"
               size="small"
-              placeholder="Share Message with..."
+              placeholder={`${languages[lang].generals.shareMessageWith}...`}
               className={classes.inputFilter}
               onChange={handleChatNameHandler}
             />
@@ -77,7 +79,7 @@ export default function ShareMessage({ data }: ShareMessageProps) {
                       </Typography>
                   </div>
                 </div>))
-              : <p className={classes.noUsersFound} >No users found.</p>}
+              : <p className={classes.noUsersFound}>{languages[lang].generals.noUsersFound}.</p>}
           </div>
         </div>
 

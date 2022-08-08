@@ -26,7 +26,7 @@ export default function PrivatePage({
                     }
                     return <Redirect to={Paths.signIn} />;
                   }
-                  return !token ? <Component {...props}/> : <Redirect to='/'/>;
+                  return !token ? <Component {...props}/> : <Redirect to={Paths.main} />;
                 }}
             />
   );

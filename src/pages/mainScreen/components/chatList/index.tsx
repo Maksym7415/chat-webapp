@@ -15,6 +15,7 @@ import contextMenuConfig from './contextMenuConfig';
 import DefaultAvatar from '../../../../components/defaultAvatar';
 import { Paths } from '../../../../routing/config/paths';
 import useStyles from '../../styles/styles';
+import languages from '../../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
@@ -30,6 +31,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
   const params = useParams<any>();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const { userId } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
   const lastMessage = useAppSelector(({ userConversationReducer }) => userConversationReducer.lastMessages);
   const conversationId = useAppSelector(({ userConversationReducer }) => userConversationReducer.currentConversationIdObject.currentConversationId);
@@ -104,7 +106,7 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
     >
       {conversations.map((element) => (
         <div
-          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(handleDeleteChat, handleViewProfile, handleClearHistory), dispatch)}
+          onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(lang, handleDeleteChat, handleViewProfile, handleClearHistory), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
           className={`flex chat__chats-item ${element.conversationId === +params.id ? 'chat__active' : ''}`}
           key={element.conversationId}
@@ -117,8 +119,8 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
               <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
             </div>
               <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
-                ? 'Сообщений нет' : element.Messages[0]?.User?.id === userId
-                  ? `Вы: ${element.Messages[0].message}`
+                ? languages[lang].generals.noMessages : element.Messages[0]?.User?.id === userId
+                  ? `${languages[lang].generals.you}: ${element.Messages[0].message}`
                   : element.conversationType !== 'Dialog'
                     ? null
                     : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}

@@ -18,6 +18,7 @@ import {
 import '../style/style.scss';
 import DefaultAvatar from '../../../components/defaultAvatar';
 import { UserInfoSuccess } from '../../../redux/user/constants/interfaces';
+import languages from '../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -27,6 +28,7 @@ function UserProfile() {
   const dispatch = useAppDispatch();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const userId = useAppSelector(({ authReducer }) => authReducer.tokenPayload.userId);
   const userInfo = useAppSelector(({ userReducer }) => userReducer.userInfo.success);
   const avatars = useAppSelector(({ userReducer }) => userReducer.avatars.success.data);
@@ -211,7 +213,7 @@ function UserProfile() {
               style={{ display: 'flex', flexDirection: 'column-reverse', marginBottom: '10px' }}
             >
 
-              <div>{`Нажмите чтобы изменить ${item.name}`}</div>{item.isInput === true
+              <div>{`${languages[lang].generals.clickToChange} ${item.name}`}</div>{item.isInput === true
                 ? <TextField
                   id="standard-basic"
                   size='small'

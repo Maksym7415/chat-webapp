@@ -10,6 +10,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Avatar } from '@material-ui/core';
 import DefaultAvatar from '../defaultAvatar';
 import { UserInfoSuccess } from '../../redux/user/constants/interfaces';
+import languages from '../../translations';
+
+// hooks
+import { useAppSelector } from '../../hooks/redux';
 
 interface IAppBarMenuProps {
   anchorEl: null | Element
@@ -25,6 +29,9 @@ export default function AppBarMenu({
   mobileMoreAnchorEl, setMobileMoreAnchorEl, userAvatar, userData, openProfile,
 }: IAppBarMenuProps) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
 
   // FUNCTIONS
   const handleMobileMenuClose = () => {
@@ -59,7 +66,7 @@ export default function AppBarMenu({
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <p>Notifications</p>
+          <p>{languages[lang].generals.notifications}</p>
         </MenuItem>
         <MenuItem onClick={handleProfileOpen}>
           <IconButton
@@ -70,7 +77,7 @@ export default function AppBarMenu({
           >
           {userAvatar ? <Avatar alt="" src={`${process.env.REACT_APP_BASE_URL}/${userAvatar}`} /> : <DefaultAvatar name={`${userData.firstName} ${userData.lastName}`} width='40px' height='40px' fontSize='1.1rem' />}
           </IconButton>
-          <p>Profile</p>
+          <p>{languages[lang].generals.profile}</p>
         </MenuItem>
       </Menu>
     </>

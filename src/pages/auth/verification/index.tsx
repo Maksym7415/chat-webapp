@@ -6,6 +6,7 @@ import AuthForm from '../common/authForm';
 import { actionCheckVerificationCode, actionToken } from '../../../redux/authorization/constants/actionConstants';
 // import { VeirficationLocationState } from '../common/authInterfaces'; // interface for history.location.state
 import { Paths } from '../../../routing/config/paths';
+import languages from '../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -15,6 +16,7 @@ export default function Verification({ history }: RouteComponentProps) {
   const dispatch = useAppDispatch();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const response = useAppSelector(({ authReducer }) => authReducer.verification);
   const isRedirectToSignIn = useAppSelector(({ authReducer }) => authReducer.login.success?.status);
   // this provided to prevent redirect in case we signing up, making automatically login and redirecting user straight to verification page
@@ -50,8 +52,8 @@ export default function Verification({ history }: RouteComponentProps) {
   return (
     <>
       <AuthForm
-        formTitle={'Verificate your account'}
-        submitBtnTitle={'Verificate'}
+        formTitle={languages[lang].authorization.verificateYourAccount}
+        submitBtnTitle={languages[lang].authorization.verificate}
         pageName={'verificationPage'}
         icon={<VerifiedUserIcon />}
         callBack={submit}

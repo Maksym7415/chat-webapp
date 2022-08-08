@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { useState, useEffect } from 'react';
 import {
   Input, InputAdornment, IconButton, Typography,
@@ -16,18 +17,20 @@ import {
 } from '../../../interfaces';
 import { Messages } from '../../../../../redux/conversations/constants/interfaces';
 import { editMessageAction, deleteMessageAction, shareMessageAction } from '../../../../../redux/common/commonActions';
+import languages from '../../../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
 
 export default function MessageInput({
-  conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog, history,
+  conversationId, allMessages, setAllMessages, userId, firstName, opponentId, openFileDialog,
 }: MessageInputProps<History>) {
   // HOOKS
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const typing = useAppSelector(({ userConversationReducer }) => userConversationReducer.conversationTypeState);
   const messageEdit = useAppSelector(({ commonReducer }) => commonReducer.messageEdit);
   const sheraMessages = useAppSelector(({ commonReducer }) => commonReducer.sheraMessages);
@@ -158,7 +161,7 @@ export default function MessageInput({
       {messageEdit.isEdit && <div className='conversations__send-message-text conversations__send-message-shadow'>
         <EditIcon color='primary' className='mr-10' />
         <div className='flex-col conversations__send-message-text-title-wrapper'>
-          <Typography color='primary'>Edit Message</Typography>
+          <Typography color='primary'>{languages[lang].generals.editMessage}</Typography>
           <p className='conversations__edit-message-paragraph'>{editedMessage}</p>
         </div>
         <div className='ml-auto pd-right-30'>
@@ -173,7 +176,7 @@ export default function MessageInput({
       {sheredMessages.length ? <div className='conversations__send-message-text conversations__send-message-shadow'>
         <ShareIcon color='primary' className='mr-10' />
         <div className='flex-col conversations__send-message-text-title-wrapper'>
-          <Typography color='primary'>Share Message</Typography>
+          <Typography color='primary'>{languages[lang].generals.shareMessage}</Typography>
           <p className='conversations__edit-message-paragraph'>{sheredMessages[0].message}</p>
         </div>
         <div className='ml-auto pd-right-30'>
@@ -192,7 +195,7 @@ export default function MessageInput({
           onChange={handleChangeMessage}
           disableUnderline
           fullWidth
-          placeholder='Type message...'
+          placeholder={`${languages[lang].generals.typeMessage}...`}
           endAdornment={(
             ((message[conversationId] || '') === '') && !sheredMessages.length
               ? (

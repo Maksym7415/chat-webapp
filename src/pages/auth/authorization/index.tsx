@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import AuthForm from '../common/authForm';
 import { actionLogin } from '../../../redux/authorization/constants/actionConstants';
 import { Paths } from '../../../routing/config/paths';
+import languages from '../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -14,6 +15,7 @@ export default function Authorization({ history }: RouteComponentProps) {
   const dispatch = useAppDispatch();
 
   // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
   const response = useAppSelector(({ authReducer }) => authReducer.login);
 
   // STATES
@@ -40,8 +42,8 @@ export default function Authorization({ history }: RouteComponentProps) {
   return (
     <>
       <AuthForm
-        formTitle={'Sign in'}
-        submitBtnTitle={'Sign in'}
+        formTitle={languages[lang].authorization.signin}
+        submitBtnTitle={languages[lang].authorization.signin}
         pageName={'signInPage'}
         icon={<LockOutlinedIcon />}
         callBack={submit}

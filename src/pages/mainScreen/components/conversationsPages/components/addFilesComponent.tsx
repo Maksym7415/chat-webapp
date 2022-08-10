@@ -50,7 +50,7 @@ export default function AddFiles({
           fkSenderId: userId,
           sendDate: fullDate(new Date()),
           messageType: 'File',
-          isEditing: false,
+          isEdit: false,
         },
       }, (id: number) => {
         if (id) handleEmitFile(id, fullDate(new Date()));

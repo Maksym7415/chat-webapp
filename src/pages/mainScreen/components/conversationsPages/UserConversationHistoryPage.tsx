@@ -172,7 +172,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
 
     setTimeDivCounter(newArr.filter((el: Messages) => el.component).length);
     setLocalPagination((value) => ({ ...value, [conversationId]: pagination.currentPage }));
-    setAllMessages((messages) => ({ ...messages, [conversationId]: [...newArr] }));
+    setAllMessages((messages) => ({ ...messages, [conversationId]: newArr }));
   }, [messageHistory]);
 
   useEffect(() => {
@@ -193,6 +193,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
+  console.log(allMessages, 'allMessages');
   return (
     <div
       onDrop={onDrop}
@@ -217,7 +218,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
         <>
           {Number.isNaN(conversationId) && !opponentId ? <p>{languages[lang].mainScreen.chooseAChat}</p> : opponentId && !conversationId ? <p>{languages[lang].mainScreen.sendANewMessageToStartAChat}</p>
             : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p>{languages[lang].mainScreen.thereAreNoMessagesInChatYet}</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files, component, isEditing,
+              fkSenderId, message, id, sendDate, User, Files, component, isEditing, isEdit,
             }, index: number, arr) => {
               let isShowAvatar = false;
               if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
@@ -249,6 +250,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
                   conversationId={conversationId}
                   isEditing={isEditing}
                   allMassages={allMessages[conversationId]}
+                  isEdit={isEdit}
                 />
               );
             })}

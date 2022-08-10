@@ -82,6 +82,7 @@ export interface MessageProps extends Messages {
   conversationId: number,
   allMassages: Array<Messages>
   isEditing: boolean,
+  isEdit: boolean,
 }
 
 // MESSAGEINPUT

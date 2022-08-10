@@ -21,6 +21,11 @@ export default makeStyles((theme) => ({
     padding: theme.spacing(1),
     margin: '0 0 0 40px',
   },
+  edited: {
+    textAlign: 'right',
+    padding: 0,
+    margin: 0,
+  },
   fullWidth: {
     width: '100%',
   },

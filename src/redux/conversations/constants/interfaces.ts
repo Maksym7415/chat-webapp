@@ -99,6 +99,7 @@ export interface Messages {
   messageType?: string
   Files: Array<FileData>
   isEditing: boolean
+  isEdit: boolean
   component?: object
 }
 

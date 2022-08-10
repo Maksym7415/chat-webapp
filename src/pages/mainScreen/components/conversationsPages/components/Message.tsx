@@ -21,7 +21,7 @@ import { updateConversationData } from '../../../../../redux/conversations/const
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
 
 export default function Message({
-  fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar, conversationId, allMassages, isEditing,
+  fkSenderId, message, id, sendDate, User, Files, userId, isShowAvatar, conversationId, allMassages, isEditing, isEdit,
 }: MessageProps) {
   // HOOKS
   const classes = useStyles();
@@ -105,6 +105,7 @@ export default function Message({
           className={clsx(fkSenderId === userId ? classes.paperSenderMessage
             : classes.paperFriendMessage, Files && Files.length ? classes.fullWidth : null)}
         >
+          {isEdit && <p className={classes.edited}>edited</p>}
           <div className='conversations__user-name-date-container relative'>
             {activeConversationType !== 'Dialog' ? <p className='conversations__message-info-text'>{User.tagName}</p> : <div className='conversations__message-info-text' style={{ height: '2px' }}></div>}
             <p className='conversations__message-info-time'>{getCurrentDay(new Date(sendDate), true)}</p>

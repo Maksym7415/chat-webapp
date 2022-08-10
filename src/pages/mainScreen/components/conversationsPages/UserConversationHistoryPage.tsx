@@ -177,8 +177,8 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
 
   useEffect(() => {
     if (Object.keys(lastMessage).length && conversationId in lastMessage) {
-      if (lastMessage[conversationId].isEditing) {
-        return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message } : message)) }));
+      if (lastMessage[conversationId].isEdit) {
+        return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message, isEdit: true } : message)) }));
       }
       setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
     }

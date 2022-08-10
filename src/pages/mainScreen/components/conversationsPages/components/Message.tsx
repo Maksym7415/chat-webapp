@@ -16,6 +16,7 @@ import {
 import DefaultAvatar from '../../../../../components/defaultAvatar';
 import contextMenuConfig from './contextMenuConfig';
 import { updateConversationData } from '../../../../../redux/conversations/constants/actionConstants';
+import languages from '../../../../../translations';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux';
@@ -105,7 +106,7 @@ export default function Message({
           className={clsx(fkSenderId === userId ? classes.paperSenderMessage
             : classes.paperFriendMessage, Files && Files.length ? classes.fullWidth : null)}
         >
-          {isEdit && <p className={classes.edited}>edited</p>}
+          {isEdit && <p className={classes.edited}>{languages[lang].generals.edited}</p>}
           <div className='conversations__user-name-date-container relative'>
             {activeConversationType !== 'Dialog' ? <p className='conversations__message-info-text'>{User.tagName}</p> : <div className='conversations__message-info-text' style={{ height: '2px' }}></div>}
             <p className='conversations__message-info-time'>{getCurrentDay(new Date(sendDate), true)}</p>

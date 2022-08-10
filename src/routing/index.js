@@ -14,6 +14,7 @@ import PrivatePage from '../components/PrivatePage';
 import ContextMenu from '../components/contextMenu';
 import DialogComponent from '../components/dialog/DialogComponent';
 import { userInfoActionRequest } from '../redux/user/constants/actions';
+import { setLanguageAction } from '../redux/common/commonActions';
 
 function Router() {
   // HOOKS
@@ -22,6 +23,8 @@ function Router() {
   // SELECTORS
   const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
   const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
+  const userInfo = useSelector(({ userReducer }) => userReducer.userInfo.success);
+  const lang = useSelector(({ commonReducer }) => commonReducer.lang);
 
   // STATES
   const [config, setConfig] = useState(null);
@@ -35,6 +38,13 @@ function Router() {
     if (authToken?.userId) dispatch(userInfoActionRequest());
     setConfig((item) => routerConfig);
   }, [authToken]);
+
+  useEffect(() => {
+    const langUser = userInfo?.data?.lang;
+    if (langUser) {
+      lang !== langUser && dispatch(setLanguageAction(langUser));
+    }
+  }, [userInfo]);
 
   return (
     <Fragment>

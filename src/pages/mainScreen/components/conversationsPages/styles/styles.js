@@ -25,6 +25,7 @@ export default makeStyles((theme) => ({
     textAlign: 'right',
     padding: 0,
     margin: 0,
+    fontSize: 9,
   },
   fullWidth: {
     width: '100%',

@@ -65,6 +65,7 @@ export interface UpdateUserReqbody {
   firstName?: string
   tagName?: string
   lastName?: string
+  lang?: string
 }
 
 export interface UpdateUserProfileAction {

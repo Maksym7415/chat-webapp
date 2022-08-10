@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useHistory } from 'react-router-dom';
 import {
   Drawer, ListItemIcon, ListItemText, List, ListItem,
 } from '@material-ui/core';
 import listRenderByRole from './drawerList';
-import { showDialogAction } from '../redux/common/commonActions';
+import { showDialogAction, setLanguageAction } from '../redux/common/commonActions';
+import {
+  updateUserProfileAction,
+} from '../redux/user/constants/actions';
 import { Paths } from '../routing/config/paths';
 import { actionLogout } from '../redux/authorization/constants/actionConstants';
+import BaseSelect from './selects/BaseSelect';
 
 // hooks
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
@@ -19,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
       width: 250,
     },
   },
+  wrapperlangs: {
+    padding: 15,
+  },
 }));
 
 interface IDrawerProps {
@@ -28,11 +35,30 @@ interface IDrawerProps {
 
 const notLinkItemsRoute = [Paths.signIn];
 
+const languages = [{
+  id: 1,
+  label: 'en',
+  value: 'en',
+},
+{
+  id: 1,
+  label: 'ua',
+  value: 'ua',
+},
+{
+  id: 1,
+  label: 'ru',
+  value: 'ru',
+}];
+
 export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) {
   // HOOKS
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const history = useHistory();
+
+  // SELECTORS
+  const lang = useAppSelector(({ commonReducer }) => commonReducer.lang);
 
   // FUNCTIONS
   const handleDrawerClose = (value: string) => {
@@ -43,6 +69,10 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
       dispatch(actionLogout());
       history.push(Paths.signIn);
     }
+  };
+
+  const hendleSetLenguage = (event: any) => {
+    dispatch(updateUserProfileAction({ lang: event.target.value }));
   };
 
   return (
@@ -71,6 +101,14 @@ export default function MiniDrawer({ openDrawer, setOpenDrawer }: IDrawerProps) 
                   </Link>;
             })}
           </List>
+        </div>
+        <div className={classes.wrapperlangs}>
+          <BaseSelect selectSetting={{
+            label: 'language',
+            selected: lang,
+            options: languages,
+            handleChange: hendleSetLenguage,
+          }}/>
         </div>
       </Drawer>
       {/*

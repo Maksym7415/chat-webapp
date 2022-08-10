@@ -33,6 +33,7 @@ const languages: any = {
       logout: 'Logout',
       newChat: 'New Chat',
       caption: 'Caption',
+      edited: 'Edited',
     },
     mainScreen: {
       chooseAChat: 'Choose a chat',
@@ -78,6 +79,7 @@ const languages: any = {
       logout: 'Вихід',
       newChat: 'Новий чат',
       caption: 'Підпис',
+      edited: 'Відредаговано',
     },
     mainScreen: {
       chooseAChat: 'Виберіть чат',
@@ -123,6 +125,7 @@ const languages: any = {
       logout: 'Выйти',
       newChat: 'Новый чат',
       caption: 'Подпись',
+      edited: 'Отредактировано',
     },
     mainScreen: {
       chooseAChat: 'Выберите чат',

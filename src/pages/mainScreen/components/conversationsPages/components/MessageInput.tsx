@@ -84,7 +84,6 @@ export default function MessageInput({
     }
     if (message[conversationId]) {
       if (messageEdit.isEdit) {
-        console.log(message, 'message');
         socketSendMessageCommonFun(conversationId, message);
       } else {
         socketSendMessageCommonFun(conversationId);
@@ -125,7 +124,6 @@ export default function MessageInput({
   useEffect(() => {
     if (messageEdit.isEdit) {
       const resultMessage = allMessages[conversationId].find((message) => message.id === messageEdit.messageId);
-      console.log(resultMessage, 'resultMessage');
       setEditedMessage(resultMessage ? resultMessage.message : '');
       setMessage(() => ({ ...message, [conversationId]: resultMessage ? resultMessage.message : '' }));
     }

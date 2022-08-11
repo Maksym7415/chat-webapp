@@ -35,6 +35,10 @@ export const conversationAddNewMessage = (message: interfaces.Messages, id: numb
   id,
 });
 
+export const clearLastMessage = (): any => ({
+  type: types.CLEAR_LAST_MESSAGE,
+});
+
 export const getUserConversationsActionRequest = (): interfaces.UserConversationsListActionRequest => ({ type: types.CONVERSATIONS_USER_CONVERSATIONS });
 
 export const getConversationIdAction = (id: number, type: string): interfaces.ConversationIdAction => ({

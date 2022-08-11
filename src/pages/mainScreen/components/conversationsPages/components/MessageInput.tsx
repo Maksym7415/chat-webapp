@@ -73,9 +73,9 @@ export default function MessageInput({
     const messageSend: any = {
       message: message?.message || message[conversationId], fkSenderId: message?.User?.id || userId, messageType: 'Text',
     };
-    if (!conversationId) {
-      return socketSendMessageCommonFun(undefined);
-    }
+    // if (!conversationId) {
+    //   return socketSendMessageCommonFun(undefined);
+    // }
     if (sheredMessages.length) {
       sheredMessages.map((message: any) => {
         messageSend.sendDate = fullDate(new Date());

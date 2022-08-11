@@ -95,6 +95,12 @@ const ConversationsReducer = (state = initialState, action: ConversationActionsT
         },
       };
     }
+    case types.CLEAR_LAST_MESSAGE: {
+      return {
+        ...state,
+        lastMessages: {},
+      };
+    }
     case types.CONVERSATION_ID: {
       return {
         ...state,

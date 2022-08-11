@@ -104,8 +104,9 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
       onContextMenu={handleCloseContextMenu}
       className='chat__chat-list-container'
     >
-      {conversations.map((element) => (
-        <div
+      {conversations.map((element) => {
+        const someBodyWritting = usersTyping[element.conversationId] && getString(element);
+        return <div
           onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(lang, handleDeleteChat, handleViewProfile, handleClearHistory), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}
           className={`flex chat__chats-item ${element.conversationId === +params.id ? 'chat__active' : ''}`}
@@ -114,20 +115,24 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
           {element.conversationAvatar ? <Avatar className={classes.avatar} src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`} /> : <DefaultAvatar name={element.conversationName} width='50px' height='50px' fontSize='1.1rem' />}
           <div className='flex chat__chats-item-message-container relative'>
             <div className='chat__title-container'>
-              <Typography className={classes.bold} variant='subtitle1'>{usersTyping[element.conversationId] && getString(element)}</Typography>
               <Typography className={classes.bold} variant='subtitle1'>{element.conversationName}</Typography>
               <Typography className={clsx(classes.dateSender, classes.dateSenderChatlist)} variant='subtitle1'>{element.Messages[0] === undefined ? '' : getCurrentDay(new Date(element.Messages[0].sendDate), false)}</Typography>
             </div>
-              <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
-                ? languages[lang].generals.noMessages : element.Messages[0]?.User?.id === userId
-                  ? `${languages[lang].generals.you}: ${element.Messages[0].message}`
-                  : element.conversationType !== 'Dialog'
-                    ? null
-                    : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
+            {
+              someBodyWritting
+                ? <Typography variant='caption' className={classes.messageText}>{`${languages[lang].generals.isTyping}... (${someBodyWritting})`}</Typography>
+                : <Typography variant='caption' className={classes.messageText} >{element.Messages[0] === undefined
+                  ? languages[lang].generals.noMessages : element.Messages[0]?.User?.id === userId
+                    ? `${languages[lang].generals.you}: ${element.Messages[0].message}`
+                    : element.conversationType !== 'Dialog'
+                      ? null
+                      : `${element.Messages[0]?.User?.firstName}: ${element.Messages[0].message}`}
               </Typography>
+            }
+
           </div>
-        </div>
-      ))}
+        </div>;
+      })}
     </div>
   );
 };

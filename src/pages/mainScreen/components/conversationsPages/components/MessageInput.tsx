@@ -38,7 +38,7 @@ export default function MessageInput({
   // STATES
   const [sheredMessages, setSheredMessages] = useState<any>([]);
   const [editedMessage, setEditedMessage] = useState<string>('');
-  const [message, setMessage] = useState<MessageValue>({ 0: '' });
+  const [message, setMessage] = useState<any>({ 0: '' });
 
   // FUNCTIONS
   const handleChangeMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,11 +58,9 @@ export default function MessageInput({
     }
   };
 
-  const socketSendMessageCommonFun = (id: undefined | number, data?: any) => socket.emit('chats', ({
+  const socketSendMessageCommonFun = (id: undefined | number, messageSend?: any) => socket.emit('chats', ({
     conversationId: id,
-    message: {
-      message: data?.message || message[conversationId], fkSenderId: data?.User?.id || userId, sendDate: fullDate(new Date()), messageType: 'Text',
-    },
+    message: messageSend,
     messageId: messageEdit.messageId,
     userId,
     opponentId,
@@ -72,21 +70,26 @@ export default function MessageInput({
 
   const handleSendMessage = () => {
     if (!message[conversationId] && !sheredMessages.length) return;
+    const messageSend: any = {
+      message: message?.message || message[conversationId], fkSenderId: message?.User?.id || userId, messageType: 'Text',
+    };
     if (!conversationId) {
       return socketSendMessageCommonFun(undefined);
     }
     if (sheredMessages.length) {
       sheredMessages.map((message: any) => {
-        socketSendMessageCommonFun(conversationId, message);
+        messageSend.sendDate = fullDate(new Date());
+        socketSendMessageCommonFun(conversationId, messageSend);
         return message;
       });
       dispatch(shareMessageAction([]));
     }
     if (message[conversationId]) {
       if (messageEdit.isEdit) {
-        socketSendMessageCommonFun(conversationId, message);
+        socketSendMessageCommonFun(conversationId, messageSend);
       } else {
-        socketSendMessageCommonFun(conversationId);
+        messageSend.sendDate = fullDate(new Date());
+        socketSendMessageCommonFun(conversationId, messageSend);
       }
     }
     if (messageEdit.isEdit) dispatch(editMessageAction(false, null));

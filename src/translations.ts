@@ -34,6 +34,8 @@ const languages: any = {
       newChat: 'New Chat',
       caption: 'Caption',
       edited: 'Edited',
+      writes: 'Writes',
+      isTyping: 'Іs typing',
     },
     mainScreen: {
       chooseAChat: 'Choose a chat',
@@ -80,6 +82,8 @@ const languages: any = {
       newChat: 'Новий чат',
       caption: 'Підпис',
       edited: 'Відредаговано',
+      writes: 'Пише',
+      isTyping: 'Друкує',
     },
     mainScreen: {
       chooseAChat: 'Виберіть чат',
@@ -126,6 +130,8 @@ const languages: any = {
       newChat: 'Новый чат',
       caption: 'Подпись',
       edited: 'Отредактировано',
+      writes: 'Пишет',
+      isTyping: 'Печатает',
     },
     mainScreen: {
       chooseAChat: 'Выберите чат',

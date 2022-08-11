@@ -12,6 +12,7 @@ import {
   conversationUserHistoryActionRequest,
   getConversationIdAction,
   clearConversationData,
+  clearLastMessage,
 } from '../../../../redux/conversations/constants/actionConstants';
 import Message from './components/Message';
 import MessageInput from './components/MessageInput';
@@ -147,7 +148,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
   }, [messageEdit.isDelete]);
 
   useEffect(() => {
-    if (conversationId) {
+    if (!allMessages[conversationId] && conversationId) {
       dispatch(conversationUserHistoryActionRequest(conversationId, 0));
     }
     if (sheraMessages.length) {
@@ -180,7 +181,23 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       if (lastMessage[conversationId].isEdit) {
         return setAllMessages((messages) => ({ ...messages, [conversationId]: messages[conversationId].map((message) => (message.id === lastMessage[conversationId].id ? { ...message, message: lastMessage[conversationId].message, isEdit: true } : message)) }));
       }
-      setAllMessages((messages) => ({ ...messages, [conversationId]: [...messages[conversationId], lastMessage[conversationId]] }));
+    }
+    if (Object.keys(lastMessage).length) {
+      setAllMessages((messages) => {
+        const newMessages = Object.entries(lastMessage).reduce((acc: any, item: any) => {
+          const prevMessages = messages?.[item[0]] || null;
+          if (prevMessages) {
+            return {
+              ...acc,
+              [item[0]]: [...prevMessages, item[1]],
+            };
+          }
+          return acc;
+        },
+        {});
+        return { ...messages, ...newMessages };
+      });
+      // dispatch(clearLastMessage());
     }
   }, [lastMessage]);
 
@@ -193,6 +210,7 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
+  console.log(lastMessage, 'lastMessage');
   console.log(allMessages, 'allMessages');
   return (
     <div

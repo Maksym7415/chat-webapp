@@ -23,6 +23,10 @@ interface ConversationActionFail {
   name: ConversationReducerStateType
 }
 
+interface ClearLastMessageAction {
+  type: typeof types.CLEAR_LAST_MESSAGE
+}
+
 interface PayloadArrayPagination {
   data: []
   pagination: Pagination
@@ -62,7 +66,7 @@ export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray |
 
 export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface | ConversationUpdate;
+export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface | ConversationUpdate | ClearLastMessageAction;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 

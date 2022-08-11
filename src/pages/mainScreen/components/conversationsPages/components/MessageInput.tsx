@@ -58,12 +58,13 @@ export default function MessageInput({
     }
   };
 
-  const socketSendMessageCommonFun = (id: undefined | number, messageSend?: any) => socket.emit('chats', ({
+  const socketSendMessageCommonFun = (id: undefined | number, messageSend?: any, forwardedFromId?: number) => socket.emit('chats', ({
     conversationId: id,
     message: messageSend,
     messageId: messageEdit.messageId,
     userId,
     opponentId,
+    forwardedFromId: forwardedFromId || null,
   }), (success: boolean) => {
     if (success) setMessage({ ...message, [conversationId]: '' });
   });
@@ -196,7 +197,7 @@ export default function MessageInput({
         </div>
       </div> : null}
       <div className={(messageEdit.isEdit || sheredMessages.length) ? 'conversations__send-message-input' : 'conversations__send-message-input conversations__send-message-shadow'}>
-          <Input
+        <Input
           onKeyDown={sendMessageByKey}
           value={message[conversationId] || ''}
           onChange={handleChangeMessage}

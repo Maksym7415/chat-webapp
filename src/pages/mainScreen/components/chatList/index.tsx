@@ -106,7 +106,6 @@ export default ({ data, usersTyping, history }: ChatListProps<History>) => {
     >
       {conversations.map((element) => {
         const someBodyWritting = usersTyping[element.conversationId] && getString(element);
-        console.log(element, 'element');
         return <div
           onContextMenu={(event: React.MouseEvent<HTMLElement>) => contextMenuCallback(event, element.conversationId, contextMenuConfig(lang, handleDeleteChat, handleViewProfile, handleClearHistory), dispatch)}
           onClick={(event: React.MouseEvent<HTMLElement>) => handleClickChatItem(element, event, element.conversationId)}

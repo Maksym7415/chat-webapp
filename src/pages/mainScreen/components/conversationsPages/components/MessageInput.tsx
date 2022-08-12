@@ -79,8 +79,13 @@ export default function MessageInput({
     // }
     if (sheredMessages.length) {
       sheredMessages.map((message: any) => {
-        messageSend.sendDate = fullDate(new Date());
-        socketSendMessageCommonFun(conversationId, messageSend);
+        // message.sendDate  = fullDate(new Date());
+        const messageObj = {
+          ...message,
+          sendDate: fullDate(new Date()),
+        };
+        console.log(message, 'message');
+        socketSendMessageCommonFun(conversationId, messageObj, message.User.id);
         return message;
       });
       dispatch(shareMessageAction([]));

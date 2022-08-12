@@ -210,7 +210,6 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
     }
   }, [isCreateChat]);
 
-  console.log(lastMessage, 'lastMessage');
   console.log(allMessages, 'allMessages');
   return (
     <div
@@ -235,19 +234,17 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       >
         <>
           {Number.isNaN(conversationId) && !opponentId ? <p>{languages[lang].mainScreen.chooseAChat}</p> : opponentId && !conversationId ? <p>{languages[lang].mainScreen.sendANewMessageToStartAChat}</p>
-            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p>{languages[lang].mainScreen.thereAreNoMessagesInChatYet}</p> : allMessages[conversationId] && allMessages[conversationId].map(({
-              fkSenderId, message, id, sendDate, User, Files, component, isEditing, isEdit,
-            }, index: number, arr) => {
+            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p>{languages[lang].mainScreen.thereAreNoMessagesInChatYet}</p> : allMessages[conversationId] && allMessages[conversationId].map((messageData, index: number, arr) => {
               let isShowAvatar = false;
-              if (fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
-              if (component) {
+              if (messageData.fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
+              if (messageData.component) {
                 return (
-                  <React.Fragment key={sendDate}>
+                  <React.Fragment key={messageData.sendDate}>
                     <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
                       <p style={{
                         maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
                       }}>
-                        {setMessageDate(new Date(sendDate))}
+                        {setMessageDate(new Date(messageData.sendDate))}
                       </p>
                     </div>
                   </React.Fragment>
@@ -255,20 +252,12 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
               }
               return (
                 <Message
-                  key={id}
+                  key={messageData.id}
                   isShowAvatar={isShowAvatar}
-                  fkSenderId={fkSenderId}
-                  message={message}
-                  id={id}
-                  sendDate={sendDate}
-                  User={User}
-                  Files={Files}
+                  messageData={messageData}
                   userId={userId}
-                  component={component}
                   conversationId={conversationId}
-                  isEditing={isEditing}
                   allMassages={allMessages[conversationId]}
-                  isEdit={isEdit}
                 />
               );
             })}

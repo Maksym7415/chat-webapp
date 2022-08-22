@@ -92,4 +92,26 @@ export default makeStyles((theme) => ({
       },
     },
   },
+  paperSharedMessage: {
+    backgroundColor: theme.palette.primary.dark,
+    padding: theme.spacing(1),
+    maxWidth: 600,
+  },
+  wrapperTextMessageShared: {
+    position: 'relative',
+    paddingLeft: 10,
+    margin: 5,
+    '&::before': {
+      content: '""',
+      width: 3,
+      height: '100px',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      background: '#ffffff',
+    },
+  },
+  wrapperMessageUserName: {
+    fontWeight: 600,
+  },
 }));

@@ -105,6 +105,7 @@ export interface Messages {
   isEditing: boolean
   isEdit: boolean
   component?: object
+  forwardedUser: any | null
 }
 
 export interface UserConversationHistoryActionRequest {

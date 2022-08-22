@@ -36,6 +36,7 @@ const languages: any = {
       edited: 'Edited',
       writes: 'Writes',
       isTyping: 'Іs typing',
+      forwardedMessage: 'Forwarded message',
     },
     mainScreen: {
       chooseAChat: 'Choose a chat',
@@ -84,6 +85,7 @@ const languages: any = {
       edited: 'Відредаговано',
       writes: 'Пише',
       isTyping: 'Друкує',
+      forwardedMessage: 'Переслане повідомлення',
     },
     mainScreen: {
       chooseAChat: 'Виберіть чат',
@@ -132,6 +134,7 @@ const languages: any = {
       edited: 'Отредактировано',
       writes: 'Пишет',
       isTyping: 'Печатает',
+      forwardedMessage: 'Пересланное сообщение',
     },
     mainScreen: {
       chooseAChat: 'Выберите чат',

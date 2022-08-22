@@ -13,11 +13,15 @@ $appbarHeight: 64px;
     display: flex;
     position: relative;
     padding-right: 10px;
-    max-width: 600px;
   }
 
   &__message-container-margin-sender {
     margin: 0 0 25px 50px;
+    justify-content: flex-end;
+  }
+  &__message-container-margin-shared {
+    margin: 0 0 25px 50px;
+    justify-content: flex-end;
   }
 
   &__message-container-margin-friend {
@@ -107,7 +111,10 @@ $appbarHeight: 64px;
     color: #e8e8e8;
     margin: 0;
     overflow: hidden;
-    word-break: keep-all;;
+    word-break: keep-all;
+    & > p {
+      margin: 0;
+    }
   }
 
   &__message-info-text {

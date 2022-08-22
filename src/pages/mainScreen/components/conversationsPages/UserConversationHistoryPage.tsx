@@ -234,13 +234,13 @@ export default function UserConversationHistoryPage({ history }: Props<History>)
       >
         <>
           {Number.isNaN(conversationId) && !opponentId ? <p>{languages[lang].mainScreen.chooseAChat}</p> : opponentId && !conversationId ? <p>{languages[lang].mainScreen.sendANewMessageToStartAChat}</p>
-            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p>{languages[lang].mainScreen.thereAreNoMessagesInChatYet}</p> : allMessages[conversationId] && allMessages[conversationId].map((messageData, index: number, arr) => {
+            : allMessages[conversationId] && allMessages[conversationId].length === 0 ? <p>{languages[lang].mainScreen.thereAreNoMessagesInChatYet}</p> : allMessages[conversationId] && allMessages[conversationId].map((messageData: Messages, index: number, arr) => {
               let isShowAvatar = false;
               if (messageData.fkSenderId !== userId && checkIsShowAvatar(allMessages[conversationId], userId, index)) isShowAvatar = true;
               if (messageData.component) {
                 return (
                   <React.Fragment key={messageData.sendDate}>
-                    <div style={{ display: 'flex', justifyContent: 'center', maxWidth: '600px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                       <p style={{
                         maxWidth: '125px', padding: '1px 7px', backgroundColor: 'rgba(0, 0, 0, 0.4)', color: '#fffefeb5', borderRadius: '5px',
                       }}>

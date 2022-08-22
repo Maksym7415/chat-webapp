@@ -5,8 +5,8 @@ import { Messages } from '../../../redux/conversations/constants/interfaces';
 import { Files } from '../interfaces';
 
 export function checkIsShowAvatar(array: Array<Messages>, userId: number, index: number) {
-  if (array[index + 1] && array[index + 1].fkSenderId === userId) return true;
-  if (!array[index + 1] && array[index].fkSenderId !== userId) return true;
+  if (array[index].forwardedUser) return false;
+  if (array[index].fkSenderId !== userId) return true;
   return false;
 }
 

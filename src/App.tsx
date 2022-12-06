@@ -1,15 +1,16 @@
-import React from 'react';
-import './App.css';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import Router from './routing';
-import store from './redux';
+import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import store from "./reduxToolkit";
+import Router from "./routing";
+import "./App.css";
+
 
 function App() {
   return (
     <BrowserRouter>
       <Provider store={store}>
-          <Router/>
+        <Router />
       </Provider>
     </BrowserRouter>
   );

@@ -1,252 +1,263 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/ban-types */
-import * as types from './types';
-import { ErrorResponse } from '../../common/interafaces';
+import * as types from "./types";
+import { ErrorResponse } from "../../common/interafaces";
 
 // COMMON INTERFACES
 
 interface Pagination {
-  allItems: number
-  currentPage: number
+  allItems: number;
+  currentPage: number;
 }
 
 interface ConversationActionSuccess {
-  type: typeof types.CONVERSATION_SUCCESS
-  payload: ConversationReducerPayload,
-  name: ConversationReducerStateType
+  type: typeof types.CONVERSATION_SUCCESS;
+  payload: ConversationReducerPayload;
+  name: ConversationReducerStateType;
 }
 
 interface ConversationActionFail {
-  type: typeof types.CONVERSATION_FAIL
-  payload: ErrorResponse,
-  name: ConversationReducerStateType
+  type: typeof types.CONVERSATION_FAIL;
+  payload: ErrorResponse;
+  name: ConversationReducerStateType;
 }
 
 interface ClearLastMessageAction {
-  type: typeof types.CLEAR_LAST_MESSAGE
+  type: typeof types.CLEAR_LAST_MESSAGE;
 }
 
 interface PayloadArrayPagination {
-  data: []
-  pagination: Pagination
+  data: [];
+  pagination: Pagination;
 }
 
 interface PayloadArray {
-  data: []
+  data: [];
 }
 
 interface PayloadObject {
-  data: {}
+  data: {};
 }
 
 export interface ConversationReducerStateInterface {
-  userHistoryConversation: UserHistoryConversation
-  conversationsList: UserConversationsList
-  conversations: Conversations
-  currentChat: CurrentChat
-  lastMessages: LastMessagesStateKey
+  userHistoryConversation: UserHistoryConversation;
+  conversationsList: UserConversationsList;
+  conversations: Conversations;
+  currentChat: CurrentChat;
+  lastMessages: LastMessagesStateKey;
   currentConversationIdObject: {
-    currentConversationId: number
-  }
+    currentConversationId: number;
+  };
   conversationId: {
-    id: number
-    type: string
-  }
+    id: number;
+    type: string;
+  };
   conversationTypeState: {
-    [key: number]: ConverstaionTypeStateForReducer
-  }
-  createConversation: UserCreateConversation
+    [key: number]: ConverstaionTypeStateForReducer;
+  };
+  createConversation: UserCreateConversation;
   opponentId: {
-    id: number
-  }
+    id: number;
+  };
 }
 
-export type ConversationReducerPayload = PayloadArrayPagination | PayloadArray | PayloadObject;
+export type ConversationReducerPayload =
+  | PayloadArrayPagination
+  | PayloadArray
+  | PayloadObject;
 
-export type ConversationReducerStateType = keyof ConversationReducerStateInterface;
+export type ConversationReducerStateType =
+  keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType = ConversationActionSuccess | ConversationActionFail | UserConversationHistoryActionRequest | ConversationAddNewMessageAction | ConversationIdAction | ConversationTypeStateInterfaceAction | CreateNewChatActionInterface | ClearConversationInterface | ConversationUpdate | ClearLastMessageAction;
+export type ConversationActionsType =
+  | ConversationActionSuccess
+  | ConversationActionFail
+  | UserConversationHistoryActionRequest
+  | ConversationAddNewMessageAction
+  | ConversationIdAction
+  | ConversationTypeStateInterfaceAction
+  | CreateNewChatActionInterface
+  | ClearConversationInterface
+  | ConversationUpdate
+  | ClearLastMessageAction;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 
 interface UserHistoryConversation {
-  success: UserHistoryConversationSuccess
-  error: ErrorResponse
+  success: UserHistoryConversationSuccess;
+  error: ErrorResponse;
 }
 
 interface User {
-  firstName: string
-  fullName: string
-  id: number
-  lastName: string
-  status: string
-  tagName: string
-  userAvatar: string
+  firstName: string;
+  fullName: string;
+  id: number;
+  lastName: string;
+  status: string;
+  tagName: string;
+  userAvatar: string;
 }
 
 export interface FileData {
-  extension: string
-  fileStorageName: string
-  fileUserName: string
-  fkMessageId: number
-  id: number
-  size: number
+  extension: string;
+  fileStorageName: string;
+  fileUserName: string;
+  fkMessageId: number;
+  id: number;
+  size: number;
 }
 
 export interface Messages {
-  User: User
-  message: string
-  fkSenderId: number
-  id: number
-  sendDate: string
-  messageType?: string
-  Files: Array<FileData>
-  isEditing: boolean
-  isEdit: boolean
-  component?: object
-  forwardedUser: any | null
+  User: User;
+  message: string;
+  fkSenderId: number;
+  id: number;
+  sendDate: string;
+  messageType?: string;
+  Files: Array<FileData>;
+  isEditing: boolean;
+  isEdit: boolean;
+  component?: object;
+  forwardedUser: any | null;
 }
 
 export interface UserConversationHistoryActionRequest {
-  type: typeof types.CONVERSATION_USER_HISTORY_CONVERSATION
-  id: number
-  offset: number
+  type: typeof types.CONVERSATION_USER_HISTORY_CONVERSATION;
+  id: number;
+  offset: number;
 }
 
 export interface UserHistoryConversationSuccess {
-  data: Array<Messages>
-  pagination: Pagination
+  data: Array<Messages>;
+  pagination: Pagination;
 }
 
 // USER_CONVERSATIONS INTERFACES
 
 interface UserConversationsList {
-  success: UserConversationsListSuccess
-  error: ErrorResponse
+  success: UserConversationsListSuccess;
+  error: ErrorResponse;
 }
 
 interface ConverstaionTypeStateForReducer {
-  isTyping: boolean
-  users: Array<Users>
-  userId: number
+  isTyping: boolean;
+  users: Array<Users>;
+  userId: number;
 }
 
 interface ConverstaionTypeState {
-  isTyping: boolean
-  conversationId: number
-  users: Array<Users>
-  userId: number
+  isTyping: boolean;
+  conversationId: number;
+  users: Array<Users>;
+  userId: number;
 }
 
 export interface Users {
-  isTyping: boolean
-  firstName: string
-  userId: number
-
+  isTyping: boolean;
+  firstName: string;
+  userId: number;
 }
 
 export interface ConversationTypeStateInterfaceAction {
-  type: typeof types.CONVERSATION_TYPE_STATE
-  payload: ConverstaionTypeState
-
+  type: typeof types.CONVERSATION_TYPE_STATE;
+  payload: ConverstaionTypeState;
 }
 
 export interface ConversationsList {
-  messageId: number
-  fkSenderId: number
-  Messages: Array<Messages>
-  message: string
-  messageType: string
-  sendDate: string
-  conversationId: number
-  conversationAvatar: string
-  conversationType: string
-  conversationName: string
-  conversationCreationDate: string
+  messageId: number;
+  fkSenderId: number;
+  Messages: Array<Messages>;
+  message: string;
+  messageType: string;
+  sendDate: string;
+  conversationId: number;
+  conversationAvatar: string;
+  conversationType: string;
+  conversationName: string;
+  conversationCreationDate: string;
 }
 
 export interface UserConversationsListSuccess {
-  data: Array<ConversationsList>
+  data: Array<ConversationsList>;
 }
 
 export interface UserConversationsListActionRequest {
-  type: typeof types.CONVERSATIONS_USER_CONVERSATIONS
+  type: typeof types.CONVERSATIONS_USER_CONVERSATIONS;
 }
 
 // LAST CONVERSATION MESSAGE
 
 interface LastMessagesStateKey {
-  [id: string]: Messages
+  [id: string]: Messages;
 }
 
 export interface LastConversationMessageAction {
-  type: typeof types.GET_LAST_CONVERSATION_MESSAGE
-  data: PayloadObject
+  type: typeof types.GET_LAST_CONVERSATION_MESSAGE;
+  data: PayloadObject;
 }
 
 export interface Conversations {
-  message: string
-  id: number
-  sendDate: string
+  message: string;
+  id: number;
+  sendDate: string;
 }
 
 export interface ConversationAddNewMessageAction {
-  type: typeof types.CONVERSATIONS_ADD_NEW_MESSAGE
-  message: Messages
-  id: number
+  type: typeof types.CONVERSATIONS_ADD_NEW_MESSAGE;
+  message: Messages;
+  id: number;
 }
 export interface ConversationIdAction {
-  type: typeof types.CONVERSATION_ID
+  type: typeof types.CONVERSATION_ID;
   payload: {
-    id: number,
-    type: string
-  }
+    id: number;
+    type: string;
+  };
 }
 
 // CURRENT CHAT
 
 interface CurrentChat {
-  id: number
+  id: number;
 }
 
 // CREATE NEW CONVERSATION
 
 interface ResponseCreateConversation {
-  id: number
+  id: number;
 }
 interface UserCreateConversationSuccess {
-  data: Array<ResponseCreateConversation>
+  data: Array<ResponseCreateConversation>;
 }
 
 interface UserCreateConversation {
-  success: UserCreateConversationSuccess
-  error: ErrorResponse
+  success: UserCreateConversationSuccess;
+  error: ErrorResponse;
 }
 
 export interface IdsInterface {
-  opponentId: number
-  userId: number
+  opponentId: number;
+  userId: number;
 }
 export interface CreateNewChatActionInterface {
-  type: typeof types.CONVERSATION_CREATE_NEW_CONVERSATION
-  payload: IdsInterface
+  type: typeof types.CONVERSATION_CREATE_NEW_CONVERSATION;
+  payload: IdsInterface;
 }
 
 // CLEAR INTERFACES
 
 export interface ClearConversationInterface {
-  type: typeof types.CONVERSATION_CLEAR_DATA
+  type: typeof types.CONVERSATION_CLEAR_DATA;
 }
 
 // UPDATE CONVERSATION LIST
 export interface ConversationUpdate {
-  type: typeof types.UPDATE_CONVERSATION_DATA
-  payload: Array<ConversationsList>
+  type: typeof types.UPDATE_CONVERSATION_DATA;
+  payload: Array<ConversationsList>;
 }
 export interface IUpdateConversationData {
-  mode: 'deleteMessage' | 'deleteConversation'
-  conversationId: number,
-  messages?: Array<Messages> | [],
-  conversationsList: Array<ConversationsList>
+  mode: "deleteMessage" | "deleteConversation";
+  conversationId: number;
+  messages?: Array<Messages> | [];
+  conversationsList: Array<ConversationsList>;
 }

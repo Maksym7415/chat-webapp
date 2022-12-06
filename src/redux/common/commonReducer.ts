@@ -1,12 +1,11 @@
-/* eslint-disable import/no-cycle */
-import * as types from './types';
-import * as interafaces from './interafaces';
+import * as types from "./types";
+import * as interafaces from "./interafaces";
 
 const initialState: interafaces.CommonReducerInterface = {
   preloader: false,
   contextMenu: {
-    xPos: '100',
-    yPos: '100',
+    xPos: "100",
+    yPos: "100",
     isShowMenu: false,
     messageId: 0,
     config: [],
@@ -18,16 +17,19 @@ const initialState: interafaces.CommonReducerInterface = {
   },
   dialogComponent: {
     isShow: false,
-    title: '',
+    title: "",
   },
   sheraMessages: [],
-  lang: localStorage.getItem('@@lang') || 'ua',
+  lang: localStorage.getItem("@@lang") || "ua",
 };
 
-export default (state = initialState, action: interafaces.CommonReducerActions): interafaces.CommonReducerInterface => {
+export default (
+  state = initialState,
+  action: interafaces.CommonReducerActions
+): interafaces.CommonReducerInterface => {
   switch (action.type) {
     case types.SET_LANGUAGE: {
-      localStorage.setItem('@@lang', action.payload);
+      localStorage.setItem("@@lang", action.payload);
       return {
         ...state,
         lang: action.payload,
@@ -81,6 +83,7 @@ export default (state = initialState, action: interafaces.CommonReducerActions):
         sheraMessages: action.payload,
       };
     }
-    default: return state;
+    default:
+      return state;
   }
 };

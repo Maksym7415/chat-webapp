@@ -1,81 +1,87 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from "react";
+import { Switch, Route } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import CssBaseline from "@mui/material/CssBaseline";
+import Theme from "../theme";
+import routerConfig from "./config/routerConfig";
+import PrivatePage from "../components/PrivatePage";
+import ContextMenu from "../components/contextMenu";
+import DialogComponent from "../components/dialog/DialogComponent";
 import {
-  Switch, Route,
-} from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Theme from '../theme';
-import Preloader from '../components/preloader/Preloader';
-import setAxios, { LocalStorageService } from '../axios.config';
-import routerConfig from './config/routerConfig';
-import PrivatePage from '../components/PrivatePage';
-import ContextMenu from '../components/contextMenu';
-import DialogComponent from '../components/dialog/DialogComponent';
-import { userInfoActionRequest } from '../redux/user/constants/actions';
-import { setLanguageAction } from '../redux/common/commonActions';
+  authTokenAction,
+  setAuthHedersAction,
+} from "../reduxToolkit/auth/slice";
+import { getUserProfileDataRequest } from "../reduxToolkit/user/requests";
+import DrawerCustom from "../components/drawer/";
 
 function Router() {
   // HOOKS
   const dispatch = useDispatch();
 
   // SELECTORS
-  const authToken = useSelector(({ authReducer }) => authReducer.tokenPayload);
-  const isLogout = useSelector(({ authReducer }) => authReducer.logout.isLogout);
-  const userInfo = useSelector(({ userReducer }) => userReducer.userInfo.success);
-  const lang = useSelector(({ commonReducer }) => commonReducer.lang);
+  const authToken = useSelector(({ authSlice }) => authSlice.tokenPayload);
+  const token = useSelector(({ authSlice }) => authSlice.headers.accessToken);
 
   // STATES
-  const [config, setConfig] = useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  // FUNCTIONS
+  const checkIsToken = async () => {
+    setIsLoading(true);
+    try {
+      if (token) {
+        await dispatch(
+          setAuthHedersAction({
+            accessToken: token,
+          })
+        );
+        await dispatch(
+          authTokenAction({
+            token,
+          })
+        );
+      }
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // USEEFFECTS
-  useEffect(() => {
-    setAxios();
+  React.useLayoutEffect(() => {
+    checkIsToken();
   }, []);
 
-  useEffect(() => {
-    if (authToken?.userId) dispatch(userInfoActionRequest());
-    setConfig((item) => routerConfig);
-  }, [authToken]);
-
-  useEffect(() => {
-    const langUser = userInfo?.data?.lang;
-    if (langUser) {
-      lang !== langUser && dispatch(setLanguageAction(langUser));
+  React.useLayoutEffect(() => {
+    if (authToken.userId) {
+      dispatch(getUserProfileDataRequest());
     }
-  }, [userInfo]);
+  }, [authToken]);
 
   return (
     <Fragment>
       <Theme>
-        <Preloader />
-        <DialogComponent />
+        <DrawerCustom />
         <ContextMenu />
-        <CssBaseline />
-        <div>
-        {
-          config
-            && (
-              <Switch>{
-                  config.map(({
-                    id, Component, roles, isPrivate, path,
-                  }) => <PrivatePage
-                          id={id}
-                          Component={Component}
-                          roles={roles}
-                          isPrivate={isPrivate}
-                          path={path}
-                          exact
-                          key={id}
-                          token={isLogout ? null : LocalStorageService.getAccessToken()}
-                        />)
-                  }
-                  <Route component = {() => <div>404</div>} />
-              </Switch>
-            )
-          }
-        </div>
+        {/* <DialogComponent />
+        <CssBaseline /> */}
+        <Switch>
+          {routerConfig.map(({ id, Component, roles, isPrivate, path }) => (
+            <PrivatePage
+              id={id}
+              Component={Component}
+              roles={roles}
+              isPrivate={isPrivate}
+              path={path}
+              exact
+              key={id}
+              token={token}
+            />
+          ))}
+          <Route component={() => <div>404</div>} />
+        </Switch>
       </Theme>
     </Fragment>
   );

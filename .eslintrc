@@ -1,15 +1,13 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "airbnb-typescript/base"
-  ],
+  "plugins": ["@typescript-eslint"],
+  // "extends": [
+  //   "eslint:recommended",
+  //   "plugin:@typescript-eslint/eslint-recommended",
+  //   "plugin:@typescript-eslint/recommended",
+  //   "plugin:@typescript-eslint/recommended-requiring-type-checking",
+  //   "airbnb-typescript/base"
+  // ],
   "parserOptions": {
     "sourceType": "module",
     "useJSXTextNode": true,
@@ -21,38 +19,36 @@
     "node": true
   },
   "rules": {
-    "no-plusplus": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "linebreak-style": "off",
-    "import/prefer-default-export": "off",
-    "no-class-assign": "off",
-    "no-shadow": "off",
-    "max-len": [
-      "error",
-      200
-    ],
-    "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true }],
-    "no-func-assign": "off",
-    "consistent-return": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "no-nested-ternary": "off",
-    "prefer-const": "off",
-    "camelcase": "off",
-    "import/no-unresolved": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "import/extensions": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    // "indent": "off",
-    // "@typescript-eslint/indent": ["error"],
-    "@typescript-eslint/indent": [
-      "off"
-    ],
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-unsafe-assignment": "off",
-    "@typescript-eslint/unbound-method": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unsafe-return": "off"
+    // "no-plusplus": "off"
+    // "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    // "linebreak-style": "off",
+    // "import/prefer-default-export": "off",
+    // "no-class-assign": "off",
+    // "no-shadow": "off",
+    // "max-len": ["error", 200],
+    // "no-unused-expressions": [
+    //   "error",
+    //   { "allowShortCircuit": true, "allowTernary": true }
+    // ],
+    // "no-func-assign": "off",
+    // "consistent-return": "off",
+    // "react-hooks/exhaustive-deps": "off",
+    // "no-nested-ternary": "off",
+    // "prefer-const": "off",
+    // "camelcase": "off",
+    // "import/no-unresolved": "off",
+    // "@typescript-eslint/no-unused-vars": "off",
+    // "import/extensions": "off",
+    // "@typescript-eslint/explicit-module-boundary-types": "off",
+    // // "indent": "off",
+    // // "@typescript-eslint/indent": ["error"],
+    // "@typescript-eslint/indent": ["off"],
+    // "@typescript-eslint/no-explicit-any": "off",
+    // "@typescript-eslint/no-unsafe-member-access": "off",
+    // "@typescript-eslint/no-unsafe-assignment": "off",
+    // "@typescript-eslint/unbound-method": "off",
+    // "@typescript-eslint/no-use-before-define": "off",
+    // "@typescript-eslint/no-unsafe-call": "off",
+    // "@typescript-eslint/no-unsafe-return": "off"
   }
 }

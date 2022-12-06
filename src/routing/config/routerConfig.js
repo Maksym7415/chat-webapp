@@ -1,10 +1,9 @@
-import SignInPage from '../../pages/auth/authorization';
-import SignUpPage from '../../pages/auth/registration';
-import VerificationPage from '../../pages/auth/verification';
-import MainScreen from '../../pages/mainScreen';
-import UserConversationHistoryPage from '../../pages/mainScreen/components/conversationsPages/UserConversationHistoryPage';
-import UserProfile from '../../pages/user/components/userProfile';
-import { Paths } from './paths';
+import SignInPage from "../../pages/auth/signIn";
+import SignUpPage from "../../pages/auth/signUp";
+import VerificationPage from "../../pages/auth/verification";
+import MainPage from "../../pages/main";
+
+import { Paths } from "./paths";
 
 export default [
   {
@@ -13,7 +12,6 @@ export default [
     path: Paths.signIn,
     roles: [],
     isPrivate: false,
-
   },
   {
     id: 2,
@@ -21,7 +19,6 @@ export default [
     path: Paths.signUp,
     roles: [],
     isPrivate: false,
-
   },
   {
     id: 3,
@@ -29,59 +26,19 @@ export default [
     path: Paths.verification,
     roles: [],
     isPrivate: false,
-
   },
   {
     id: 4,
-    Component: MainScreen,
+    Component: MainPage,
     path: Paths.main,
-    roles: [
-      'admin',
-      'user',
-      'superadmin',
-    ],
-    isPrivate: true,
-
-  },
-  {
-    id: 5,
-    Component: SignUpPage,
-    path: Paths.profile,
-    roles: [
-      'admin',
-    ],
+    roles: ["admin", "user", "superadmin"],
     isPrivate: true,
   },
   {
-    id: 6,
-    Component: MainScreen,
+    id: 4,
+    Component: MainPage,
     path: `${Paths.chat}/:id`,
-    roles: [
-      'admin',
-      'superadmin',
-    ],
-    isPrivate: true,
-  },
-  {
-    id: 7,
-    Component: UserProfile,
-    path: Paths.userProfile,
-    roles: [
-      'admin',
-      'user',
-      'superadmin',
-    ],
-    isPrivate: true,
-  },
-  {
-    id: 8,
-    Component: MainScreen,
-    path: Paths.newchat,
-    roles: [
-      'admin',
-      'user',
-      'superadmin',
-    ],
+    roles: ["admin", "user", "superadmin"],
     isPrivate: true,
   },
 ];

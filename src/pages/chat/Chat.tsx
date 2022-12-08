@@ -1,80 +1,81 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/indent */
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
-import ChatHeader from "./components/header/ChatHeader";
-import ChatBottom from "./components/bottom";
-import useStyles from "./styles";
-import Message from "./components/message";
-import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
-import {
-  checkIsShowAvatar,
-  setMessageDate,
-  scrollTop,
-  uuid,
-} from "../../helpers";
+import React from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { Typography, Box, CircularProgress } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import "../../styles/index.scss";
-import languages from "../../config/translations";
+import ChatHeader from "./components/header/";
+import ChatBottom from "./components/bottom";
+import ChatContent from "./components/mainContent";
+import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getConversationMessagesRequest } from "../../reduxToolkit/conversations/requests";
 import { setAllMessagesAction } from "../../reduxToolkit/app/slice";
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "100vh",
+    width: "100%",
+    position: "relative",
+  },
+  errorBackText: { fontSize: 28, fontWeight: "500" },
+}));
+
 const loadMessageOffset = 15;
 
-export default function Chat({}) {
+const Chat = () => {
   // HOOKS
   const dispatch = useAppDispatch();
   const params = useParams<any>();
-  const route: any = { params: {} };
+  const location = useLocation<any>();
+
+  // STYLES
   const classes = useStyles();
 
   // REFS
-  const inputRef = useRef<HTMLInputElement>(null);
-  const refBottom = useRef(null);
-  const scrollBottomRef = useRef(null);
+  const refBottom = React.useRef(null);
+  const refHeader = React.useRef(null);
 
   // SELECTORS
-  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   const { userId, firstName } = useAppSelector(
-    ({ authSlice }) => authSlice.tokenPayload
+    ({ authSlice }) => authSlice.authToken
   );
-  const sheraMessages = useAppSelector(
-    ({ appSlice }) => appSlice.sheraMessages
-  );
-  const messageEdit = useAppSelector(({ appSlice }) => appSlice.messageEdit);
   const userHistoryConversations = useAppSelector(
     ({ conversationsSlice }) => conversationsSlice.userHistoryConversations
   );
   const allMessages = useAppSelector(({ appSlice }) => appSlice.allMessages);
-  // const openConversationData = useAppSelector(
-  //   ({ chatSlice }) => chatSlice.openConversationData
-  // );
   const conversationsList = useAppSelector(
     ({ conversationsSlice }) => conversationsSlice.conversationsList.data
   );
 
   // STATES
-  const [files, setFiles] = useState<any>({});
-  const [errorBack, setErrorBack] = useState<string>("");
-  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
-  const [isInputState, setIsInputState] = useState<boolean>(false);
+  const [errorBack, setErrorBack] = React.useState<string>("");
   const [isFetching, setIsFetching] = React.useState(false);
-  const [showScrollToButton, setShowScrollToButton] = React.useState(false);
 
   // VARIABLES
   const conversationId = React.useMemo(() => params?.id || 0, [params]);
-  const opponentId: any = route?.params?.opponentId;
-  // const conversationData = { conversationType: "" };
+  const opponentId: any = location?.state?.opponentId;
   const conversationData: any = React.useMemo(
-    () => conversationsList?.[conversationId] || {},
-    [conversationsList, conversationId]
+    () =>
+      conversationsList?.[conversationId] ||
+      location?.state?.conversationData ||
+      {},
+    [conversationsList, conversationId, location]
   );
   const typeConversation =
     conversationData?.conversationType?.toLowerCase() || "";
-  let SectionListReference = null;
   const pagination: any =
     userHistoryConversations?.[conversationId]?.pagination || {};
+
+  const heightContent: any = React.useMemo(
+    () =>
+      `calc(100vh - ${
+        (refBottom?.current?.clientHeight || 0) +
+        refHeader.current?.clientHeight
+      }px)`,
+    [refBottom.current?.clientHeight, refHeader.current?.clientHeight]
+  );
 
   // FUNCTIONS
   const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
@@ -110,19 +111,8 @@ export default function Chat({}) {
     }
   };
 
-  const handleOpenDialog = (isOpen: boolean) => {
-    if (!isOpen) {
-      setFiles({});
-    }
-    setIsOpenDialog(isOpen);
-  };
-
   // USEEFFECTS
-  useEffect(() => {
-    setIsInputState(false);
-  }, [files]);
-
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     if (!allMessages[conversationId] && conversationId) {
       console.log("!render!");
       setIsFetching(true);
@@ -167,100 +157,6 @@ export default function Chat({}) {
     }
   }, [conversationId]);
 
-  // RENDERS
-  const renderMainContent = React.useMemo(() => {
-    return (
-      <>
-        {(() => {
-          if (Number.isNaN(conversationId) && !opponentId) {
-            return (
-              <RenderInfoCenterBox>
-                <Typography>
-                  {languages[lang].mainScreen.chooseAChat}
-                </Typography>
-              </RenderInfoCenterBox>
-            );
-          } else {
-            if (!conversationId) {
-              return (
-                <RenderInfoCenterBox>
-                  <Typography>
-                    {languages[lang].mainScreen.sendANewMessageToStartAChat}
-                  </Typography>
-                </RenderInfoCenterBox>
-              );
-            } else {
-              if (
-                allMessages[conversationId] &&
-                allMessages[conversationId].length === 0
-              ) {
-                return (
-                  <RenderInfoCenterBox>
-                    <Typography>
-                      {languages[lang].mainScreen.thereAreNoMessagesInChatYet}
-                    </Typography>
-                  </RenderInfoCenterBox>
-                );
-              } else {
-                return (
-                  allMessages[conversationId] && (
-                    <Box>
-                      {[...allMessages[conversationId]]
-                        // .reverse()
-                        .map((messageData, index) => {
-                          let isShowAvatar = false;
-                          if (
-                            messageData.fkSenderId !== userId &&
-                            checkIsShowAvatar(
-                              allMessages[conversationId],
-                              userId,
-                              index
-                            )
-                          ) {
-                            isShowAvatar = true;
-                          }
-                          if (messageData.component) {
-                            return (
-                              <div
-                                className={classes.wrapperSendData}
-                                key={uuid()}
-                              >
-                                <p className={classes.sendDataText}>
-                                  {setMessageDate(
-                                    new Date(messageData.sendDate)
-                                  )}
-                                </p>
-                              </div>
-                            );
-                          }
-                          return (
-                            <Message
-                              key={uuid()}
-                              isShowAvatar={isShowAvatar}
-                              messageData={messageData}
-                              userId={userId}
-                              typeConversation={typeConversation}
-                            />
-                          );
-                        })}
-                      {/* <ListItem ref={scrollBottomRef}></ListItem> */}
-                    </Box>
-                  )
-                );
-              }
-            }
-          }
-        })()}
-      </>
-    );
-  }, [
-    allMessages[conversationId],
-    sheraMessages,
-    messageEdit,
-    pagination,
-    showScrollToButton,
-  ]);
-
   if (isFetching) {
     return (
       <RenderInfoCenterBox>
@@ -272,45 +168,35 @@ export default function Chat({}) {
   if (errorBack) {
     return (
       <RenderInfoCenterBox>
-        <Typography style={{ fontSize: 28, fontWeight: "500" }}>
-          {errorBack}
-        </Typography>
+        <Typography className={classes.errorBackText}>{errorBack}</Typography>
       </RenderInfoCenterBox>
     );
   }
 
   return (
-    <Box
-      className={classes.container}
-      // onScroll={scrollHandler}
-      id="messages"
-      sx={{ width: "100%", height: "100vh" }}
-    >
+    <Box className={classes.container}>
       <ChatHeader
         conversationData={conversationData}
         conversationId={conversationId}
         typeConversation={typeConversation}
+        ref={refHeader}
       />
-      <Grid
-        item
-        xs={12}
-        className={classes.wrapperMessages}
-        onScroll={scrollHandler}
-        style={{
-          height: `calc(100vh - ${
-            (refBottom?.current?.clientHeight || 0) + 71
-          }px)`,
-        }}
-      >
-        {renderMainContent}
-      </Grid>
+      <ChatContent
+        heightContent={heightContent}
+        typeConversation={typeConversation}
+        opponentId={opponentId}
+        conversationId={conversationId}
+        userId={userId}
+        allMessages={allMessages}
+      />
       <ChatBottom
         ref={refBottom}
         firstName={firstName}
         userId={userId}
-        // opponentId={opponentId}
-        // openFileDialog={openFileDialog}
+        opponentId={opponentId}
       />
     </Box>
   );
-}
+};
+
+export default React.memo(Chat);

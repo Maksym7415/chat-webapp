@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { useParams, useLocation } from "react-router-dom";
 import { TextField } from "@mui/material";
 import useStyles from "./styles";
 import { socket } from "../../../../../../config/socket";
@@ -21,10 +22,14 @@ const MessageInput = React.forwardRef(
     // HOOKS
     const dispatch = useAppDispatch();
     const classes = useStyles();
-    const route: any = { params: {} };
+    const params = useParams<any>();
+    const location = useLocation<any>();
 
     // SELECTORS
     const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
+    const conversationsList = useAppSelector(
+      ({ conversationsSlice }) => conversationsSlice.conversationsList.data
+    );
     const typing = useAppSelector(
       ({ conversationsSlice }) => conversationsSlice.conversationTypeState
     );
@@ -39,8 +44,14 @@ const MessageInput = React.forwardRef(
     const [visible, setVisible] = React.useState<any>(false);
 
     // VARIABLES
-    const conversationId: any = route?.params?.id;
-    const conversationData: any = route?.params?.conversationData;
+    const conversationId = React.useMemo(() => params?.id || 0, [params]);
+    const conversationData: any = React.useMemo(
+      () =>
+        conversationsList?.[conversationId] ||
+        location?.state?.conversationData ||
+        {},
+      [conversationsList, conversationId, location]
+    );
 
     // FUNCTIONS
     const showDialog = () => setVisible(true);

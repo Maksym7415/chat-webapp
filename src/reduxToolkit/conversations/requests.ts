@@ -8,19 +8,24 @@ import {
 
 export const getUserConversationsRequest = createAsyncThunk(
   "conversationsSlice/getUserConversationsRequest",
-  async (_, { dispatch }) => {
+  async (params: any, { dispatch }) => {
     try {
       const response = await API.get(
         pathBackConversations.getUserConversations
       );
+
       const data = response.data.data.reduce((acc, item) => {
         acc[item.conversationId] = item;
         return acc;
       }, {});
-      dispatch(setConversationListAction(data));
-    } catch (error) {
-      console.log(error, "error");
 
+      params?.cb && params.cb(data);
+
+      return {
+        data,
+      };
+    } catch (error) {
+      params?.errorCb && params.errorCb();
       return Promise.reject(error);
     }
   }

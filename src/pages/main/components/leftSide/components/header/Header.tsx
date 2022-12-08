@@ -1,21 +1,39 @@
-import React, { useLayoutEffect } from "react";
-import useStyles from "./styles";
+import React from "react";
+import { makeStyles } from "@mui/styles";
 import TopCenterComponent from "./components/topCenterComponent";
 import TopLeftComponent from "./components/topLeftComponent";
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
 import { getSearchContactRequest } from "../../../../../../reduxToolkit/search/requests";
+import { setSideLeftConfigAction } from "../../../../../../reduxToolkit/app/slice";
+import { eSideLeftConfigPage } from "../../../../../../ts/enums/app";
 
-export default function Header({ children }) {
+// STYLES
+const useStyles = makeStyles((theme) => ({
+  container: {
+    padding: "15px 5px",
+  },
+  containerTop: {
+    display: "flex",
+    alignItems: "center",
+  },
+  wrapperTopCenterComponent: {
+    display: "flex",
+  },
+}));
+
+const Header = React.forwardRef(({ children }: any, ref: any) => {
+  // console.log("render - header LeftSide");
+
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
   // SELECTORS
-  const conversationsList = useAppSelector(
-    ({ conversationsSlice }) => conversationsSlice.conversationsList.data
+  const sideLeftConfig = useAppSelector(
+    ({ appSlice }) => appSlice.sideLeftConfig
   );
+
   // STATES
-  const [contentState, setContentState] = React.useState("main");
   const [settings, setSettings] = React.useState<any>({
     noSettings: true,
     topCenterComponent: {
@@ -27,42 +45,46 @@ export default function Header({ children }) {
     },
   });
 
-  // FUNCTIONS
-
   // USEEFFECTS
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     // set setting options from screen
-    console.log("render - useLayoutEffect");
-    switch (contentState) {
-      case "main":
+    switch (sideLeftConfig.page) {
+      case eSideLeftConfigPage.conversationList:
         return setSettings(() => ({
           topCenterComponent: {
-            placeholder: "Search hi",
+            placeholder: "Search",
+            onFocus: () => {
+              dispatch(
+                setSideLeftConfigAction({
+                  page: eSideLeftConfigPage.searchContacts,
+                })
+              );
+            },
+          },
+        }));
+      case eSideLeftConfigPage.searchContacts:
+        return setSettings(() => ({
+          topCenterComponent: {
+            placeholder: "Search",
             getRequest: getSearchContactRequest,
           },
         }));
-
       default:
         return null;
     }
-  }, []);
-
-  // RENDERS
-  const renderTopRightComponent = () => {};
+  }, [sideLeftConfig]);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} ref={ref}>
       <div className={classes.containerTop}>
-        <TopLeftComponent contentState={contentState} />
+        <TopLeftComponent />
         <div className={classes.wrapperTopCenterComponent}>
-          <TopCenterComponent
-            contentState={contentState}
-            parentSettings={settings.topCenterComponent}
-          />
+          <TopCenterComponent parentSettings={settings.topCenterComponent} />
         </div>
-        {/* {renderTopRightComponent()} */}
       </div>
       {children}
     </div>
   );
-}
+});
+
+export default React.memo(Header);

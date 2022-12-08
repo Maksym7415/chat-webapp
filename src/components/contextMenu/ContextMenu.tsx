@@ -19,7 +19,7 @@ export default function ContextMenu() {
     ({ appSlice }) => appSlice.contextMenuConfig
   );
 
-  console.log(contextMenuConfig, "contextMenuConfig");
+  // console.log(contextMenuConfig, "contextMenuConfig");
 
   function handleItemClick({ event, props, triggerEvent, data }) {
     console.log(event, props, triggerEvent, data, "ssss");

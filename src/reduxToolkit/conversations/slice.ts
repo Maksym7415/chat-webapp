@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import * as requests from "./requests";
 
 const initialState = {
   conversationMessages: {
@@ -38,10 +39,10 @@ const conversationsSlice = createSlice({
   name: "conversationsSlice",
   initialState,
   reducers: {
-    conversationTypeStateAction(state, { payload }) {
+    updateConversationTypeStateAction(state, { payload }) {
       state.conversationTypeState = {
         ...state.conversationTypeState,
-        [payload.conversationId]: payload,
+        [payload.conversationId]: payload.data,
       };
     },
     updateConversationListAction(state, { payload }) {
@@ -65,10 +66,36 @@ const conversationsSlice = createSlice({
       };
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(
+      requests.getUserConversationsRequest.fulfilled,
+      (state, action) => {
+        state.conversationsList.data = action.payload.data;
+      }
+    );
+    // builder.addCase(
+    //   requests.getUserConversationsRequest.rejected,
+    //   (state, action) => {
+    //     state.login = {
+    //       ...initialState[state.login],
+    //       error: action.payload,
+    //     };
+    //   },
+    // );
+    builder.addCase(
+      requests.getConversationMessagesRequest.fulfilled,
+      (state, action) => {
+        state.conversationMessages = {
+          data: action.payload?.data,
+          pagination: action.payload?.pagination,
+        };
+      }
+    );
+  },
 });
 
 export const {
-  conversationTypeStateAction,
+  updateConversationTypeStateAction,
   updateConversationListAction,
   updateUserHistoryConversation,
   setConversationListAction,

@@ -35,9 +35,16 @@ export default [
     isPrivate: true,
   },
   {
-    id: 4,
+    id: 5,
     Component: MainPage,
     path: `${Paths.chat}/:id`,
+    roles: ["admin", "user", "superadmin"],
+    isPrivate: true,
+  },
+  {
+    id: 6,
+    Component: MainPage,
+    path: `${Paths.newChat}`,
     roles: ["admin", "user", "superadmin"],
     isPrivate: true,
   },

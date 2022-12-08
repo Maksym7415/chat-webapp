@@ -1,94 +1,80 @@
 import React, { useState } from "react";
 import { Rnd } from "react-rnd";
-import { useParams } from "react-router-dom";
-import { Typography } from "@mui/material";
-import useStyles from "./styles";
-import Chat from "../chat";
+import { useHistory } from "react-router-dom";
+import { makeStyles } from "@mui/styles";
 import LeftSide from "./components/leftSide";
+import MainContent from "./components/mainContent";
 import { socket } from "../../config/socket";
 import {
   socketOnUserIdChat,
-  // socketOnTypingStateId,
+  socketOnTypingStateId,
   socketOnDeleteMessage,
   socketOnUserIdNewChat,
   socketOnDeleteConversation,
   socketOnClearConversation,
 } from "../../config/socket/actions/socketOn";
-import "./styles/index.scss";
-import { getUserConversationsRequest } from "../../reduxToolkit/conversations/requests";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
-import languages from "../../config/translations";
+import { getUserConversationsRequest } from "../../reduxToolkit/conversations/requests";
+import IMAGES from "../../assets/img";
 
-export default function MainPage() {
+// STYLES
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "100%",
+    display: "flex",
+    backgroundImage: `url(${IMAGES.bgTest})`,
+  },
+}));
+
+const styleRnd: React.CSSProperties = {
+  position: "relative",
+  borderRight: "1px solid rgba(0, 0, 0, 0.2)",
+};
+
+const MainPage = () => {
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
-  const params = useParams<any>();
+  const history = useHistory();
 
   // SELECTORS
-  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   const conversationsList = useAppSelector(
     ({ conversationsSlice }) => conversationsSlice.conversationsList.data
   );
-  const typing = useAppSelector(
-    ({ conversationsSlice }) => conversationsSlice.conversationTypeState
-  );
-  const { userId } = useAppSelector(({ authSlice }) => authSlice.tokenPayload);
-
-  // VARIABLES
-  const conversationsListMass: any = Object.values(conversationsList);
+  const authToken = useAppSelector(({ authSlice }) => authSlice.authToken);
 
   // STATES
-  // usersTyping треба буде зробити певно через redux
-  // const [usersTyping, setUsersTyping] = useState<Conversation>({});
   const [containerWidth, setContainerWidth] = useState<number>(300);
 
+  // VARIABLES
+  const conversationsListMass: any = React.useMemo(
+    () => Object.values(conversationsList),
+    [conversationsList]
+  );
+
   // USEEFFECTS
-  React.useEffect(() => {
-    !conversationsListMass?.length && dispatch(getUserConversationsRequest());
+  React.useLayoutEffect(() => {
+    !conversationsListMass?.length && dispatch(getUserConversationsRequest({}));
   }, []);
 
   React.useEffect(() => {
     socket.removeAllListeners();
-
     if (conversationsListMass?.length) {
       conversationsListMass.forEach((chat: any) => {
         socketOnUserIdChat(chat);
-        // socketOnTypingStateId(chat, setUsersTyping);
+        socketOnTypingStateId(chat);
       });
     }
-  }, [conversationsListMass, typing]);
-
-  React.useEffect(() => {
     socketOnDeleteMessage();
-    socketOnUserIdNewChat(userId, history);
+    socketOnUserIdNewChat(authToken.userId, history);
     socketOnDeleteConversation();
     socketOnClearConversation();
-  }, [conversationsList]);
-
-  // RENDERS
-  const renderChat = React.useMemo(() => {
-    if (!params?.id) {
-      return (
-        <RenderInfoCenterBox>
-          <Typography style={{ fontSize: 28, fontWeight: "500" }}>
-            {languages[lang].mainScreen.chooseAChat}
-          </Typography>
-        </RenderInfoCenterBox>
-      );
-    }
-    return <Chat />;
-  }, [params, conversationsList]);
+  }, [conversationsListMass]);
 
   return (
     <div className={classes.container}>
       <Rnd
-        style={{
-          position: "relative",
-          borderRight: "1px solid rgba(0, 0, 0, 0.2)",
-          // background: "#dcf2ed",
-        }}
+        style={styleRnd}
         minWidth="20vw"
         maxWidth="40vw"
         default={{
@@ -114,7 +100,9 @@ export default function MainPage() {
       >
         <LeftSide />
       </Rnd>
-      {renderChat}
+      <MainContent />
     </div>
   );
-}
+};
+
+export default MainPage;

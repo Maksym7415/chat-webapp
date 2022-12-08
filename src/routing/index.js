@@ -8,6 +8,7 @@ import Theme from "../theme";
 import routerConfig from "./config/routerConfig";
 import PrivatePage from "../components/PrivatePage";
 import ContextMenu from "../components/contextMenu";
+import Modal from "../components/modal";
 import DialogComponent from "../components/dialog/DialogComponent";
 import {
   authTokenAction,
@@ -21,7 +22,7 @@ function Router() {
   const dispatch = useDispatch();
 
   // SELECTORS
-  const authToken = useSelector(({ authSlice }) => authSlice.tokenPayload);
+  const authToken = useSelector(({ authSlice }) => authSlice.authToken);
   const token = useSelector(({ authSlice }) => authSlice.headers.accessToken);
 
   // STATES
@@ -65,6 +66,7 @@ function Router() {
       <Theme>
         <DrawerCustom />
         <ContextMenu />
+        <Modal />
         {/* <DialogComponent />
         <CssBaseline /> */}
         <Switch>

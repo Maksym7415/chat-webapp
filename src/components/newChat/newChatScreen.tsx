@@ -54,7 +54,7 @@ export default function NewChatScreen() {
   // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   // const searchResult = useAppSelector(({ globalSearchReducer }) => globalSearchReducer.globalSearchResult);
-  // const { userId, firstName } = useAppSelector(({ authReducer }) => authReducer.tokenPayload);
+  // const { userId, firstName } = useAppSelector(({ authReducer }) => authReducer.authToken);
 
   // STATES
   const [searchvalue, setSearchValue] = useState<string>("");

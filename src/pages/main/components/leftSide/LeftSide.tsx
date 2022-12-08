@@ -1,16 +1,30 @@
 import React from "react";
-import useStyles from "./styles";
-import ConversationList from "./components/conversationList";
+import { makeStyles } from "@mui/styles";
+import ConversationList from "../../../conversationList";
 import SearchPage from "../../../search";
 import Header from "./components/header";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 import { eSideLeftConfigPage } from "../../../../ts/enums/app";
 import { TYPES_FROM_TO_SEARCH_SCREEN } from "../../../../config/constants/general";
 
-export default function LeftSide() {
+// STYLES
+const useStyles = makeStyles((theme) => ({
+  container: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    background: "#ffffff",
+  },
+}));
+
+const LeftSide = () => {
+  // console.log("render - LeftSide");
+
   // HOOKS
-  const dispatch = useAppDispatch();
   const classes = useStyles();
+
+  // REFS
+  const refHeader = React.useRef(null);
 
   // SELECTORS
   const sideLeftConfig = useAppSelector(
@@ -19,28 +33,34 @@ export default function LeftSide() {
 
   // RENDERS
   const renderContent = React.useMemo(() => {
+    const heightContent = `calc(100vh - ${
+      refHeader?.current?.clientHeight || 0
+    }px)`;
+
     switch (sideLeftConfig.page) {
       case eSideLeftConfigPage.conversationList:
-        return <ConversationList />;
+        return <ConversationList heightContent={heightContent} />;
       case eSideLeftConfigPage.searchContacts:
         return (
           <SearchPage
             params={{
               from: TYPES_FROM_TO_SEARCH_SCREEN.main,
             }}
+            heightContent={heightContent}
           />
         );
       default:
         return <></>;
     }
-  }, [sideLeftConfig]);
+  }, [sideLeftConfig, refHeader?.current?.clientHeight]);
 
   return (
     <div className={classes.container}>
-      <Header>
+      <Header ref={refHeader}>
         <></>
       </Header>
       {renderContent}
     </div>
   );
-}
+};
+export default React.memo(LeftSide);

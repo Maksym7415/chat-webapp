@@ -8,7 +8,7 @@ import {
   List,
   ListItem,
 } from "@mui/material";
-import listRenderByRole from "./drawerList";
+import { drawerList } from "./drawerList";
 import useStyles from "./styles";
 // import { showDialogAction } from "../../../redux/common/commonActions";
 // import { updateUserProfileAction } from "../redux/user/constants/actions";
@@ -21,6 +21,7 @@ import {
 import { setLangAction } from "../../../../reduxToolkit/setting/slice";
 import BaseSelect from "../../../selects/BaseSelect";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { setModalConfigAction } from "../../../../reduxToolkit/app/slice";
 
 interface IDrawerProps {
   openDrawer: boolean;
@@ -60,11 +61,27 @@ function MainDrawer({ closeDrawer }: any) {
   // FUNCTIONS
   const handleMenuAction = (value: string) => {
     closeDrawer();
-    if (value === "newChat") {
-      // dispatch(showDialogAction('Add New Chat'));
-    } else if (value === "logout") {
-      dispatch(onLogOut());
-      history.push(Paths.signIn);
+    switch (value) {
+      case "newChat":
+        return;
+      case "myProfile":
+        const timerShowModal = setTimeout(() => {
+          dispatch(
+            setModalConfigAction({
+              open: true,
+              renderContent: "settingProfile",
+              styles: {},
+            })
+          );
+          clearTimeout(timerShowModal);
+        }, 100);
+        return;
+      case "logout":
+        dispatch(onLogOut());
+        history.push(Paths.signIn);
+        return;
+      default:
+        return null;
     }
   };
 
@@ -82,7 +99,6 @@ function MainDrawer({ closeDrawer }: any) {
           dispatch(
             getUserProfileDataRequest({
               cb: () => {
-                console.log(selectLang, "langUser");
                 dispatch(setLangAction(selectLang));
               },
             })
@@ -95,7 +111,7 @@ function MainDrawer({ closeDrawer }: any) {
   return (
     <>
       <List className={classes.list}>
-        {listRenderByRole().map(({ icon, id, title, route, value }) => {
+        {drawerList.map(({ icon, id, title, value }) => {
           return (
             <ListItem
               button

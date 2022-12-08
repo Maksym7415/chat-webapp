@@ -7,7 +7,6 @@ export default makeStyles((theme) => ({
     padding: 0,
     borderRadius: "20px !important",
     paddingLeft: "5px !important",
-
     "& > input": {
       padding: "10px 15px",
     },

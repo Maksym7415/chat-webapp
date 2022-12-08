@@ -5,7 +5,7 @@ import {
   hideDialogAction,
   shareMessageAction,
 } from "../../../redux/common/commonActions";
-import DefaultAvatar from "../../defaultAvatar";
+import DefaultAvatar from "../../avatar/defaultAvatar";
 import { Paths } from "../../../routing/config/paths";
 import useStyles from "./styles/styles";
 import { ShareMessageProps } from "./interfaces";

@@ -1,10 +1,13 @@
-// import store from "../../redux";
+import store from "../../../reduxToolkit/store";
 import { socket } from "../index";
-// import { conversationListActions } from "../../../redux/conversations/actions";
-// import { getUserConversationsRequest } from "../../../redux/conversations/requests";
+import { conversationListActions } from "../../../reduxToolkit/conversations/actions";
+import { getUserConversationsRequest } from "../../../reduxToolkit/conversations/requests";
 import { Paths } from "../../../routing/config/paths";
 import { setAllMessagesAction } from "../../../reduxToolkit/app/slice";
-// import { setConversationListAction } from "../../../redux/conversations/slice";
+import {
+  setConversationListAction,
+  updateConversationTypeStateAction,
+} from "../../../reduxToolkit/conversations/slice";
 
 // User Id Chat
 export const socketOnUserIdChat = (chat) =>
@@ -90,64 +93,39 @@ export const socketOnUserIdChat = (chat) =>
 // Typing State Id
 let isEmit = false;
 const newTimer = {};
-export const socketOnTypingStateId = (chat, setUsersTyping) => {
+export const socketOnTypingStateId = (chat) => {
+  const conversationTypeState =
+    store.getState().conversationsSlice.conversationTypeState;
   const currentUserTyping = (user, conversationId) => {
+    const fConversationType = (conversationId, user, isTyping = false) => {
+      const conversation = conversationTypeState[conversationId];
+      const data = {
+        ...conversation,
+        [user.userId]: { ...user, isTyping },
+      };
+      store.dispatch(
+        updateConversationTypeStateAction({
+          conversationId: conversationId,
+          data,
+        })
+      );
+    };
+
+    const currentUserTypingTimer = () => {
+      fConversationType(conversationId, user, true);
+      newTimer[conversationId] = { ...newTimer[conversationId] };
+      newTimer[conversationId][user.userId] = setTimeout(() => {
+        isEmit = false;
+        fConversationType(conversationId, user, false);
+      }, 3000);
+    };
+
     if (!isEmit) {
       isEmit = true;
-      setUsersTyping((prev) => {
-        const conversation = prev[conversationId];
-        return {
-          ...prev,
-          [conversationId]: {
-            ...conversation,
-            [user.userId]: { ...user, isTyping: true },
-          },
-        };
-      });
-      newTimer[conversationId] = { ...newTimer[conversationId] };
-      newTimer[conversationId][user.userId] = setTimeout(
-        () =>
-          setUsersTyping((prev) => {
-            const conversation = prev[conversationId];
-            isEmit = false;
-            return {
-              ...prev,
-              [conversationId]: {
-                ...conversation,
-                [user.userId]: { ...user, isTyping: false },
-              },
-            };
-          }),
-        3000
-      );
+      currentUserTypingTimer();
     } else {
       clearTimeout(newTimer[conversationId][user.userId]);
-      setUsersTyping((prev) => {
-        const conversation = prev[conversationId];
-        return {
-          ...prev,
-          [conversationId]: {
-            ...conversation,
-            [user.userId]: { ...user, isTyping: true },
-          },
-        };
-      });
-      newTimer[conversationId] = { ...newTimer[conversationId] };
-      newTimer[conversationId][user.userId] = setTimeout(
-        () =>
-          setUsersTyping((prev) => {
-            const conversation = prev[conversationId];
-            isEmit = false;
-            return {
-              ...prev,
-              [conversationId]: {
-                ...conversation,
-                [user.userId]: { ...user, isTyping: false },
-              },
-            };
-          }),
-        3000
-      );
+      currentUserTypingTimer();
     }
   };
 
@@ -206,8 +184,8 @@ export const socketOnDeleteMessage = () => {
   );
 };
 
-export const socketOnUserIdNewChat = (userId, navhistoryigation) =>
-  socket.on(`userIdNewChat${userId}`, (message, conversationId) => {
+export const socketOnUserIdNewChat = (userId, history) => {
+  return socket.on(`userIdNewChat${userId}`, (message, conversationId) => {
     store.dispatch(
       getUserConversationsRequest({
         cb: (data) => {
@@ -223,6 +201,7 @@ export const socketOnUserIdNewChat = (userId, navhistoryigation) =>
       })
     );
   });
+};
 
 export const socketOnDeleteConversation = () => {
   socket.on("deleteChat", ({ ids }) => {

@@ -1,5 +1,5 @@
 import {
-  setSelectedСhatsAction,
+  setSelectedChatsAction,
   setSelectedMessagesAction,
   setSettingStatusBarAction,
   settingStatusBarInitial,
@@ -34,7 +34,7 @@ export const selectedСhatsActions =
       data,
       typeAction,
       dispatch,
-      setAction: setSelectedСhatsAction,
+      setAction: setSelectedChatsAction,
     });
 
     return;

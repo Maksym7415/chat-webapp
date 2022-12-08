@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Avatar } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 import { REACT_APP_BASE_URL } from "../../../config/constants/url";
 import { getNameShort } from "../../../helpers";
 import DefaultAvatar from "../defaultAvatar";
@@ -18,30 +18,20 @@ const UserAvatar = ({
 
   return (
     <div style={{ position: "relative" }}>
-      {source ? (
-        <Avatar
-          src={`${REACT_APP_BASE_URL}/${source}`}
-          style={{ height: sizeAvatar, width: sizeAvatar }}
-        />
-      ) : (
-        <DefaultAvatar
-          name={nameShort}
-          width={`${sizeAvatar}px`}
-          height={`${sizeAvatar}px`}
-        />
-      )}
-
-      {["online", "selected"].includes(status) && (
-        <BangeUserAvatar
-          typeBange={isSelected ? "selected" : status}
-          sizeBadge={sizeBadge}
-          styles={{
-            badge: {
-              bottom: -1,
-            },
-          }}
-        />
-      )}
+      <BangeUserAvatar typeBange={status}>
+        {source ? (
+          <Avatar
+            src={`${REACT_APP_BASE_URL}/${source}`}
+            style={{ height: sizeAvatar, width: sizeAvatar }}
+          />
+        ) : (
+          <DefaultAvatar
+            name={nameShort}
+            width={`${sizeAvatar}px`}
+            height={`${sizeAvatar}px`}
+          />
+        )}
+      </BangeUserAvatar>
     </div>
   );
 };

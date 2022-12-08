@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import * as requests from "./requests";
 import { jwtdecode } from "../../helpers";
 
-const initalTokenPayload = {
+const initialAuthToken = {
   role: "",
   login: "",
   userAgent: "",
@@ -16,7 +16,7 @@ const initalTokenPayload = {
 const initialState = {
   loginSingIn: null,
   verificationCode: null,
-  tokenPayload: initalTokenPayload,
+  authToken: initialAuthToken,
   headers: { accessToken: "" },
   isLogout: false,
 };
@@ -26,11 +26,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     authTokenAction(state, { payload }) {
-      let payloadLocal = initalTokenPayload;
+      let payloadLocal = initialAuthToken;
       try {
         payloadLocal = payload ? jwtdecode(payload.token) : payloadLocal;
       } catch (e) {}
-      state.tokenPayload = payloadLocal;
+      state.authToken = payloadLocal;
     },
     setAuthHedersAction(state, { payload }) {
       state.headers = { ...state.headers, ...payload };

@@ -19,7 +19,7 @@ function* createConversWorker({
       axios.get,
       `getOpponentsIdWhereConversTypeDialog?userId=${userId}&opponentId=${opponentId}`
     );
-    console.log(data, "data");
+
     yield put(conversationActionSuccess(data, "createConversation"));
   } catch (error) {
     yield put(conversationActionFail(error?.response, "createConversation"));

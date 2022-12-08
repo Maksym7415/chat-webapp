@@ -1,34 +1,48 @@
 import React from "react";
+import { makeStyles } from "@mui/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, Popover, Typography } from "@mui/material";
-import useStyles from "./styles";
-import { useAppDispatch } from "../../../../../../../../hooks/redux";
-import { setDrawerStateAction } from "../../../../../../../../reduxToolkit/app/slice";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { IconButton } from "@mui/material";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../../../../hooks/redux";
+import {
+  setDrawerStateAction,
+  setSideLeftConfigAction,
+} from "../../../../../../../../reduxToolkit/app/slice";
+import { eSideLeftConfigPage } from "../../../../../../../../ts/enums/app";
 
-function TopLeftComponent({ contentState }: any) {
+// STYLES
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginRight: "15px",
+  },
+}));
+
+const TopLeftComponent = () => {
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
-  const open = Boolean(anchorEl);
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
+  // SELECTORS
+  const sideLeftConfig = useAppSelector(
+    ({ appSlice }) => appSlice.sideLeftConfig
+  );
 
   return (
     <div className={classes.container}>
       {(() => {
-        if (["main"].includes(contentState)) {
+        if (
+          [eSideLeftConfigPage.conversationList].includes(sideLeftConfig.page)
+        ) {
           return (
             <>
               <IconButton
                 color="default"
                 aria-label="menu"
                 edge="end"
-                onClick={(event) => {
+                onClick={() => {
                   dispatch(
                     setDrawerStateAction({
                       anchor: "left",
@@ -40,32 +54,29 @@ function TopLeftComponent({ contentState }: any) {
               >
                 <MenuIcon />
               </IconButton>
-              <Popover
-                id="mouse-over-popover"
-                sx={{
-                  pointerEvents: "none",
-                }}
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                onClose={handlePopoverClose}
-                disableRestoreFocus
-              >
-                <Typography sx={{ p: 1 }}>I use Popover.</Typography>
-              </Popover>
             </>
+          );
+        } else {
+          return (
+            <IconButton
+              color="default"
+              aria-label="back"
+              edge="end"
+              onClick={() => {
+                dispatch(
+                  setSideLeftConfigAction({
+                    page: eSideLeftConfigPage.conversationList,
+                  })
+                );
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
           );
         }
       })()}
     </div>
   );
-}
+};
 
 export default TopLeftComponent;

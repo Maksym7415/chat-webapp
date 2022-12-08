@@ -40,14 +40,33 @@ export const putUpdateProfileRequest = createAsyncThunk(
       params?.cb && params.cb(response.data);
       return response.data;
     } catch (error) {
-      params?.errorCb && params.errorCb();
+      params?.errorCb && params.errorCb(error.data);
       return Promise.reject(error);
     }
   }
 );
 
-export const deleteAvatar = createAsyncThunk(
-  "user/deleteAvatar",
+export const setMainPhotoRequest = createAsyncThunk(
+  "user/setMainPhotoRequest",
+  async (options: any, { dispatch }) => {
+    try {
+      const response = await API.put(
+        `${pathBackUser.setMainPhoto}/${options.photoId}`,
+        {
+          ...options.params,
+        }
+      );
+      options?.cb && options.cb(response.data);
+      return response.data;
+    } catch (error) {
+      options?.errorCb && options.errorCb();
+      return Promise.reject(error);
+    }
+  }
+);
+
+export const deleteAvatarRequest = createAsyncThunk(
+  "user/deleteAvatarRequest",
   async (options: any, { dispatch }) => {
     try {
       const response = await API.delete(

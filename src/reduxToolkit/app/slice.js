@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { themeLight } from "../../config/theme";
 
+import { eSideLeftConfigPage } from "../../ts/enums/app";
+
 const appSlice = createSlice({
   name: "appSlice",
   initialState: {
     isLoading: false,
     sideLeftConfig: {
-      page: "conversationList",
+      page: eSideLeftConfigPage.conversationList,
     },
     drawerState: {
       anchor: "left",
@@ -16,6 +18,13 @@ const appSlice = createSlice({
       configContent: {
         typeProfile: "",
         conversationData: {},
+      },
+    },
+    modalConfig: {
+      open: false,
+      renderContent: "settingProfile",
+      styles: {
+        container: {},
       },
     },
     allMessages: {},
@@ -41,6 +50,9 @@ const appSlice = createSlice({
   reducers: {
     setSideLeftConfigAction(state, { payload }) {
       state.sideLeftConfig = payload;
+    },
+    setModalConfigAction(state, { payload }) {
+      state.modalConfig = payload;
     },
     setDrawerStateAction(state, { payload }) {
       state.drawerState = payload;
@@ -82,7 +94,7 @@ const appSlice = createSlice({
     setIsLoading(state, { payload }) {
       state.isLoading = payload;
     },
-    setSelectedСhatsAction(state, { payload }) {
+    setSelectedChatsAction(state, { payload }) {
       state.selectedСhats = payload;
     },
     setSelectedMessagesAction(state, { payload }) {
@@ -95,6 +107,7 @@ export default appSlice.reducer;
 export const {
   setSideLeftConfigAction,
   setDrawerStateAction,
+  setModalConfigAction,
   setContextMenuConfigAction,
   editMessageAction,
   setLanguageAction,
@@ -103,7 +116,7 @@ export const {
   showDialogAction,
   hideDialogAction,
   setIsLoading,
-  setSelectedСhatsAction,
+  setSelectedChatsAction,
   setSelectedMessagesAction,
   setAllMessagesAction,
 } = appSlice.actions;

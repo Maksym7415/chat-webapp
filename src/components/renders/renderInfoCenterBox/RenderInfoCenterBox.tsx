@@ -17,7 +17,11 @@ const RenderInfoCenterBox = ({ children, styles }: any) => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.wrapperInfoCenter} sx={{ width: "100%" }}>
+    <Box
+      className={classes.wrapperInfoCenter}
+      sx={{ width: "100%" }}
+      style={styles}
+    >
       {children}
     </Box>
   );

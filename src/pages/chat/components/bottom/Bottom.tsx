@@ -1,5 +1,6 @@
 import React from "react";
 import MessageInput from "./components/messageInput/MessageInput";
+import BottomToolbar from "./components/bottomToolbar";
 import Selecteds from "./components/selecteds";
 import { useAppSelector } from "../../../../hooks/redux";
 
@@ -23,7 +24,12 @@ const ChatBottom = React.forwardRef(
       }
     };
 
-    return <>{renderBottom()}</>;
+    return (
+      <>
+        {renderBottom()}
+        {/* <BoottomToolbar /> */}
+      </>
+    );
   }
 );
 

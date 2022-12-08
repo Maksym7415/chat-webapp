@@ -2,13 +2,22 @@ import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment, OutlinedInput } from "@mui/material";
 import useStyles from "./styles";
-import { useAppDispatch } from "../../../../../../../../hooks/redux";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../../../../hooks/redux";
 import { useDebounce } from "../../../../../../../../hooks/useDebounce";
+import { eSideLeftConfigPage } from "../../../../../../../../ts/enums/app";
 
-function TopCenterComponent({ contentState, parentSettings }: any) {
+function TopCenterComponent({ parentSettings }: any) {
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
+
+  // SELECTORS
+  const sideLeftConfig: any = useAppSelector(
+    ({ appSlice }) => appSlice.sideLeftConfig
+  );
 
   // STATES
   const [search, setSearch] = React.useState("");
@@ -17,15 +26,11 @@ function TopCenterComponent({ contentState, parentSettings }: any) {
   const debouncedSearchValue = useDebounce(search, 300);
 
   // FUNCTIONS
-  const clearSearch = () => {
-    setSearch("");
-  };
   const onChangeText = (e) => {
     setSearch(e.target.value);
   };
 
-  // USEEFFECTS
-  React.useEffect(() => {
+  const getRequest = () => {
     parentSettings.getRequest &&
       dispatch(
         parentSettings.getRequest({
@@ -34,12 +39,26 @@ function TopCenterComponent({ contentState, parentSettings }: any) {
           },
         })
       );
+  };
+
+  // USEEFFECTS
+  React.useEffect(() => {
+    getRequest();
   }, [debouncedSearchValue]);
+
+  React.useEffect(() => {
+    getRequest();
+  }, [parentSettings]);
 
   return (
     <>
       {(() => {
-        if (["main"].includes(contentState)) {
+        if (
+          [
+            eSideLeftConfigPage.conversationList,
+            eSideLeftConfigPage.searchContacts,
+          ].includes(sideLeftConfig.page)
+        ) {
           return (
             <OutlinedInput
               id="outlined-adornment-weight"
@@ -52,6 +71,7 @@ function TopCenterComponent({ contentState, parentSettings }: any) {
                   <SearchIcon />
                 </InputAdornment>
               }
+              onFocus={parentSettings.onFocus}
             />
           );
         }

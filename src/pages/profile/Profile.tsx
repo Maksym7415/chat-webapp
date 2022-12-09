@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 import useStyles from "./styles";
 import * as config from "./config";
@@ -11,17 +10,15 @@ import SvgMaker from "../../components/svgMaker";
 import { TYPES_CONVERSATIONS } from "../../config/constants/general";
 import { getNameShort } from "../../helpers";
 import { useAppSelector } from "../../hooks/redux";
+import { IParams } from "../../ts/interfaces/app";
 
 const ProfilePage = ({ typeProfile, conversationData }: any) => {
   // HOOKS
-  const theme = useTheme();
-  const params = useParams<any>();
+  const params = useParams<IParams>();
+  const classes = useStyles();
 
   // REFS
   const refBottomSheet = React.useRef(null);
-
-  // STYLES
-  const classes = useStyles(theme);
 
   // SELECTORS
   const { lang } = useAppSelector(({ settingSlice }) => settingSlice);
@@ -47,30 +44,15 @@ const ProfilePage = ({ typeProfile, conversationData }: any) => {
 
   // USEEFFECTS
   React.useEffect(() => {
-    let settingLocal: any = {
+    let settingLocal = {
       typeProfile: typeProfile?.toLowerCase() || TYPES_CONVERSATIONS.dialog,
+      nameShort: getNameShort(conversationData?.conversationName),
+      conversationData: conversationData || null,
+      avatar: conversationData?.conversationAvatar || "",
+      conversationName: conversationData?.conversationName,
+      isOwnerProfile: false,
     };
 
-    if (route.params?.isOwnerProfile) {
-      const fullName: any =
-        userInfo.fullName || `${userInfo.firstName} ${userInfo.lastName}`;
-      settingLocal = {
-        ...settingLocal,
-        nameShort: getNameShort(fullName),
-        avatar: userInfo.userAvatar || "",
-        conversationName: fullName,
-        isOwnerProfile: true,
-      };
-    } else {
-      settingLocal = {
-        ...settingLocal,
-        nameShort: getNameShort(conversationData?.conversationName),
-        conversationData: conversationData || null,
-        avatar: conversationData?.conversationAvatar || "",
-        conversationName: conversationData?.conversationName,
-        isOwnerProfile: false,
-      };
-    }
     setSetting((prev) => ({
       ...prev,
       ...settingLocal,

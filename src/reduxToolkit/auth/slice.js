@@ -32,7 +32,7 @@ const authSlice = createSlice({
       } catch (e) {}
       state.authToken = payloadLocal;
     },
-    setAuthHedersAction(state, { payload }) {
+    setAuthHeadersAction(state, { payload }) {
       state.headers = { ...state.headers, ...payload };
     },
     setIsLogoutAction(state, { payload }) {
@@ -51,7 +51,7 @@ const authSlice = createSlice({
 
 export const {
   authTokenAction,
-  setAuthHedersAction,
+  setAuthHeadersAction,
   setLoginSingInAction,
   setIsLogoutAction,
 } = authSlice.actions;

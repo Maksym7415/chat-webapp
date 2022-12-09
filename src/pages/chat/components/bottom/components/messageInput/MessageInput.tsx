@@ -16,14 +16,15 @@ import LeftInputComponent from "./components/LeftInputComponent";
 import MessageEdit from "./components/messageEdit";
 import SheredMessages from "./components/sheredMessages";
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
+import { ILocationParams, IParams } from "../../../../../../ts/interfaces/app";
 
 const MessageInput = React.forwardRef(
   ({ userId, firstName, opponentId }: any, ref: any) => {
     // HOOKS
     const dispatch = useAppDispatch();
     const classes = useStyles();
-    const params = useParams<any>();
-    const location = useLocation<any>();
+    const params = useParams<IParams>();
+    const location = useLocation<ILocationParams<any>>();
 
     // SELECTORS
     const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);

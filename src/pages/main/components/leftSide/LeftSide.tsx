@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import ConversationList from "../../../conversationList";
+import Conversations from "../../../conversations";
 import SearchPage from "../../../search";
 import Header from "./components/header";
 import { useAppSelector } from "../../../../hooks/redux";
@@ -18,8 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LeftSide = () => {
-  // console.log("render - LeftSide");
-
   // HOOKS
   const classes = useStyles();
 
@@ -38,8 +36,8 @@ const LeftSide = () => {
     }px)`;
 
     switch (sideLeftConfig.page) {
-      case eSideLeftConfigPage.conversationList:
-        return <ConversationList heightContent={heightContent} />;
+      case eSideLeftConfigPage.conversations:
+        return <Conversations heightContent={heightContent} />;
       case eSideLeftConfigPage.searchContacts:
         return (
           <SearchPage

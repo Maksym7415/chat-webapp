@@ -5,5 +5,5 @@ export enum Paths {
   verification = "/verification",
   profile = "/profile",
   chat = "/chat",
-  newChat = "/newchat",
+  newChat = "/new-chat",
 }

@@ -22,8 +22,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = React.forwardRef(({ children }: any, ref: any) => {
-  // console.log("render - header LeftSide");
-
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
@@ -49,7 +47,7 @@ const Header = React.forwardRef(({ children }: any, ref: any) => {
   React.useLayoutEffect(() => {
     // set setting options from screen
     switch (sideLeftConfig.page) {
-      case eSideLeftConfigPage.conversationList:
+      case eSideLeftConfigPage.conversations:
         return setSettings(() => ({
           topCenterComponent: {
             placeholder: "Search",

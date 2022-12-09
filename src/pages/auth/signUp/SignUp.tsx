@@ -8,7 +8,7 @@ import languages from "../../../config/translations";
 import { postSingUpRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
-export default function SignUpPage() {
+const SignUpPage = () => {
   // HOOKS
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -61,7 +61,7 @@ export default function SignUpPage() {
         errors,
       }}
       render={{
-        text: (styles) => (
+        text: (styles: { text: string }) => (
           <p className={styles.text} onClick={() => history.push(Paths.signIn)}>
             {languages[lang].authorization.haveAnAccount}{" "}
             {languages[lang].authorization.signIn}?
@@ -70,4 +70,6 @@ export default function SignUpPage() {
       }}
     />
   );
-}
+};
+
+export default SignUpPage;

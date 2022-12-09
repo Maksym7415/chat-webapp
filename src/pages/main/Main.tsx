@@ -14,6 +14,7 @@ import {
   socketOnClearConversation,
 } from "../../config/socket/actions/socketOn";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { getUserProfileDataRequest } from "../../reduxToolkit/user/requests";
 import { getUserConversationsRequest } from "../../reduxToolkit/conversations/requests";
 import IMAGES from "../../assets/img";
 
@@ -51,6 +52,13 @@ const MainPage = () => {
     () => Object.values(conversationsList),
     [conversationsList]
   );
+
+  // USEEFFECTS
+  React.useLayoutEffect(() => {
+    if (authToken.userId) {
+      dispatch(getUserProfileDataRequest({}));
+    }
+  }, [authToken]);
 
   // USEEFFECTS
   React.useLayoutEffect(() => {

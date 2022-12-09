@@ -1,15 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as requests from "./requests";
 
-// avatars: [
-//   {
-//     id: 0,
-//     fileName: '',
-//     defaultAvatar: true,
-//     fkUserId: 0,
-//   },
-// ],
-
 const initialState = {
   userInfo: {
     id: 0,
@@ -60,7 +51,5 @@ const userSlice = createSlice({
     });
   },
 });
-
-export const {} = userSlice.actions;
 
 export default userSlice.reducer;

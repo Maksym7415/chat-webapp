@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import SvgMaker from "../../../../../../../components/svgMaker";
 
 const useStyles = makeStyles((theme) => ({
-  emojies: {
+  emojis: {
     paddingLeft: 13,
     backgroundColor: "#ffffff",
     height: "100%",
@@ -20,7 +20,7 @@ export default function LeftInputComponent() {
 
   return (
     <>
-      <IconButton className={classesLocal.emojies} disabled={true}>
+      <IconButton className={classesLocal.emojis} disabled={true}>
         <SvgMaker name="svgs_line_emoji" />
       </IconButton>
     </>

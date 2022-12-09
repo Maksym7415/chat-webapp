@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import UserAvatar from "../../../../components/avatar/userAvatar";
 import RenderConditionsList from "../../../../components/renders/renderConditionsList";
@@ -7,14 +6,12 @@ import { useAppSelector } from "../../../../hooks/redux";
 
 const SearchMain = ({ onClickContact }: any) => {
   // HOOKS
-  const theme = useTheme();
-
-  // STYLES
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   // SELECTORS
-  const { searchContacts, isLoading } = useAppSelector(
-    ({ searchSlice }) => searchSlice
+  const isLoading = useAppSelector(({ searchSlice }) => searchSlice.isLoading);
+  const searchContacts = useAppSelector(
+    ({ searchSlice }) => searchSlice.searchContacts
   );
 
   // RENDERS
@@ -22,9 +19,6 @@ const SearchMain = ({ onClickContact }: any) => {
     if (!searchContacts?.response?.length) {
       return <></>;
     }
-
-    // чомусь рендередься два рази
-    console.log("render - searchContacts");
 
     return searchContacts?.response?.map((item, index) => {
       return (

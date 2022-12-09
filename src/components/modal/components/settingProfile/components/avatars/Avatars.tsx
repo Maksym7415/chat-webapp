@@ -15,7 +15,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { useSnackbar } from "notistack";
 import SwipeableViews from "react-swipeable-views";
 import useStyles from "./styles";
-import DefaultAvatar from "../../../../../avatar/defaultAvatar";
+import DefaultAvatar from "../../../../../avatar/defaultAvatar/";
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
 import {
   getUserAvatars,
@@ -23,7 +23,6 @@ import {
   deleteAvatarRequest,
 } from "../../../../../../reduxToolkit/user/requests";
 import * as config from "./config";
-import { REACT_APP_BASE_URL } from "../../../../../../config/constants/url";
 import { getNameShort } from "../../../../../../helpers";
 
 const ITEM_HEIGHT = 30;
@@ -137,7 +136,7 @@ const Avatars = () => {
             name={nameShort}
             width={`${sizeAvatar}px`}
             height={`${sizeAvatar}px`}
-            fontSize={100}
+            fontSize={"100px"}
           />
         </div>
       </div>
@@ -161,7 +160,7 @@ const Avatars = () => {
             return (
               <div key={index} className={classes.wrapperAvatar}>
                 <Avatar
-                  src={`${REACT_APP_BASE_URL}/${item.fileName}`}
+                  src={`${process.env.REACT_APP_BASE_URL}/${item.fileName}`}
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>

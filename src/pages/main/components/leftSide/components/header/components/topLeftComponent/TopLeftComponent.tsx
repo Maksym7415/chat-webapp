@@ -33,9 +33,7 @@ const TopLeftComponent = () => {
   return (
     <div className={classes.container}>
       {(() => {
-        if (
-          [eSideLeftConfigPage.conversationList].includes(sideLeftConfig.page)
-        ) {
+        if ([eSideLeftConfigPage.conversations].includes(sideLeftConfig.page)) {
           return (
             <>
               <IconButton
@@ -65,7 +63,7 @@ const TopLeftComponent = () => {
               onClick={() => {
                 dispatch(
                   setSideLeftConfigAction({
-                    page: eSideLeftConfigPage.conversationList,
+                    page: eSideLeftConfigPage.conversations,
                   })
                 );
               }}

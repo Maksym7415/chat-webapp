@@ -2,11 +2,11 @@ import React from "react";
 import useStyles from "../styles";
 import SvgMaker from "../../../../../../../components/svgMaker";
 
-export default function RightInputComponent({
+const RightInputComponent = ({
   message,
   handleSendMessage,
   forwardMessages,
-}) {
+}) => {
   // HOOKS
   const classes = useStyles();
 
@@ -61,4 +61,6 @@ export default function RightInputComponent({
       </div>
     </>
   );
-}
+};
+
+export default RightInputComponent;

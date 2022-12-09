@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
 import * as config from "./config";
@@ -8,7 +8,7 @@ import { postVerificationRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Paths } from "../../../routing/config/paths";
 
-export default function VerificationPage() {
+const VerificationPage = () => {
   // HOOKS
   const dispatch = useAppDispatch();
 
@@ -49,7 +49,7 @@ export default function VerificationPage() {
   };
 
   // USEEFFECTS
-  useEffect(() => {
+  React.useLayoutEffect(() => {
     // set defaultValues form from back
     if (verificationCode) {
       setValue("verificationCode", `${verificationCode}`);
@@ -62,8 +62,8 @@ export default function VerificationPage() {
 
   return (
     <AuthForm
-      title={languages[lang].authorization.verificate}
-      submitBtnTitle={languages[lang].authorization.verificate}
+      title={languages[lang].authorization.verification}
+      submitBtnTitle={languages[lang].authorization.verification}
       configFields={config.verificationFields}
       onSubmit={onSubmit}
       errorBack={errorBack}
@@ -74,4 +74,6 @@ export default function VerificationPage() {
       }}
     />
   );
-}
+};
+
+export default VerificationPage;

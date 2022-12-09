@@ -59,7 +59,6 @@ const SettingProfile = ({ closeDrawer }: any) => {
           );
         },
         errorCb: (error) => {
-          console.log(error, "error");
           enqueueSnackbar(error.message, { variant: "error" });
         },
       })

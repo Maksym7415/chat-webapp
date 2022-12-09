@@ -1,6 +1,6 @@
 import store from "../../../reduxToolkit/store";
 import { socket } from "../index";
-import { conversationListActions } from "../../../reduxToolkit/conversations/actions";
+import { actionsConversationList } from "../../../actions";
 import { getUserConversationsRequest } from "../../../reduxToolkit/conversations/requests";
 import { Paths } from "../../../routing/config/paths";
 import { setAllMessagesAction } from "../../../reduxToolkit/app/slice";
@@ -150,10 +150,6 @@ export const socketOnDeleteMessage = () => {
       store.getState().conversationsSlice.conversationsList.data;
     const conversationFindStore = conversationsList?.[conversationId];
 
-    console.log(messageId, "messageId!!");
-    console.log(conversationFindStore, "conversationFindStore");
-    console.log(allMessages, "allMessages");
-
     store.dispatch(
       setAllMessagesAction({
         [conversationId]: allMessages[conversationId.toString()]?.filter(
@@ -178,7 +174,6 @@ export const socketOnDeleteMessage = () => {
   return socket.on(
     "deleteMessage",
     ({ conversationId, messageId, lastMessage }) => {
-      console.log(conversationId, messageId, lastMessage, "eeee");
       getRemoveMessages(conversationId, messageId, lastMessage);
     }
   );

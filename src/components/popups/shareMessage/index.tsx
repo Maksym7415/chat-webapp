@@ -1,18 +1,17 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, TextField, Avatar } from "@mui/material";
-import {
-  hideDialogAction,
-  shareMessageAction,
-} from "../../../redux/common/commonActions";
-import DefaultAvatar from "../../avatar/defaultAvatar";
+// import {
+//   hideDialogAction,
+//   shareMessageAction,
+// } from "../../../redux/common/commonActions";
+import DefaultAvatar from "../../avatar/defaultAvatar/DefaultAvatar";
 import { Paths } from "../../../routing/config/paths";
 import useStyles from "./styles/styles";
-import { ShareMessageProps } from "./interfaces";
 import languages from "../../../translations";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
-export default function ShareMessage({ data }: ShareMessageProps) {
+export default function ShareMessage({ data }: any) {
   // HOOKS
   const classes = useStyles();
   const history = useHistory();
@@ -39,14 +38,14 @@ export default function ShareMessage({ data }: ShareMessageProps) {
   };
 
   const handleShareMessageId = (conversationId: number) => {
-    dispatch(shareMessageAction(data));
+    // dispatch(shareMessageAction(data));
     history.push({
       pathname: `${Paths.chat}/${conversationId}`,
       state: {
         from: "shareMessage",
       },
     });
-    dispatch(hideDialogAction());
+    // dispatch(hideDialogAction());
   };
 
   return (

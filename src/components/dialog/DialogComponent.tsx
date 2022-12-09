@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import React from "react";
 import {
   Dialog,
@@ -8,7 +7,6 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { hideDialogAction } from "../../redux/common/commonActions";
 import NewChat from "../newChat/newChatScreen";
 import ShareMessage from "../popups/shareMessage";
 import useStyles from "./styles/styles";

@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import useStylesListMenu from "../listMenu/styles";
 import RITitleWithSubtitleAndRightComponent from "../../../../components/renders/rendersItem/RITitleWithSubtitleAndRightComponent";
@@ -7,11 +6,8 @@ import { useAppSelector } from "../../../../hooks/redux";
 
 const ProfileAccount = ({ avatar, userInfo }) => {
   // HOOKS
-  const theme = useTheme();
-
-  // STYLES
-  const classes = useStyles(theme);
-  const classesListMenu = useStylesListMenu(theme);
+  const classes = useStyles();
+  const classesListMenu = useStylesListMenu();
 
   // SELECTORS
   const { lang } = useAppSelector(({ settingSlice }) => settingSlice);

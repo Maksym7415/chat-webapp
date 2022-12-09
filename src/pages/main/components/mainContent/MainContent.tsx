@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import Chat from "../../../chat";
 import RenderInfoCenterBox from "../../../../components/renders/renderInfoCenterBox";
 import { useAppSelector } from "../../../../hooks/redux";
-import { LocationParams } from "../../../../ts/interfaces/generals";
+import { ILocationParams, IParams } from "../../../../ts/interfaces/app";
 import { Paths } from "../../../../routing/config/paths";
 import languages from "../../../../config/translations";
 
@@ -19,10 +19,8 @@ const useStyles = makeStyles((theme) => ({
 
 const MainContent = () => {
   // HOOKS
-  const params = useParams<any>();
-  const location = useLocation<LocationParams<any>>();
-
-  // STYLES
+  const params = useParams<IParams>();
+  const location = useLocation<ILocationParams<any>>();
   const classes = useStyles();
 
   // SELECTORS

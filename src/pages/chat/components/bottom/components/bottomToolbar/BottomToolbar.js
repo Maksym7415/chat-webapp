@@ -5,10 +5,10 @@ import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { Typography, Toolbar, Button, Paper, IconButton } from "@mui/material";
 import {
   actionsTypeObjectSelected,
-  selectedMessagesActions,
+  actionsSelectedMessages,
   actionsMessagesChat,
   actionsTypeActionsChat,
-} from "../../../../../../reduxToolkit/app/actions";
+} from "../../../../../../actions";
 import store from "../../../../../../reduxToolkit/store";
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
 

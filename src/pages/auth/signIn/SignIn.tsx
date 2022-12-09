@@ -8,7 +8,7 @@ import languages from "../../../config/translations";
 import { postLoginRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
-export default function SignIn() {
+const SignIn = () => {
   // HOOKS
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -50,8 +50,8 @@ export default function SignIn() {
 
   return (
     <AuthForm
-      title={languages[lang].authorization.signin}
-      submitBtnTitle={languages[lang].authorization.signin}
+      title={languages[lang].authorization.signIn}
+      submitBtnTitle={languages[lang].authorization.signIn}
       configFields={config.signInFields}
       onSubmit={onSubmit}
       errorBack={errorBack}
@@ -61,7 +61,7 @@ export default function SignIn() {
         errors,
       }}
       render={{
-        text: (styles) => (
+        text: (styles: { text: string }) => (
           <p className={styles.text} onClick={() => history.push(Paths.signUp)}>
             {languages[lang].authorization.haveNoAccount}{" "}
             {languages[lang].authorization.signUp} ?
@@ -70,4 +70,6 @@ export default function SignIn() {
       }}
     />
   );
-}
+};
+
+export default SignIn;

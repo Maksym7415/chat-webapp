@@ -55,7 +55,7 @@ function TopCenterComponent({ parentSettings }: any) {
       {(() => {
         if (
           [
-            eSideLeftConfigPage.conversationList,
+            eSideLeftConfigPage.conversations,
             eSideLeftConfigPage.searchContacts,
           ].includes(sideLeftConfig.page)
         ) {

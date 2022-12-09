@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   authTokenAction,
   setLoginSingInAction,
-  setAuthHedersAction,
+  setAuthHeadersAction,
   setIsLogoutAction,
 } from "./slice";
 import API from "../../config/axios";
@@ -11,16 +11,16 @@ import { setTokenLS } from "../../config/localStorage";
 
 export const postLoginRequest = createAsyncThunk(
   "auth/postLoginRequest",
-  async (params: any, { dispatch }) => {
+  async (options: any, { dispatch }) => {
     try {
       const response = await API.post(pathBackAuth.signIn, {
-        ...params.data,
+        ...options.data,
       });
-      dispatch(setLoginSingInAction(params.data.login));
-      params.cb && params.cb(response.data.verificationCode);
+      dispatch(setLoginSingInAction(options.data.login));
+      options.cb && options.cb(response.data.verificationCode);
       return response.data;
     } catch (error) {
-      params.errorCb && params.errorCb(error?.data);
+      options.errorCb && options.errorCb(error?.data);
       return Promise.reject(error);
     }
   }
@@ -28,11 +28,15 @@ export const postLoginRequest = createAsyncThunk(
 
 export const postVerificationRequest = createAsyncThunk(
   "auth/postVerificationRequest",
-  async (params: any, { dispatch }) => {
+  async (options: any, { dispatch }) => {
     try {
       const response = await API.post(pathBackAuth.checkVerificationCode, {
-        ...params.data,
+        ...options.data,
       });
+
+      setTokenLS(response.data.accessToken);
+
+      await dispatch(setAuthHeadersAction(response.data));
 
       await dispatch(
         authTokenAction({
@@ -40,14 +44,12 @@ export const postVerificationRequest = createAsyncThunk(
         })
       );
 
-      setTokenLS(response.data.accessToken);
-
-      await dispatch(setAuthHedersAction(response.data));
       dispatch(setIsLogoutAction(false));
-      params.cb && params.cb();
+
+      options.cb && options.cb();
       return response.data;
     } catch (error) {
-      params.errorCb && params.errorCb(error?.data);
+      options.errorCb && options.errorCb(error?.data);
       return Promise.reject(error);
     }
   }
@@ -55,22 +57,22 @@ export const postVerificationRequest = createAsyncThunk(
 
 export const postSingUpRequest = createAsyncThunk(
   "auth/postSingUpRequest",
-  async (params: any, { dispatch }) => {
+  async (options: any, { dispatch }) => {
     try {
       const response = await API.post(pathBackAuth.signUp, {
-        ...params.data,
+        ...options.data,
       });
       dispatch(
         postLoginRequest({
           data: {
-            login: params.data.login,
+            login: options.data.login,
           },
-          cb: params.cb(),
+          cb: options.cb(),
         })
       );
       return response.data;
     } catch (error) {
-      params.errorCb && params.errorCb(error?.data);
+      options.errorCb && options.errorCb(error?.data);
       return Promise.reject(error);
     }
   }

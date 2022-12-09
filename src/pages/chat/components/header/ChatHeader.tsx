@@ -6,29 +6,23 @@ import {
   // headerСhatDotsOptionsChat,
   // headerСhatDotsOptionsDialog,
 } from "./config";
-// import {PathsName} from '../../../../navigation/navigationConfig';
 import UserAvatar from "../../../../components/avatar/userAvatar";
 import SvgMaker from "../../../../components/svgMaker";
-// import Header from "../../../../components/header";
-// import MenuPaper from "../../../../components/menu/menuPaper";
 import {
   actionsTypeObjectSelected,
-  selectedMessagesActions,
+  actionsSelectedMessages,
   actionsMessagesChat,
   actionsTypeActionsChat,
-} from "../../../../reduxToolkit/app/actions";
+} from "../../../../actions";
 import store from "../../../../reduxToolkit/store";
 import { uuid, findValueKeyInNestedArr } from "../../../../helpers";
 // import {TYPES_CONVERSATIONS} from '../../../../config/constants/general';
 import { setDrawerStateAction } from "../../../../reduxToolkit/app/slice";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const ChatHeader = React.forwardRef(
   ({ conversationData, conversationId, typeConversation }: any, ref: any) => {
     //HOOKS
-
-    console.log("ChatHeader");
-    // STYLES
     const classes = useStyles();
 
     // SELECTORS
@@ -72,7 +66,7 @@ const ChatHeader = React.forwardRef(
       // );
       closeOptions();
       store.dispatch(
-        selectedMessagesActions(null, actionsTypeObjectSelected.clear)
+        actionsSelectedMessages(null, actionsTypeObjectSelected.clear)
       );
     };
 

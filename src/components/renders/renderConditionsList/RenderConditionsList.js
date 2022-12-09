@@ -1,8 +1,6 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
 import useStyles from "./styles";
-// import Loader from "../loader";
 
 const RenderConditionsList = ({
   list = [],
@@ -15,17 +13,13 @@ const RenderConditionsList = ({
   seettingLoader = {},
 }) => {
   // HOOKS
-  const theme = useTheme();
-
-  // STYLES
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   // RENDER CONDITIONS
   if (isLoading) {
     return (
       <div className={classes.boxCenter} style={styles?.boxCenter}>
         <CircularProgress size={50} />
-        {/* <Loader color={theme.colors.main} size={50} {...seettingLoader} /> */}
       </div>
     );
   }

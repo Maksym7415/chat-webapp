@@ -1,18 +1,11 @@
 import React from "react";
-import clsx from "clsx";
 import useStyles from "./styles";
 import { Typography, Box, Grid } from "@mui/material";
-// import {TYPES_CONVERSATIONS} from '../../../../config/constants/general';
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 import RenderInfoCenterBox from "../../../../components/renders/renderInfoCenterBox";
 import Message from "./components/message";
 import languages from "../../../../config/translations";
-import {
-  checkIsShowAvatar,
-  setMessageDate,
-  scrollTop,
-  uuid,
-} from "../../../../helpers";
+import { checkIsShowAvatar, setMessageDate, uuid } from "../../../../helpers";
 
 const MainContent = ({
   userId,
@@ -23,8 +16,6 @@ const MainContent = ({
   heightContent,
 }: any) => {
   //HOOKS
-
-  // STYLES
   const classes = useStyles();
 
   // SELECTORS
@@ -107,7 +98,6 @@ const MainContent = ({
                           />
                         );
                       })}
-                    {/* <ListItem ref={scrollBottomRef}></ListItem> */}
                   </Box>
                 )
               );

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { Fragment } from "react";
 import { Switch, Route } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import Theme from "../theme";
 import routerConfig from "./config/routerConfig";
@@ -10,65 +10,21 @@ import PrivatePage from "../components/PrivatePage";
 import ContextMenu from "../components/contextMenu";
 import Modal from "../components/modal";
 import DialogComponent from "../components/dialog/DialogComponent";
-import {
-  authTokenAction,
-  setAuthHedersAction,
-} from "../reduxToolkit/auth/slice";
-import { getUserProfileDataRequest } from "../reduxToolkit/user/requests";
 import DrawerCustom from "../components/drawer/";
 
 function Router() {
-  // HOOKS
-  const dispatch = useDispatch();
-
   // SELECTORS
-  const authToken = useSelector(({ authSlice }) => authSlice.authToken);
   const token = useSelector(({ authSlice }) => authSlice.headers.accessToken);
 
-  // STATES
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  // FUNCTIONS
-  const checkIsToken = async () => {
-    setIsLoading(true);
-    try {
-      if (token) {
-        await dispatch(
-          setAuthHedersAction({
-            accessToken: token,
-          })
-        );
-        await dispatch(
-          authTokenAction({
-            token,
-          })
-        );
-      }
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // USEEFFECTS
-  React.useLayoutEffect(() => {
-    checkIsToken();
-  }, []);
-
-  React.useLayoutEffect(() => {
-    if (authToken.userId) {
-      dispatch(getUserProfileDataRequest());
-    }
-  }, [authToken]);
-
+  console.log(token, "token");
   return (
     <Fragment>
       <Theme>
         <DrawerCustom />
         <ContextMenu />
         <Modal />
-        {/* <DialogComponent />
-        <CssBaseline /> */}
+        {/* <DialogComponent /> */}
+        <CssBaseline />
         <Switch>
           {routerConfig.map(({ id, Component, roles, isPrivate, path }) => (
             <PrivatePage

@@ -21,13 +21,4 @@ export default makeStyles((theme) => ({
     borderRadius: 10,
     overflow: "hidden",
   },
-  imageBackground: {
-    flex: 1,
-  },
-  wrapperLoader: {
-    display: "flex",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 }));

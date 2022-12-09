@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Avatar, Badge } from "@mui/material";
-import { REACT_APP_BASE_URL } from "../../../config/constants/url";
+import { Avatar } from "@mui/material";
 import { getNameShort } from "../../../helpers";
 import DefaultAvatar from "../defaultAvatar";
-import BangeUserAvatar from "../../banges/bangeUserAvatar";
+import BadgeUserAvatar from "../../badges/badgeUserAvatar";
 
 const UserAvatar = ({
   sizeAvatar = 58,
@@ -14,14 +13,14 @@ const UserAvatar = ({
   isSelected,
 }: any) => {
   // VARIABLES
-  const nameShort = name ? getNameShort(name) : null;
+  const nameShort = name ? getNameShort(name) : "";
 
   return (
     <div style={{ position: "relative" }}>
-      <BangeUserAvatar typeBange={status}>
+      <BadgeUserAvatar typeBadge={status} sizeBadge={sizeBadge}>
         {source ? (
           <Avatar
-            src={`${REACT_APP_BASE_URL}/${source}`}
+            src={`${process.env.REACT_APP_BASE_URL}/${source}`}
             style={{ height: sizeAvatar, width: sizeAvatar }}
           />
         ) : (
@@ -31,12 +30,9 @@ const UserAvatar = ({
             height={`${sizeAvatar}px`}
           />
         )}
-      </BangeUserAvatar>
+      </BadgeUserAvatar>
     </div>
   );
 };
 
 export default UserAvatar;
-{
-  /* <Avatar.Text size={sizeAvatar} label={nameShort || defaultNameAvatar} /> */
-}

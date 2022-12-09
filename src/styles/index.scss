@@ -1,15 +1,15 @@
 @font-face {
-  font-family: 'san-serif-lato';
+  font-family: "san-serif-lato";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./fonts/Lato-Regular.ttf') format('truetype');
+  src: url("./fonts/Lato-Regular.ttf") format("truetype");
 } /* подключение шрифта через css с локалки */
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -23,108 +23,12 @@ img {
   max-width: 100%;
   width: auto;
 }
-  
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
 #root {
-  height: 100vh
-}
-
-// flex
-.flex {
-    display: flex;
-}
-
-.justify-start {
-  justify-content: flex-start;
-}
-
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.js-space-around {
-  justify-content: space-around;
-}
-
-.js-space-between {
-  justify-content: space-between;
-}
-
-.a-items {
-  align-items: center;
-}
-
-// width&height
-.full-w {
-  width: 100%
-}
-
-.full-h {
-  height: 100%;
-}
-
-
-// position
-.relative {
-  position: relative;
-}
-
-.absolute {
-  position: absolute;
-}
-
-// fonts
-.font-500 {
-  font-weight: 500;
-}
-
-// overflow
-.overflowY-auto {
-  overflow-y: auto;
-}
-
-// margin
-.m-20 {
-  margin: 20px
-}
-
-.ml-10 {
-  margin-left: 10px;
-}
-
-.ml-auto {
-  margin-left: auto
-}
-
-.mr-auto {
-  margin-right: auto
-}
-
-.z-index-5 {
-  z-index: 5;
-}
-
-.z-index-1 {
-  z-index: 1;
-}
-
-.br-5 {
-  border-radius: 5px;
-} 
-.mr-10 {
-  margin-right: 10px;
-}
-
-// padding
-.pd-right-30 {
-  padding-right: 30px;
-}
-
-.pd-left-10 {
-  padding-left: 10px;
+  height: 100vh;
 }

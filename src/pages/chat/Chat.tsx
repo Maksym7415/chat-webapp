@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/indent */
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Typography, Box, CircularProgress } from "@mui/material";
@@ -12,7 +10,9 @@ import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getConversationMessagesRequest } from "../../reduxToolkit/conversations/requests";
 import { setAllMessagesAction } from "../../reduxToolkit/app/slice";
+import { ILocationParams, IParams } from "../../ts/interfaces/app";
 
+// STYLES
 const useStyles = makeStyles((theme) => ({
   container: {
     height: "100vh",
@@ -27,10 +27,8 @@ const loadMessageOffset = 15;
 const Chat = () => {
   // HOOKS
   const dispatch = useAppDispatch();
-  const params = useParams<any>();
-  const location = useLocation<any>();
-
-  // STYLES
+  const params = useParams<IParams>();
+  const location = useLocation<ILocationParams<any>>();
   const classes = useStyles();
 
   // REFS
@@ -38,9 +36,7 @@ const Chat = () => {
   const refHeader = React.useRef(null);
 
   // SELECTORS
-  const { userId, firstName } = useAppSelector(
-    ({ authSlice }) => authSlice.authToken
-  );
+  const authToken = useAppSelector(({ authSlice }) => authSlice.authToken);
   const userHistoryConversations = useAppSelector(
     ({ conversationsSlice }) => conversationsSlice.userHistoryConversations
   );
@@ -65,10 +61,10 @@ const Chat = () => {
   );
   const typeConversation =
     conversationData?.conversationType?.toLowerCase() || "";
-  const pagination: any =
+  const pagination =
     userHistoryConversations?.[conversationId]?.pagination || {};
 
-  const heightContent: any = React.useMemo(
+  const heightContent: string = React.useMemo(
     () =>
       `calc(100vh - ${
         (refBottom?.current?.clientHeight || 0) +
@@ -84,7 +80,6 @@ const Chat = () => {
       pagination.allItems > pagination.currentPage &&
       allMessages[conversationId].length >= loadMessageOffset
     ) {
-      console.log(pagination, "pagination");
       dispatch(
         getConversationMessagesRequest({
           data: {
@@ -114,7 +109,6 @@ const Chat = () => {
   // USEEFFECTS
   React.useLayoutEffect(() => {
     if (!allMessages[conversationId] && conversationId) {
-      console.log("!render!");
       setIsFetching(true);
       dispatch(
         getConversationMessagesRequest({
@@ -148,7 +142,6 @@ const Chat = () => {
             setIsFetching(false);
           },
           errorCb: (error) => {
-            console.log(error, "error");
             setErrorBack(error.message);
             setIsFetching(false);
           },
@@ -186,13 +179,13 @@ const Chat = () => {
         typeConversation={typeConversation}
         opponentId={opponentId}
         conversationId={conversationId}
-        userId={userId}
+        userId={authToken.userId}
         allMessages={allMessages}
       />
       <ChatBottom
         ref={refBottom}
-        firstName={firstName}
-        userId={userId}
+        firstName={authToken.firstName}
+        userId={authToken.userId}
         opponentId={opponentId}
       />
     </Box>

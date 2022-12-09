@@ -1,28 +1,32 @@
-import React, { useLayoutEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import useStyles from "./styles";
+import { makeStyles } from "@mui/styles";
 import Header from "./components/header";
 import SearchMain from "./components/searchMain";
-import SearchProfile from "./components/searchProfile";
 import { TYPES_FROM_TO_SEARCH_SCREEN } from "../../config/constants/general";
 import { getSearchContactRequest } from "../../reduxToolkit/search/requests";
-import { actionCreateNewChat } from "../../actions/general/chat";
+import { actionCreateNewConversation } from "../../actions/conversations";
 import { setSideLeftConfigAction } from "../../reduxToolkit/app/slice";
 import { eSideLeftConfigPage } from "../../ts/enums/app";
 import { useAppDispatch } from "../../hooks/redux";
 
+// STYLES
+const useStyles = makeStyles((theme) => ({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    overflow: "auto",
+  },
+}));
+
 const Search = ({ params, heightContent }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const history = useHistory();
-
-  // STYLES
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   // STATES
-  const [settings, setSettings] = useState<any>({
+  const [settings, setSettings] = React.useState<any>({
     noSettings: true,
     header: {
       placeholder: "Search",
@@ -34,9 +38,8 @@ const Search = ({ params, heightContent }: any) => {
   });
 
   // USEEFFECTS
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     // set setting options from screen
-    console.log("render - useLayoutEffect");
     switch (params?.from) {
       case TYPES_FROM_TO_SEARCH_SCREEN.main:
         return setSettings(() => ({
@@ -50,11 +53,6 @@ const Search = ({ params, heightContent }: any) => {
           header: {
             placeholder: "Search settings and questions",
             getRequest: null,
-            // styles: {
-            //   headerLayout: {
-            //     container: { backgroundColor: theme.colors.main },
-            //   },
-            // },
             svgFill: "#ffffff",
             textInputProps: {
               placeholderTextColor: "#ffffff",
@@ -88,17 +86,16 @@ const Search = ({ params, heightContent }: any) => {
             return (
               <SearchMain
                 onClickContact={(item) => {
-                  actionCreateNewChat(history, item);
+                  actionCreateNewConversation(history, item);
                   dispatch(
                     setSideLeftConfigAction({
-                      page: eSideLeftConfigPage.conversationList,
+                      page: eSideLeftConfigPage.conversations,
                     })
                   );
                 }}
               />
             );
-          case TYPES_FROM_TO_SEARCH_SCREEN.profile:
-            return <SearchProfile />;
+
           default:
             return <></>;
         }

@@ -4,7 +4,7 @@ import SvgMaker from "../../../../../../../../components/svgMaker";
 import languages from "../../../../../../../../config/translations";
 import { useAppSelector } from "../../../../../../../../hooks/redux";
 
-export default function MessageEdit({ data, onClose }) {
+const MessageEdit = ({ data, onClose }) => {
   //HOOKS
 
   // SELECTORS
@@ -29,4 +29,6 @@ export default function MessageEdit({ data, onClose }) {
       </div>
     </div>
   );
-}
+};
+
+export default MessageEdit;

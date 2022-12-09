@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
-import { setAuthHedersAction } from "./auth/slice";
+import { setAuthHeadersAction, authTokenAction } from "./auth/slice";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -13,9 +13,10 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-if (localStorage.accessToken)
+if (localStorage.accessToken) {
   store.dispatch(
-    setAuthHedersAction({ accessToken: localStorage.accessToken })
+    setAuthHeadersAction({ accessToken: localStorage.accessToken })
   );
-
+  store.dispatch(authTokenAction({ accessToken: localStorage.accessToken }));
+}
 export default store;

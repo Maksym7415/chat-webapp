@@ -1,12 +1,11 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import appSlice from "./app";
-import authSlice from "./auth";
-import settingSlice from "./setting";
+import appSlice from "./app/slice";
+import authSlice from "./auth/slice";
+import settingSlice from "./setting/slice";
 import conversationsSlice from "./conversations/slice";
-import userSlice from "./user";
-// import snackBarSlice from '../components/snackbar/slice';
-import searchSlice from "./search";
-import contactsSlice from "./contacts";
+import userSlice from "./user/slice";
+import searchSlice from "./search/slice";
+import contactsSlice from "./contacts/slice";
 
 export default combineReducers({
   appSlice,

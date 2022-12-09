@@ -1,14 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../config/axios";
 import { pathBackConversations } from "../../config/constants/urlBack";
-import {
-  updateUserHistoryConversation,
-  setConversationListAction,
-} from "./slice";
+import { updateUserHistoryConversation } from "./slice";
 
 export const getUserConversationsRequest = createAsyncThunk(
   "conversationsSlice/getUserConversationsRequest",
-  async (params: any, { dispatch }) => {
+  async (options: any) => {
     try {
       const response = await API.get(
         pathBackConversations.getUserConversations
@@ -19,13 +16,12 @@ export const getUserConversationsRequest = createAsyncThunk(
         return acc;
       }, {});
 
-      params?.cb && params.cb(data);
+      options?.cb && options.cb(data);
 
       return {
         data,
       };
     } catch (error) {
-      params?.errorCb && params.errorCb();
       return Promise.reject(error);
     }
   }
@@ -33,24 +29,25 @@ export const getUserConversationsRequest = createAsyncThunk(
 
 export const getConversationMessagesRequest = createAsyncThunk(
   "conversationsSlice/getConversationMessagesRequest",
-  async (params: any, { dispatch }) => {
+  async (options: any, { dispatch }) => {
     try {
       const response = await API.get(
-        `${pathBackConversations.conversationHistory}/${params.data.id}?offset=${params.data.offset}`
+        `${pathBackConversations.conversationHistory}/${options.data.id}?offset=${options.data.offset}`
       );
-      params?.cb && params.cb(response.data);
+
+      options?.cb && options.cb(response.data);
 
       dispatch(
         updateUserHistoryConversation({
-          conversationId: params.data.id,
+          conversationId: options.data.id,
           data: { pagination: response.data.pagination },
         })
       );
 
       return { data: response.data.data, pagination: response.data.pagination };
     } catch (error) {
-      console.log(error, "error");
-      params?.errorCb && params.errorCb(error.data);
+      options?.errorCb && options.errorCb(error.data);
+
       return Promise.reject(error);
     }
   }

@@ -8,7 +8,7 @@ const appSlice = createSlice({
   initialState: {
     isLoading: false,
     sideLeftConfig: {
-      page: eSideLeftConfigPage.conversationList,
+      page: eSideLeftConfigPage.conversations,
     },
     drawerState: {
       anchor: "left",
@@ -64,7 +64,6 @@ const appSlice = createSlice({
       };
     },
     setContextMenuConfigAction(state, { payload }) {
-      console.log(payload, "setContextMenuConfigAction");
       state.contextMenuConfig = payload;
     },
     editMessageAction(state, { payload }) {

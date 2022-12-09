@@ -22,9 +22,6 @@ import {
   DialogTitle,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { hideDialogAction } from "../../redux/common/commonActions";
-import { initializedGlobalSearchAction } from "../../redux/search/constants/actionConstants";
-import { SearchObjectInteface } from "../../redux/search/constants/interfaces";
 import useStyles from "./styles/styles";
 // import socket from "../../socket";
 // import { fullDate } from "../../common/getCorrectDateFormat";
@@ -59,12 +56,8 @@ export default function NewChatScreen() {
   // STATES
   const [searchvalue, setSearchValue] = useState<string>("");
   const [hide, setHide] = useState<boolean>(true);
-  const [localSearchResult, setLocalSearchResult] = useState<
-    Array<SearchObjectInteface>
-  >([]);
-  const [groupMembers, setGroupMembers] = useState<Array<SearchObjectInteface>>(
-    []
-  );
+  const [localSearchResult, setLocalSearchResult] = useState<Array<any>>([]);
+  const [groupMembers, setGroupMembers] = useState<Array<any>>([]);
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
   const [checked, setChecked] = useState<Ref>({});
   const [memberId, setMemberId] = useState(0);
@@ -134,7 +127,7 @@ export default function NewChatScreen() {
     setHide(false);
   };
 
-  const handleAdd = (newMember: SearchObjectInteface) => {
+  const handleAdd = (newMember: any) => {
     setLocalSearchResult((prevSearchResult) =>
       prevSearchResult.filter((item) => item.id !== newMember.id)
     );
@@ -154,7 +147,7 @@ export default function NewChatScreen() {
     });
   };
 
-  const handleDelete = (chipToDelete: SearchObjectInteface) => () => {
+  const handleDelete = (chipToDelete: any) => () => {
     setLocalSearchResult((prevSearchResult) => [
       chipToDelete,
       ...prevSearchResult,
@@ -207,7 +200,6 @@ export default function NewChatScreen() {
     //   imageData,
     //   fileExtension[fileExtension.length - 1],
     //   (success: boolean) => {
-    //     console.log(groupMembers, "groupMembers");
     //     if (success) dispatch(hideDialogAction());
     //   }
     // );
@@ -245,7 +237,7 @@ export default function NewChatScreen() {
   }, [groupMembers]);
 
   useEffect(() => {
-    !hide && dispatch(initializedGlobalSearchAction(debouncedSearchValue));
+    // !hide && dispatch(initializedGlobalSearchAction(debouncedSearchValue));
   }, [debouncedSearchValue]);
 
   return (
@@ -344,7 +336,7 @@ export default function NewChatScreen() {
         {!!groupMembers.length && (
           <div className={classes.chipWrapper}>
             <Paper component="ul" className={classes.chipRoot}>
-              {groupMembers.map((data: SearchObjectInteface) => (
+              {groupMembers.map((data: any) => (
                 <li key={data.id}>
                   <Chip
                     style={{ cursor: "pointer" }}
@@ -430,7 +422,7 @@ export default function NewChatScreen() {
                   [classes.hideReactSearch]: hide,
                 })}
               >
-                {localSearchResult.map((result: SearchObjectInteface) => (
+                {localSearchResult.map((result: any) => (
                   <Paper
                     elevation={2}
                     key={result.id}

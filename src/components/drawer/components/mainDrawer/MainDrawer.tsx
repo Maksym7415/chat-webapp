@@ -13,7 +13,7 @@ import useStyles from "./styles";
 // import { showDialogAction } from "../../../redux/common/commonActions";
 // import { updateUserProfileAction } from "../redux/user/constants/actions";
 import { Paths } from "../../../../routing/config/paths";
-import { onLogOut } from "../../../../reduxToolkit/auth/actions";
+import { actionLogOut } from "../../../../actions";
 import {
   putUpdateProfileRequest,
   getUserProfileDataRequest,
@@ -77,7 +77,7 @@ function MainDrawer({ closeDrawer }: any) {
         }, 100);
         return;
       case "logout":
-        dispatch(onLogOut());
+        dispatch(actionLogOut());
         history.push(Paths.signIn);
         return;
       default:

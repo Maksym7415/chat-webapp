@@ -1,20 +1,15 @@
 import React from "react";
 import { Switch, Divider } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import useStylesListMenu from "../listMenu/styles";
 import RITitleWithSubtitleAndRightComponent from "../../../../components/renders/rendersItem/RITitleWithSubtitleAndRightComponent";
 import { TYPES_CONVERSATIONS } from "../../../../config/constants/general";
-import { AnyAaaaRecord } from "dns";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const MainInfo = ({ typeProfile }: any) => {
   // HOOKS
-  const theme = useTheme();
-
-  // STYLES
-  const classes = useStyles(theme);
-  const classesListMenu = useStylesListMenu(theme);
+  const classes = useStyles();
+  const classesListMenu = useStylesListMenu();
 
   // SELECTORS
   const { lang } = useAppSelector(({ settingSlice }) => settingSlice);

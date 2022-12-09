@@ -4,13 +4,8 @@ import languages from "../../../../../../../../config/translations";
 import SvgMaker from "../../../../../../../../components/svgMaker";
 import { useAppSelector } from "../../../../../../../../hooks/redux";
 
-export default function SheredMessages({
-  forwardMessages,
-  handleClearSheraMessages,
-}) {
+const SheredMessages = ({ forwardMessages, handleClearSheraMessages }) => {
   //HOOKS
-
-  // STYLES
   const styles = makeStyles();
 
   // SELECTORS
@@ -65,4 +60,6 @@ export default function SheredMessages({
       </div>
     </div>
   );
-}
+};
+
+export default SheredMessages;

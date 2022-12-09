@@ -12,7 +12,6 @@ import {
   actionsForTypeWithObjKey,
   actionsTypeObject,
 } from "../../helpers/actionsForType";
-// import { getSnackBar } from "../../components/snackbar/slice";
 import {
   socketEmitChatsDeleteMessage,
   socketEmitDeleteConversation,
@@ -61,21 +60,20 @@ export const actionsTypeActionsConversation = {
 
 export const actionsSelectedConversation =
   (typeAction) => (dispatch, getState) => {
-    const selectedСhats = getState().appSlice.selectedСhats;
-    console.log(selectedСhats, "selectedСhats");
+    const selectedChats = getState().appSlice.selectedСhats;
 
     switch (typeAction) {
       case actionsTypeActionsConversation.deleteChat:
         // for ids
         socketEmitDeleteConversation({
-          ids: Object.keys(selectedСhats),
+          ids: Object.keys(selectedChats),
         });
 
         return;
       case actionsTypeActionsConversation.clearChat:
         // for ids
         socketEmitClearConversation({
-          ids: Object.keys(selectedСhats),
+          ids: Object.keys(selectedChats),
         });
         return;
       default:
@@ -117,10 +115,6 @@ export const actionsMessagesChat =
             ? allMessagesWithoutDeleteMessage.slice(0, -1)
             : allMessagesWithoutDeleteMessage;
 
-          console.log(
-            conversationsList[conversationId],
-            "conversationsList[conversationId]"
-          );
           if (conversationsList[conversationId].Messages[0]?.id == messageId) {
             dispatch(
               conversationListActions({

@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 
 const RITitleWithSubtitleAndRightComponent = ({
@@ -15,10 +14,7 @@ const RITitleWithSubtitleAndRightComponent = ({
   },
 }: any) => {
   // HOOKS
-  const theme = useTheme();
-
-  // STYLES
-  const classesRoot = useStyles(theme);
+  const classesRoot = useStyles();
 
   return (
     <div

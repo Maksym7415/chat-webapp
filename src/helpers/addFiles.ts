@@ -23,7 +23,6 @@ export const handleGetBufferFile = (
     fileReader.readAsArrayBuffer(blob);
     fileReader.onloadend = () => {
       let arrayBuffer = fileReader.result;
-      console.log(arrayBuffer, "arrayBuffer");
       socket.emit(
         "files",
         {

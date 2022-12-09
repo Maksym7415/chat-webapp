@@ -1,4 +1,4 @@
-import { actionsTypeActionsChat } from "../../../../reduxToolkit/app/actions";
+import { actionsTypeActionsChat } from "../../../../actions";
 
 export const headerSelectedСhatsAmount = (lang) => [
   {

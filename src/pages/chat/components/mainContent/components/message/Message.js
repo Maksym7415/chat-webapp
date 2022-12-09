@@ -1,16 +1,16 @@
 import React, { useLayoutEffect, useState } from "react";
 import clsx from "clsx";
+import { Divider } from "@mui/material";
 import useStyles from "./styles";
 import languages from "../../../../../../config/translations";
 import { getCurrentDay, uuid } from "../../../../../../helpers";
 import UserAvatar from "../../../../../../components/avatar/userAvatar";
 import {
   actionsTypeObjectSelected,
-  selectedMessagesActions,
-} from "../../../../../../reduxToolkit/app/actions";
+  actionsSelectedMessages,
+} from "../../../../../../actions";
 import store from "../../../../../../reduxToolkit/store";
 import { TYPES_CONVERSATIONS } from "../../../../../../config/constants/general";
-import { REACT_APP_BASE_URL } from "../../../../../../config/constants/url";
 import { useAppSelector, useAppDispatch } from "../../../../../../hooks/redux";
 
 function Message({ messageData, isShowAvatar, userId, typeConversation }) {
@@ -87,9 +87,6 @@ function Message({ messageData, isShowAvatar, userId, typeConversation }) {
     }));
   }, []);
 
-  // console.log(userInfo, "userInfo");
-
-  // console.log(messageData, "messageData");
   return (
     <div
       className={clsx(settings.classNames.root, {
@@ -138,7 +135,9 @@ function Message({ messageData, isShowAvatar, userId, typeConversation }) {
                 </div>
               )}
             <div className={settings.classNames.wrapperMessage}>
-              {/* {messageData.forwardedUser && <Divider className={classes.divider} />} */}
+              {messageData.forwardedUser && (
+                <Divider className={classes.divider} />
+              )}
               <div>
                 {messageData.forwardedUser && (
                   <p className={classes.wrapperMessageUserName}>

@@ -5,7 +5,6 @@ import useStyles from "./styles";
 import SvgMaker from "../../../../components/svgMaker";
 import { Paths } from "../../../../routing/config/paths";
 // import MenuPaper from "../../../../components/menu/menuPaper";
-import { REACT_APP_BASE_URL } from "../../../../config/constants/url";
 import {
   headerOptions,
   // headerOptionsChat,
@@ -17,7 +16,7 @@ import {
   getUserAvatars,
   // deleteAvatar,
 } from "../../../../reduxToolkit/user/requests";
-import { onLogOut } from "../../../../reduxToolkit/auth/actions";
+import { actionLogOut } from "../../../../actions/";
 import { handleInsertPhotoVideo } from "../../config";
 import {
   TYPES_CONVERSATIONS,
@@ -34,11 +33,10 @@ const Header = ({
 }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();
-  // const navigation = useNavigation();
   const theme: any = useTheme();
 
   // STYLES
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   // REFS
   const carouselRef = React.useRef(null);
@@ -82,7 +80,7 @@ const Header = ({
       //   );
       //   return;
       case valuesOptions.logout:
-        return dispatch(onLogOut());
+        return dispatch(actionLogOut());
       default:
         break;
     }
@@ -145,7 +143,7 @@ const Header = ({
     return (
       <></>
       // <ImageBackground
-      //   source={{ uri: `${REACT_APP_BASE_URL}/${item.fileName}` }}
+      //   source={{ uri: `${process.env.REACT_APP_BASE_URL}/${item.fileName}` }}
       //   className={classes.imageContainer}
       // >
       //   <div className={{ ...classes.info, marginLeft: 0 }}>

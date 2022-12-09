@@ -1,6 +1,5 @@
 import React from "react";
 import { Divider } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import SvgMaker from "../../../../components/svgMaker";
 import { uuid } from "../../../../helpers";
@@ -8,10 +7,7 @@ import { useAppSelector } from "../../../../hooks/redux";
 
 const ListMenu = ({ title, list, onPress }: any) => {
   // HOOKS
-  const theme = useTheme();
-
-  // STYLES
-  const classes = useStyles(theme);
+  const classes = useStyles();
 
   // SELECTORS
   const { lang } = useAppSelector(({ settingSlice }) => settingSlice);

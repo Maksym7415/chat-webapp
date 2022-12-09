@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 // import HeaderLayout from "../../../../components/header";
 import SvgMaker from "../../../../components/svgMaker";
@@ -15,16 +14,13 @@ const Header = ({
 }) => {
   // HOOKS
   const dispatch = useDispatch();
-  const theme = useTheme();
+  const classes = useStyles();
 
   // STATES
   const [search, setSearch] = React.useState("");
 
   // CUSTOM HOOKS
   const debouncedSearchValue = useDebounce(search, 300);
-
-  // STYLES
-  const classes = useStyles(theme);
 
   // FUNCTIONS
   const clearSearch = () => {

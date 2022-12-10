@@ -10,8 +10,9 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import {
   putUpdateProfileRequest,
   getUserProfileDataRequest,
-  getUserAvatars,
 } from "../../../../reduxToolkit/user/requests";
+
+// need ts
 
 const SettingProfile = ({ closeDrawer }: any) => {
   // HOOKS
@@ -20,7 +21,7 @@ const SettingProfile = ({ closeDrawer }: any) => {
   const { enqueueSnackbar } = useSnackbar();
 
   // SELECTORS
-  const { lang } = useAppSelector(({ settingSlice }) => settingSlice);
+  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   const { userInfo } = useAppSelector(({ userSlice }) => userSlice);
 
   // STATES
@@ -92,7 +93,6 @@ const SettingProfile = ({ closeDrawer }: any) => {
               onChangeText={onChange}
               value={value}
               error={errors[el.fieldName]}
-              keyboardType={el.keyboardType}
               placeholder={el.placeholder}
               secureTextEntry={false}
               styles={el.styles}

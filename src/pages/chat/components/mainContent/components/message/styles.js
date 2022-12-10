@@ -1,10 +1,5 @@
 import { makeStyles } from "@mui/styles";
 
-const flexEnd = {
-  display: "flex",
-  // justifyContent: "flex-end",
-};
-
 export default makeStyles((theme) => ({
   wrapper: {
     padding: "0",
@@ -16,13 +11,13 @@ export default makeStyles((theme) => ({
     padding: "5px 10px",
   },
   containerShared: {
-    ...flexEnd,
+    display: "flex",
   },
   containerSender: {
-    ...flexEnd,
+    display: "flex",
   },
   containerFriend: {
-    ...flexEnd,
+    display: "flex",
   },
 
   paperSharedMessage: {

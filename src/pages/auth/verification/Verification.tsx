@@ -8,6 +8,8 @@ import { postVerificationRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Paths } from "../../../routing/config/paths";
 
+// need ts
+
 const VerificationPage = () => {
   // HOOKS
   const dispatch = useAppDispatch();

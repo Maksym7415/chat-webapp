@@ -3,20 +3,18 @@ import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import MainDrawer from "./components/mainDrawer";
 import ProfilePage from "../../pages/profile";
-import useStyles from "./styles";
-import { setDrawerStateAction } from "../../reduxToolkit/app/slice";
+import { setDrawerConfigAction } from "../../reduxToolkit/app/slice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-export default function SwipeableTemporaryDrawer() {
+const SwipeableTemporaryDrawer = () => {
   // HOOKS
   const dispatch = useAppDispatch();
-  const classes = useStyles();
 
   // SELECTORS
-  const drawerState: any = useAppSelector(
-    ({ appSlice }) => appSlice.drawerState
+  const drawerConfig: any = useAppSelector(
+    ({ appSlice }) => appSlice.drawerConfig
   );
 
   // FUNCTIONS
@@ -32,7 +30,7 @@ export default function SwipeableTemporaryDrawer() {
         return;
       }
       dispatch(
-        setDrawerStateAction({
+        setDrawerConfigAction({
           anchor,
           open,
         })
@@ -40,19 +38,14 @@ export default function SwipeableTemporaryDrawer() {
     };
 
   const renderContent = (anchor: Anchor) => (
-    <Box
-      sx={{ width: drawerState?.width || 300 }}
-      // role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
-    >
+    <Box sx={{ width: drawerConfig?.width || 300 }}>
       {(() => {
-        switch (drawerState?.type) {
+        switch (drawerConfig?.type) {
           case "profile":
             return (
               <ProfilePage
-                typeProfile={drawerState.configContent?.typeProfile}
-                conversationData={drawerState.configContent?.conversationData}
+                typeProfile={drawerConfig.configContent?.typeProfile}
+                conversationData={drawerConfig.configContent?.conversationData}
               />
             );
           case "main":
@@ -66,12 +59,14 @@ export default function SwipeableTemporaryDrawer() {
 
   return (
     <SwipeableDrawer
-      anchor={drawerState.anchor}
-      open={drawerState.open}
-      onClose={toggleDrawer(drawerState.anchor, false)}
-      onOpen={toggleDrawer(drawerState.anchor, true)}
+      anchor={drawerConfig.anchor}
+      open={drawerConfig.open}
+      onClose={toggleDrawer(drawerConfig.anchor, false)}
+      onOpen={toggleDrawer(drawerConfig.anchor, true)}
     >
-      {renderContent(drawerState.anchor)}
+      {renderContent(drawerConfig.anchor)}
     </SwipeableDrawer>
   );
-}
+};
+
+export default SwipeableTemporaryDrawer;

@@ -9,18 +9,20 @@ import {
 import { useDebounce } from "../../../../../../../../hooks/useDebounce";
 import { eSideLeftConfigPage } from "../../../../../../../../ts/enums/app";
 
+// need ts
+
 function TopCenterComponent({ parentSettings }: any) {
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
   // SELECTORS
-  const sideLeftConfig: any = useAppSelector(
+  const sideLeftConfig = useAppSelector(
     ({ appSlice }) => appSlice.sideLeftConfig
   );
 
   // STATES
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState<string>("");
 
   // CUSTOM HOOKS
   const debouncedSearchValue = useDebounce(search, 300);

@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { themeLight } from "../../config/theme";
-
 import { eSideLeftConfigPage } from "../../ts/enums/app";
 
 const appSlice = createSlice({
@@ -10,7 +8,7 @@ const appSlice = createSlice({
     sideLeftConfig: {
       page: eSideLeftConfigPage.conversations,
     },
-    drawerState: {
+    drawerConfig: {
       anchor: "left",
       open: false,
       type: "",
@@ -54,8 +52,8 @@ const appSlice = createSlice({
     setModalConfigAction(state, { payload }) {
       state.modalConfig = payload;
     },
-    setDrawerStateAction(state, { payload }) {
-      state.drawerState = payload;
+    setDrawerConfigAction(state, { payload }) {
+      state.drawerConfig = payload;
     },
     setAllMessagesAction(state, { payload }) {
       state.allMessages = {
@@ -105,7 +103,7 @@ const appSlice = createSlice({
 export default appSlice.reducer;
 export const {
   setSideLeftConfigAction,
-  setDrawerStateAction,
+  setDrawerConfigAction,
   setModalConfigAction,
   setContextMenuConfigAction,
   editMessageAction,

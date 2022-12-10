@@ -24,6 +24,9 @@ import {
 } from "../../../../config/constants/general";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
+// need ts
+// rework
+
 const screenWidth = 0;
 const Header = ({
   setShowBiggerImg,
@@ -42,9 +45,7 @@ const Header = ({
   const carouselRef = React.useRef(null);
 
   // SELECTORS
-  const { avatars: userAvatars }: any = useAppSelector(
-    ({ userSlice }) => userSlice
-  );
+  const userAvatars: any = useAppSelector(({ userSlice }) => userSlice.avatars);
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
 
   // STATES

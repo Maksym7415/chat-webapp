@@ -4,6 +4,8 @@ import { getNameShort } from "../../../helpers";
 import DefaultAvatar from "../defaultAvatar";
 import BadgeUserAvatar from "../../badges/badgeUserAvatar";
 
+// need ts
+
 const UserAvatar = ({
   sizeAvatar = 58,
   source,

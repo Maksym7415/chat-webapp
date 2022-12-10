@@ -1,6 +1,8 @@
 import React from "react";
 import { svgs } from "./svgs";
 
+// need ts
+
 function SvgMaker({
   name,
   fill,

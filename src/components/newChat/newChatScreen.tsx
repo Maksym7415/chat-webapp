@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import useStyles from "./styles/styles";
+import useStyles from "./styles";
 // import socket from "../../socket";
 // import { fullDate } from "../../common/getCorrectDateFormat";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -32,6 +32,8 @@ import DeleteItem from "../deleteItem/DeleteItem";
 // hooks
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
+// need ts
+// rework (dialog)
 interface Ref {
   [x: string]: any;
 }
@@ -245,7 +247,7 @@ export default function NewChatScreen() {
       <Grid item xs={12}>
         <TextField
           id="name"
-          // label={languages[lang].newChatScreen.enterAGroupMame}
+          // label={languages[lang].newChatScreen.enterAGroupName}
           variant="outlined"
           fullWidth
           required={true}

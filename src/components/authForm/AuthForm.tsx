@@ -4,6 +4,8 @@ import useStyles from "./styles";
 import TextInputCustom from "../hookFormsComponents/textInput";
 import CustomButton from "../buttons/customButton";
 
+// need ts
+
 const AuthForm = ({
   title,
   configFields,

@@ -1,6 +1,6 @@
-/* eslint-disable no-useless-return */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { jwtDecode } from "./helpers";
+
+// наразі невикористовується використоввувалося у старій версії
 
 function getAccessToken() {
   // return localStorage.getItem('accessToken');

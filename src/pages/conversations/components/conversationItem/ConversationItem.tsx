@@ -19,6 +19,8 @@ import store from "../../../../reduxToolkit/store";
 import { IParams } from "../../../../ts/interfaces/app";
 import { eContextMenuId } from "../../../../ts/enums/app";
 
+// need ts
+
 const ConversationItem = ({ data, usersTyping }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();

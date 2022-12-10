@@ -7,11 +7,14 @@ import { Typography, TextField, Avatar } from "@mui/material";
 // } from "../../../redux/common/commonActions";
 import DefaultAvatar from "../../avatar/defaultAvatar/DefaultAvatar";
 import { Paths } from "../../../routing/config/paths";
-import useStyles from "./styles/styles";
-import languages from "../../../translations";
+import useStyles from "./styles";
+import languages from "../../../config/translations";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
-export default function ShareMessage({ data }: any) {
+// need ts
+// rework (dialog)
+
+const SharedMessage = ({ data }: any) => {
   // HOOKS
   const classes = useStyles();
   const history = useHistory();
@@ -27,7 +30,7 @@ export default function ShareMessage({ data }: any) {
   const [searchNameChat, setSearchNameChat] = React.useState<string>("");
 
   // VARIABLES
-  const conversationsFiltred = Object.values(conversationsList).filter(
+  const conversationsFiltered = Object.values(conversationsList).filter(
     (conversation: any) =>
       conversation.conversationName.includes(searchNameChat)
   );
@@ -59,8 +62,8 @@ export default function ShareMessage({ data }: any) {
         onChange={handleChatNameHandler}
       />
       <div className={classes.wrapperConversation}>
-        {conversationsFiltred.length ? (
-          conversationsFiltred.map((element: any) => (
+        {conversationsFiltered.length ? (
+          conversationsFiltered.map((element: any) => (
             <div
               onClick={() => handleShareMessageId(element.conversationId)}
               className={classes.conversation}
@@ -97,4 +100,6 @@ export default function ShareMessage({ data }: any) {
       </div>
     </div>
   );
-}
+};
+
+export default SharedMessage;

@@ -4,6 +4,8 @@ import UserAvatar from "../../../../components/avatar/userAvatar";
 import RenderConditionsList from "../../../../components/renders/renderConditionsList";
 import { useAppSelector } from "../../../../hooks/redux";
 
+// need ts
+
 const SearchMain = ({ onClickContact }: any) => {
   // HOOKS
   const classes = useStyles();

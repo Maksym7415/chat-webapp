@@ -16,4 +16,5 @@ export default makeStyles((theme) => ({
     fontSize: 12,
     color: "#83868B",
   },
+  divider: {},
 }));

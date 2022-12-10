@@ -34,7 +34,7 @@ const Avatars = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   // SELECTORS
-  const { lang } = useAppSelector(({ settingSlice }) => settingSlice);
+  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   const userAvatars: any = useAppSelector(({ userSlice }) => userSlice.avatars);
   const { userInfo } = useAppSelector(({ userSlice }) => userSlice);
 

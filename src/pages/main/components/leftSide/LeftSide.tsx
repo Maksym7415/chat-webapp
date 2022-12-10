@@ -7,6 +7,8 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { eSideLeftConfigPage } from "../../../../ts/enums/app";
 import { TYPES_FROM_TO_SEARCH_SCREEN } from "../../../../config/constants/general";
 
+// need ts
+
 // STYLES
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,7 +32,7 @@ const LeftSide = () => {
   );
 
   // RENDERS
-  const renderContent = React.useMemo(() => {
+  const renderContent: JSX.Element = React.useMemo(() => {
     const heightContent = `calc(100vh - ${
       refHeader?.current?.clientHeight || 0
     }px)`;

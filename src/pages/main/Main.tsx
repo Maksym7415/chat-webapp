@@ -18,6 +18,8 @@ import { getUserProfileDataRequest } from "../../reduxToolkit/user/requests";
 import { getUserConversationsRequest } from "../../reduxToolkit/conversations/requests";
 import IMAGES from "../../assets/img";
 
+// need ts
+
 // STYLES
 const useStyles = makeStyles((theme) => ({
   container: {

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { StyledBadge } from "./styles";
 
+// need ts
+
 const BadgeUserAvatar = ({
   typeBadge,
   overlap = "circular",
@@ -9,7 +11,6 @@ const BadgeUserAvatar = ({
   sizeBadge = 18,
   children,
 }: any) => {
-  
   return (() => {
     switch (typeBadge) {
       case "online":
@@ -24,9 +25,7 @@ const BadgeUserAvatar = ({
         );
       case "selected":
         return (
-          <div>
-            {/* <Icon name="checkmark" size={19} color="#ffffff" /> */}
-          </div>
+          <div>{/* <Icon name="checkmark" size={19} color="#ffffff" /> */}</div>
         );
 
       default:

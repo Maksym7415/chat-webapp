@@ -6,13 +6,15 @@ import RITitleWithSubtitleAndRightComponent from "../../../../components/renders
 import { TYPES_CONVERSATIONS } from "../../../../config/constants/general";
 import { useAppSelector } from "../../../../hooks/redux";
 
+// need ts
+
 const MainInfo = ({ typeProfile }: any) => {
   // HOOKS
   const classes = useStyles();
   const classesListMenu = useStylesListMenu();
 
   // SELECTORS
-  const { lang } = useAppSelector(({ settingSlice }) => settingSlice);
+  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
 
   // STATES
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);

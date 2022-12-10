@@ -7,6 +7,8 @@ import { getSearchContactRequest } from "../../../../../../reduxToolkit/search/r
 import { setSideLeftConfigAction } from "../../../../../../reduxToolkit/app/slice";
 import { eSideLeftConfigPage } from "../../../../../../ts/enums/app";
 
+// need ts
+
 // STYLES
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = React.forwardRef(({ children }: any, ref: any) => {
+const Header = React.forwardRef<HTMLDivElement, any>(({ children }, ref) => {
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();

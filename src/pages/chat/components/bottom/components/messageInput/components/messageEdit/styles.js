@@ -8,8 +8,10 @@ export default makeStyles((theme) => ({
     width: "100%",
     padding: "7px 13px",
   },
+  wrapperIconEdit: {},
   wrapperMainContent: {
     paddingLeft: 15,
     flex: 1,
   },
+  close: {},
 }));

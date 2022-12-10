@@ -6,4 +6,5 @@ export enum Paths {
   profile = "/profile",
   chat = "/chat",
   newChat = "/new-chat",
+  error = "/error",
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import useStyles from "./styles";
 import { Typography, Box, Grid } from "@mui/material";
-import { useAppSelector } from "../../../../hooks/redux";
-import RenderInfoCenterBox from "../../../../components/renders/renderInfoCenterBox";
 import Message from "./components/message";
+import RenderInfoCenterBox from "../../../../components/renders/renderInfoCenterBox";
 import languages from "../../../../config/translations";
 import { checkIsShowAvatar, setMessageDate, uuid } from "../../../../helpers";
+import { useAppSelector } from "../../../../hooks/redux";
+
+// need ts
 
 const MainContent = ({
   userId,

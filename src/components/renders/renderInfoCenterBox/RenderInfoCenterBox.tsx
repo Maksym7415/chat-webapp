@@ -2,6 +2,8 @@ import * as React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/material";
 
+// need ts
+
 const useStyles = makeStyles((theme) => ({
   wrapperInfoCenter: {
     display: "flex",

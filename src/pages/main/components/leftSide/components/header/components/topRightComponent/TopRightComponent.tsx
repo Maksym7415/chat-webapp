@@ -1,6 +1,6 @@
 import React from "react";
 
-const TopRightComponent = ({}: any) => {
+const TopRightComponent = () => {
   return <></>;
 };
 

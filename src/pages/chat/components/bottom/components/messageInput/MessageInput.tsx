@@ -14,12 +14,15 @@ import {
 import RightInputComponent from "./components/RightInputComponent";
 import LeftInputComponent from "./components/LeftInputComponent";
 import MessageEdit from "./components/messageEdit";
-import SheredMessages from "./components/sheredMessages";
+import SharedMessages from "./components/sharedMessages";
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
 import { ILocationParams, IParams } from "../../../../../../ts/interfaces/app";
 
-const MessageInput = React.forwardRef(
-  ({ userId, firstName, opponentId }: any, ref: any) => {
+// need ts
+// rework
+
+const MessageInput = React.forwardRef<HTMLInputElement, any>(
+  ({ userId, firstName, opponentId }, ref) => {
     // HOOKS
     const dispatch = useAppDispatch();
     const classes = useStyles();
@@ -34,13 +37,13 @@ const MessageInput = React.forwardRef(
     const typing = useAppSelector(
       ({ conversationsSlice }) => conversationsSlice.conversationTypeState
     );
-    const { messageEdit } = useAppSelector(({ appSlice }) => appSlice);
+    const messageEdit = useAppSelector(({ appSlice }) => appSlice.messageEdit);
     const forwardMessages = useAppSelector(
       ({ appSlice }) => appSlice.sheraMessages
     );
 
     // STATES
-    const [sheredMessages, setSheredMessages] = React.useState<any>([]);
+    const [sheredMessages, setSharedMessages] = React.useState<any>([]);
     const [message, setMessage] = React.useState<any>({ 0: "" });
     const [visible, setVisible] = React.useState<any>(false);
 
@@ -69,7 +72,7 @@ const MessageInput = React.forwardRef(
       if (!typing[conversationId]) {
         socketEmitChatsTypingState(user, conversationId);
       } else {
-        socketEmitChatsTypingState(user);
+        socketEmitChatsTypingState(user, null);
       }
     };
 
@@ -130,9 +133,9 @@ const MessageInput = React.forwardRef(
       messageEdit.messageId && clearMessageEdit();
     };
 
-    const handleClearSheraMessages = () => {
+    const handleClearSharedMessages = () => {
       dispatch(shareMessageAction([]));
-      setSheredMessages([]);
+      setSharedMessages([]);
       hideDialog();
     };
 
@@ -148,7 +151,7 @@ const MessageInput = React.forwardRef(
 
     // USEEFFECTS
     React.useEffect(() => {
-      setSheredMessages(forwardMessages);
+      setSharedMessages(forwardMessages);
     }, [forwardMessages]);
 
     React.useEffect(
@@ -171,7 +174,7 @@ const MessageInput = React.forwardRef(
             <MessageEdit data={messageEdit} onClose={clearMessageEdit} />
           ) : null}
           {forwardMessages.length ? (
-            <SheredMessages
+            <SharedMessages
               forwardMessages={forwardMessages}
               handleClearSheraMessages={showDialog}
             />
@@ -188,9 +191,7 @@ const MessageInput = React.forwardRef(
               className={classes.input}
               value={message[conversationId] || ""}
               multiline={true}
-              // margin="dense"
               variant="standard"
-              // keyboardType="default"
               maxRows={4}
               onChange={handleChangeMessage}
               placeholder={`${languages[lang].generals.typeMessage}...`}
@@ -219,7 +220,7 @@ const MessageInput = React.forwardRef(
             style={{ flexDirection: "column", alignItems: "flex-end" }}
           >
             <Button onClick={hideDialog}>Show forwarding options</Button>
-            <Button onClick={handleClearSheraMessages} color={"red"}>
+            <Button onClick={handleClearSharedMessages} color={"red"}>
               Cancel forwarding
             </Button>
           </Dialog.Actions>

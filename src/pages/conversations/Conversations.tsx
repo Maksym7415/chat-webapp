@@ -3,6 +3,8 @@ import { makeStyles } from "@mui/styles";
 import ConversationItem from "./components/conversationItem";
 import { useAppSelector } from "../../hooks/redux";
 
+// need ts
+
 interface IProps {
   heightContent: string;
 }

@@ -4,10 +4,14 @@ import "react-contexify/dist/ReactContexify.css";
 import { useAppSelector } from "../../hooks/redux";
 import { eContextMenuId } from "../../ts/enums/app";
 
-export default function ContextMenu() {
+// need ts
+
+const ContextMenu = () => {
+  // SELECTORS
   const contextMenuConfig: any = useAppSelector(
     ({ appSlice }) => appSlice.contextMenuConfig
   );
+
   return (
     <Menu id={eContextMenuId.main}>
       {contextMenuConfig.config.map((item: any) => (
@@ -21,4 +25,6 @@ export default function ContextMenu() {
       ))}
     </Menu>
   );
-}
+};
+
+export default ContextMenu;

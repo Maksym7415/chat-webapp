@@ -7,6 +7,8 @@ import SettingProfile from "./components/settingProfile";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModalConfigAction } from "../../reduxToolkit/app/slice";
 
+// need ts
+
 const useStyles = makeStyles((theme) => ({
   container: {
     position: "absolute",
@@ -16,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "90vw",
     maxHeight: "90vh",
     overflow: "auto",
-    // width: "max-content",
     backgroundColor: "#ffffff",
     padding: "10px",
     borderRadius: "20px",

@@ -8,9 +8,11 @@ import ChatBottom from "./components/bottom";
 import ChatContent from "./components/mainContent";
 import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { ILocationParams, IParams } from "../../ts/interfaces/app";
 import { getConversationMessagesRequest } from "../../reduxToolkit/conversations/requests";
 import { setAllMessagesAction } from "../../reduxToolkit/app/slice";
-import { ILocationParams, IParams } from "../../ts/interfaces/app";
+
+// need ts
 
 // STYLES
 const useStyles = makeStyles((theme) => ({

@@ -10,6 +10,7 @@ const store = configureStore({
       serializableCheck: false,
     }),
 });
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
@@ -19,4 +20,5 @@ if (localStorage.accessToken) {
   );
   store.dispatch(authTokenAction({ accessToken: localStorage.accessToken }));
 }
+
 export default store;

@@ -3,8 +3,8 @@ import MessageInput from "./components/messageInput/MessageInput";
 import BottomToolbar from "./components/bottomToolbar";
 import { useAppSelector } from "../../../../hooks/redux";
 
-const ChatBottom = React.forwardRef(
-  ({ firstName, userId, openFileDialog, opponentId }: any, ref) => {
+const ChatBottom = React.forwardRef<HTMLInputElement, any>(
+  ({ firstName, userId, openFileDialog, opponentId }, ref) => {
     const { selectedMessages } = useAppSelector(({ appSlice }) => appSlice);
 
     const renderBottom = () => {
@@ -25,7 +25,7 @@ const ChatBottom = React.forwardRef(
     return (
       <>
         {renderBottom()}
-        {/* <BoottomToolbar /> */}
+        {/* <BottomToolbar /> */}
       </>
     );
   }

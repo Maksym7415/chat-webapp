@@ -2,8 +2,8 @@ import React from "react";
 import clsx from "clsx";
 import useStyles from "./styles";
 import {
-  headerSelectedСhatsAmount,
-  // headerСhatDotsOptionsChat,
+  headerSelectedChatsAmount,
+  // headerChatDotsOptionsChat,
   // headerСhatDotsOptionsDialog,
 } from "./config";
 import UserAvatar from "../../../../components/avatar/userAvatar";
@@ -14,14 +14,16 @@ import {
   actionsMessagesChat,
   actionsTypeActionsChat,
 } from "../../../../actions";
-import store from "../../../../reduxToolkit/store";
 import { uuid, findValueKeyInNestedArr } from "../../../../helpers";
-// import {TYPES_CONVERSATIONS} from '../../../../config/constants/general';
-import { setDrawerStateAction } from "../../../../reduxToolkit/app/slice";
 import { useAppSelector } from "../../../../hooks/redux";
+import { setDrawerConfigAction } from "../../../../reduxToolkit/app/slice";
+import store from "../../../../reduxToolkit/store";
 
-const ChatHeader = React.forwardRef(
-  ({ conversationData, conversationId, typeConversation }: any, ref: any) => {
+// need ts
+// rework
+
+const ChatHeader = React.forwardRef<HTMLDivElement, any>(
+  ({ conversationData, conversationId, typeConversation }, ref) => {
     //HOOKS
     const classes = useStyles();
 
@@ -104,7 +106,7 @@ const ChatHeader = React.forwardRef(
     const renderTopRightComponent = () => {
       return selectedMessagesAmount ? (
         <div className={classes.wrapperActions}>
-          {headerSelectedСhatsAmount(lang).map((action) => {
+          {headerSelectedChatsAmount(lang).map((action) => {
             //check for edit action
             if ([actionsTypeActionsChat.editMessage].includes(action.value)) {
               const selectedMessageFirst: any =
@@ -242,7 +244,7 @@ const ChatHeader = React.forwardRef(
         <div
           onClick={() => {
             store.dispatch(
-              setDrawerStateAction({
+              setDrawerConfigAction({
                 anchor: "right",
                 open: true,
                 width: "400px",

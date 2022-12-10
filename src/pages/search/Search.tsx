@@ -10,6 +10,8 @@ import { setSideLeftConfigAction } from "../../reduxToolkit/app/slice";
 import { eSideLeftConfigPage } from "../../ts/enums/app";
 import { useAppDispatch } from "../../hooks/redux";
 
+// need ts
+
 // STYLES
 const useStyles = makeStyles((theme) => ({
   container: {

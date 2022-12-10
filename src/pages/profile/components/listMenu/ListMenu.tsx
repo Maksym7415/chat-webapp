@@ -5,12 +5,14 @@ import SvgMaker from "../../../../components/svgMaker";
 import { uuid } from "../../../../helpers";
 import { useAppSelector } from "../../../../hooks/redux";
 
+// need ts
+
 const ListMenu = ({ title, list, onPress }: any) => {
   // HOOKS
   const classes = useStyles();
 
   // SELECTORS
-  const { lang } = useAppSelector(({ settingSlice }) => settingSlice);
+  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
 
   // FUNCTIONS
   const ListItem = ({ item }) => {

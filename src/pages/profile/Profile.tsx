@@ -21,7 +21,7 @@ const ProfilePage = ({ typeProfile, conversationData }: any) => {
   const refBottomSheet = React.useRef(null);
 
   // SELECTORS
-  const { lang } = useAppSelector(({ settingSlice }) => settingSlice);
+  const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   const { userInfo } = useAppSelector(({ userSlice }) => userSlice);
 
   // STATES

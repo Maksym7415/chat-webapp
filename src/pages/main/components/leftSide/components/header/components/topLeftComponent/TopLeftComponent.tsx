@@ -8,10 +8,12 @@ import {
   useAppSelector,
 } from "../../../../../../../../hooks/redux";
 import {
-  setDrawerStateAction,
+  setDrawerConfigAction,
   setSideLeftConfigAction,
 } from "../../../../../../../../reduxToolkit/app/slice";
 import { eSideLeftConfigPage } from "../../../../../../../../ts/enums/app";
+
+// need ts
 
 // STYLES
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +44,7 @@ const TopLeftComponent = () => {
                 edge="end"
                 onClick={() => {
                   dispatch(
-                    setDrawerStateAction({
+                    setDrawerConfigAction({
                       anchor: "left",
                       open: true,
                       type: "main",

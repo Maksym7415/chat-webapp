@@ -2,7 +2,7 @@ import SignInPage from "../../pages/auth/signIn";
 import SignUpPage from "../../pages/auth/signUp";
 import VerificationPage from "../../pages/auth/verification";
 import MainPage from "../../pages/main";
-
+import ErrorPage from "../../pages/error";
 import { Paths } from "./paths";
 
 export default [
@@ -39,7 +39,12 @@ export default [
   {
     id: 6,
     Component: MainPage,
-    path: `${Paths.newChat}`,
+    path: Paths.newChat,
     isPrivate: true,
+  },
+  {
+    id: 7,
+    Component: ErrorPage,
+    path: Paths.error,
   },
 ];

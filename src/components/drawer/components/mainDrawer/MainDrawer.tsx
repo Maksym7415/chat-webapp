@@ -1,52 +1,20 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-import { Link, useHistory } from "react-router-dom";
-import {
-  Drawer,
-  ListItemIcon,
-  ListItemText,
-  List,
-  ListItem,
-} from "@mui/material";
-import { drawerList } from "./drawerList";
+import { useHistory } from "react-router-dom";
+import { ListItemIcon, ListItemText, List, ListItem } from "@mui/material";
+import * as config from "./config";
 import useStyles from "./styles";
-// import { showDialogAction } from "../../../redux/common/commonActions";
-// import { updateUserProfileAction } from "../redux/user/constants/actions";
 import { Paths } from "../../../../routing/config/paths";
 import { actionLogOut } from "../../../../actions";
+import BaseSelect from "../../../selects/BaseSelect";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import {
   putUpdateProfileRequest,
   getUserProfileDataRequest,
 } from "../../../../reduxToolkit/user/requests";
 import { setLangAction } from "../../../../reduxToolkit/setting/slice";
-import BaseSelect from "../../../selects/BaseSelect";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setModalConfigAction } from "../../../../reduxToolkit/app/slice";
 
-interface IDrawerProps {
-  openDrawer: boolean;
-  setOpenDrawer: (value: boolean) => void;
-}
-
-const notLinkItemsRoute = [Paths.signIn];
-
-const languages = [
-  {
-    id: 1,
-    label: "en",
-    value: "en",
-  },
-  {
-    id: 2,
-    label: "ua",
-    value: "ua",
-  },
-  {
-    id: 3,
-    label: "ru",
-    value: "ru",
-  },
-];
+// need ts
 
 function MainDrawer({ closeDrawer }: any) {
   // HOOKS
@@ -85,12 +53,14 @@ function MainDrawer({ closeDrawer }: any) {
     }
   };
 
-  const hendleSetLenguage = (event: any) => {
+  const handleSetLanguage = (event: any) => {
     const langUser = userInfo.lang;
     const selectLang = event.target.value;
+
     if (selectLang === langUser) {
       return;
     }
+
     const sendData = { lang: selectLang };
     dispatch(
       putUpdateProfileRequest({
@@ -111,10 +81,9 @@ function MainDrawer({ closeDrawer }: any) {
   return (
     <>
       <List className={classes.list}>
-        {drawerList.map(({ icon, id, title, value }) => {
+        {config.drawerList.map(({ icon, id, title, value }) => {
           return (
             <ListItem
-              button
               key={id}
               onClick={() => handleMenuAction(value)}
               className={classes.listItem}
@@ -125,15 +94,13 @@ function MainDrawer({ closeDrawer }: any) {
           );
         })}
       </List>
-
-      <div className={classes.wrapperlangs}>
+      <div className={classes.wrapperLangs}>
         <BaseSelect
           selectSetting={{
             label: "language",
             selected: lang,
-
-            options: languages,
-            handleChange: hendleSetLenguage,
+            options: config.languagesList,
+            handleChange: handleSetLanguage,
           }}
         />
       </div>

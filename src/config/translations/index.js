@@ -5,8 +5,8 @@ const languages = {
       haveAnAccount: "Have an account",
       haveNoAccount: "Have no account",
       signUp: "Sign Up",
-      verificationYourAccount: "Verificate your account",
-      verification: "Verificate",
+      verificationYourAccount: "Verification your account",
+      verification: "Verification",
     },
     generals: {
       you: "You",
@@ -45,7 +45,7 @@ const languages = {
     },
     newChatScreen: {
       addGroupAvatar: "Add group avatar",
-      enterAGroupMame: "Enter a group name",
+      enterAGroupName: "Enter a group name",
     },
   },
   ua: {

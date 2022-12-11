@@ -1,9 +1,11 @@
 export interface User {
-  [key: number]: BackUsers;
+  [x: string]: number;
+  firstName: any;
+  // [key: number]: BackUsers;
 }
 
 export interface BackUsers {
-  firtsName: string;
+  firstName: string;
   isTyping: boolean;
   userId: number;
   conversationId: number;

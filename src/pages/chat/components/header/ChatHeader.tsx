@@ -223,6 +223,7 @@ const ChatHeader = React.forwardRef<HTMLDivElement, any>(
               source={conversationData?.conversationAvatar}
               name={conversationData?.conversationName || "Test Test"}
               sizeAvatar={38}
+              status={""}
             />
           </div>
           <div className={classes.wrapperAvatar}>

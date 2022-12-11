@@ -1,6 +1,7 @@
 import { Paths } from "../../routing/config/paths";
+import { IListItem } from "../../ts/interfaces/app";
 
-export const settingsList = (lang) => [
+export const settingsList = (lang: string): IListItem[] => [
   {
     id: 1,
     title: "Notifications and Sounds",

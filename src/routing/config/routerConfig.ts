@@ -5,7 +5,14 @@ import MainPage from "../../pages/main";
 import ErrorPage from "../../pages/error";
 import { Paths } from "./paths";
 
-export default [
+interface IRouter {
+  id: number;
+  Component: any;
+  path: string;
+  isPrivate: boolean;
+}
+
+export const routersConfig: IRouter[] = [
   {
     id: 1,
     Component: SignInPage,
@@ -46,5 +53,6 @@ export default [
     id: 7,
     Component: ErrorPage,
     path: Paths.error,
+    isPrivate: false,
   },
 ];

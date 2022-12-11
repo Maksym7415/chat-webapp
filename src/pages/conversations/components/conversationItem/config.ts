@@ -1,9 +1,8 @@
 import { actionsTypeActionsConversation } from "../../../../actions";
 import languages from "../../../../config/translations";
+import { IListItem } from "../../../../ts/interfaces/app";
 
-// need ts
-
-export const selectedConversationContext = (lang) => [
+export const selectedConversationContext = (lang: string): IListItem[] => [
   {
     id: 3,
     title: languages[lang].generals.deleteAndLeave,

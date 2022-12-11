@@ -1,7 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as requests from "./requests";
+import { IConversation } from "../../ts/interfaces/conversations";
 
-const initialState = {
+interface IInitialState {
+  conversationMessages: any;
+  userHistoryConversations: any;
+  conversationsList: {
+    data: any;
+  };
+  conversationTypeState: any;
+}
+
+const initialState: IInitialState = {
   conversationMessages: {
     data: [],
     pagination: {

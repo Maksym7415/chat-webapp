@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Switch, Route } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
-import routerConfig from "./config/routerConfig";
+import { routersConfig } from "./config/routerConfig";
 import PrivatePage from "./components/PrivatePage";
 import ContextMenu from "../components/contextMenu";
 import ModalCustom from "../components/modal";
@@ -10,8 +10,9 @@ import DialogCustom from "../components/dialog/Dialog";
 import ErrorPage from "../pages/error";
 import Theme from "../config/theme";
 import { useAppSelector } from "../hooks/redux";
+import { eContentErrorPage } from "../ts/enums/app";
 
-function Router() {
+const Routing = () => {
   // SELECTORS
   const token = useAppSelector(
     ({ authSlice }) => authSlice.headers.accessToken
@@ -26,23 +27,24 @@ function Router() {
         <DialogCustom />
         <CssBaseline />
         <Switch>
-          {routerConfig.map(({ id, Component, roles, isPrivate, path }) => (
+          {routersConfig.map(({ id, Component, isPrivate, path }) => (
             <PrivatePage
               id={id}
               Component={Component}
-              roles={roles}
               isPrivate={isPrivate}
               path={path}
-              exact
               key={id}
               token={token}
+              exact
             />
           ))}
-          <Route component={() => <ErrorPage content="notFound" />} />
+          <Route
+            component={() => <ErrorPage content={eContentErrorPage.notFound} />}
+          />
         </Switch>
       </Theme>
     </Fragment>
   );
-}
+};
 
-export default Router;
+export default Routing;

@@ -1,6 +1,7 @@
 import { EMAIL_REGEX } from "../../../helpers";
+import { IAuthField } from "../../../ts/interfaces/auth";
 
-export const signUpPage = [
+export const signUpPage: IAuthField[] = [
   {
     fieldName: "firstName",
     placeholder: "John",

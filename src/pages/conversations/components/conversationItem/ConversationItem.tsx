@@ -18,10 +18,14 @@ import {
 import store from "../../../../reduxToolkit/store";
 import { IParams } from "../../../../ts/interfaces/app";
 import { eContextMenuId } from "../../../../ts/enums/app";
+import { IConversation } from "../../../../ts/interfaces/conversations";
 
-// need ts
+interface IProps {
+  data: IConversation;
+  usersTyping: any;
+}
 
-const ConversationItem = ({ data, usersTyping }: any) => {
+const ConversationItem = ({ data, usersTyping }: IProps) => {
   // HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
@@ -30,12 +34,12 @@ const ConversationItem = ({ data, usersTyping }: any) => {
 
   // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
-  const { userId } = useAppSelector(({ authSlice }) => authSlice.authToken);
+  const authToken = useAppSelector(({ authSlice }) => authSlice.authToken);
 
   // FUNCTIONS
-  const getString = (element) => {
+  const getString = (element: IConversation) => {
     const arr = Object.values(usersTyping[element.conversationId]).filter(
-      (el: any) => el.isTyping && el.userId !== userId
+      (el: any) => el.isTyping && el.userId !== authToken.userId
     );
     let str = "";
     arr.forEach((el: any) => (str += el.firstName));
@@ -56,15 +60,17 @@ const ConversationItem = ({ data, usersTyping }: any) => {
   };
 
   // VARIABLES
-  const someBodyWriting = usersTyping[data.conversationId] && getString(data);
-  const isConversationDialog = data.conversationType === "Dialog";
+  const someBodyWriting: string =
+    usersTyping[data.conversationId] && getString(data);
+  const isConversationDialog: boolean = data.conversationType === "Dialog";
 
   // test
   const numberOfUnreadMessages = [1, 7].includes(data.conversationId)
     ? data.conversationId
     : null;
-  const isMessageUserAuth = data.Messages[0]?.User?.id === userId;
-  const isReadMessageUserAuth = [1, 7].includes(data.conversationId)
+  const isMessageUserAuth: boolean =
+    data.Messages[0]?.User?.id === authToken.userId;
+  const isReadMessageUserAuth: boolean = [1, 7].includes(data.conversationId)
     ? true
     : false;
 

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MainContent = () => {
   // HOOKS
-  const params = useParams<IParams>();
+  const params = useParams<any>();
   const location = useLocation<ILocationParams<any>>();
   const classes = useStyles();
 

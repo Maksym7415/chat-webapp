@@ -1,6 +1,6 @@
-// need ts
+import { IAuthField } from "../../../ts/interfaces/auth";
 
-export const verificationFields = [
+export const verificationFields: IAuthField[] = [
   {
     fieldName: "verificationCode",
     placeholder: "00000",

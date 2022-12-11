@@ -8,8 +8,6 @@ import { postVerificationRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Paths } from "../../../routing/config/paths";
 
-// need ts
-
 const VerificationPage = () => {
   // HOOKS
   const dispatch = useAppDispatch();
@@ -35,7 +33,7 @@ const VerificationPage = () => {
   });
 
   // FUNCTIONS
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: { verificationCode: string }) => {
     dispatch(
       postVerificationRequest({
         data: {
@@ -47,6 +45,7 @@ const VerificationPage = () => {
         },
       })
     );
+
     errorBack && setErrorBack("");
   };
 

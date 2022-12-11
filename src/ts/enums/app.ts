@@ -6,3 +6,7 @@ export enum eSideLeftConfigPage {
 export enum eContextMenuId {
   main = "id_main_menu",
 }
+
+export enum eContentErrorPage {
+  notFound = "not found",
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 const NotFound = () => {
   // HOOKS
   const classes = useStyles();
-  const history = useHistory();
 
   return (
     <div className={classes.container}>

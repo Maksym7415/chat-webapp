@@ -1,6 +1,6 @@
 import { Messages } from "./messages";
 
-export interface ConversationsList {
+export interface IConversation {
   messageId: number;
   fkSenderId: number;
   Messages: Array<Messages>;
@@ -20,17 +20,17 @@ interface Pagination {
   currentPage: number;
 }
 
-interface ConversationActionSuccess {
-  // type: typeof types.CONVERSATION_SUCCESS;
-  payload: ConversationReducerPayload;
-  name: ConversationReducerStateType;
-}
+// interface ConversationActionSuccess {
+//   // type: typeof types.CONVERSATION_SUCCESS;
+//   payload: ConversationReducerPayload;
+//   name: ConversationReducerStateType;
+// }
 
-interface ConversationActionFail {
-  // type: typeof types.CONVERSATION_FAIL;
-  // payload: ErrorResponse;
-  name: ConversationReducerStateType;
-}
+// interface ConversationActionFail {
+//   // type: typeof types.CONVERSATION_FAIL;
+//   // payload: ErrorResponse;
+//   name: ConversationReducerStateType;
+// }
 
 interface ClearLastMessageAction {
   // type: typeof types.CLEAR_LAST_MESSAGE;
@@ -49,47 +49,47 @@ interface PayloadObject {
   data: {};
 }
 
-export interface ConversationReducerStateInterface {
-  userHistoryConversation: UserHistoryConversation;
-  conversationsList: UserConversationsList;
-  conversations: Conversations;
-  currentChat: CurrentChat;
-  lastMessages: LastMessagesStateKey;
-  currentConversationIdObject: {
-    currentConversationId: number;
-  };
-  conversationId: {
-    id: number;
-    type: string;
-  };
-  conversationTypeState: {
-    [key: number]: ConverstaionTypeStateForReducer;
-  };
-  createConversation: UserCreateConversation;
-  opponentId: {
-    id: number;
-  };
-}
+// export interface ConversationReducerStateInterface {
+//   userHistoryConversation: UserHistoryConversation;
+//   conversationsList: UserConversationsList;
+//   conversations: Conversations;
+//   currentChat: CurrentChat;
+//   lastMessages: LastMessagesStateKey;
+//   currentConversationIdObject: {
+//     currentConversationId: number;
+//   };
+//   conversationId: {
+//     id: number;
+//     type: string;
+//   };
+//   conversationTypeState: {
+//     [key: number]: ConverstaionTypeStateForReducer;
+//   };
+//   createConversation: UserCreateConversation;
+//   opponentId: {
+//     id: number;
+//   };
+// }
 
 export type ConversationReducerPayload =
   | PayloadArrayPagination
   | PayloadArray
   | PayloadObject;
 
-export type ConversationReducerStateType =
-  keyof ConversationReducerStateInterface;
+// export type ConversationReducerStateType =
+//   keyof ConversationReducerStateInterface;
 
-export type ConversationActionsType =
-  | ConversationActionSuccess
-  | ConversationActionFail
-  | UserConversationHistoryActionRequest
-  | ConversationAddNewMessageAction
-  | ConversationIdAction
-  | ConversationTypeStateInterfaceAction
-  | CreateNewChatActionInterface
-  | ClearConversationInterface
-  | ConversationUpdate
-  | ClearLastMessageAction;
+// export type ConversationActionsType =
+//   | ConversationActionSuccess
+//   | ConversationActionFail
+//   | UserConversationHistoryActionRequest
+//   | ConversationAddNewMessageAction
+//   | ConversationIdAction
+//   | ConversationTypeStateInterfaceAction
+//   | CreateNewChatActionInterface
+//   | ClearConversationInterface
+//   | ConversationUpdate
+//   | ClearLastMessageAction;
 
 // USER_CONVERSATION_HISTORY INTERFACES
 

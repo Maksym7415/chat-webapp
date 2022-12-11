@@ -34,6 +34,7 @@ const SearchMain = ({ onClickContact }: any) => {
               source={item.userAvatar}
               status={[1, 3].includes(index) ? "online" : ""}
               name={item.fullName}
+              sizeAvatar={58}
             />
           </div>
           <div className={classes.wrapperInfo}>

@@ -6,6 +6,7 @@ import NotFound from "./components/notFound";
 import { Paths } from "../../routing/config/paths";
 import { useAppSelector } from "../../hooks/redux";
 import { ILocationParams } from "../../ts/interfaces/app";
+import { eContentErrorPage } from "../../ts/enums/app";
 
 // STYLES
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface IProps {
-  content?: string;
+  content?: eContentErrorPage;
 }
 
 const ErrorPage = ({ content }: IProps) => {
@@ -29,7 +30,7 @@ const ErrorPage = ({ content }: IProps) => {
   );
 
   // VARIABLES
-  const renderContent = content || location.state?.content || "";
+  const renderContent: string = content || location.state?.content || "";
 
   if (renderContent === "") {
     return token ? (
@@ -43,7 +44,7 @@ const ErrorPage = ({ content }: IProps) => {
     <div className={classes.container}>
       {(() => {
         switch (renderContent) {
-          case "notFound":
+          case eContentErrorPage.notFound:
             return <NotFound />;
           default:
             return <>error</>;

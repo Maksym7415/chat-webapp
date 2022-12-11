@@ -3,8 +3,23 @@ import { Controller } from "react-hook-form";
 import useStyles from "./styles";
 import TextInputCustom from "../hookFormsComponents/textInput";
 import CustomButton from "../buttons/customButton";
+import { IAuthField } from "../../ts/interfaces/auth";
 
-// need ts
+interface IProps {
+  title: string;
+  submitBtnTitle: string;
+  configFields: IAuthField[];
+  onSubmit: (data: any) => void;
+  errorBack: string;
+  optionsForm: {
+    control: any;
+    handleSubmit: any;
+    errors: any;
+  };
+  render?: {
+    text: (styles: any) => JSX.Element;
+  };
+}
 
 const AuthForm = ({
   title,
@@ -14,7 +29,7 @@ const AuthForm = ({
   onSubmit,
   submitBtnTitle,
   render,
-}: any) => {
+}: IProps) => {
   // HOOKS
   const classes = useStyles();
 
@@ -27,13 +42,12 @@ const AuthForm = ({
             <Controller
               key={key}
               control={optionsForm.control}
-              rules={el.validate}
-              render={({ field: { onChange, onBlur, value } }) => (
+              rules={el?.validate || {}}
+              render={({ field: { onChange, value } }) => (
                 <TextInputCustom
                   onChangeText={onChange}
                   value={value}
                   error={optionsForm.errors[el.fieldName]}
-                  keyboardType={el?.keyboardType}
                   placeholder={el.placeholder}
                   secureTextEntry={false}
                   styles={el.styles}

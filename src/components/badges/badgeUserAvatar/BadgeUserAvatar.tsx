@@ -1,7 +1,14 @@
-import * as React from "react";
+import React from "react";
 import { StyledBadge } from "./styles";
 
-// need ts
+interface IProps {
+  typeBadge: string;
+  overlap?: string | any;
+  anchorOrigin?: any;
+  variant?: string | any;
+  sizeBadge: number;
+  children: React.ReactNode;
+}
 
 const BadgeUserAvatar = ({
   typeBadge,
@@ -10,7 +17,7 @@ const BadgeUserAvatar = ({
   variant = "dot",
   sizeBadge = 18,
   children,
-}: any) => {
+}: IProps) => {
   return (() => {
     switch (typeBadge) {
       case "online":

@@ -1,10 +1,16 @@
-import * as React from "react";
+import React from "react";
 import { Avatar } from "@mui/material";
 import { getNameShort } from "../../../helpers";
 import DefaultAvatar from "../defaultAvatar";
 import BadgeUserAvatar from "../../badges/badgeUserAvatar";
 
-// need ts
+interface IProps {
+  sizeAvatar: number;
+  source: string;
+  status?: string;
+  sizeBadge?: number;
+  name: string;
+}
 
 const UserAvatar = ({
   sizeAvatar = 58,
@@ -12,8 +18,7 @@ const UserAvatar = ({
   status = "",
   sizeBadge = 18,
   name = "",
-  isSelected,
-}: any) => {
+}: IProps) => {
   // VARIABLES
   const nameShort = name ? getNameShort(name) : "";
 

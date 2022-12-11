@@ -8,8 +8,6 @@ import languages from "../../../config/translations";
 import { postLoginRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
-// need ts
-
 const SignIn = () => {
   // HOOKS
   const dispatch = useAppDispatch();
@@ -20,7 +18,7 @@ const SignIn = () => {
   const loginSingIn = useAppSelector(({ authSlice }) => authSlice.loginSingIn);
 
   // STATES
-  const [errorBack, setErrorBack] = React.useState("");
+  const [errorBack, setErrorBack] = React.useState<string>("");
   const {
     control,
     handleSubmit,
@@ -32,8 +30,9 @@ const SignIn = () => {
   });
 
   // FUNCTIONS
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: { login: string }) => {
     const { login } = data;
+
     dispatch(
       postLoginRequest({
         data: {
@@ -47,6 +46,7 @@ const SignIn = () => {
         },
       })
     );
+
     errorBack && setErrorBack("");
   };
 

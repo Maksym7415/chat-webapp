@@ -26,7 +26,6 @@ const saveToGallery = (lang) => ({
   icon: {
     name: "svgs_line_download",
   },
-  noFunctional: true,
 });
 
 const addToHomeScreen = (lang) => ({
@@ -36,7 +35,6 @@ const addToHomeScreen = (lang) => ({
   icon: {
     name: "svgs_line_create_shortcut",
   },
-  noFunctional: true,
 });
 
 const deleteLeaveGroup = (lang) => ({
@@ -46,7 +44,6 @@ const deleteLeaveGroup = (lang) => ({
   icon: {
     name: "svgs_line_logOut",
   },
-  noFunctional: true,
 });
 
 export const headerOptions = (lang) => [
@@ -101,7 +98,6 @@ export const headerOptionsChat = (lang) => [
     icon: {
       name: "svgs_line_search",
     },
-    noFunctional: true,
   },
   {
     ...deleteLeaveGroup(lang),
@@ -141,7 +137,6 @@ export const headerOptionsDialog = (lang) => [
     icon: {
       name: "svgs_line_share",
     },
-    noFunctional: true,
   },
   {
     id: 2,
@@ -151,7 +146,6 @@ export const headerOptionsDialog = (lang) => [
     icon: {
       name: "svgs_line_block",
     },
-    noFunctional: true,
   },
   {
     id: 3,
@@ -161,7 +155,6 @@ export const headerOptionsDialog = (lang) => [
     icon: {
       name: "svgs_line_pencil",
     },
-    noFunctional: true,
   },
   {
     id: 4,
@@ -171,7 +164,6 @@ export const headerOptionsDialog = (lang) => [
     icon: {
       name: "svgs_line_trash_bin_alt",
     },
-    noFunctional: true,
   },
   {
     id: 5,
@@ -181,7 +173,6 @@ export const headerOptionsDialog = (lang) => [
     icon: {
       name: "svgs_line_lock",
     },
-    noFunctional: true,
   },
   {
     ...addToHomeScreen(lang),

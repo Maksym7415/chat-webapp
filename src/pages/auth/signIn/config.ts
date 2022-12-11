@@ -1,6 +1,6 @@
-// need ts
+import { IAuthField } from "../../../ts/interfaces/auth";
 
-export const signInFields = [
+export const signInFields: IAuthField[] = [
   {
     fieldName: "login",
     placeholder: "email@example.com",

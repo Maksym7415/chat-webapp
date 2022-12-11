@@ -1,6 +1,7 @@
 import { actionsTypeActionsChat } from "../../../../actions";
+import { IListItem } from "../../../../ts/interfaces/app";
 
-export const headerSelectedChatsAmount = (lang) => [
+export const headerSelectedChatsAmount = (lang: string): IListItem[] => [
   {
     id: 1,
     title: "Edit",

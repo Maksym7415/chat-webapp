@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import ConversationItem from "./components/conversationItem";
 import { useAppSelector } from "../../hooks/redux";
+import { IConversation } from "../../ts/interfaces/conversations";
 
 // need ts
 
@@ -36,7 +37,7 @@ const ConversationsPage = ({ heightContent }: IProps) => {
   const dataSortDate: any = React.useMemo(
     () =>
       [...Object.values(conversationsList)]?.sort(
-        (a: any, b: any) =>
+        (a: IConversation, b: IConversation) =>
           new Date(b?.Messages?.[0]?.sendDate).getTime() -
           new Date(a?.Messages?.[0]?.sendDate).getTime()
       ) || [],
@@ -45,7 +46,7 @@ const ConversationsPage = ({ heightContent }: IProps) => {
 
   return (
     <div className={classes.container} style={{ height: heightContent }}>
-      {dataSortDate.map((conversation) => {
+      {dataSortDate.map((conversation: IConversation) => {
         return (
           <ConversationItem
             data={conversation}

@@ -1,9 +1,13 @@
 import React from "react";
 import { ThemeButton } from "./styles";
 
-// need ts
+interface IProps {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  style: React.CSSProperties;
+  children: React.ReactNode;
+}
 
-const CustomButton = ({ children, onClick, style }: any) => (
+const CustomButton = ({ children, onClick, style }: IProps) => (
   <ThemeButton onClick={onClick} style={style}>
     {children}
   </ThemeButton>

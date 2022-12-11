@@ -9,6 +9,11 @@ import { postSingUpRequest } from "../../../reduxToolkit/auth/requests";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 // need ts
+interface IInputs {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 const SignUpPage = () => {
   // HOOKS
@@ -24,14 +29,10 @@ const SignUpPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      login: "",
-    },
-  });
+  } = useForm();
 
   // FUNCTIONS
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: IInputs) => {
     dispatch(
       postSingUpRequest({
         data: {
@@ -47,6 +48,7 @@ const SignUpPage = () => {
         },
       })
     );
+
     errorBack && setErrorBack("");
   };
 

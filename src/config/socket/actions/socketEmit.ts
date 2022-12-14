@@ -1,5 +1,5 @@
 import { socket } from "../index";
-
+import store from "../../../reduxToolkit/store";
 import { fullDate, handleGetBufferFile } from "../../../helpers";
 
 let filesCount = 0;
@@ -94,4 +94,28 @@ export const socketEmitClearConversation = (
   }
 ) => {
   socket.emit("clearChat", data);
+};
+
+export const socketEmitSendMessage = ({
+  id,
+  messageSend,
+  forwardedFromId,
+  opponentId,
+  conversationId,
+  setMessage,
+}) => {
+  const { userId } = store.getState().authSlice.authToken;
+  const messageEdit = store.getState().appSlice.messageEdit;
+
+  const body = {
+    conversationId: id,
+    message: messageSend,
+    messageId: messageEdit.messageId,
+    userId,
+    opponentId,
+    forwardedFromId: forwardedFromId || null,
+  };
+  socket.emit("chats", body, (success) => {
+    if (success) setMessage((prev) => ({ ...prev, [conversationId]: "" }));
+  });
 };

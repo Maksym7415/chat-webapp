@@ -6,6 +6,7 @@ import PrivatePage from "./components/PrivatePage";
 import ContextMenu from "../components/contextMenu";
 import ModalCustom from "../components/modal";
 import DrawerCustom from "../components/drawer";
+import SnackBarCustom from "../components/snackbar";
 import DialogCustom from "../components/dialog/Dialog";
 import ErrorPage from "../pages/error";
 import Theme from "../config/theme";
@@ -21,6 +22,7 @@ const Routing = () => {
   return (
     <Fragment>
       <Theme>
+        <SnackBarCustom />
         <DrawerCustom />
         <ContextMenu />
         <ModalCustom />

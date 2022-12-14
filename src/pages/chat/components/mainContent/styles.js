@@ -3,6 +3,14 @@ import { makeStyles } from "@mui/styles";
 export default makeStyles((theme) => ({
   wrapperMessages: {
     overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    padding: "10px 0 5px",
+    // display: "flex",
+    // justifyContent: "center",
+    // maxWidth: 800,
+    // width: "100%",
   },
   wrapperSendData: {
     display: "flex",
@@ -20,5 +28,12 @@ export default makeStyles((theme) => ({
     color: "#fffefeb5",
     borderRadius: 10,
     overflow: "hidden",
+  },
+  infiniteScroll: {
+    maxWidth: "1000px",
+    margin: "0 auto",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column-reverse",
   },
 }));

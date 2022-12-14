@@ -7,10 +7,11 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import NewChat from "../newChat/newChatScreen";
-import ShareMessage from "../popups/shareMessage";
+import NewChat from "./components/newChat";
+import ShareMessage from "./components/shareMessage";
 import useStyles from "./styles";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { actionClearDialogConfig } from "../../actions";
 
 // need ts
 // rework
@@ -20,46 +21,48 @@ const DialogComponent = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
-  // // SELECTORS
-  // const dialogState = useAppSelector(({ commonReducer }) => commonReducer.dialogComponent);
+  // SELECTORS
+  const dialogConfig = useAppSelector(({ appSlice }) => appSlice.dialogConfig);
 
-  // // FUNCTIONS
-  // const handleClose = () => dispatch(hideDialogAction());
+  // FUNCTIONS
+  const handleClose = () => actionClearDialogConfig();
 
-  // const Content = () => {
-  //   switch (dialogState.title) {
-  //     case 'Profile':
-  //       return <UserProfile />;
-  //     case 'Add New Chat':
-  //       return <NewChat />;
-  //     case 'Share Message':
-  //       return <ShareMessage data={dialogState.data}/>;
-  //     default:
-  //       return null;
-  //   }
-  // };
+  console.log(dialogConfig, "dialogConfig");
+  const Content = () => {
+    switch (dialogConfig.typeContent) {
+      case "newChat":
+        return <NewChat />;
+      case "shareMessage":
+        return <ShareMessage data={dialogConfig.data} />;
+      default:
+        return <></>;
+    }
+  };
 
   return (
-    <></>
-    // <Dialog onClose={handleClose} open={dialogState.isShow} PaperProps={{
-    //   style: {
-    //     overflow: 'unset',
-    //   },
-    // }}
-    // >
-    //   <DialogTitle disableTypography className={classes.titleContainer}>
-    //     <Typography variant='subtitle1' className={classes.title}>{dialogState.title}</Typography>
-    //     <IconButton
-    //       className={classes.closeIconButton}
-    //       onClick={handleClose}
-    //     >
-    //       <CloseIcon className={classes.closeIcon} />
-    //     </IconButton>
-    //   </DialogTitle>
-    //   <DialogContent className={classes.dialogContent}>
-    //     <Content />
-    //   </DialogContent>
-    // </Dialog>
+    <Dialog
+      onClose={handleClose}
+      open={dialogConfig.open}
+      PaperProps={{
+        style: {
+          overflow: "unset",
+        },
+      }}
+    >
+      <DialogTitle className={classes.titleContainer}>
+        <Typography className={classes.title}>{dialogConfig.title}</Typography>
+        <IconButton
+          size="large"
+          className={classes.closeIconButton}
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent className={classes.dialogContent}>
+        <Content />
+      </DialogContent>
+    </Dialog>
   );
 };
 

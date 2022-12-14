@@ -5,9 +5,9 @@ import { setLoadingSearchContacts } from "./slice";
 
 export const getSearchContactRequest = createAsyncThunk(
   "search/getSearchContactRequest",
-  async (options, { dispatch }) => {
+  async (options: any, { dispatch }) => {
     dispatch(setLoadingSearchContacts(true));
-    const params = {};
+    const params: any = {};
 
     if (options?.params?.search) {
       params.searchRequest = options?.params?.search;
@@ -31,7 +31,7 @@ export const getSearchContactRequest = createAsyncThunk(
 
 export const getOpponentsIdWhereConversTypeDialogRequest = createAsyncThunk(
   "search/getOpponentsIdWhereConversTypeDialogRequest",
-  async (options) => {
+  async (options: any) => {
     try {
       const response = await API.get(
         pathBackSearch.getOpponentsIdWhereConversTypeDialog,

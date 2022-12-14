@@ -12,7 +12,10 @@ import {
   getUserProfileDataRequest,
 } from "../../../../reduxToolkit/user/requests";
 import { setLangAction } from "../../../../reduxToolkit/setting/slice";
-import { setModalConfigAction } from "../../../../reduxToolkit/app/slice";
+import {
+  setModalConfigAction,
+  setDialogConfigAction,
+} from "../../../../reduxToolkit/app/slice";
 
 // need ts
 
@@ -29,8 +32,17 @@ function MainDrawer({ closeDrawer }: any) {
   // FUNCTIONS
   const handleMenuAction = (value: string) => {
     closeDrawer();
+    console.log(value, "value");
     switch (value) {
       case "newChat":
+        dispatch(
+          setDialogConfigAction({
+            open: true,
+            typeContent: "newChat",
+            title: "New Chat",
+            data: [],
+          })
+        );
         return;
       case "myProfile":
         const timerShowModal = setTimeout(() => {

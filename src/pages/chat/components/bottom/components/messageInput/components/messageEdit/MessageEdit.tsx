@@ -1,4 +1,6 @@
 import React from "react";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import useStyles from "./styles";
 import SvgMaker from "../../../../../../../../components/svgMaker";
 import languages from "../../../../../../../../config/translations";
@@ -24,8 +26,10 @@ const MessageEdit = ({ data, onClose }: any) => {
           {data.message.message}
         </p>
       </div>
-      <div className={classes.close} onClick={onClose}>
-        <SvgMaker name={"svgs_filled_cross"} />
+      <div className={classes.close}>
+        <IconButton onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
       </div>
     </div>
   );

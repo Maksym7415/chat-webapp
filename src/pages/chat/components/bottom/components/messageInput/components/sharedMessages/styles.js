@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 export default makeStyles((theme) => ({
   root: {
     backgroundColor: "#ffffff",
-    flexDirection: "row",
+    display: "flex",
     alignItems: "center",
     padding: "5px 10px",
     borderBottomWidth: 1,

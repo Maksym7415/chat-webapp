@@ -1,6 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { eSideLeftConfigPage } from "../../ts/enums/app";
 
+export const initialDialogConfig = {
+  open: false,
+  typeContent: "",
+  title: "",
+};
+
+export const initialSelectedMessages = {
+  active: false,
+  messages: {},
+};
+
 const appSlice = createSlice({
   name: "appSlice",
   initialState: {
@@ -25,6 +36,7 @@ const appSlice = createSlice({
         container: {},
       },
     },
+    dialogConfig: initialDialogConfig,
     allMessages: {},
     contextMenuConfig: {
       event: null,
@@ -43,7 +55,7 @@ const appSlice = createSlice({
     },
     sheraMessages: [],
     selectedСhats: {},
-    selectedMessages: {},
+    selectedMessages: initialSelectedMessages,
   },
   reducers: {
     setSideLeftConfigAction(state, { payload }) {
@@ -82,11 +94,8 @@ const appSlice = createSlice({
     shareMessageAction(state, { payload }) {
       state.sheraMessages = payload;
     },
-    showDialogAction(state, { payload }) {
-      state.dialogComponent = payload;
-    },
-    hideDialogAction(state, { payload }) {
-      state.dialogComponent = payload;
+    setDialogConfigAction(state, { payload }) {
+      state.dialogConfig = payload;
     },
     setIsLoading(state, { payload }) {
       state.isLoading = payload;
@@ -110,7 +119,7 @@ export const {
   setLanguageAction,
   deleteMessageAction,
   shareMessageAction,
-  showDialogAction,
+  setDialogConfigAction,
   hideDialogAction,
   setIsLoading,
   setSelectedChatsAction,

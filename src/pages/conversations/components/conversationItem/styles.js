@@ -6,6 +6,10 @@ export default makeStyles((theme) => ({
     padding: "10px 5px",
     borderRadius: "20px",
     cursor: "pointer",
+    marginTop: "5px",
+    "&:first-child": {
+      marginTop: 0,
+    },
     "&:hover": {
       backgroundColor: "#dfe7f4",
     },

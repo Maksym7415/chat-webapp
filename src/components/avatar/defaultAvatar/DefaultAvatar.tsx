@@ -5,6 +5,7 @@ interface IProps {
   width: string;
   height: string;
   fontSize?: string;
+  isSquare?: boolean;
 }
 
 const lettersStyle = {
@@ -12,7 +13,13 @@ const lettersStyle = {
   color: "#ffffff",
 };
 
-const DefaultAvatar = ({ name = "Chat", width, height, fontSize }: IProps) => {
+const DefaultAvatar = ({
+  name = "Chat",
+  width,
+  height,
+  fontSize,
+  isSquare,
+}: IProps) => {
   return (
     <div
       style={{
@@ -20,7 +27,7 @@ const DefaultAvatar = ({ name = "Chat", width, height, fontSize }: IProps) => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#48b7db",
-        borderRadius: "50%",
+        borderRadius: isSquare ? 0 : "50%",
         width,
         height,
         flexShrink: 0,

@@ -18,7 +18,7 @@ if (localStorage.accessToken) {
   store.dispatch(
     setAuthHeadersAction({ accessToken: localStorage.accessToken })
   );
-  store.dispatch(authTokenAction({ accessToken: localStorage.accessToken }));
+  store.dispatch(authTokenAction({ token: localStorage.accessToken }));
 }
 
 export default store;

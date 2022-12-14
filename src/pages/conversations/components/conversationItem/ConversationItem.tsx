@@ -56,7 +56,10 @@ const ConversationItem = ({ data, usersTyping }: IProps) => {
   };
 
   const handleClickContextChatItem = (item) => {
-    store.dispatch(actionsSelectedConversation(item.value));
+    actionsSelectedConversation({
+      typeAction: item.value,
+      dataConversation: data,
+    });
   };
 
   // VARIABLES
@@ -89,7 +92,7 @@ const ConversationItem = ({ data, usersTyping }: IProps) => {
           id: eContextMenuId.main,
           event: event,
         });
-        dispatch(setSelectedChatsAction({ [data.conversationId]: data }));
+        // dispatch(setSelectedChatsAction({ [data.conversationId]: data }));
       }}
       onClick={() => handleClickChatItem(data.conversationId)}
       className={clsx(classes.container, {

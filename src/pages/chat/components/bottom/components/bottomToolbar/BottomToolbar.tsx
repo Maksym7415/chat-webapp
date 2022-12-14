@@ -1,88 +1,88 @@
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
-import { Typography, Toolbar, Button, Paper, IconButton } from "@mui/material";
 import {
-  actionsTypeObjectSelected,
-  actionsSelectedMessages,
-  actionsMessagesChat,
-  actionsTypeActionsChat,
-} from "../../../../../../actions";
+  Typography,
+  Toolbar,
+  Button,
+  Paper,
+  IconButton,
+  Tooltip,
+  Fade,
+  Box,
+} from "@mui/material";
+import useStyles from "./styles";
+import * as config from "./config";
 import store from "../../../../../../reduxToolkit/store";
-import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
+import { useAppSelector } from "../../../../../../hooks/redux";
+import {
+  actionsMessagesChat,
+  actionsClearSelectedMessages,
+} from "../../../../../../actions";
 
 // rework
-const BottomToolbar = () => {
+const BottomToolbar = ({ conversationId, conversationData }: any) => {
   // HOOKS
+  const classes = useStyles();
 
   // SELECTORS
-  const { selectedMessages } = useAppSelector(({ appSlice }) => appSlice);
+  const selectedMessages = useAppSelector(
+    ({ appSlice }) => appSlice.selectedMessages
+  );
 
   // VARIABLES
-  const route: any = { params: {} };
-  const selectedMessagesAmount = Object.keys(selectedMessages).length;
-  const conversationId = route?.params?.id;
-  const conversationData = route?.params?.conversationData;
+  const selectedMessagesAmount = Object.keys(selectedMessages.messages).length;
 
   // FUNCTIONS
-  const handleOptions = (typeAction) => {
-    // store.dispatch(
-    //   actionsMessagesChat(
-    //     {
-    //       conversationId: conversationId,
-    //       selectedMessages,
-    //     },
-    //     typeAction,
-    //     navigation,
-    //     {
-    //       id: conversationId,
-    //       conversationData,
-    //     }
-    //   )
-    // );
-    // store.dispatch(
-    //   selectedMessagesActions(null, actionsTypeObjectSelected.clear)
-    // );
+  const handleClickAction = async (typeAction) => {
+    await actionsMessagesChat({
+      conversationId,
+      typeAction,
+    });
+
+    store.dispatch(actionsClearSelectedMessages(true));
   };
 
   return (
-    <Paper
-      style={{
-        width: "80%",
-        bottom: 20,
-        position: "absolute",
-        left: "50%",
-      }}
-      elevation={12}
-    >
-      {/* <IconButton size="large" color="inherit">
-        <ArrowForwardIcon />
-      </IconButton>
-      <IconButton size="large" color="inherit">
-        <FileCopyOutlinedIcon />
-      </IconButton> */}
-      <Toolbar>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          1 message selected
-        </Typography>
-        <IconButton size="large" color="inherit">
-          <ArrowForwardIcon />
-        </IconButton>
-        <IconButton size="large" color="inherit">
-          <FileCopyOutlinedIcon />
-        </IconButton>
-      </Toolbar>
-    </Paper>
+    <Box className={classes.root}>
+      <Paper className={classes.wrapper} elevation={12}>
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={() => {
+              store.dispatch(actionsClearSelectedMessages(true));
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {selectedMessagesAmount} message selected
+          </Typography>
+          {!!selectedMessagesAmount &&
+            config.actionsMessagesToolbar("lang").map((item) => {
+              return (
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  key={item.id}
+                  onClick={() => handleClickAction(item.value)}
+                >
+                  <Tooltip
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                    title={item.title}
+                  >
+                    {item.iconComponent}
+                  </Tooltip>
+                </IconButton>
+              );
+            })}
+        </Toolbar>
+      </Paper>
+    </Box>
   );
 };
 

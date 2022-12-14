@@ -1,27 +1,22 @@
 import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
+  root: {
+    display: "grid",
+    columnGap: "5px",
+    margin: "5px 10px",
+  },
   wrapper: {
     padding: "0",
-    marginHorizontal: 0,
   },
   wrapperUp: {
     display: "flex",
     position: "relative",
-    padding: "5px 10px",
-  },
-  containerShared: {
-    display: "flex",
-  },
-  containerSender: {
-    display: "flex",
-  },
-  containerFriend: {
-    display: "flex",
+    // margin: "0 5px",
   },
 
   paperSharedMessage: {
-    // backgroundColor: theme.colors.gray_2,
+    backgroundColor: "#d6f6e3",
     padding: "10px",
     maxWidth: 600,
     borderRadius: 10,
@@ -31,9 +26,7 @@ export default makeStyles((theme) => ({
   wrapperTextMessageShared: {
     position: "relative",
     padding: "0 10px",
-    marginVertical: 10,
-
-    flexDirection: "row",
+    marginTop: 10,
   },
   paperSenderMessage: {
     position: "relative",
@@ -82,7 +75,6 @@ export default makeStyles((theme) => ({
     color: "#000000",
   },
   messageText: {
-    marginTop: 5,
     color: "#000000",
     overflow: "hidden",
     wordBreak: "keep-all",
@@ -110,5 +102,23 @@ export default makeStyles((theme) => ({
     height: 200,
     width: 200,
     resizeMode: "contain",
+  },
+  messageSelectControl: {
+    display: "flex",
+    alignSelf: "flex-end",
+    border: "2px solid #ffffff",
+    borderRadius: "50%",
+  },
+  messageSelected: {
+    backgroundColor: "#00C73E",
+    padding: 2,
+    "&:hover": {
+      backgroundColor: "#00C73E",
+    },
+  },
+  messageSelectedIcon: {
+    width: 18,
+    height: 18,
+    color: "#ffffff",
   },
 }));

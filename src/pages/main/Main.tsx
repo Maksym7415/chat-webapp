@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Rnd } from "react-rnd";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import LeftSide from "./components/leftSide";
 import MainContent from "./components/mainContent";
@@ -13,6 +13,7 @@ import {
   socketOnDeleteConversation,
   socketOnClearConversation,
 } from "../../config/socket/actions/socketOn";
+import { IParams } from "../../ts/interfaces/app";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getUserProfileDataRequest } from "../../reduxToolkit/user/requests";
 import { getUserConversationsRequest } from "../../reduxToolkit/conversations/requests";
@@ -39,6 +40,7 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const history = useHistory();
+  const params = useParams<IParams>();
 
   // SELECTORS
   const conversationsList = useAppSelector(
@@ -77,7 +79,7 @@ const MainPage = () => {
     }
     socketOnDeleteMessage();
     socketOnUserIdNewChat(authToken.userId, history);
-    socketOnDeleteConversation();
+    socketOnDeleteConversation({ params, history });
     socketOnClearConversation();
   }, [conversationsListMass]);
 

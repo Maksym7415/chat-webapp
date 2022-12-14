@@ -27,28 +27,44 @@ export const actionsTypeActionsConversation = {
   clearChat: "clearChat",
 };
 
-export const actionsSelectedConversation =
-  (typeAction) => (dispatch, getState) => {
-    const selectedChats = getState().appSlice.selectedСhats;
+export const actionsSelectedConversation = (props) => {
+  const selectedChats = store.getState().appSlice.selectedСhats;
 
-    switch (typeAction) {
-      case actionsTypeActionsConversation.deleteChat:
-        // for ids
-        socketEmitDeleteConversation({
-          ids: Object.keys(selectedChats),
-        });
+  const { typeAction, dataConversation = null } = props;
 
-        return;
-      case actionsTypeActionsConversation.clearChat:
-        // for ids
-        socketEmitClearConversation({
-          ids: Object.keys(selectedChats),
-        });
-        return;
-      default:
-        return;
+  console.log(props);
+  let _conversations = {};
+
+  if (Object.keys(selectedChats).length) {
+    _conversations = selectedChats;
+  } else {
+    if (dataConversation) {
+      _conversations = {
+        [dataConversation.conversationId]: dataConversation,
+      };
+    } else {
+      return alert("Something error actionsSelectedConversation");
     }
-  };
+  }
+
+  switch (typeAction) {
+    case actionsTypeActionsConversation.deleteChat:
+      // for ids
+      socketEmitDeleteConversation({
+        ids: Object.keys(_conversations),
+      });
+
+      return;
+    case actionsTypeActionsConversation.clearChat:
+      // for ids
+      socketEmitClearConversation({
+        ids: Object.keys(_conversations),
+      });
+      return;
+    default:
+      return;
+  }
+};
 
 export const actionCreateNewConversation = (history, item) => {
   const conversationsList =

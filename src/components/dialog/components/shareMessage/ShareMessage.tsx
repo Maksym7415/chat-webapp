@@ -1,15 +1,14 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Typography, TextField, Avatar } from "@mui/material";
-// import {
-//   hideDialogAction,
-//   shareMessageAction,
-// } from "../../../redux/common/commonActions";
-import DefaultAvatar from "../../avatar/defaultAvatar/DefaultAvatar";
-import { Paths } from "../../../routing/config/paths";
+import { Typography, TextField, Box } from "@mui/material";
+import { shareMessageAction } from "../../../../reduxToolkit/app/slice";
+import DefaultAvatar from "../../../avatar/defaultAvatar/DefaultAvatar";
+import UserAvatar from "../../../avatar/userAvatar";
+import { Paths } from "../../../../routing/config/paths";
 import useStyles from "./styles";
-import languages from "../../../config/translations";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import languages from "../../../../config/translations";
+import { actionClearDialogConfig } from "../../../../actions";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 // need ts
 // rework (dialog)
@@ -41,14 +40,14 @@ const SharedMessage = ({ data }: any) => {
   };
 
   const handleShareMessageId = (conversationId: number) => {
-    // dispatch(shareMessageAction(data));
+    dispatch(shareMessageAction(data));
     history.push({
       pathname: `${Paths.chat}/${conversationId}`,
       state: {
         from: "shareMessage",
       },
     });
-    // dispatch(hideDialogAction());
+    actionClearDialogConfig();
   };
 
   return (
@@ -69,21 +68,13 @@ const SharedMessage = ({ data }: any) => {
               className={classes.conversation}
               key={element.conversationId}
             >
-              {element.conversationAvatar ? (
-                <Avatar
-                  className={classes.avatar}
-                  src={`${process.env.REACT_APP_BASE_URL}/${element.conversationAvatar}`}
-                />
-              ) : (
-                <DefaultAvatar
-                  name={element.conversationName}
-                  width="50px"
-                  height="50px"
-                  fontSize="1.1rem"
-                />
-              )}
-              <div className="flex chat__chats-item-message-container relative">
-                <Typography className={classes.bold} variant="subtitle1">
+              <UserAvatar
+                source={element.conversationAvatar}
+                name={element.conversationName}
+                sizeAvatar={38}
+              />
+              <div className={classes.info}>
+                <Typography className={classes.name} variant="subtitle1">
                   {element.conversationName}
                 </Typography>
                 <Typography variant="caption" className={classes.messageText}>
@@ -93,9 +84,11 @@ const SharedMessage = ({ data }: any) => {
             </div>
           ))
         ) : (
-          <p className={classes.noUsersFound}>
-            {languages[lang].generals.noUsersFound}.
-          </p>
+          <Box className={classes.noUsersFound}>
+            <Typography className={classes.noUsersFoundText}>
+              {languages[lang].generals.noUsersFound}.
+            </Typography>
+          </Box>
         )}
       </div>
     </div>

@@ -1,24 +1,14 @@
 import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
+  root: {
+    // width: "80%",
+    display: "flex",
+    justifyContent: "center",
+    padding: "10px 0",
+  },
   wrapper: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    padding: "0 10px",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 40,
-    backgroundColor: "#ffffff",
-  },
-  wrapperAction: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
-  },
-  title: {
-    paddingLeft: 5,
-  },
-  hide: {
-    opacity: 0,
+    width: "80%",
+    maxWidth: "500px",
   },
 }));

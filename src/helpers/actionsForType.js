@@ -1,10 +1,10 @@
 export const actionsTypeObject = {
-  add: 'add',
-  remove: 'remove',
-  clear: 'clear',
+  add: "add",
+  remove: "remove",
+  clear: "clear",
 };
 
-export const actionsForTypeWithObjKey = props => {
+export const actionsForTypeWithObjKey = (props) => {
   const isDispatch = props?.dispatch ? true : false;
 
   switch (props.typeAction) {

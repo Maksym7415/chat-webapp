@@ -9,6 +9,7 @@ import ChatContent from "./components/mainContent";
 import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { ILocationParams, IParams } from "../../ts/interfaces/app";
+import { actionsClearSelectedMessages } from "../../actions";
 import { getConversationMessagesRequest } from "../../reduxToolkit/conversations/requests";
 import { setAllMessagesAction } from "../../reduxToolkit/app/slice";
 
@@ -20,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
     width: "100%",
     position: "relative",
+    display: "flex",
+    flexDirection: "column",
   },
   errorBackText: { fontSize: 28, fontWeight: "500" },
 }));
@@ -32,10 +35,6 @@ const Chat = () => {
   const params = useParams<IParams>();
   const location = useLocation<ILocationParams<any>>();
   const classes = useStyles();
-
-  // REFS
-  const refBottom = React.useRef(null);
-  const refHeader = React.useRef(null);
 
   // SELECTORS
   const authToken = useAppSelector(({ authSlice }) => authSlice.authToken);
@@ -65,48 +64,6 @@ const Chat = () => {
     conversationData?.conversationType?.toLowerCase() || "";
   const pagination =
     userHistoryConversations?.[conversationId]?.pagination || {};
-
-  const heightContent: string = React.useMemo(
-    () =>
-      `calc(100vh - ${
-        (refBottom?.current?.clientHeight || 0) +
-        refHeader.current?.clientHeight
-      }px)`,
-    [refBottom.current?.clientHeight, refHeader.current?.clientHeight]
-  );
-
-  // FUNCTIONS
-  const scrollHandler = (event: React.SyntheticEvent<HTMLElement>) => {
-    let element = event.currentTarget;
-    if (
-      pagination.allItems > pagination.currentPage &&
-      allMessages[conversationId].length >= loadMessageOffset
-    ) {
-      dispatch(
-        getConversationMessagesRequest({
-          data: {
-            id: conversationId,
-            offset: pagination.currentPage + loadMessageOffset,
-          },
-          cb: (response) => {
-            errorBack && setErrorBack("");
-            dispatch(
-              setAllMessagesAction({
-                [conversationId]: [
-                  ...response.data,
-                  ...allMessages[conversationId],
-                ],
-              })
-            );
-          },
-          errorCb: (error) => {
-            setErrorBack(error.message);
-            setIsFetching(false);
-          },
-        })
-      );
-    }
-  };
 
   // USEEFFECTS
   React.useLayoutEffect(() => {
@@ -150,6 +107,9 @@ const Chat = () => {
         })
       );
     }
+    return () => {
+      actionsClearSelectedMessages(false);
+    };
   }, [conversationId]);
 
   if (isFetching) {
@@ -174,21 +134,23 @@ const Chat = () => {
         conversationData={conversationData}
         conversationId={conversationId}
         typeConversation={typeConversation}
-        ref={refHeader}
       />
       <ChatContent
-        heightContent={heightContent}
         typeConversation={typeConversation}
         opponentId={opponentId}
         conversationId={conversationId}
         userId={authToken.userId}
         allMessages={allMessages}
+        setErrorBack={setErrorBack}
+        errorBack={errorBack}
+        setIsFetching={setIsFetching}
+        conversationData={conversationData}
       />
       <ChatBottom
-        ref={refBottom}
         firstName={authToken.firstName}
         userId={authToken.userId}
         opponentId={opponentId}
+        conversationData={conversationData}
       />
     </Box>
   );

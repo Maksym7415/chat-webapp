@@ -17,6 +17,10 @@ export const socketOnUserIdChat = (chat: any) =>
       store.getState().conversationsSlice.conversationsList.data;
 
     const conversationFindStore = conversationsList?.[chat.conversationId];
+
+    console.log(conversationFindStore, "conversationFindStore");
+    console.log(message, "message");
+
     const updateMessageConversation = () => {
       store.dispatch(
         actionsConversationList({
@@ -54,7 +58,7 @@ export const socketOnUserIdChat = (chat: any) =>
 
     let componentDateNew = null;
     if (
-      message.sendDate.slice(0, 10) !==
+      message?.sendDate?.slice(0, 10) !==
       findComponentDate?.sendDate?.slice(0, 10)
     ) {
       componentDateNew = { component: "div", sendDate: message.sendDate };
@@ -78,6 +82,8 @@ export const socketOnUserIdChat = (chat: any) =>
         });
       }
 
+      console.log(chatAllMessages, "chatAllMessages");
+      console.log(updateMessages, "updateMessages");
       store.dispatch(
         setAllMessagesAction({ [chat.conversationId]: updateMessages })
       );
@@ -198,17 +204,25 @@ export const socketOnUserIdNewChat = (userId, history) => {
   });
 };
 
-export const socketOnDeleteConversation = () => {
+export const socketOnDeleteConversation = ({ params, history }) => {
   socket.on("deleteChat", ({ ids }) => {
     const conversationsList =
       store.getState().conversationsSlice.conversationsList.data;
+    const allMessages = store.getState().appSlice.allMessages;
 
     let copyConversationsList = { ...conversationsList };
+    let copyAllMessages = { ...allMessages };
 
     ids.map((id) => {
+      delete copyAllMessages[id];
       delete copyConversationsList[id];
     });
 
+    if (ids.includes(params?.id)) {
+      history.push(Paths.main);
+    }
+
+    store.dispatch(setAllMessagesAction({ ...copyAllMessages }));
     store.dispatch(setConversationListAction(copyConversationsList));
   });
 };

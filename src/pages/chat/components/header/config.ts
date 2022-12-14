@@ -1,5 +1,7 @@
 import { actionsTypeActionsChat } from "../../../../actions";
 import { IListItem } from "../../../../ts/interfaces/app";
+import { actionsTypeActionsConversation } from "../../../../actions";
+import languages from "../../../../config/translations";
 
 export const headerSelectedChatsAmount = (lang: string): IListItem[] => [
   {
@@ -36,78 +38,38 @@ export const headerSelectedChatsAmount = (lang: string): IListItem[] => [
   },
 ];
 
-const headerChatDotsOptionsDialogSubNotify = (lang, levelNames) => [
-  {
-    id: 1,
-    title: "Do not notify",
-    value: "notify",
-    icon: {
-      name: "svgs_line_pin",
-    },
-    noFunctional: true,
-  },
+export const headerChatDotsOptionsDialog = (lang) => [
+  // {
+  //   id: 3,
+  //   title: "Search",
+  //   value: "search",
+  //   icon: {
+  //     name: "svgs_line_search",
+  //   },
+  //   noFunctional: true,
+  // },
   {
     id: 2,
-    title: "Video call",
-    value: "videoCall",
+    title: "Select messages",
+    value: actionsTypeActionsChat.selectMessages,
     icon: {
-      name: "svgs_line_videocall",
+      name: "svgs_filled_check_square",
     },
-    noFunctional: true,
   },
   {
     id: 3,
-    title: "search",
-    value: "search",
+    title: languages[lang].generals.clearHistory,
+    value: actionsTypeActionsConversation.clearChat,
+    type: "conversation",
     icon: {
       name: "svgs_line_clear",
     },
-    noFunctional: true,
-  },
-];
-
-export const headerChatDotsOptionsDialog = (lang) => [
-  {
-    id: 1,
-    title: "Do not notify",
-    value: "DoNotNotify",
-    icon: {
-      name: "svgs_line_volume",
-    },
-    subMenu: headerChatDotsOptionsDialogSubNotify(lang, "notify"),
-    levelNames: "notify",
-  },
-  {
-    id: 2,
-    title: "Video call",
-    value: "videoCall",
-    icon: {
-      name: "svgs_line_videocall",
-    },
-    noFunctional: true,
-  },
-  {
-    id: 3,
-    title: "Search",
-    value: "search",
-    icon: {
-      name: "svgs_line_search",
-    },
-    noFunctional: true,
   },
   {
     id: 4,
-    title: "Clear history",
-    value: "clearHistory",
-    icon: {
-      name: "svgs_line_clear",
-    },
-    noFunctional: true,
-  },
-  {
-    id: 5,
     title: "Remove Chat",
-    value: "removeChat",
+    value: actionsTypeActionsConversation.deleteChat,
+    type: "conversation",
     icon: {
       name: "svgs_line_trash_bin_alt",
     },
@@ -116,33 +78,22 @@ export const headerChatDotsOptionsDialog = (lang) => [
 ];
 
 export const headerChatDotsOptionsChat = (lang) => [
-  {
-    id: 1,
-    title: "Do not notify",
-    value: "DoNotNotify",
-    icon: {
-      name: "svgs_line_volume",
-    },
-    subMenu: headerChatDotsOptionsDialogSubNotify(lang, "notify"),
-    levelNames: "notify",
-  },
+  // {
+  //   id: 2,
+  //   title: "Search",
+  //   value: "search",
+  //   icon: {
+  //     name: "svgs_line_search",
+  //   },
+  //   noFunctional: true,
+  // },
   {
     id: 2,
-    title: "Search",
-    value: "search",
+    title: "Select messages",
+    value: "selectMessages",
     icon: {
-      name: "svgs_line_search",
+      name: "svgs_filled_check_square",
     },
-    noFunctional: true,
-  },
-  {
-    id: 3,
-    title: "To complain",
-    value: "toComplain",
-    icon: {
-      name: "svgs_line_report",
-    },
-    noFunctional: true,
   },
   {
     id: 4,
@@ -151,7 +102,6 @@ export const headerChatDotsOptionsChat = (lang) => [
     icon: {
       name: "svgs_line_clear",
     },
-    noFunctional: true,
   },
   {
     id: 5,
@@ -160,6 +110,5 @@ export const headerChatDotsOptionsChat = (lang) => [
     icon: {
       name: "svgs_line_logOut",
     },
-    noFunctional: true,
   },
 ];

@@ -1,6 +1,9 @@
 import React, { useLayoutEffect, useState } from "react";
 import clsx from "clsx";
-import { Divider } from "@mui/material";
+import { contextMenu } from "react-contexify";
+import { Divider, IconButton } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import * as config from "./config";
 import useStyles from "./styles";
 import languages from "../../../../../../config/translations";
 import { getCurrentDay, uuid } from "../../../../../../helpers";
@@ -12,6 +15,9 @@ import {
 import { TYPES_CONVERSATIONS } from "../../../../../../config/constants/general";
 import { useAppSelector, useAppDispatch } from "../../../../../../hooks/redux";
 import store from "../../../../../../reduxToolkit/store";
+import { setContextMenuConfigAction } from "../../../../../../reduxToolkit/app/slice";
+import { eContextMenuId } from "../../../../../../ts/enums/app";
+import { actionsMessagesChat } from "../../../../../../actions";
 
 // need ts
 // rework
@@ -21,6 +27,8 @@ const Message = ({
   isShowAvatar,
   userId,
   typeConversation,
+  conversationId,
+  conversationData,
 }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();
@@ -32,6 +40,8 @@ const Message = ({
     ({ appSlice }) => appSlice.selectedMessages
   );
   const userInfo = useAppSelector(({ userSlice }) => userSlice.userInfo);
+
+  const selfMessage = userInfo.id === messageData.User.id;
 
   // STATES
   const [settings, setSettings] = useState<any>({
@@ -46,8 +56,8 @@ const Message = ({
 
   // FUNCTIONS
   const handleOnPressChat = () => {
-    if (Object.keys(selectedMessages).length && messageData.message) {
-      selectedMessages?.[messageData.id]
+    if (selectedMessages.active && messageData.message) {
+      selectedMessages?.messages?.[messageData.id]
         ? store.dispatch(
             actionsSelectedMessages(
               messageData,
@@ -60,6 +70,16 @@ const Message = ({
     }
   };
 
+  const handleClickContextMessage = async (item) => {
+    await actionsMessagesChat({
+      conversationId,
+      typeAction: item.value,
+      messageData,
+    });
+    contextMenu.hideAll();
+  };
+
+  // console.log(selectedMessages, "selectedMessages");
   // USEEFFECTS
   useLayoutEffect(() => {
     // shared message
@@ -68,7 +88,6 @@ const Message = ({
         ...prev,
         typeMessage: "shared",
         classNames: {
-          root: classes.containerShared,
           rootPaper: classes.paperSharedMessage,
           wrapperMessage: classes.wrapperTextMessageShared,
         },
@@ -80,7 +99,6 @@ const Message = ({
         ...prev,
         typeMessage: "myMessage",
         classNames: {
-          root: classes.containerSender,
           rootPaper: classes.paperSenderMessage,
         },
       }));
@@ -90,7 +108,6 @@ const Message = ({
       ...prev,
       typeMessage: "otherUser",
       classNames: {
-        root: classes.containerFriend,
         rootPaper: classes.paperFriendMessage,
       },
     }));
@@ -98,7 +115,7 @@ const Message = ({
 
   return (
     <div
-      className={clsx(settings.classNames.root, {
+      className={clsx(classes.root, {
         [classes.selectedMessages]: selectedMessages?.[messageData.id],
       })}
       onClick={handleOnPressChat}
@@ -110,11 +127,53 @@ const Message = ({
       //     );
       // }}
       style={{
-        justifyContent:
-          userInfo.id === messageData.User.id ? "flex-end" : "flex-start",
+        gridTemplateColumns: selectedMessages.active ? "26px 1fr" : "1fr",
+        cursor: selectedMessages.active ? "pointer" : "inherit",
       }}
     >
-      <div className={classes.wrapperUp}>
+      {selectedMessages.active && (
+        <div
+          className={classes.messageSelectControl}
+          style={{
+            padding: selectedMessages?.messages?.[messageData.id] ? 0 : 11,
+          }}
+        >
+          {selectedMessages?.messages?.[messageData.id] && (
+            <IconButton className={classes.messageSelected}>
+              <CheckIcon className={classes.messageSelectedIcon} />
+            </IconButton>
+          )}
+        </div>
+      )}
+      <div
+        className={classes.wrapperUp}
+        style={{
+          justifyContent: selfMessage ? "flex-end" : "flex-start",
+        }}
+        onContextMenu={(event: React.MouseEvent<HTMLElement>) => {
+          if (selectedMessages.active) return;
+
+          dispatch(
+            setContextMenuConfigAction({
+              isShowMenu: true,
+              messageId: 0,
+              // config: [],
+              config: config.selectedMessageContext(lang).filter((item) => {
+                if (!selfMessage) {
+                  return !item.self;
+                }
+                return true;
+              }),
+              callBackItem: handleClickContextMessage,
+            })
+          );
+          contextMenu.show({
+            id: eContextMenuId.main,
+            event: event,
+          });
+          // dispatch(setSelectedChatsAction({ [data.conversationId]: data }));
+        }}
+      >
         {[TYPES_CONVERSATIONS.chat].includes(typeConversation) &&
           isShowAvatar && (
             <UserAvatar
@@ -158,10 +217,7 @@ const Message = ({
                   <div
                     className={classes.wrapperFile}
                     style={{
-                      alignSelf:
-                        userInfo.id === messageData.User.id
-                          ? "flex-end"
-                          : "flex-start",
+                      alignSelf: selfMessage ? "flex-end" : "flex-start",
                     }}
                   >
                     {/* {messageData.Files.map((file) =>

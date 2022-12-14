@@ -6,7 +6,7 @@ import store from "../../reduxToolkit/store";
 
 const parseErrorCode = (error) => {
   if (error.response) {
-    console.log(error.response, "error.response");
+    // console.log(error.response, "error.response");
     if (error.response?._response) {
       alert(error.response?._response);
     }

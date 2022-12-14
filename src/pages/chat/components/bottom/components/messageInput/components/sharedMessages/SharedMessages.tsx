@@ -1,21 +1,27 @@
 import React from "react";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import useStyles from "./styles";
 import languages from "../../../../../../../../config/translations";
 import SvgMaker from "../../../../../../../../components/svgMaker";
-import { useAppSelector } from "../../../../../../../../hooks/redux";
-
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../../../../hooks/redux";
+import { shareMessageAction } from "../../../../../../../../reduxToolkit/app/slice";
 // need ts
 
-const SharedMessages = ({
-  forwardMessages,
-  handleClearSharedMessages,
-}: any) => {
+const SharedMessages = ({ forwardMessages }: any) => {
   //HOOKS
   const classes = useStyles();
+  const dispatch = useAppDispatch();
 
   // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
 
+  const handleClose = () => {
+    dispatch(shareMessageAction({}));
+  };
   return (
     <div className={classes.root}>
       <div className={classes.wrapperLeft}>
@@ -53,12 +59,9 @@ const SharedMessages = ({
         </p>
       </div>
       <div className={classes.wrapperRight}>
-        {/* <IconButton
-          icon="close"
-          size={20}
-          onClick={handleClearSharedMessages}
-          className={{ marginHorizontal: 0 }}
-        /> */}
+        <IconButton onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
       </div>
     </div>
   );

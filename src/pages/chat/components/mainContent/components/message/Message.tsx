@@ -22,6 +22,15 @@ import { actionsMessagesChat } from "../../../../../../actions";
 // need ts
 // rework
 
+const stylePaper: React.CSSProperties = {
+  padding: "15px",
+  display: "flex",
+  flexDirection: "column",
+  maxWidth: 500,
+  borderRadius: 10,
+  overflow: "hidden",
+};
+
 const Message = ({
   messageData,
   isShowAvatar,
@@ -113,6 +122,12 @@ const Message = ({
     }));
   }, []);
 
+  const classesRootPaper = React.useMemo(() => {
+    if (messageData.forwardedUser) return classes.paperSharedMessage;
+    if (messageData.fkSenderId === userId) return classes.paperSenderMessage;
+    return classes.paperFriendMessage;
+  }, []);
+
   return (
     <div
       className={clsx(classes.root, {
@@ -126,6 +141,7 @@ const Message = ({
       //       selectedMessagesActions(messageData, actionsTypeObjectSelected.add),
       //     );
       // }}
+
       style={{
         gridTemplateColumns: selectedMessages.active ? "26px 1fr" : "1fr",
         cursor: selectedMessages.active ? "pointer" : "inherit",
@@ -151,8 +167,6 @@ const Message = ({
           justifyContent: selfMessage ? "flex-end" : "flex-start",
         }}
         onContextMenu={(event: React.MouseEvent<HTMLElement>) => {
-          if (selectedMessages.active) return;
-
           dispatch(
             setContextMenuConfigAction({
               isShowMenu: true,
@@ -183,7 +197,8 @@ const Message = ({
             />
           )}
         <div className={classes.wrapper}>
-          <div className={settings.classNames.rootPaper}>
+          <div className={classesRootPaper} style={stylePaper}>
+            {/* <div className={classes.paperSenderMessage}> */}
             {messageData.isEdit && (
               <p className={classes.edited}>
                 {languages[lang].generals.edited}

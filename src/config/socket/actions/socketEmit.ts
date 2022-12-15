@@ -66,7 +66,7 @@ export const socketEmitChatsDeleteMessage = (
   data: any = {
     conversationId: "",
     isDeleteMessage: false,
-    messageId: "",
+    messageId: [],
   },
   cb
 ) => {

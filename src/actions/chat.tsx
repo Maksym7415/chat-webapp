@@ -102,7 +102,7 @@ export const actionsMessagesChat = (props: any) => {
   switch (typeAction) {
     // DELETE MESSAGE
     case actionsTypeActionsChat.deleteMessages:
-      const getRemoveMessages = (conversationId, messageId) => {
+      const getRemoveMessages = (conversationId, messagesIds) => {
         const allMessages = store.getState().appSlice.allMessages;
         const conversationsList =
           store.getState().conversationsSlice.conversationsList.data;
@@ -110,10 +110,7 @@ export const actionsMessagesChat = (props: any) => {
         // deleting a message from the message array
         let allMessagesWithoutDeleteMessage = allMessages[
           conversationId
-        ]?.filter(
-          (message) =>
-            ![messageId?.toString()]?.includes(message?.id?.toString())
-        );
+        ]?.filter((message) => !messagesIds?.includes(message?.id));
 
         // check for the last element in the message array, if it is a date object, then delete it as well
         const checkIsLastDateComponent = (array) => {
@@ -130,12 +127,16 @@ export const actionsMessagesChat = (props: any) => {
           allMessagesWithoutDeleteMessage
         );
 
-        if (conversationsList[conversationId].Messages[0]?.id == messageId) {
+        if (
+          messagesIds.includes(
+            conversationsList[conversationId].Messages[0]?.id
+          )
+        ) {
           store.dispatch(
             actionsConversationList({
               mode: "updateMessageConversation",
               conversationId,
-              messages: updateAllMessages,
+              messages: [updateAllMessages[updateAllMessages.length - 1]],
               conversationsList,
             })
           );
@@ -149,18 +150,19 @@ export const actionsMessagesChat = (props: any) => {
       };
 
       // sorting through the selected messages and sending them through the socket and, if successful, delete them locally through the function - getRemoveMessages
-      return Object.keys(_messages).map((messageId) => {
-        socketEmitChatsDeleteMessage(
-          {
-            conversationId,
-            isDeleteMessage: true,
-            messageId: +messageId,
-          },
-          () => {
-            getRemoveMessages(conversationId, messageId);
-          }
-        );
-      });
+
+      const messagesIds = Object.keys(_messages).map((messageId) => +messageId);
+
+      return socketEmitChatsDeleteMessage(
+        {
+          conversationId,
+          isDeleteMessage: true,
+          messageId: messagesIds,
+        },
+        () => {
+          getRemoveMessages(conversationId, messagesIds);
+        }
+      );
 
     // EDIT MESSAGE
     case actionsTypeActionsChat.editMessage:

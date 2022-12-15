@@ -46,6 +46,7 @@ const SwipeableTemporaryDrawer = () => {
               <ProfilePage
                 typeProfile={drawerConfig.configContent?.typeProfile}
                 conversationData={drawerConfig.configContent?.conversationData}
+                closeDrawer={toggleDrawer(anchor, false)}
               />
             );
           case "main":

@@ -22,7 +22,6 @@ import { setDrawerConfigAction } from "../../../../components/drawer/redux/slice
 import store from "../../../../reduxToolkit/store";
 
 // need ts
-// rework
 
 const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
   //HOOKS
@@ -74,11 +73,6 @@ const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
       typeAction: action.value,
     });
   };
-
-  // VARIABLES
-  const selectedMessagesAmount: any = Object.keys(
-    selectedMessages.messages
-  ).length;
 
   const headerСhatDotsOptions = React.useMemo(() => {
     switch (typeConversation) {
@@ -156,6 +150,7 @@ const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
           onClick={handleClick}
+          disabled={selectedMessages.active}
         >
           <MoreVertIcon />
         </IconButton>

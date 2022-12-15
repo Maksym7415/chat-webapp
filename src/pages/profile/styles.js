@@ -5,7 +5,8 @@ export default makeStyles((theme) => ({
     flex: 1,
   },
   scrollView: {
-    flex: 1,
+    overflowY: "auto",
+    paddingTop: 10,
   },
   wrapperSetPhoto: {
     backgroundColor: "#ffffff",

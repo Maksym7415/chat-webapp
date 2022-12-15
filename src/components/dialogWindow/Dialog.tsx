@@ -14,7 +14,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setDialogWindowClearConfigAction } from "./redux/slice";
 
 // need ts
-// rework
 
 const DialogComponent = () => {
   // HOOKS

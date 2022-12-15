@@ -2,13 +2,35 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import useStyles from "./styles";
-import Avatars from "../../../../components/avatar/avatars";
+import ImagesProfile from "../../../../components/carousel/imagesProfile";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+
+import DefaultAvatar from "../../../../components/avatar/defaultAvatar/";
 
 // need ts
 // rework avatars
 
-const Header = ({ setting }: any) => {
+//test
+const imagesTest = [
+  {
+    id: 1,
+    src: "https://swiperjs.com/demos/images/nature-1.jpg",
+  },
+  {
+    id: 2,
+    src: "https://swiperjs.com/demos/images/nature-2.jpg",
+  },
+  {
+    id: 3,
+    src: "https://swiperjs.com/demos/images/nature-3.jpg",
+  },
+  {
+    id: 4,
+    src: "https://swiperjs.com/demos/images/nature-4.jpg",
+  },
+];
+
+const Header = ({ setting, closeDrawer }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();
 
@@ -44,7 +66,7 @@ const Header = ({ setting }: any) => {
       <div className={classes.wrapper}>
         <div className={classes.containerTop}>
           <IconButton
-            onClick={() => {}}
+            onClick={closeDrawer}
             size="large"
             className={classes.closeIcon}
           >
@@ -52,10 +74,17 @@ const Header = ({ setting }: any) => {
           </IconButton>
         </div>
         <div className={classes.content}>
-          <Avatars
-            avatars={images}
-            fullName={setting.conversationName}
-            isSquare={true}
+          <ImagesProfile
+            images={imagesTest}
+            noImagesComponent={() => (
+              <DefaultAvatar
+                name={setting.nameShort}
+                width={"100%"}
+                height={"300px"}
+                fontSize={"150px"}
+                isSquare={true}
+              />
+            )}
           />
         </div>
       </div>

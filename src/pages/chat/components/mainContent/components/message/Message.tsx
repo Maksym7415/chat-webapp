@@ -20,7 +20,6 @@ import { eContextMenuId } from "../../../../../../ts/enums/app";
 import { actionsMessagesChat } from "../../../../../../actions";
 
 // need ts
-// rework
 
 const stylePaper: React.CSSProperties = {
   padding: "15px",
@@ -37,7 +36,6 @@ const Message = ({
   userId,
   typeConversation,
   conversationId,
-  conversationData,
 }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();
@@ -88,7 +86,6 @@ const Message = ({
     contextMenu.hideAll();
   };
 
-  // console.log(selectedMessages, "selectedMessages");
   // USEEFFECTS
   useLayoutEffect(() => {
     // shared message
@@ -134,14 +131,6 @@ const Message = ({
         [classes.selectedMessages]: selectedMessages?.[messageData.id],
       })}
       onClick={handleOnPressChat}
-      // onLongPress={() => {
-      //   !Object.keys(selectedMessages).length &&
-      //     (messageData.message || !!messageData.Files.length) &&
-      //     store.dispatch(
-      //       selectedMessagesActions(messageData, actionsTypeObjectSelected.add),
-      //     );
-      // }}
-
       style={{
         gridTemplateColumns: selectedMessages.active ? "26px 1fr" : "1fr",
         cursor: selectedMessages.active ? "pointer" : "inherit",
@@ -167,6 +156,8 @@ const Message = ({
           justifyContent: selfMessage ? "flex-end" : "flex-start",
         }}
         onContextMenu={(event: React.MouseEvent<HTMLElement>) => {
+          if (selectedMessages.active) return;
+
           dispatch(
             setContextMenuConfigAction({
               isShowMenu: true,
@@ -185,7 +176,6 @@ const Message = ({
             id: eContextMenuId.main,
             event: event,
           });
-          // dispatch(setSelectedChatsAction({ [data.conversationId]: data }));
         }}
       >
         {[TYPES_CONVERSATIONS.chat].includes(typeConversation) &&
@@ -198,7 +188,6 @@ const Message = ({
           )}
         <div className={classes.wrapper}>
           <div className={classesRootPaper} style={stylePaper}>
-            {/* <div className={classes.paperSenderMessage}> */}
             {messageData.isEdit && (
               <p className={classes.edited}>
                 {languages[lang].generals.edited}

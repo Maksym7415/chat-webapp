@@ -13,13 +13,13 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    padding: "10px 16px",
-    backgroundColor: theme.colors.main,
+    padding: "5px 10px",
+    // backgroundColor: theme.colors.main,
   },
 
   content: {
     position: "relative",
-    backgroundColor: theme.colors.main,
+    // backgroundColor: theme.colors.main,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -28,8 +28,8 @@ export default makeStyles((theme) => ({
   closeIcon: {
     "& svg": {
       "& path": {
-        stroke: "#ffffff",
-        fill: "#ffffff",
+        // stroke: "#ffffff",
+        // fill: "#ffffff",
       },
     },
   },

@@ -6,7 +6,7 @@ import { TYPES_CONVERSATIONS } from "../../config/constants/general";
 import { getNameShort } from "../../helpers";
 import { useAppSelector } from "../../hooks/redux";
 
-const ProfilePage = ({ typeProfile, conversationData }: any) => {
+const ProfilePage = ({ typeProfile, conversationData, closeDrawer }: any) => {
   // HOOKS
   const classes = useStyles();
 
@@ -43,7 +43,7 @@ const ProfilePage = ({ typeProfile, conversationData }: any) => {
 
   return (
     <div className={classes.container}>
-      <Header setting={setting} />
+      <Header setting={setting} closeDrawer={closeDrawer} />
       <div className={classes.scrollView}>
         <MainInfo typeProfile={setting.typeProfile} />
       </div>

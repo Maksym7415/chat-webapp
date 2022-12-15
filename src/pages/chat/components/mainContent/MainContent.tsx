@@ -339,7 +339,6 @@ const MainContent = ({
           // ref={rowRef}
           key={uuid()}
           conversationId={conversationId}
-          conversationData={conversationData}
           isShowAvatar={isShowAvatar}
           messageData={messageData}
           userId={userId}

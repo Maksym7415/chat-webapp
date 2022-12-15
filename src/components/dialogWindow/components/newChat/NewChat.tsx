@@ -1,60 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import clsx from "clsx";
-import {
-  Button,
-  Typography,
-  Input,
-  FormControl,
-  Paper,
-  Chip,
-  Grid,
-  Popover,
-  FormControlLabel,
-  Checkbox,
-  Avatar,
-  Box,
-} from "@mui/material";
-import {
-  useAutocomplete,
-  AutocompleteGetTagProps,
-} from "@mui/base/AutocompleteUnstyled";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
-import { styled } from "@mui/material/styles";
-import { autocompleteClasses } from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import CircularProgress from "@mui/material/CircularProgress";
-
-import SearchIcon from "@mui/icons-material/Search";
+import React, { useState } from "react";
+import { Button, Grid, Box } from "@mui/material";
 import useStyles from "./styles";
-// import socket from "../../socket";
-// import { fullDate } from "../../common/getCorrectDateFormat";
-import { useDebounce } from "../../../../hooks/useDebounce";
-import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { getSearchContactRequest } from "../../../../reduxToolkit/search/requests";
 import UserAvatar from "../../../avatar/userAvatar";
 import languages from "../../../../config/translations";
+import SelectsAsyncPaginateSearch from "../../../SelectsAsyncPaginateSearch";
+import { fullDate } from "../../../../helpers";
+import Snackbar from "../../../../helpers/notistack";
+import { setDialogWindowClearConfigAction } from "../../redux/slice";
+import { socketEmitChatCreation } from "../../../../config/socket/actions/socketEmit";
 
 // need ts
-// rework
 
-// Setting the delay function
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
-
-// Top 5 Nigerian songs on Apple Music
-const top5Songs = [
-  { title: "Organise" },
-  { title: "Joha" },
-  { title: "Terminator" },
-  { title: "Dull" },
-  { title: "Nzaza" },
-];
 const NewChat = () => {
   // HOOKS
   const classes = useStyles();
@@ -62,143 +20,97 @@ const NewChat = () => {
 
   // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
+  const authToken = useAppSelector(({ authSlice }) => authSlice.authToken);
 
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState("");
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<any>([]);
-  const [selectedUsers, setSelectedUsers] = useState<any>([]);
-  const loading = open && options.length === 0;
-  const fetch = React.useMemo(() => {}, []);
-  const searchContacts = useAppSelector(
-    ({ searchSlice }) => searchSlice.searchContacts
-  );
+  // STATES
+  const [selectedContacts, setSelectedContacts] = useState([]);
 
-  React.useEffect(() => {
-    let active = true;
-
-    if (!loading) {
-      return undefined;
+  // FUNCTIONS
+  const createChat = () => {
+    if (!selectedContacts.length) {
+      return Snackbar.error("No selected contacts");
     }
 
-    (async () => {
-      await sleep(1e3); // For demo purposes.
+    const data = [
+      ...selectedContacts.map((item) => ({
+        id: item.id,
+        firstName: item.firstName,
+      })),
+      { id: authToken.userId, firstName: authToken.firstName, isAdmin: true },
+    ];
 
-      if (active) {
-        setOptions([...top5Songs]);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
-
-  React.useEffect(() => {
-    let active = true;
-    // if (inputValue === "") {
-    //   setOptions(value ? [value] : []);
-    //   return undefined;
-    // }
-
-    // fetch({ input: inputValue }, (results) => {
-    //   if (active) {
-    //     let newOptions = [];
-    //     if (value) {
-    //       newOptions = [value];
-    //     }
-    //     if (results) {
-    //       newOptions = [...newOptions, ...results];
-    //     }
-    //     setOptions(newOptions);
-    //   }
-    // });
-
-    return () => {
-      active = false;
-    };
-  }, [value, inputValue, fetch]);
-
-  const getContacts = () => {
-    dispatch(getSearchContactRequest({ params: { search: "" } }));
+    socketEmitChatCreation({
+      data: data,
+      date: fullDate(new Date()),
+      chatName: "Chat",
+      imageData: {},
+      imageFormat: "",
+      cb: () => {
+        dispatch(setDialogWindowClearConfigAction());
+        return Snackbar.success("Create new chat");
+      },
+    });
   };
-  React.useEffect(() => {
-    getContacts();
-  }, []);
 
-  console.log(searchContacts.response, "searchContacts.response");
   return (
     <Grid container className={classes.container}>
-      <Autocomplete
-        id="asynchronous-demo"
-        sx={{ width: 300 }}
-        open={open}
-        onOpen={() => {
-          setOpen(true);
+      <SelectsAsyncPaginateSearch
+        setSelected={(selected) => {
+          setSelectedContacts(selected);
         }}
-        onClose={() => {
-          setOpen(false);
+        selected={selectedContacts}
+        settings={{
+          isMulti: true,
+          getSearchRequest: async (searchQuery, page) => {
+            const response = await dispatch(
+              getSearchContactRequest({
+                params: {
+                  search: searchQuery,
+                  offset: page !== 1 ? (page - 1) * 10 : 0,
+                },
+              })
+            );
+            return {
+              options: response.payload.response,
+              count: response.payload.limit,
+            };
+          },
+          getOptionValue: (option) => option.id,
+          getOptionLabel: (option) => (
+            <Box
+              component="li"
+              className={classes.wrapperContact}
+              key={option.id}
+            >
+              <div className={classes.avatarView}>
+                <UserAvatar
+                  source={option.userAvatar}
+                  status={[1, 3].includes(option.id) ? "online" : ""}
+                  name={option.fullName}
+                  sizeAvatar={38}
+                />
+              </div>
+              <div className={classes.wrapperInfo}>
+                <p className={classes.fullName}>{option.fullName}</p>
+                <p className={classes.login}>{option.login}</p>
+              </div>
+            </Box>
+          ),
+          className: classes.containerSelect,
         }}
-        // isOptionEqualToValue={(option: any, value: any) =>
-        //   option.title === value.title
-        // }
-        getOptionLabel={(option: any) => option.fullName}
-        renderOption={(props, option, index) => (
-          <Box
-            component="li"
-            {...props}
-            className={classes.wrapperContact}
-            key={option.id}
-          >
-            <div className={classes.avatarView}>
-              <UserAvatar
-                source={option.userAvatar}
-                status={[1, 3].includes(option.id) ? "online" : ""}
-                name={option.fullName}
-                sizeAvatar={38}
-              />
-            </div>
-            <div className={classes.wrapperInfo}>
-              <p className={classes.fullName}>{option.fullName}</p>
-              <p className={classes.login}>{option.login}</p>
-            </div>
-          </Box>
-        )}
-        options={searchContacts.response}
-        multiple
-        loading={loading}
-        // filterOptions={(x) => x}
-        // filterSelectedOptions
-        onChange={(event, newValue) => {
-          setSelectedUsers(newValue);
-          return { event, newValue };
+        placeholder={"Select contact"}
+        styles={{
+          root: {
+            marginLeft: 15,
+            paddingBottom: 10,
+          },
         }}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Select Contacts"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <React.Fragment>
-                  {loading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              ),
-            }}
-          />
-        )}
       />
       <Button
         autoFocus
         className={classes.createChatButton}
         variant="contained"
-        // onClick={createChat}
+        onClick={createChat}
       >
         {languages[lang].generals.createAChat}
       </Button>

@@ -30,7 +30,7 @@ function MainDrawer({ closeDrawer }: any) {
   // FUNCTIONS
   const handleMenuAction = (value: string) => {
     closeDrawer();
-    console.log(value, "value");
+
     switch (value) {
       case "newChat":
         dispatch(

@@ -18,9 +18,6 @@ export const socketOnUserIdChat = (chat: any) =>
 
     const conversationFindStore = conversationsList?.[chat.conversationId];
 
-    console.log(conversationFindStore, "conversationFindStore");
-    console.log(message, "message");
-
     const updateMessageConversation = () => {
       store.dispatch(
         actionsConversationList({
@@ -82,8 +79,6 @@ export const socketOnUserIdChat = (chat: any) =>
         });
       }
 
-      console.log(chatAllMessages, "chatAllMessages");
-      console.log(updateMessages, "updateMessages");
       store.dispatch(
         setAllMessagesAction({ [chat.conversationId]: updateMessages })
       );

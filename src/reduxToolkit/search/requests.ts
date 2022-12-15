@@ -12,6 +12,9 @@ export const getSearchContactRequest = createAsyncThunk(
     if (options?.params?.search) {
       params.searchRequest = options?.params?.search;
     }
+    if (options?.params?.offset) {
+      params.offset = options?.params?.offset;
+    }
 
     try {
       const response = await API.get(pathBackSearch.searchContact, {

@@ -28,7 +28,6 @@ const DialogComponent = () => {
   // FUNCTIONS
   const handleClose = () => dispatch(setDialogWindowClearConfigAction());
 
-  console.log(dialogConfig, "dialogConfig");
   const Content = () => {
     switch (dialogConfig.typeContent) {
       case "newChat":

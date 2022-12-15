@@ -119,3 +119,27 @@ export const socketEmitSendMessage = ({
     if (success) setMessage((prev) => ({ ...prev, [conversationId]: "" }));
   });
 };
+
+export const socketEmitChatCreation = ({
+  data,
+  date,
+  chatName,
+  imageData,
+  imageFormat,
+  cb,
+}) => {
+  socket.emit(
+    "chatCreation",
+    data,
+    date,
+    chatName,
+    imageData,
+    imageFormat,
+    (success: boolean) => {
+      console.log(success, "success");
+      if (success) {
+        cb && cb();
+      }
+    }
+  );
+};

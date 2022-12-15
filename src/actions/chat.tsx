@@ -39,7 +39,7 @@ export const actionsSelectedMessages =
         return null;
       case actionsTypeObject.remove:
         delete copySelectedMessages[data?.id];
-        console.log(copySelectedMessages, "copySelectedMessages");
+
         const active = Object.keys(copySelectedMessages).length ? true : false;
         dispatch(
           setSelectedMessagesAction({

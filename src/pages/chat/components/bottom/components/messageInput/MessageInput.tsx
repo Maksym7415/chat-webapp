@@ -33,7 +33,7 @@ const MessageInput = ({ conversationId, userId, firstName, opponentId }) => {
   );
   const messageEdit = useAppSelector(({ appSlice }) => appSlice.messageEdit);
   const forwardMessages = useAppSelector(
-    ({ appSlice }) => appSlice.sheraMessages
+    ({ appSlice }) => appSlice.forwardMessages
   );
 
   // STATES

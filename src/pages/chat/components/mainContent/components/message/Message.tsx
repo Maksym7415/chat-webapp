@@ -15,7 +15,7 @@ import {
 import { TYPES_CONVERSATIONS } from "../../../../../../config/constants/general";
 import { useAppSelector, useAppDispatch } from "../../../../../../hooks/redux";
 import store from "../../../../../../reduxToolkit/store";
-import { setContextMenuConfigAction } from "../../../../../../reduxToolkit/app/slice";
+import { setContextMenuConfigAction } from "../../../../../../components/contextMenu/redux/slice";
 import { eContextMenuId } from "../../../../../../ts/enums/app";
 import { actionsMessagesChat } from "../../../../../../actions";
 

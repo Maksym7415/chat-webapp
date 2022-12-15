@@ -6,7 +6,10 @@ import conversationsSlice from "./conversations/slice";
 import userSlice from "./user/slice";
 import searchSlice from "./search/slice";
 import contactsSlice from "./contacts/slice";
-import snackBarSlice from "../components/snackbar/slice";
+import modalSlice from "../components/modal/redux/slice";
+import drawerSlice from "../components/drawer/redux/slice";
+import contextMenuSlice from "../components/contextMenu/redux/slice";
+import dialogWindowSlice from "../components/dialogWindow/redux/slice";
 
 export default combineReducers({
   appSlice,
@@ -16,5 +19,10 @@ export default combineReducers({
   userSlice,
   searchSlice,
   contactsSlice,
-  snackBarSlice,
+  // in components
+  modalSlice,
+  drawerSlice,
+  contextMenuSlice,
+  dialogWindowSlice,
+  //
 });

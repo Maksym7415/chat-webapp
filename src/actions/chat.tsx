@@ -3,12 +3,11 @@ import {
   setAllMessagesAction,
   editMessageAction,
   shareMessageAction,
-  setDialogConfigAction,
 } from "../reduxToolkit/app/slice";
+import { setDialogWindowConfigAction } from "../components/dialogWindow/redux/slice";
 import { actionsForTypeWithObjKey } from "../helpers/actionsForType";
 import Snackbar from "../helpers/notistack";
 import { socketEmitChatsDeleteMessage } from "../config/socket/actions/socketEmit";
-import { getSnackBar } from "../components/snackbar/slice";
 import { actionsConversationList } from "./conversations";
 import store from "../reduxToolkit/store";
 
@@ -217,7 +216,7 @@ export const actionsMessagesChat = (props: any) => {
       }, []);
 
       return store.dispatch(
-        setDialogConfigAction({
+        setDialogWindowConfigAction({
           open: true,
           typeContent: "shareMessage",
           title: "Share Message",

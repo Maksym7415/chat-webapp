@@ -11,11 +11,7 @@ import { Paths } from "../../../../routing/config/paths";
 import languages from "../../../../config/translations";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { actionsSelectedConversation } from "../../../../actions";
-import {
-  setContextMenuConfigAction,
-  setSelectedChatsAction,
-} from "../../../../reduxToolkit/app/slice";
-import store from "../../../../reduxToolkit/store";
+import { setContextMenuConfigAction } from "../../../../components/contextMenu/redux/slice";
 import { IParams } from "../../../../ts/interfaces/app";
 import { eContextMenuId } from "../../../../ts/enums/app";
 import { IConversation } from "../../../../ts/interfaces/conversations";
@@ -92,7 +88,6 @@ const ConversationItem = ({ data, usersTyping }: IProps) => {
           id: eContextMenuId.main,
           event: event,
         });
-        // dispatch(setSelectedChatsAction({ [data.conversationId]: data }));
       }}
       onClick={() => handleClickChatItem(data.conversationId)}
       className={clsx(classes.container, {

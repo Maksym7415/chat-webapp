@@ -14,4 +14,4 @@ export {
   actionsMessagesChat,
 } from "./chat";
 export { actionLogOut } from "./user";
-export { actionClearDialogConfig, actionsClearSelectedMessages } from "./app";
+export { actionsClearSelectedMessages } from "./app";

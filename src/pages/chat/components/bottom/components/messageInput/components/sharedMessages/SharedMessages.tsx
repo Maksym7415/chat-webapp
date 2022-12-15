@@ -22,6 +22,7 @@ const SharedMessages = ({ forwardMessages }: any) => {
   const handleClose = () => {
     dispatch(shareMessageAction({}));
   };
+
   return (
     <div className={classes.root}>
       <div className={classes.wrapperLeft}>

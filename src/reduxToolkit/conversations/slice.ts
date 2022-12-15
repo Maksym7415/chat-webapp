@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as requests from "./requests";
-import { IConversation } from "../../ts/interfaces/conversations";
 
 interface IInitialState {
   conversationMessages: any;
@@ -83,15 +82,6 @@ const conversationsSlice = createSlice({
         state.conversationsList.data = action.payload.data;
       }
     );
-    // builder.addCase(
-    //   requests.getUserConversationsRequest.rejected,
-    //   (state, action) => {
-    //     state.login = {
-    //       ...initialState[state.login],
-    //       error: action.payload,
-    //     };
-    //   },
-    // );
     builder.addCase(
       requests.getConversationMessagesRequest.fulfilled,
       (state, action) => {

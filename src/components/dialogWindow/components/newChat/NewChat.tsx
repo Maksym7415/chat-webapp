@@ -32,13 +32,13 @@ import useStyles from "./styles";
 // import { fullDate } from "../../common/getCorrectDateFormat";
 import { useDebounce } from "../../../../hooks/useDebounce";
 import { useOnClickOutside } from "../../../../hooks/useOnClickOutside";
-import DeleteItem from "../../../deleteItem/DeleteItem";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { getSearchContactRequest } from "../../../../reduxToolkit/search/requests";
 import UserAvatar from "../../../avatar/userAvatar";
 import languages from "../../../../config/translations";
 
 // need ts
+// rework
 
 // Setting the delay function
 function sleep(delay = 0) {

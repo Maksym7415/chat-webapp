@@ -53,11 +53,7 @@ const SettingProfile = ({ closeDrawer }: any) => {
         data: sendData,
         cb: () => {
           enqueueSnackbar("Success update info", { variant: "success" });
-          dispatch(
-            getUserProfileDataRequest({
-              cb: () => {},
-            })
-          );
+          dispatch(getUserProfileDataRequest({}));
         },
         errorCb: (error) => {
           enqueueSnackbar(error.message, { variant: "error" });

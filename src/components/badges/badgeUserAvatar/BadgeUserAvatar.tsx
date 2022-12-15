@@ -31,9 +31,7 @@ const BadgeUserAvatar = ({
           </StyledBadge>
         );
       case "selected":
-        return (
-          <div>{/* <Icon name="checkmark" size={19} color="#ffffff" /> */}</div>
-        );
+        return <div></div>;
 
       default:
         return <>{children}</>;

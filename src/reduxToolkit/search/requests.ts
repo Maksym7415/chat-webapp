@@ -45,7 +45,6 @@ export const getOpponentsIdWhereConversTypeDialogRequest = createAsyncThunk(
       return response.data;
     } catch (error) {
       return Promise.reject(error);
-    } finally {
     }
   }
 );

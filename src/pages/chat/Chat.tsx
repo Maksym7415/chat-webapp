@@ -27,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
   errorBackText: { fontSize: 28, fontWeight: "500" },
 }));
 
-const loadMessageOffset = 15;
-
 const Chat = () => {
   // HOOKS
   const dispatch = useAppDispatch();
@@ -62,8 +60,6 @@ const Chat = () => {
   );
   const typeConversation =
     conversationData?.conversationType?.toLowerCase() || "";
-  const pagination =
-    userHistoryConversations?.[conversationId]?.pagination || {};
 
   // USEEFFECTS
   React.useLayoutEffect(() => {

@@ -47,7 +47,7 @@ const ErrorPage = ({ content }: IProps) => {
           case eContentErrorPage.notFound:
             return <NotFound />;
           default:
-            return <>error</>;
+            return <>Error</>;
         }
       })()}
     </div>

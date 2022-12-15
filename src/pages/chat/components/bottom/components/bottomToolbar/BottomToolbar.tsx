@@ -19,8 +19,7 @@ import {
   actionsClearSelectedMessages,
 } from "../../../../../../actions";
 
-// rework
-const BottomToolbar = ({ conversationId, conversationData }: any) => {
+const BottomToolbar = ({ conversationId }: any) => {
   // HOOKS
   const classes = useStyles();
 

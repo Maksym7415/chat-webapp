@@ -64,7 +64,6 @@ const MainPage = () => {
     }
   }, [authToken]);
 
-  // USEEFFECTS
   React.useLayoutEffect(() => {
     !conversationsListMass?.length && dispatch(getUserConversationsRequest({}));
   }, []);

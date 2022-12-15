@@ -7,15 +7,13 @@ import { Paths } from "../../../../routing/config/paths";
 import { actionLogOut } from "../../../../actions";
 import BaseSelect from "../../../selects/BaseSelect";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { setDialogWindowConfigAction } from "../../../dialogWindow/redux/slice";
 import {
   putUpdateProfileRequest,
   getUserProfileDataRequest,
 } from "../../../../reduxToolkit/user/requests";
 import { setLangAction } from "../../../../reduxToolkit/setting/slice";
-import {
-  setModalConfigAction,
-  setDialogConfigAction,
-} from "../../../../reduxToolkit/app/slice";
+import { setModalConfigAction } from "../../../../components/modal/redux/slice";
 
 // need ts
 
@@ -36,7 +34,7 @@ function MainDrawer({ closeDrawer }: any) {
     switch (value) {
       case "newChat":
         dispatch(
-          setDialogConfigAction({
+          setDialogWindowConfigAction({
             open: true,
             typeContent: "newChat",
             title: "New Chat",

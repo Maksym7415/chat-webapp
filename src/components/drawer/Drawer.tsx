@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import MainDrawer from "./components/mainDrawer";
 import ProfilePage from "../../pages/profile";
-import { setDrawerConfigAction } from "../../reduxToolkit/app/slice";
+import { setDrawerConfigAction } from "./redux/slice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 type Anchor = "top" | "left" | "bottom" | "right";
@@ -14,7 +14,7 @@ const SwipeableTemporaryDrawer = () => {
 
   // SELECTORS
   const drawerConfig: any = useAppSelector(
-    ({ appSlice }) => appSlice.drawerConfig
+    ({ drawerSlice }) => drawerSlice.drawerConfig
   );
 
   // FUNCTIONS

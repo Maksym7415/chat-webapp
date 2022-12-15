@@ -18,7 +18,6 @@ const initialState = {
   verificationCode: null,
   authToken: initialAuthToken,
   headers: { accessToken: "" },
-  isLogout: false,
 };
 
 const authSlice = createSlice({
@@ -35,9 +34,6 @@ const authSlice = createSlice({
     setAuthHeadersAction(state, { payload }) {
       state.headers = { ...state.headers, ...payload };
     },
-    setIsLogoutAction(state, { payload }) {
-      state.isLogout = payload;
-    },
     setLoginSingInAction(state, { payload }) {
       state.loginSingIn = payload;
     },
@@ -49,11 +45,7 @@ const authSlice = createSlice({
   },
 });
 
-export const {
-  authTokenAction,
-  setAuthHeadersAction,
-  setLoginSingInAction,
-  setIsLogoutAction,
-} = authSlice.actions;
+export const { authTokenAction, setAuthHeadersAction, setLoginSingInAction } =
+  authSlice.actions;
 
 export default authSlice.reducer;

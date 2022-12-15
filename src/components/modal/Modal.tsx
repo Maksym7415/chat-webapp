@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Fade from "../reactSpring/fade";
 import SettingProfile from "./components/settingProfile";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setModalConfigAction } from "../../reduxToolkit/app/slice";
+import { setModalClearConfigAction } from "./redux/slice";
 
 // need ts
 
@@ -31,18 +31,11 @@ const ModalComponent = () => {
 
   // SELECTORS
   const modalConfig: any = useAppSelector(
-    ({ appSlice }) => appSlice.modalConfig
+    ({ modalSlice }) => modalSlice.modalConfig
   );
 
   // FUNCTIONS
-  const handleClose = () =>
-    dispatch(
-      setModalConfigAction({
-        open: false,
-        renderContent: "settingProfile",
-        styles: {},
-      })
-    );
+  const handleClose = () => dispatch(setModalClearConfigAction());
 
   return (
     <Modal

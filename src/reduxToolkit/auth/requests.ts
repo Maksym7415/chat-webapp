@@ -3,7 +3,6 @@ import {
   authTokenAction,
   setLoginSingInAction,
   setAuthHeadersAction,
-  setIsLogoutAction,
 } from "./slice";
 import API from "../../config/axios";
 import { pathBackAuth } from "../../config/constants/urlBack";
@@ -16,11 +15,15 @@ export const postLoginRequest = createAsyncThunk(
       const response = await API.post(pathBackAuth.signIn, {
         ...options.data,
       });
+
       dispatch(setLoginSingInAction(options.data.login));
+
       options.cb && options.cb(response.data.verificationCode);
+
       return response.data;
     } catch (error) {
       options.errorCb && options.errorCb(error?.data);
+
       return Promise.reject(error);
     }
   }
@@ -44,12 +47,12 @@ export const postVerificationRequest = createAsyncThunk(
         })
       );
 
-      dispatch(setIsLogoutAction(false));
-
       options.cb && options.cb();
+
       return response.data;
     } catch (error) {
       options.errorCb && options.errorCb(error?.data);
+
       return Promise.reject(error);
     }
   }
@@ -62,6 +65,7 @@ export const postSingUpRequest = createAsyncThunk(
       const response = await API.post(pathBackAuth.signUp, {
         ...options.data,
       });
+
       dispatch(
         postLoginRequest({
           data: {
@@ -70,9 +74,11 @@ export const postSingUpRequest = createAsyncThunk(
           cb: options.cb(),
         })
       );
+
       return response.data;
     } catch (error) {
       options.errorCb && options.errorCb(error?.data);
+
       return Promise.reject(error);
     }
   }

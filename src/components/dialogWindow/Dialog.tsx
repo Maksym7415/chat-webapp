@@ -11,7 +11,7 @@ import NewChat from "./components/newChat";
 import ShareMessage from "./components/shareMessage";
 import useStyles from "./styles";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { actionClearDialogConfig } from "../../actions";
+import { setDialogWindowClearConfigAction } from "./redux/slice";
 
 // need ts
 // rework
@@ -22,10 +22,12 @@ const DialogComponent = () => {
   const classes = useStyles();
 
   // SELECTORS
-  const dialogConfig = useAppSelector(({ appSlice }) => appSlice.dialogConfig);
+  const dialogConfig = useAppSelector(
+    ({ dialogWindowSlice }) => dialogWindowSlice.dialogConfig
+  );
 
   // FUNCTIONS
-  const handleClose = () => actionClearDialogConfig();
+  const handleClose = () => dispatch(setDialogWindowClearConfigAction());
 
   console.log(dialogConfig, "dialogConfig");
   const Content = () => {

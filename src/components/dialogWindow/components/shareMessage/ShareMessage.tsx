@@ -2,16 +2,14 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Typography, TextField, Box } from "@mui/material";
 import { shareMessageAction } from "../../../../reduxToolkit/app/slice";
-import DefaultAvatar from "../../../avatar/defaultAvatar/DefaultAvatar";
 import UserAvatar from "../../../avatar/userAvatar";
 import { Paths } from "../../../../routing/config/paths";
 import useStyles from "./styles";
 import languages from "../../../../config/translations";
-import { actionClearDialogConfig } from "../../../../actions";
+import { setDialogWindowClearConfigAction } from "../../redux/slice";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 // need ts
-// rework (dialog)
 
 const SharedMessage = ({ data }: any) => {
   // HOOKS
@@ -19,7 +17,7 @@ const SharedMessage = ({ data }: any) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  // // SELECTORS
+  // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
   const conversationsList = useAppSelector(
     ({ conversationsSlice }) => conversationsSlice.conversationsList.data
@@ -47,7 +45,7 @@ const SharedMessage = ({ data }: any) => {
         from: "shareMessage",
       },
     });
-    actionClearDialogConfig();
+    dispatch(setDialogWindowClearConfigAction());
   };
 
   return (

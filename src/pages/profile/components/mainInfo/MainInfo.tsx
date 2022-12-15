@@ -1,7 +1,6 @@
 import React from "react";
 import { Switch, Divider } from "@mui/material";
 import useStyles from "./styles";
-import useStylesListMenu from "../listMenu/styles";
 import RITitleWithSubtitleAndRightComponent from "../../../../components/renders/rendersItem/RITitleWithSubtitleAndRightComponent";
 import { TYPES_CONVERSATIONS } from "../../../../config/constants/general";
 import { useAppSelector } from "../../../../hooks/redux";
@@ -11,7 +10,6 @@ import { useAppSelector } from "../../../../hooks/redux";
 const MainInfo = ({ typeProfile }: any) => {
   // HOOKS
   const classes = useStyles();
-  const classesListMenu = useStylesListMenu();
 
   // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
@@ -23,14 +21,14 @@ const MainInfo = ({ typeProfile }: any) => {
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   return (
-    <div className={classesListMenu.wrapperList}>
+    <div className={classes.wrapperList}>
       {(() => {
         switch (typeProfile) {
           case TYPES_CONVERSATIONS.dialog:
             return (
               <>
-                <p className={classesListMenu.listTitle}>Data</p>
-                <div className={classesListMenu.list}>
+                <p className={classes.listTitle}>Data</p>
+                <div className={classes.list}>
                   <RITitleWithSubtitleAndRightComponent
                     title={"+1 (234) 567 89 01*"}
                     subTitle={"Phone number"}
@@ -76,8 +74,8 @@ const MainInfo = ({ typeProfile }: any) => {
           case TYPES_CONVERSATIONS.group:
             return (
               <>
-                <p className={classesListMenu.listTitle}>Вescription</p>
-                <div className={classesListMenu.list}>
+                <p className={classes.listTitle}>Вescription</p>
+                <div className={classes.list}>
                   <RITitleWithSubtitleAndRightComponent
                     title={
                       "a spoken or written representation or account of a person, object, or event.*"

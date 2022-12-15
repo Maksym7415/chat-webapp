@@ -36,4 +36,18 @@ export default makeStyles((theme) => ({
     flexDirection: "row",
     backgroundColor: theme.colors.gray_10,
   },
+  wrapperList: {
+    backgroundColor: "#ffffff",
+    // marginTop: 12,
+    // paddingTop: 19,
+    paddingLeft: 21,
+  },
+  listTitle: {
+    fontWeight: "500",
+    fontSize: 15,
+    color: "#4094D0",
+  },
+  list: {
+    marginTop: 9,
+  },
 }));

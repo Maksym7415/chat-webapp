@@ -12,7 +12,6 @@ const RenderConditionsList = ({
     boxCenter: {},
     noResults: {},
   },
-  settingLoader = {},
 }: any) => {
   // HOOKS
   const classes = useStyles();

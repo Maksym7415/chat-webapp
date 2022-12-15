@@ -1,9 +1,9 @@
 import React from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MessageInput from "./components/messageInput/MessageInput";
 import BottomToolbar from "./components/bottomToolbar";
 import { useAppSelector } from "../../../../hooks/redux";
-import { ILocationParams, IParams } from "../../../../ts/interfaces/app";
+import { IParams } from "../../../../ts/interfaces/app";
 
 const ChatBottom = ({
   firstName,
@@ -24,12 +24,7 @@ const ChatBottom = ({
 
   const renderBottom = () => {
     if (selectedMessages.active) {
-      return (
-        <BottomToolbar
-          conversationId={conversationId}
-          conversationData={conversationData}
-        />
-      );
+      return <BottomToolbar conversationId={conversationId} />;
     } else {
       return (
         <MessageInput
@@ -42,12 +37,7 @@ const ChatBottom = ({
     }
   };
 
-  return (
-    <>
-      {renderBottom()}
-      {/* <BottomToolbar /> */}
-    </>
-  );
+  return <>{renderBottom()}</>;
 };
 
 export default React.memo(ChatBottom);

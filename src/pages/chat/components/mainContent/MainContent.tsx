@@ -48,7 +48,7 @@ import {
 } from "../../../../actions";
 import { TYPES_CONVERSATIONS } from "../../../../config/constants/general";
 import store from "../../../../reduxToolkit/store";
-import { setContextMenuConfigAction } from "../../../../reduxToolkit/app/slice";
+import { setContextMenuConfigAction } from "../../../../components/contextMenu/redux/slice";
 import { eContextMenuId } from "../../../../ts/enums/app";
 import { actionsMessagesChat } from "../../../../actions";
 import Message from "./components/message";

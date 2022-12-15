@@ -9,7 +9,9 @@ export const getUserProfileDataRequest = createAsyncThunk(
   async (options: any) => {
     try {
       const response = await API.get(pathBackUser.getUserProfileData);
+
       options?.cb && options.cb();
+
       return response.data;
     } catch (error) {
       return Promise.reject(error);

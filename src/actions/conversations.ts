@@ -28,7 +28,7 @@ export const actionsTypeActionsConversation = {
 };
 
 export const actionsSelectedConversation = (props) => {
-  const selectedChats = store.getState().appSlice.selectedСhats;
+  const selectedChats = store.getState().appSlice.selectedChats;
 
   const { typeAction, dataConversation = null } = props;
 

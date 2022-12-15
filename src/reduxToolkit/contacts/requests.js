@@ -15,7 +15,6 @@ export const postCheckEmailsRequest = createAsyncThunk(
       return response.data;
     } catch (error) {
       return Promise.reject(error);
-    } finally {
     }
   }
 );

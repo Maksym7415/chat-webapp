@@ -3,14 +3,12 @@ import { makeStyles } from "@mui/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton } from "@mui/material";
+import { setDrawerConfigAction } from "../../../../../../../../components/drawer/redux/slice";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../../hooks/redux";
-import {
-  setDrawerConfigAction,
-  setSideLeftConfigAction,
-} from "../../../../../../../../reduxToolkit/app/slice";
+import { setSideLeftConfigAction } from "../../../../../../../../reduxToolkit/app/slice";
 import { eSideLeftConfigPage } from "../../../../../../../../ts/enums/app";
 
 // need ts

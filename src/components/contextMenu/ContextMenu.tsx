@@ -29,7 +29,7 @@ const ContextMenu = () => {
 
   // SELECTORS
   const contextMenuConfig: any = useAppSelector(
-    ({ appSlice }) => appSlice.contextMenuConfig
+    ({ contextMenuSlice }) => contextMenuSlice.contextMenuConfig
   );
 
   return (

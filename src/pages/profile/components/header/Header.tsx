@@ -1,45 +1,16 @@
 import React from "react";
-import clsx from "clsx";
-import { useTheme } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import useStyles from "./styles";
-import SvgMaker from "../../../../components/svgMaker";
 import Avatars from "../../../../components/avatar/avatars";
-import { Paths } from "../../../../routing/config/paths";
-// import MenuPaper from "../../../../components/menu/menuPaper";
-import {
-  headerOptions,
-  // headerOptionsChat,
-  // headerOptionsGroup,
-  // headerOptionsDialog,
-  valuesOptions,
-} from "./config";
-import {
-  getUserAvatars,
-  // deleteAvatar,
-} from "../../../../reduxToolkit/user/requests";
-import { actionLogOut } from "../../../../actions/";
-import { handleInsertPhotoVideo } from "../../config";
-import {
-  TYPES_CONVERSATIONS,
-  TYPES_FROM_TO_SEARCH_SCREEN,
-} from "../../../../config/constants/general";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 // need ts
-// rework
+// rework avatars
 
-const screenWidth = 0;
-const Header = ({
-  setShowBiggerImg,
-  showBiggerImg,
-  refBottomSheet,
-  setting,
-}: any) => {
+const Header = ({ setting }: any) => {
   // HOOKS
   const dispatch = useAppDispatch();
-  const theme: any = useTheme();
 
   // STYLES
   const classes = useStyles();

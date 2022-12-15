@@ -6,7 +6,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import * as config from "./config";
 import useStyles from "./styles";
 import languages from "../../../../../../config/translations";
-import { getCurrentDay, uuid } from "../../../../../../helpers";
+import { getCurrentDay } from "../../../../../../helpers";
 import UserAvatar from "../../../../../../components/avatar/userAvatar";
 import {
   actionsTypeObjectSelected,
@@ -162,7 +162,6 @@ const Message = ({
             setContextMenuConfigAction({
               isShowMenu: true,
               messageId: 0,
-              // config: [],
               config: config.selectedMessageContext(lang).filter((item) => {
                 if (!selfMessage) {
                   return !item.self;

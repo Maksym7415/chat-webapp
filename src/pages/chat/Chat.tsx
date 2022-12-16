@@ -130,6 +130,7 @@ const Chat = () => {
         conversationData={conversationData}
         conversationId={conversationId}
         typeConversation={typeConversation}
+        messages={allMessages?.[conversationId] || []}
       />
       <ChatContent
         typeConversation={typeConversation}

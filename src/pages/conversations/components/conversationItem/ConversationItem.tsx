@@ -15,6 +15,7 @@ import { setContextMenuConfigAction } from "../../../../components/contextMenu/r
 import { IParams } from "../../../../ts/interfaces/app";
 import { eContextMenuId } from "../../../../ts/enums/app";
 import { IConversation } from "../../../../ts/interfaces/conversations";
+import { actionsTypeActionsConversation } from "../../../../actions";
 
 interface IProps {
   data: IConversation;
@@ -62,6 +63,17 @@ const ConversationItem = ({ data, usersTyping }: IProps) => {
   const someBodyWriting: string =
     usersTyping[data.conversationId] && getString(data);
   const isConversationDialog: boolean = data.conversationType === "Dialog";
+  const contextMenuConfig = React.useMemo(() => {
+    return selectedConversationContext(lang).filter((item) => {
+      if (
+        !data.Messages.length &&
+        [actionsTypeActionsConversation.clearChat].includes(item.value)
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [data.Messages, lang]);
 
   // test
   const numberOfUnreadMessages = [1, 7].includes(data.conversationId)
@@ -80,7 +92,7 @@ const ConversationItem = ({ data, usersTyping }: IProps) => {
           setContextMenuConfigAction({
             isShowMenu: true,
             messageId: 0,
-            config: selectedConversationContext(lang),
+            config: contextMenuConfig,
             callBackItem: handleClickContextChatItem,
           })
         );

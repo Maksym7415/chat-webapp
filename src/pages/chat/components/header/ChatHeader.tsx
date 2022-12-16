@@ -15,6 +15,8 @@ import SvgMaker from "../../../../components/svgMaker";
 import {
   actionsMessagesChat,
   actionsSelectedConversation,
+  actionsTypeActionsChat,
+  actionsTypeActionsConversation,
 } from "../../../../actions";
 import { findValueKeyInNestedArr } from "../../../../helpers";
 import { useAppSelector } from "../../../../hooks/redux";
@@ -23,7 +25,12 @@ import store from "../../../../reduxToolkit/store";
 
 // need ts
 
-const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
+const ChatHeader = ({
+  conversationData,
+  conversationId,
+  typeConversation,
+  messages,
+}: any) => {
   //HOOKS
   const classes = useStyles();
 
@@ -34,8 +41,6 @@ const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
 
   // STATES
-  const [levelNameChatDotsOptions, setLevelNameChatDotsOptions] =
-    React.useState("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -47,19 +52,8 @@ const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
     setAnchorEl(null);
   };
 
-  const closeOptions = () => {
-    setTimeout(() => {
-      setLevelNameChatDotsOptions("");
-    }, 500);
-    handleClose();
-  };
-
   const handleOptions = async (action: any, levelNames: any) => {
-    if (levelNames) {
-      return setLevelNameChatDotsOptions(levelNames);
-    }
-
-    closeOptions();
+    handleClose();
 
     if (action.type === "conversation") {
       return actionsSelectedConversation({
@@ -75,31 +69,26 @@ const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
   };
 
   const headerСhatDotsOptions = React.useMemo(() => {
-    switch (typeConversation) {
-      case TYPES_CONVERSATIONS.dialog:
-        return levelNameChatDotsOptions
-          ? findValueKeyInNestedArr(
-              headerChatDotsOptionsDialog(lang),
-              "levelNames",
-              levelNameChatDotsOptions,
-              "subMenu",
-              "subMenu"
-            )
-          : headerChatDotsOptionsDialog(lang);
-      case TYPES_CONVERSATIONS.chat:
-        return levelNameChatDotsOptions
-          ? findValueKeyInNestedArr(
-              headerChatDotsOptionsChat(lang),
-              "levelNames",
-              levelNameChatDotsOptions,
-              "subMenu",
-              "subMenu"
-            )
-          : headerChatDotsOptionsChat(lang);
-      default:
-        return [];
+    let options = [];
+    if (TYPES_CONVERSATIONS.dialog) {
+      options = headerChatDotsOptionsDialog(lang);
     }
-  }, [typeConversation, levelNameChatDotsOptions]);
+    if (TYPES_CONVERSATIONS.chat) {
+      options = headerChatDotsOptionsChat(lang);
+    }
+    return options.filter((item) => {
+      if (
+        !messages.length &&
+        [
+          actionsTypeActionsChat.selectMessages,
+          actionsTypeActionsConversation.clearChat,
+        ].includes(item.value)
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [typeConversation, messages]);
 
   // RENDERS
   const renderTopLeftComponent = () => {
@@ -163,19 +152,6 @@ const ChatHeader = ({ conversationData, conversationId, typeConversation }) => {
           open={open}
           onClose={handleClose}
         >
-          {levelNameChatDotsOptions ? (
-            <MenuItem
-              className={classes.dotsOption}
-              onClick={() => {
-                setLevelNameChatDotsOptions((prev) =>
-                  prev.split("_").slice(0, -1).join("_")
-                );
-              }}
-            >
-              <div className={classes.wrapperIconOption}></div>
-              <p>Back</p>
-            </MenuItem>
-          ) : null}
           {headerСhatDotsOptions.map((action) => {
             const isSubMenu = action?.subMenu?.length && action.levelNames;
             return (

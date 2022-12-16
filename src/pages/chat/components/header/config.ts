@@ -90,15 +90,16 @@ export const headerChatDotsOptionsChat = (lang) => [
   {
     id: 2,
     title: "Select messages",
-    value: "selectMessages",
+    value: actionsTypeActionsChat.selectMessages,
     icon: {
       name: "svgs_filled_check_square",
     },
   },
   {
     id: 4,
-    title: "Clear history",
-    value: "clearHistory",
+    title: languages[lang].generals.clearHistory,
+    value: actionsTypeActionsConversation.clearChat,
+    type: "conversation",
     icon: {
       name: "svgs_line_clear",
     },
@@ -106,7 +107,8 @@ export const headerChatDotsOptionsChat = (lang) => [
   {
     id: 5,
     title: "Delete and leave the group",
-    value: "removeChat",
+    value: actionsTypeActionsConversation.deleteChat,
+    type: "conversation",
     icon: {
       name: "svgs_line_logOut",
     },

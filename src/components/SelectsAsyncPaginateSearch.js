@@ -40,10 +40,21 @@ function SelectsAsyncPaginateSearch({
   // FUNCTIONS
   const loadOptions = async (searchQuery, loadedOptions, { page }) => {
     const payload = await settings.getSearchRequest(searchQuery, page);
-    if (!payload?.options || !payload.count) return;
+    const count = payload?.count || payload?.limit;
+
+    if (!payload?.options || !count) return;
+
+    let hasMore = false;
+
+    if (payload?.limit) {
+      hasMore = loadedOptions.length + payload.options.length >= payload.limit;
+    } else {
+      hasMore = loadedOptions.length + payload.options.length < payload?.count;
+    }
+    console.log(hasMore, "hasMore");
     return {
       options: payload.options || [],
-      hasMore: loadedOptions.length + payload.options.length < payload.count,
+      hasMore,
       additional: {
         page: page + 1,
       },

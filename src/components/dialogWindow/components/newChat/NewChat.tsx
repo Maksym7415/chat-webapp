@@ -72,7 +72,7 @@ const NewChat = () => {
             );
             return {
               options: response.payload.response,
-              count: response.payload.limit,
+              limit: response.payload.limit,
             };
           },
           getOptionValue: (option) => option.id,

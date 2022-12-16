@@ -116,6 +116,25 @@ const MessageInput = ({ conversationId, userId, firstName, opponentId }) => {
     setMessage((prev) => ({ ...prev, [conversationId]: "" }));
   };
 
+  const onKeyPress = (e) => {
+    if (e.keyCode === 13 && e.shiftKey) {
+      let start = e.target.selectionStart,
+        end = e.target.selectionEnd;
+      e.preventDefault();
+
+      setMessage((prevState: any) => ({
+        ...prevState,
+        [conversationId]:
+          prevState?.[conversationId].substring(0, start) +
+          "\n" +
+          prevState?.[conversationId].substring(end),
+      }));
+    } else if (e.keyCode === 13) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   // USEEFFECTS
   React.useEffect(() => {
     setSharedMessages(forwardMessages);
@@ -159,6 +178,7 @@ const MessageInput = ({ conversationId, userId, firstName, opponentId }) => {
             maxRows={4}
             onChange={handleChangeMessage}
             placeholder={`${languages[lang].generals.typeMessage}...`}
+            onKeyDown={onKeyPress}
           />
           <RightInputComponent
             message={message[conversationId]}

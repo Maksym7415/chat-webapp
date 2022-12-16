@@ -167,6 +167,7 @@ export default makeStyles((theme) => ({
   },
 
   wrapperSendData: {
+    padding: "5px 0",
     width: "100%",
     display: "flex",
     alignItems: "center",

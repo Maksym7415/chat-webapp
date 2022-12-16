@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     height: "100%",
     display: "flex",
-    backgroundImage: `url(${IMAGES.bgTest})`,
+    backgroundImage: `url(${IMAGES.bgTest5})`,
   },
 }));
 

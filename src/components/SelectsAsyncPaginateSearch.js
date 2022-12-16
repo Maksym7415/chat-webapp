@@ -51,7 +51,7 @@ function SelectsAsyncPaginateSearch({
     } else {
       hasMore = loadedOptions.length + payload.options.length < payload?.count;
     }
-    console.log(hasMore, "hasMore");
+
     return {
       options: payload.options || [],
       hasMore,

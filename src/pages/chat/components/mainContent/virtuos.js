@@ -16,16 +16,24 @@ import {
   setAllMessagesAction,
   setMessagesChatAction,
 } from "../../../../reduxToolkit/app/slice";
+import usePrevious from "../../../../hooks/usePrevious";
 
 // need ts
 const LOAD_MESSAGE_OFFSET = 15;
 
+let index = 0;
 let prevChatId = -1;
 
-const MainContent = ({ userId, conversationId, typeConversation }) => {
+const MainContent = ({
+  userId,
+  conversationId,
+  typeConversation,
+}: // allMessages,
+any) => {
   //HOOKS
   const dispatch = useAppDispatch();
   const classes = useStyles();
+  // const prevChatId = usePrevious(conversationId);
 
   // SELECTORS
   const lang = useAppSelector(({ settingSlice }) => settingSlice.lang);
@@ -40,6 +48,8 @@ const MainContent = ({ userId, conversationId, typeConversation }) => {
     userHistoryConversations?.[conversationId]?.pagination || {};
 
   // STATES
+  // const [messages, setMessages] = React.useState([]);
+  const [_, setMessages] = React.useState([]);
   const [firstItemIndex, setFirstItemIndex] = useState(0);
 
   // FUNCTIONS
@@ -79,7 +89,7 @@ const MainContent = ({ userId, conversationId, typeConversation }) => {
     }
 
     return false;
-  }, [firstItemIndex, messages, pagination]);
+  }, [firstItemIndex, messages, setMessages, pagination]);
 
   // USEEFFECTS
   React.useLayoutEffect(() => {
@@ -88,6 +98,8 @@ const MainContent = ({ userId, conversationId, typeConversation }) => {
       messages.length &&
       pagination.allItems
     ) {
+      console.log("useLayoutEffect");
+
       setFirstItemIndex(pagination.allItems);
 
       prevChatId = conversationId;
@@ -127,6 +139,8 @@ const MainContent = ({ userId, conversationId, typeConversation }) => {
     return <></>;
   }
 
+  // console.log(messages, "messages");
+  console.log(`render ${++index} ${firstItemIndex}`);
   return (
     <Box className={classes.wrapperMessages}>
       {(() => {

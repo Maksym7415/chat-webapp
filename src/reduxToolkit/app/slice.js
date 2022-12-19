@@ -3,6 +3,7 @@ import { eSideLeftConfigPage } from "../../ts/enums/app";
 
 export const initialState = {
   isLoading: false,
+  openConversationId: null,
   sideLeftConfig: {
     page: eSideLeftConfigPage.conversations,
   },
@@ -17,12 +18,16 @@ export const initialState = {
     active: false,
     messages: {},
   },
+  messagesChat: [],
 };
 
 const appSlice = createSlice({
   name: "appSlice",
   initialState,
   reducers: {
+    setMessagesChatAction(state, { payload }) {
+      state.messagesChat = payload;
+    },
     setSideLeftConfigAction(state, { payload }) {
       state.sideLeftConfig = payload;
     },
@@ -59,6 +64,9 @@ const appSlice = createSlice({
     setSelectedMessagesAction(state, { payload }) {
       state.selectedMessages = payload;
     },
+    setOpenConversationIdAction(state, { payload }) {
+      state.openConversationId = payload;
+    },
   },
 });
 
@@ -73,4 +81,6 @@ export const {
   setSelectedChatsAction,
   setSelectedMessagesAction,
   setAllMessagesAction,
+  setMessagesChatAction,
+  setOpenConversationIdAction,
 } = appSlice.actions;

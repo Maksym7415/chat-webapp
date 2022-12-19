@@ -48,7 +48,7 @@ const Message = ({
   );
   const userInfo = useAppSelector(({ userSlice }) => userSlice.userInfo);
 
-  const selfMessage = userInfo.id === messageData.User.id;
+  const selfMessage = userInfo.id === messageData.User?.id;
 
   // STATES
   const [settings, setSettings] = useState<any>({

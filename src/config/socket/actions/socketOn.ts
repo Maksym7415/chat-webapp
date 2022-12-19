@@ -3,7 +3,10 @@ import { socket } from "../index";
 import { actionsConversationList } from "../../../actions";
 import { getUserConversationsRequest } from "../../../reduxToolkit/conversations/requests";
 import { Paths } from "../../../routing/config/paths";
-import { setAllMessagesAction } from "../../../reduxToolkit/app/slice";
+import {
+  setAllMessagesAction,
+  setMessagesChatAction,
+} from "../../../reduxToolkit/app/slice";
 import {
   setConversationListAction,
   updateConversationTypeStateAction,
@@ -12,7 +15,8 @@ import {
 // User Id Chat
 export const socketOnUserIdChat = (chat: any) =>
   socket.on(`userIdChat${chat.conversationId}`, (message) => {
-    const { allMessages } = store.getState().appSlice;
+    const { allMessages, openConversationId } = store.getState().appSlice;
+
     const conversationsList =
       store.getState().conversationsSlice.conversationsList.data;
 
@@ -82,6 +86,10 @@ export const socketOnUserIdChat = (chat: any) =>
       store.dispatch(
         setAllMessagesAction({ [chat.conversationId]: updateMessages })
       );
+
+      openConversationId &&
+        chat.conversationId &&
+        store.dispatch(setMessagesChatAction(updateMessages));
     }
 
     if (chat.Messages?.[0]?.id == message?.id) {
@@ -146,19 +154,21 @@ export const socketOnTypingStateId = (chat) => {
 
 export const socketOnDeleteMessage = () => {
   const getRemoveMessages = (conversationId, messageId, lastMessage) => {
-    const { allMessages } = store.getState().appSlice;
+    const allMessages = store.getState().appSlice.allMessages;
     const conversationsList =
       store.getState().conversationsSlice.conversationsList.data;
     const conversationFindStore = conversationsList?.[conversationId];
 
+    const updateMessages = allMessages[conversationId.toString()]?.filter(
+      (message) => ![messageId?.toString()]?.includes(message?.id?.toString())
+    );
+
     store.dispatch(
       setAllMessagesAction({
-        [conversationId]: allMessages[conversationId.toString()]?.filter(
-          (message) =>
-            ![messageId?.toString()]?.includes(message?.id?.toString())
-        ),
+        [conversationId]: updateMessages,
       })
     );
+
     if (messageId === conversationFindStore?.Messages?.[0].id) {
       store.dispatch(
         actionsConversationList({

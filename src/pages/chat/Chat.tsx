@@ -8,10 +8,15 @@ import ChatBottom from "./components/bottom";
 import ChatContent from "./components/mainContent";
 import RenderInfoCenterBox from "../../components/renders/renderInfoCenterBox";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { getMessagesWithSendDate } from "../../helpers";
 import { ILocationParams, IParams } from "../../ts/interfaces/app";
 import { actionsClearSelectedMessages } from "../../actions";
 import { getConversationMessagesRequest } from "../../reduxToolkit/conversations/requests";
-import { setAllMessagesAction } from "../../reduxToolkit/app/slice";
+import {
+  setAllMessagesAction,
+  setMessagesChatAction,
+  setOpenConversationIdAction,
+} from "../../reduxToolkit/app/slice";
 
 // need ts
 
@@ -36,10 +41,10 @@ const Chat = () => {
 
   // SELECTORS
   const authToken = useAppSelector(({ authSlice }) => authSlice.authToken);
-  const userHistoryConversations = useAppSelector(
-    ({ conversationsSlice }) => conversationsSlice.userHistoryConversations
-  );
   const allMessages = useAppSelector(({ appSlice }) => appSlice.allMessages);
+  const openConversationId = useAppSelector(
+    ({ appSlice }) => appSlice.openConversationId
+  );
   const conversationsList = useAppSelector(
     ({ conversationsSlice }) => conversationsSlice.conversationsList.data
   );
@@ -49,7 +54,7 @@ const Chat = () => {
   const [isFetching, setIsFetching] = React.useState(false);
 
   // VARIABLES
-  const conversationId = React.useMemo(() => params?.id || 0, [params]);
+  const conversationId = React.useMemo(() => params?.id || null, [params]);
   const opponentId: any = location?.state?.opponentId;
   const conversationData: any = React.useMemo(
     () =>
@@ -72,27 +77,14 @@ const Chat = () => {
             offset: 0,
           },
           cb: (response) => {
-            let currentDay = 0;
-            let newArr = [];
-            response.data.map((el) => {
-              if (new Date(el.sendDate).getDate() !== currentDay) {
-                currentDay = new Date(el.sendDate).getDate();
-                newArr = [
-                  ...newArr,
-                  { component: "div", sendDate: el.sendDate },
-                  el,
-                ];
-              } else {
-                currentDay = new Date(el.sendDate).getDate();
-                newArr = [...newArr, el];
-              }
-              return el;
-            });
+            const messages = getMessagesWithSendDate(response.data).messages;
+
             dispatch(
               setAllMessagesAction({
-                [conversationId]: newArr,
+                [conversationId]: messages,
               })
             );
+            dispatch(setMessagesChatAction(messages));
             errorBack && setErrorBack("");
             setIsFetching(false);
           },
@@ -102,7 +94,14 @@ const Chat = () => {
           },
         })
       );
+    } else {
+      const messages = allMessages[conversationId] || [];
+      dispatch(setMessagesChatAction(messages));
     }
+
+    conversationId !== openConversationId &&
+      dispatch(setOpenConversationIdAction(conversationId));
+
     return () => {
       actionsClearSelectedMessages(false);
     };
@@ -134,14 +133,14 @@ const Chat = () => {
       />
       <ChatContent
         typeConversation={typeConversation}
-        opponentId={opponentId}
         conversationId={conversationId}
         userId={authToken.userId}
         allMessages={allMessages}
-        setErrorBack={setErrorBack}
-        errorBack={errorBack}
-        setIsFetching={setIsFetching}
-        conversationData={conversationData}
+        // lastMessages={lastMessages?.[conversationId]}
+        // setErrorBack={setErrorBack}
+        // errorBack={errorBack}
+        // setIsFetching={setIsFetching}
+        // conversationData={conversationData}
       />
       <ChatBottom
         firstName={authToken.firstName}

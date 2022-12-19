@@ -2,7 +2,7 @@ import {
   setSelectedMessagesAction,
   setAllMessagesAction,
   editMessageAction,
-  shareMessageAction,
+  setMessagesChatAction,
 } from "../reduxToolkit/app/slice";
 import { setDialogWindowConfigAction } from "../components/dialogWindow/redux/slice";
 import { actionsForTypeWithObjKey } from "../helpers/actionsForType";
@@ -79,6 +79,7 @@ export const actionsTypeActionsChat = {
 
 export const actionsMessagesChat = (props: any) => {
   const selectedMessages = store.getState().appSlice.selectedMessages;
+  const openConversationId = store.getState().appSlice.openConversationId;
 
   const { conversationId, typeAction, messageData = null } = props;
 
@@ -147,6 +148,9 @@ export const actionsMessagesChat = (props: any) => {
             [conversationId]: updateAllMessages,
           })
         );
+        openConversationId &&
+          conversationId &&
+          store.dispatch(setMessagesChatAction(updateAllMessages));
       };
 
       // sorting through the selected messages and sending them through the socket and, if successful, delete them locally through the function - getRemoveMessages

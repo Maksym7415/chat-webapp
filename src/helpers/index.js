@@ -17,3 +17,4 @@ export { uuid } from "./uuid";
 export { flatListFormatDataColumns } from "./flatListFormatDataColumns";
 export { handleGetBufferFile } from "./addFiles";
 export { findValueKeyInNestedArr } from "./findValueKeyInNestedArr";
+export { getMessagesWithSendDate } from "./getMessagesWithSendDate";

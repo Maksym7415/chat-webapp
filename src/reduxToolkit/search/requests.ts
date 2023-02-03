@@ -9,13 +9,19 @@ export const getSearchContactRequest = createAsyncThunk(
     dispatch(setLoadingSearchContacts(true));
     const params: any = {};
 
-    if (options?.params?.search) {
-      params.searchRequest = options?.params?.search;
+    const directionAddResponse = options?.direction || "";
+
+    const searchParams = options?.params?.search || "";
+    const offsetParams = options?.params?.offset || 0;
+
+    if (searchParams) {
+      params.searchRequest = searchParams;
     }
-    if (options?.params?.offset) {
-      params.offset = options?.params?.offset;
+    if (offsetParams) {
+      params.offset = offsetParams;
     }
 
+    console.log(offsetParams, "offsetParams");
     try {
       const response = await API.get(pathBackSearch.searchContact, {
         params,
@@ -23,7 +29,13 @@ export const getSearchContactRequest = createAsyncThunk(
 
       options?.cb && options.cb();
 
-      return response.data;
+      return {
+        search: searchParams,
+        direction: directionAddResponse,
+        offset: offsetParams,
+
+        ...response.data,
+      };
     } catch (error) {
       return Promise.reject(error);
     } finally {

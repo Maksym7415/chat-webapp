@@ -53,6 +53,8 @@ const Chat = () => {
   const [errorBack, setErrorBack] = React.useState<string>("");
   const [isFetching, setIsFetching] = React.useState(false);
 
+  console.log(params, "params");
+
   // VARIABLES
   const conversationId = React.useMemo(() => params?.id || null, [params]);
   const opponentId: any = location?.state?.opponentId;
@@ -68,6 +70,7 @@ const Chat = () => {
 
   // USEEFFECTS
   React.useLayoutEffect(() => {
+    console.log(allMessages, "allMessages");
     if (!allMessages[conversationId] && conversationId) {
       setIsFetching(true);
       dispatch(
@@ -103,6 +106,7 @@ const Chat = () => {
       dispatch(setOpenConversationIdAction(conversationId));
 
     return () => {
+      console.log("!---return---!");
       actionsClearSelectedMessages(false);
     };
   }, [conversationId]);
@@ -135,12 +139,6 @@ const Chat = () => {
         typeConversation={typeConversation}
         conversationId={conversationId}
         userId={authToken.userId}
-        allMessages={allMessages}
-        // lastMessages={lastMessages?.[conversationId]}
-        // setErrorBack={setErrorBack}
-        // errorBack={errorBack}
-        // setIsFetching={setIsFetching}
-        // conversationData={conversationData}
       />
       <ChatBottom
         firstName={authToken.firstName}

@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import * as requests from "./requests";
 
 const initialState = {
-  searchContacts: { response: [] },
+  searchContacts: {
+    response: [],
+    limit: 0,
+    search: "",
+    direction: "",
+    offset: 0,
+  },
   searchSettingsQuestions: { response: [] },
   isLoading: false,
 };

@@ -3,9 +3,14 @@ import { makeStyles } from "@mui/styles";
 export default makeStyles((theme) => ({
   container: {
     backgroundColor: "#ffffff",
+    height: "100%",
   },
   wrapperContacts: {
     padding: "5px",
+    // display: "flex",
+    // flexDirection: "column",
+    // flex: 1,
+    height: "100%",
   },
   wrapperContact: {
     display: "flex",
